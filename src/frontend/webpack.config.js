@@ -1,15 +1,10 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: './src/index.tsx',
   devtool: 'inline-source-map',
   module: {
     rules: [
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
@@ -20,8 +15,15 @@ module.exports = {
         use: [
           // Creates `style` nodes from JS strings
           "style-loader",
+          // "css-modules-typescript-loader",
           // Translates CSS into CommonJS
-          "css-loader",
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+              importLoaders: 2,
+            },
+          },
           // apply postcss plugins
           {
             loader: "postcss-loader",
@@ -47,6 +49,11 @@ module.exports = {
           // Compiles Sass to CSS
           "sass-loader",
         ],
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
         exclude: /node_modules/,
       },
     ],
