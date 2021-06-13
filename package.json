@@ -9,6 +9,7 @@
     "start": "ts-node src/app.ts"
   },
   "dependencies": {
+    "@types/cors": "^2.8.10",
     "@types/express": "^4.17.12",
     "@types/node": "^15.12.2",
     "@types/sequelize": "^4.28.9",

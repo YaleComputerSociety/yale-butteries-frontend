@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    command: bash -c "yarn run build-frontend && yarn run start"
+    container_name: yale_college_hub
+    depends_on:
+      - db
+    env_file:
+      - .env.local
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+
+  db:
+    image: postgres
+    container_name: yale-college-hub-db
+    environment:
+      - POSTGRES_USER=yale_college_hub
+      - POSTGRES_PASSWORD=l0c4ldb10(!)
+    volumes:
+      - .:/app
+      - dbvolume:/var/lib/postgresql/data
+
+volumes:
+  dbvolume:
+  gems:

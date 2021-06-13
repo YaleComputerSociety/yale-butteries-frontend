@@ -15,7 +15,6 @@ module.exports = {
         use: [
           // Creates `style` nodes from JS strings
           "style-loader",
-          // "css-modules-typescript-loader",
           // Translates CSS into CommonJS
           {
             loader: "css-loader",
