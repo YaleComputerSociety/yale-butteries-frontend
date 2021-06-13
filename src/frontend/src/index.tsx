@@ -1,11 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import MainRouter from 'non-rendering/MainRouter'
+
 import styles from './styles.module.scss'
 
 ReactDOM.render(
   <React.StrictMode>
-    <div className={styles.testing}>Hello world, React success!</div>
+    <MainRouter />
   </React.StrictMode>,
   document.getElementById('root')
 )
