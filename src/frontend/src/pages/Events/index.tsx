@@ -3,9 +3,7 @@ import React, { FC } from 'react'
 import Default from 'layouts/Default'
 
 const Inner: FC = () => {
-  return(
-    <div>Events logic</div>
-  )
+  return <div>{'Events logic test'}</div>
 }
 
 const Events: FC = () => {
@@ -16,4 +14,4 @@ const Events: FC = () => {
   )
 }
 
-export default Events 
+export default Events

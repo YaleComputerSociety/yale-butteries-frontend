@@ -5,8 +5,11 @@
   "author": "tuckermoses <john.tucker.moses@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build-frontend": "cd src/frontend && yarn install && yarn run build",
-    "start": "ts-node src/app.ts"
+    "build-frontend": "cd src/frontend && yarn run build",
+    "build-frontend-dev": "cd src/frontend && yarn run build-dev",
+    "start": "ts-node src/app.ts",
+    "start-dev": "nodemon --watch 'src/frontend' --ignore 'src/frontend/dist' --ext 'ts,tsx,js,jsx,scss' --exec 'yarn run build-frontend-dev && ts-node src/app.ts'",
+    "lint": "yarn eslint --max-warnings 0 'src/**/*.{js,ts,tsx}'"
   },
   "dependencies": {
     "@types/cors": "^2.8.10",
@@ -23,7 +26,48 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
+    "eslint": "^7.28.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
+    "fork-ts-checker-webpack-plugin": "^6.2.10",
     "nodemon": "^2.0.7",
+    "prettier": "^2.3.1",
     "sequelize-cli": "^6.2.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:import/errors",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "plugins": [
+      "prettier",
+      "import"
+    ],
+    "ignorePatterns": ["/src/frontend/package.json", "/src/frontend/webpack.config.js"],
+    "rules": {
+      "@typescript-eslint/ban-ts-ignore": 0,
+      "@typescript-eslint/explicit-function-return-type": 0,
+      "@typescript-eslint/no-explicit-any": 0,
+      "no-undef": 0
+    },
+    "settings": {
+      "import/extensions": [
+        ".js",
+        ".ts"
+      ]
+    }
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 120
   }
 }

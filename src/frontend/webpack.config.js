@@ -1,9 +1,10 @@
 const path = require('path');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const { argv } = require('process');
 
-module.exports = {
+let config = {
   entry: './src/index.tsx',
-  devtool: 'inline-source-map',
   module: {
     rules: [
       {
@@ -55,17 +56,30 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true,
+          },
+        },
         exclude: /node_modules/,
       },
     ],
   },
+  plugins: [new ForkTsCheckerWebpackPlugin({ async: false, })],
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
-    plugins: [new TsConfigPathsPlugin({})],
+    plugins: [new TsConfigPathsPlugin()],
   },
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
   },
 };
+
+module.exports = (_, argv) => {
+  if (argv.mode === 'development') {
+    config.devtool = 'inline-source-map'
+  }
+  return config
+}

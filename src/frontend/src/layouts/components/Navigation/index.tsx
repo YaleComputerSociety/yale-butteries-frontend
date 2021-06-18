@@ -7,9 +7,9 @@ I've just added an example of using the react router below to connect all the pa
 export const Navigation: FC = () => {
   return (
     <div>
-      <div>This is an example of the navigation bar!</div>
+      <div>This is an example of the navigation bar with change!</div>
       <div>
-        <NavLink to="/dashboard">{'Dashboard'}</NavLink>
+        <NavLink to="/dashboard">{'Dashboard testing'}</NavLink>
         <NavLink to="/events">{'Events'}</NavLink>
         <NavLink to="/intramurals">{'Intramurals'}</NavLink>
       </div>

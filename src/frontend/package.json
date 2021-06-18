@@ -4,18 +4,29 @@
   "author": "tuckermoses",
   "license": "MIT",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack --mode=production",
+    "build-dev": "webpack --mode=development",
+    "lint": "yarn eslint --max-warnings 0 'src/**/*.{js,ts,tsx}'"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
     "autoprefixer": "^10.2.6",
     "css-loader": "^5.2.6",
+    "eslint": "^7.28.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "fork-ts-checker-webpack-plugin": "^6.2.10",
     "postcss": "^8.3.2",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^14.0.2",
     "postcss-loader": "^6.1.0",
     "postcss-preset-env": "^6.7.0",
+    "prettier": "^2.3.1",
     "sass": "^1.34.1",
     "sass-loader": "^12.1.0",
     "style-loader": "^2.0.0",
@@ -32,5 +43,81 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended",
+      "plugin:jsx-a11y/recommended",
+      "plugin:import/errors",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended",
+      "prettier"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "plugins": [
+      "react",
+      "prettier",
+      "import",
+      "jsx-a11y",
+      "react-hooks"
+    ],
+    "ignorePatterns": ["/dist/**", "/webpack.config.js"],
+    "rules": {
+      "react/jsx-filename-extension": [
+        2,
+        {
+          "extensions": [
+            ".tsx"
+          ]
+        }
+      ],
+      "react/prop-types": 0,
+      "@typescript-eslint/ban-ts-ignore": 0,
+      "@typescript-eslint/explicit-function-return-type": 0,
+      "@typescript-eslint/no-explicit-any": 0,
+      "jsx-a11y/no-autofocus": 0,
+      "jsx-a11y/media-has-caption": 0,
+      "react/jsx-no-bind": 2,
+      "react/no-multi-comp": 0,
+      "react/jsx-no-literals": 2,
+      "no-undef": 0
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      },
+      "import/resolver": {
+        "node": {
+          "paths": [
+            "src"
+          ],
+          "extensions": [
+            ".js",
+            ".jsx",
+            ".ts",
+            ".tsx",
+            ".png",
+            ".jpg"
+          ]
+        }
+      }
+    }
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 120
   }
 }

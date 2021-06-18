@@ -2,7 +2,7 @@ version: '3.8'
 services:
   app:
     build: .
-    command: bash -c "yarn run build-frontend && yarn run start"
+    command: bash -c "yarn run start-dev"
     container_name: yale_college_hub
     depends_on:
       - db
@@ -11,7 +11,7 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - .:/app
+      - .:/app:delegated
 
   db:
     image: postgres

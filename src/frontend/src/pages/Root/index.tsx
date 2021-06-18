@@ -2,9 +2,7 @@ import React, { FC } from 'react'
 import { Redirect } from 'react-router-dom'
 
 const DefaultRedirect: FC = () => {
-  return(
-    <Redirect to="dashboard" />
-  )
+  return <Redirect to="dashboard" />
 }
 
 const Root: FC = () => {

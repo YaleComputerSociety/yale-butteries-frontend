@@ -1,4 +1,4 @@
-import express, {Application} from 'express'
+import express, { Application } from 'express'
 import cors from 'cors'
 import path from 'path'
 
@@ -7,9 +7,11 @@ const app: Application = express()
 const port = process.env.APP_PORT || 3000
 
 app.use(express.json())
-app.use(express.urlencoded({
-  extended: true,
-}))
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+)
 app.use(cors())
 
 const static_root = path.join(__dirname, 'frontend', 'dist')
