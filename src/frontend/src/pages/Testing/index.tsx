@@ -3,10 +3,10 @@ import React, { FC } from 'react'
 import Default from 'layouts/Default'
 
 const Inner: FC = () => {
-  return <div>{'Events logic'}</div>
+  return <div>{'Testing playground'}</div>
 }
 
-const Events: FC = () => {
+const Testing: FC = () => {
   return (
     <Default>
       <Inner />
@@ -14,4 +14,4 @@ const Events: FC = () => {
   )
 }
 
-export default Events
+export default Testing
