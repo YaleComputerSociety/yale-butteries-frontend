@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import {NavLink} from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import styles from './styles.module.scss'
 
 /* June, this is where your logic goes!
