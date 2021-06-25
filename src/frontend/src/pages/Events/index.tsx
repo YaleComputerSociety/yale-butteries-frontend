@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import Default from 'layouts/Default'
 
 const Inner: FC = () => {
-  return <div>{'Events logic test'}</div>
+  return <div>{'Events logic'}</div>
 }
 
 const Events: FC = () => {

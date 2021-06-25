@@ -1,0 +1,25 @@
+.layout {
+  text-align: left; 
+  .title { 
+    box-sizing: border-box; 
+    width: 100%; 
+    display: flex; 
+    justify-content: flex-start; 
+    align-items: baseline; 
+    padding: 0.5em; 
+    margin-bottom: 1em; 
+    background-color: #00356b; 
+    h1 { 
+      color: white; 
+    }
+  }
+
+
+  .siteLayoutContent { 
+    background-color: rgba(99, 170, 255, 0.2); 
+  }
+
+  .footer { 
+    text-align: center;
+  }
+}
