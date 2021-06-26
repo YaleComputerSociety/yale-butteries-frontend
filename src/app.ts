@@ -23,7 +23,7 @@ app.get('/apicall', (_, res) => {
 app.use(express.static(static_root))
 
 app.get('*', (_, res) => {
-  res.sendFile('index.html', { root: static_root });
+  res.sendFile('index.html', { root: static_root })
 })
 
 app.listen(port, () => {
