@@ -1,16 +1,15 @@
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('event_occurrences', {
+    await queryInterface.createTable('approval_statuses', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      date: {
-        allowNull: false,
-        type: Sequelize.DATEONLY,
+      status: {
+        type: Sequelize.STRING,
       },
       created_at: {
         allowNull: false,
@@ -23,6 +22,6 @@ module.exports = {
     })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('event_occurrences')
+    await queryInterface.dropTable('approval_statuses')
   },
 }
