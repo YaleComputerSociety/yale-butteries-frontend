@@ -10,15 +10,22 @@ module.exports = {
      */
     //event_types belongs to positions
 
-    await queryInterface.addColumn('event_types', 'position_id', {
-      type: Sequelize.INTEGER,
-      references: {
-        model: 'positions',
-        key: 'id',
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'SET NULL',
-    })
+    await queryInterface
+      .addColumn('event_types', 'position_id', {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'positions',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+      })
+      .then(() =>
+        queryInterface.addIndex('event_types', ['position_id'], {
+          name: 'event_types_position_id_idx_fkey',
+          using: 'BTREE',
+        })
+      )
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -29,6 +36,7 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
 
-    return queryInterface.removeColumn('event_types', 'position_id')
+    queryInterface.removeIndex('event_types', 'idx_position_id')
+    queryInterface.removeColumn('event_types', 'position_id')
   },
 }
