@@ -32,3 +32,14 @@ $s_large_desktop:                #{$s_extra_large};
     @warn 'Invalid breakpoint: #{$breakpoint}.';
   }
 }
+
+@mixin respond-below($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $breakpoint-value: map-get($breakpoints, $breakpoint);
+    @media (max-width: ($breakpoint-value - 1)) {
+      @content;
+    }
+  } @else {
+    @warn 'Invalid breakpoint: #{$breakpoint}.';
+  }
+}
