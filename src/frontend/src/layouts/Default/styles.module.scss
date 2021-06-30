@@ -1,4 +1,5 @@
 .layout {
+  height: 100%;
   text-align: left; 
   .title { 
     box-sizing: border-box; 
@@ -15,8 +16,16 @@
   }
 
 
-  .siteLayoutContent { 
-    background-color: rgba(99, 170, 255, 0.2); 
+  .siteLayoutWrapper{
+    display: flex;
+    flex-direction: column;
+    .siteLayoutContent { 
+      background-color: rgba(99, 170, 255, 0.2); 
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
   }
 
   .footer { 
