@@ -1,29 +1,21 @@
-'use strict'
-
-import Model from 'sequelize'
-
 module.exports = (sequelize, DataTypes) => {
-  class Relationship extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      Relationship.hasMany(models.UsersEvent)
-    }
-  }
-  Relationship.init(
+  const Relationship = sequelize.define(
+    'Relationship',
     {
       relationship: DataTypes.STRING,
     },
     {
-      sequelize,
-      modelName: 'Relationship',
       tableName: 'relationships',
       underscored: true,
     }
   )
+
+  Relationship.associate = function (models) {
+    Relationship.hasMany(models.UsersEvent, {
+      foreignKey: 'relationship_id',
+      as: 'users_events',
+    })
+  }
+
   return Relationship
 }

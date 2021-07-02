@@ -1,32 +1,33 @@
-'use strict'
-
-import Model from 'sequelize'
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      User.belongsTo(models.Position)
-      User.belongsTo(models.College)
-      User.hasMany(models.Stat)
-      User.belongsToMany(models.Event, { through: 'users_events' })
-    }
-  }
-
-  User.init(
+  const User = sequelize.define(
+    'User',
     {
       netid: DataTypes.STRING,
       name: DataTypes.STRING,
+      position_id: DataTypes.INTEGER,
+      college_id: DataTypes.INTEGER,
     },
     {
-      sequelize,
-      modelName: 'User',
       tableName: 'users',
+      underscored: true,
     }
   )
+
+  User.associate = function (models) {
+    User.belongsTo(models.Position, {
+      foreignKey: 'position_id',
+      as: 'position',
+    })
+    User.belongsTo(models.College, {
+      foreignKey: 'college_id',
+      as: 'college',
+    })
+    User.hasMany(models.Stat, {
+      foreignKey: 'user_id',
+      as: 'stats',
+    })
+    User.belongsToMany(models.Event, { through: 'users_events', foreignKey: 'user_id', as: 'events' })
+  }
+
   return User
 }

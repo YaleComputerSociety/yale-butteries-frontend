@@ -1,27 +1,26 @@
-'use strict'
-
 module.exports = (sequelize, DataTypes) => {
-  class EventType extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      EventType.belongsTo(models.Position)
-      EventType.hasMany(models.Event)
-    }
-  }
-  EventType.init(
+  const EventType = sequelize.define(
+    'EventType',
     {
       type: DataTypes.STRING,
+      position_id: DataTypes.INTEGER,
     },
     {
-      sequelize,
-      modelName: 'EventType',
       tableName: 'event_types',
+      underscored: true,
     }
   )
+
+  EventType.associate = function (models) {
+    EventType.belongsTo(models.Position, {
+      foreignKey: 'position_id',
+      as: 'position',
+    })
+    EventType.hasMany(models.Event, {
+      foreignKey: 'event_type_id',
+      as: 'events',
+    })
+  }
+
   return EventType
 }
