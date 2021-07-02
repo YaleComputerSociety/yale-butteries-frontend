@@ -1,30 +1,29 @@
-'use strict'
-import Model from 'sequelize'
-
 module.exports = (sequelize, DataTypes) => {
-  class Stat extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      Stat.belongsTo(models.ImGame)
-      Stat.belongsTo(models.User)
-    }
-  }
-  Stat.init(
+  const Stat = sequelize.define(
+    'Stat',
     {
       points: DataTypes.INTEGER,
       rebounds: DataTypes.INTEGER,
       assists: DataTypes.INTEGER,
+      im_game_id: DataTypes.INTEGER,
+      user_id: DataTypes.INTEGER,
     },
     {
-      sequelize,
-      modelName: 'Stat',
       tableName: 'stats',
+      underscored: true,
     }
   )
+
+  Stat.associate = function (models) {
+    Stat.belongsTo(models.ImGame, {
+      foreignKey: 'im_game_id',
+      as: 'imGame',
+    })
+    Stat.belongsTo(models.User, {
+      foreignKey: 'user_id',
+      as: 'user',
+    })
+  }
+
   return Stat
 }

@@ -1,30 +1,32 @@
-'use strict'
-import Model from 'sequelize'
 module.exports = (sequelize, DataTypes) => {
-  class Room extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      Room.belongsTo(models.College)
-      Room.belongsTo(models.RecurrenceType)
-      Room.hasMany(models.Event)
-    }
-  }
-  Room.init(
+  const Room = sequelize.define(
+    'Room',
     {
       room_name: DataTypes.STRING,
       needs_approval: DataTypes.BOOLEAN,
+      college_id: DataTypes.INTEGER,
+      recurrence_type_id: DataTypes.INTEGER,
     },
     {
-      sequelize,
-      modelName: 'Room',
       tableName: 'rooms',
       underscored: true,
     }
   )
+
+  Room.associate = function (models) {
+    Room.belongsTo(models.College, {
+      foreignKey: 'college_id',
+      as: 'college',
+    })
+    Room.belongsTo(models.RecurrenceType, {
+      foreignKey: 'recurrence_type_id',
+      as: 'recurrenceType',
+    })
+    Room.hasMany(models.Event, {
+      foreignKey: 'room_id',
+      as: 'events',
+    })
+  }
+
   return Room
 }
