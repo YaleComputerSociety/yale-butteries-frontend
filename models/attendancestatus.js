@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   AttendanceStatus.associate = function (models) {
     AttendanceStatus.hasMany(models.UsersEvent, {
       foreignKey: 'attendance_status_id',
-      as: 'users_events',
+      as: 'usersEvents',
     })
   }
 

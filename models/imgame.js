@@ -21,11 +21,11 @@ module.exports = (sequelize, DataTypes) => {
     })
     ImGame.belongsTo(models.College, {
       foreignKey: 'team_1_key',
-      as: 'college_1',
+      as: 'college1',
     })
     ImGame.belongsTo(models.College, {
       foreignKey: 'team_2_key',
-      as: 'college_2',
+      as: 'college2',
     })
     ImGame.hasMany(models.Stat, {
       foreignKey: 'imgame_id',

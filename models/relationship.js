@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   Relationship.associate = function (models) {
     Relationship.hasMany(models.UsersEvent, {
       foreignKey: 'relationship_id',
-      as: 'users_events',
+      as: 'usersEvents',
     })
   }
 
