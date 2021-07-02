@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   Sport.associate = function (models) {
     Sport.hasMany(models.ImGame, {
       foreignKey: 'sport_id',
-      as: 'im_games',
+      as: 'imGames',
     })
   }
 

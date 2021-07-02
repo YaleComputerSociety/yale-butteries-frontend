@@ -29,15 +29,15 @@ module.exports = (sequelize, DataTypes) => {
     })
     Event.belongsTo(models.RecurrenceType, {
       foreignKey: 'recurrence_type_id',
-      as: 'recurrence_type',
+      as: 'recurrenceType',
     })
     Event.belongsTo(models.ApprovalStatus, {
       foreignKey: 'approval_status_id',
-      as: 'approval_status',
+      as: 'approvalStatus',
     })
     Event.hasMany(models.EventOccurrence, {
       foreignKey: 'event_id',
-      as: 'event_occurrences',
+      as: 'eventOccurrences',
     })
 
     Event.belongsToMany(models.User, { through: 'users_events', foreignKey: 'event_id', as: 'users' })

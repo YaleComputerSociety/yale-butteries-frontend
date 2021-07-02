@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     })
     UsersEvent.belongsTo(models.AttendanceStatus, {
       foreignKey: 'attendance_status_id',
-      as: 'attendance_status',
+      as: 'attendanceStatus',
     })
     UsersEvent.belongsTo(models.Relationship, {
       foreignKey: 'relationship_id',

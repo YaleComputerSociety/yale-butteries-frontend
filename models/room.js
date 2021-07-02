@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     })
     Room.belongsTo(models.RecurrenceType, {
       foreignKey: 'recurrence_type_id',
-      as: 'recurrence_type',
+      as: 'recurrenceType',
     })
     Room.hasMany(models.Event, {
       foreignKey: 'room_id',

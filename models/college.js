@@ -17,11 +17,11 @@ module.exports = (sequelize, DataTypes) => {
     })
     College.hasMany(models.ImGame, {
       foreignKey: 'team_1_key',
-      as: 'im_games_team_1',
+      as: 'imGamesTeam1',
     })
     College.hasMany(models.ImGame, {
       foreignKey: 'team_2_key',
-      as: 'im_games_team_2',
+      as: 'imGamesTeam2',
     })
     College.hasMany(models.Room, {
       foreignKey: 'college_id',
