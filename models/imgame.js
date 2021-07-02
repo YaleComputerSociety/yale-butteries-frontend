@@ -5,8 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       team_1_score: DataTypes.INTEGER,
       team_2_score: DataTypes.INTEGER,
       date: DataTypes.DATEONLY,
-      sport_id: DataTypes.INTEGER,
-      college_id: DataTypes.INTEGER,
     },
     {
       tableName: 'im_games',
@@ -21,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
     })
     ImGame.belongsTo(models.College, {
       foreignKey: 'team_1_key',
-      as: 'college1',
+      as: 'team1',
     })
     ImGame.belongsTo(models.College, {
       foreignKey: 'team_2_key',
-      as: 'college2',
+      as: 'team2',
     })
     ImGame.hasMany(models.Stat, {
       foreignKey: 'imgame_id',
