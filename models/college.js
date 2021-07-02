@@ -1,29 +1,33 @@
-'use strict'
-
-import Model from 'sequelize'
 module.exports = (sequelize, DataTypes) => {
-  class College extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      College.hasMany(models.User)
-      College.hasMany(models.ImGame)
-      College.hasMany(models.Room)
-    }
-  }
-  College.init(
+  const College = sequelize.define(
+    'College',
     {
       college: DataTypes.STRING,
     },
     {
-      sequelize,
-      modelName: 'College',
       tableName: 'colleges',
+      underscored: true,
     }
   )
+
+  College.associate = function (models) {
+    College.hasMany(models.User, {
+      foreignKey: 'college_id',
+      as: 'users',
+    })
+    College.hasMany(models.ImGame, {
+      foreignKey: 'team_1_key',
+      as: 'im_games_team_1',
+    })
+    College.hasMany(models.ImGame, {
+      foreignKey: 'team_2_key',
+      as: 'im_games_team_2',
+    })
+    College.hasMany(models.Room, {
+      foreignKey: 'college_id',
+      as: 'rooms',
+    })
+  }
+
   return College
 }
