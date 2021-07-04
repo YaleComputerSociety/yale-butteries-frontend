@@ -1,6 +1,9 @@
 'use strict'
 import Model from 'sequelize'
 
+// Change models from current design
+// Change to functional
+
 module.exports = (sequelize, DataTypes) => {
   class ApprovalStatus extends Model {
     /**
