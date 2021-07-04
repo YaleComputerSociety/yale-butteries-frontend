@@ -1,38 +1,47 @@
 'use strict'
-
-import Model from 'sequelize'
-
 module.exports = (sequelize, DataTypes) => {
-  class Event extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      Event.belongsTo(models.EventType)
-      Event.belongsTo(models.Room)
-      Event.belongsTo(models.RecurrenceType)
-      Event.hasMany(models.EventOccurence)
-
-      Event.belongsToMany(models.User, { through: 'users_events' })
-    }
-  }
-  Event.init(
+  const Event = sequelize.define(
+    'Event',
     {
       name: DataTypes.STRING,
       description: DataTypes.STRING,
       start_time: DataTypes.DATE,
       end_time: DataTypes.DATE,
-      approved: DataTypes.BOOLEAN,
+      event_type_id: DataTypes.INTEGER,
+      room_id: DataTypes.INTEGER,
+      recurrence_type_id: DataTypes.INTEGER,
+      approval_status_id: DataTypes.INTEGER,
     },
     {
-      sequelize,
-      modelName: 'Event',
       tableName: 'events',
       underscored: true,
     }
   )
+
+  Event.associate = function (models) {
+    Event.belongsTo(models.EventType, {
+      foreignKey: 'event_type_id',
+      as: 'eventType',
+    })
+    Event.belongsTo(models.Room, {
+      foreignKey: 'room_id',
+      as: 'room',
+    })
+    Event.belongsTo(models.RecurrenceType, {
+      foreignKey: 'recurrence_type_id',
+      as: 'recurrenceType',
+    })
+    Event.belongsTo(models.ApprovalStatus, {
+      foreignKey: 'approval_status_id',
+      as: 'approvalStatus',
+    })
+    Event.hasMany(models.EventOccurrence, {
+      foreignKey: 'event_id',
+      as: 'eventOccurrences',
+    })
+
+    Event.belongsToMany(models.User, { through: 'users_events', foreignKey: 'event_id', as: 'users' })
+  }
+
   return Event
 }

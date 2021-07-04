@@ -1,33 +1,36 @@
-'use strict'
-
-import Model from 'sequelize'
-
 module.exports = (sequelize, DataTypes) => {
-  class UsersEvent extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      UsersEvent.belongsTo(models.User)
-      UsersEvent.belongsTo(models.Event)
-      UsersEvent.belongsTo(models.AttendanceStatus)
-      UsersEvent.belongsTo(models.Relationship)
-    }
-  }
-  UsersEvent.init(
+  const UsersEvent = sequelize.define(
+    'UsersEvent',
     {
       user_id: DataTypes.INTEGER,
       event_id: DataTypes.INTEGER,
+      attendance_status_id: DataTypes.INTEGER,
+      relationship_id: DataTypes.INTEGER,
     },
     {
-      sequelize,
-      modelName: 'UsersEvent',
       tableName: 'users_events',
       underscored: true,
     }
   )
+
+  UsersEvent.associate = function (models) {
+    UsersEvent.belongsTo(models.User, {
+      foreignKey: 'user_id',
+      as: 'user',
+    })
+    UsersEvent.belongsTo(models.Event, {
+      foreignKey: 'event_id',
+      as: 'event',
+    })
+    UsersEvent.belongsTo(models.AttendanceStatus, {
+      foreignKey: 'attendance_status_id',
+      as: 'attendanceStatus',
+    })
+    UsersEvent.belongsTo(models.Relationship, {
+      foreignKey: 'relationship_id',
+      as: 'relationship',
+    })
+  }
+
   return UsersEvent
 }
