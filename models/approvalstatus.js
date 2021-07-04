@@ -1,31 +1,21 @@
-'use strict'
-import Model from 'sequelize'
-
-// Change models from current design
-// Change to functional
-
 module.exports = (sequelize, DataTypes) => {
-  class ApprovalStatus extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      ApprovalStatus.hasMany(models.Event)
-    }
-  }
-  ApprovalStatus.init(
+  const ApprovalStatus = sequelize.define(
+    'ApprovalStatus',
     {
       status: DataTypes.STRING,
     },
     {
-      sequelize,
-      modelName: 'ApprovalStatus',
       tableName: 'approval_statuses',
       underscored: true,
     }
   )
+
+  ApprovalStatus.associate = function (models) {
+    ApprovalStatus.hasMany(models.Event, {
+      foreignKey: 'approval_status_id',
+      as: 'events',
+    })
+  }
+
   return ApprovalStatus
 }

@@ -19,8 +19,8 @@ const Default: FC = ({ children }) => {
         <div className={styles.naviagtionBar}>
           <Navigation />
         </div>
-        <div className={styles.siteLayoutContent}>
-          <div>{children}</div>
+        <div className={styles.siteLayoutWrapper}>
+          <div className={styles.siteLayoutContent}>{children}</div>
         </div>
       </div>
       <div className={styles.footer}>
