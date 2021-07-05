@@ -1,5 +1,9 @@
 'use strict'
-import ImGame from '../models'
+// import ImGame from '../models'
+
+import db from '../models/'
+
+const { ImGame } = db
 
 interface Stats {
   name: string
@@ -25,10 +29,27 @@ interface Game {
 // model ImGames.findbyid
 
 export default {
-  async getAllGames(_req: any, res: any): Promise<void> {
+  async getAllGames(req: any, res: any): Promise<void> {
     try {
       const gameCollection = await ImGame.findAll()
-      res.status(200).send(gameCollection)
+      const games = []
+      for (let i = 0; i < gameCollection.length; i++) {
+        const relatedSport = await gameCollection[i].getSport()
+        const collegeOne = await gameCollection[i].getTeam1()
+        const collegeTwo = await gameCollection[i].getTeam2()
+        const modifiedSport = relatedSport.dataValues.sport
+        const modifiedCollegeOne = collegeOne.dataValues.college
+        const modifiedCollegeTwo = collegeTwo.dataValues.college
+        const modifiedObject = JSON.stringify({
+          ...gameCollection[i].dataValues,
+          sport: modifiedSport,
+          teamOne: modifiedCollegeOne,
+          teamTwo: modifiedCollegeTwo,
+        })
+        console.log(modifiedObject)
+        games.push(modifiedObject)
+      }
+      res.send(games)
     } catch (e) {
       res.status(400).send(e)
     }
@@ -36,16 +57,21 @@ export default {
   async getGame(req: any, res: any): Promise<void> {
     try {
       const id = req.params.gameId
-      const targetGame = await ImGame.findById(id)
-      // const formattedGame: Game = {
-      //   date: targetGame.date,
-      //   team_1_score: targetGame.team_1_score,
-      //   team_2_score: targetGame.team_2_score,
-      //   sport: targetGame.getSport(),
-      //   stat: targetGame.getStats(),
-      // }
-      console.log(targetGame)
-      res.status(200).send('hello world')
+      const targetGame = await ImGame.findByPk(id)
+      const relatedSport = await targetGame.getSport()
+      const collegeOne = await targetGame.getTeam1()
+      const collegeTwo = await targetGame.getTeam2()
+      const modifiedSport = relatedSport.dataValues.sport
+      const modifiedCollegeOne = collegeOne.dataValues.college
+      const modifiedCollegeTwo = collegeTwo.dataValues.college
+      res.send(
+        JSON.stringify({
+          ...targetGame.dataValues,
+          sport: modifiedSport,
+          teamOne: modifiedCollegeOne,
+          teamTwo: modifiedCollegeTwo,
+        })
+      )
     } catch (e) {
       res.status(400).send(e)
     }
