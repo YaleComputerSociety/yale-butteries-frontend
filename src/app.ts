@@ -2,11 +2,17 @@ import express, { Application } from 'express'
 import cors from 'cors'
 import path from 'path'
 
-import gameRoutes from '../routes/imgamesapi'
+import db from '../models'
 
-import ImGame from '../models/'
+import gameRouter from '../routes/imgamesapi'
+import userRouter from '../routes/userapi'
+import statRouter from '../routes/statapi'
+import eventRouter from '../routes/eventapi'
+import usersEventRouter from '../routes/userseventapi'
 
 const app: Application = express()
+
+const { ImGame } = db
 
 const port = process.env.APP_PORT || 3000
 
@@ -30,13 +36,17 @@ const static_root = path.join(__dirname, 'frontend', 'dist')
 // No number after the resource, return all the IM games
 
 app.get('/apicall', async (_, res) => {
-  const targetGame = await ImGame.findById(5)
+  const gameCollection = await ImGame.findByPk(5)
+  res.send(JSON.stringify(gameCollection))
+  // const targetGame = await ImGame.findById(5)
 })
 
 // API Routes
-// app.use('/api/intramurals', gameRoutes)
-
-// app.get('/api/ims', gameControllers.getAllGames)
+app.use('/api/intramurals', gameRouter)
+app.use('/api/users', userRouter)
+app.use('/api/stats', statRouter)
+app.use('/api/events', eventRouter)
+app.use('/api/usersevents', usersEventRouter)
 
 app.use(express.static(static_root))
 
