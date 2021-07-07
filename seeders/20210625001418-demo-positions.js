@@ -20,6 +20,16 @@ module.exports = {
           created_at: new Date(),
           updated_at: new Date(),
         },
+        {
+          position: 'Administration',
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          position: 'Faculty',
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
       ],
       {}
     )
