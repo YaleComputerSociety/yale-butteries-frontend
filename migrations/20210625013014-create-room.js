@@ -9,9 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       room_name: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       needs_approval: {
+        allowNull: false,
         type: Sequelize.BOOLEAN,
       },
       created_at: {

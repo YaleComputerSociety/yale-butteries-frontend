@@ -9,19 +9,22 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       team_1_score: {
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
       team_2_score: {
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
       date: {
+        allowNull: false,
         type: Sequelize.DATEONLY,
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
