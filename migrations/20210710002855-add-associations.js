@@ -309,7 +309,7 @@ module.exports = {
       )
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     /**
      * Add reverting commands here.
      *
@@ -367,8 +367,5 @@ module.exports = {
 
     await queryInterface.removeIndex('events', 'approval_status_id')
     await queryInterface.removeColumn('events', 'approval_status_id')
-    await queryInterface.addColumn('events', 'approved', {
-      type: Sequelize.BOOLEAN,
-    })
   },
 }
