@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   Event.associate = function (models) {
     Event.belongsTo(models.EventType, {
       foreignKey: 'event_type_id',
-      as: 'event_type',
+      as: 'eventType',
     })
     Event.belongsTo(models.Room, {
       foreignKey: 'room_id',

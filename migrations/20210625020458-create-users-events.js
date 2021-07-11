@@ -1,24 +1,30 @@
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('im_games', {
+    await queryInterface.createTable('users_events', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      team_1_score: {
-        allowNull: false,
+      user_id: {
         type: Sequelize.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
       },
-      team_2_score: {
-        allowNull: false,
+      event_id: {
         type: Sequelize.INTEGER,
-      },
-      date: {
-        allowNull: false,
-        type: Sequelize.DATEONLY,
+        references: {
+          model: 'events',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
       },
       created_at: {
         allowNull: false,
@@ -31,6 +37,6 @@ module.exports = {
     })
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('im_games')
+    await queryInterface.dropTable('users_events')
   },
 }

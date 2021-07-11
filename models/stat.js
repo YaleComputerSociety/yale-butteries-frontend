@@ -5,8 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       points: DataTypes.INTEGER,
       rebounds: DataTypes.INTEGER,
       assists: DataTypes.INTEGER,
-      im_game_id: DataTypes.INTEGER,
-      user_id: DataTypes.INTEGER,
     },
     {
       tableName: 'stats',
@@ -16,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Stat.associate = function (models) {
     Stat.belongsTo(models.ImGame, {
-      foreignKey: 'im_game_id',
+      foreignKey: 'imgame_id',
       as: 'imGame',
     })
     Stat.belongsTo(models.User, {
