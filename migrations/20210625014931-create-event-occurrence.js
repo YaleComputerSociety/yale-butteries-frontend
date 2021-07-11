@@ -8,9 +8,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      date: {
+      description: {
+        type: Sequelize.TEXT,
+      },
+      start_time: {
         allowNull: false,
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
+      },
+      end_time: {
+        allowNull: false,
+        type: Sequelize.DATE,
       },
       created_at: {
         allowNull: false,
@@ -22,7 +29,7 @@ module.exports = {
       },
     })
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('event_occurrences')
   },
 }

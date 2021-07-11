@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'event_id',
       as: 'event',
     })
+
+    EventOccurrence.belongsToMany(models.User, {
+      through: 'users_event_occurrences',
+      foreignKey: 'event_occurrence_id',
+      as: 'users',
+    })
   }
 
   return EventOccurrence
