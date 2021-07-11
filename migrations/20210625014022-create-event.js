@@ -9,19 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       description: {
-        type: Sequelize.STRING,
-      },
-      start_time: {
-        type: Sequelize.DATE,
-      },
-      end_time: {
-        type: Sequelize.DATE,
-      },
-      approved: {
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.TEXT,
       },
       created_at: {
         allowNull: false,
@@ -33,7 +25,7 @@ module.exports = {
       },
     })
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('events')
   },
 }

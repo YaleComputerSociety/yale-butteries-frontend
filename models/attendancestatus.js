@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   )
 
   AttendanceStatus.associate = function (models) {
-    AttendanceStatus.hasMany(models.UsersEvent, {
+    AttendanceStatus.hasMany(models.UserEventOccurrence, {
       foreignKey: 'attendance_status_id',
       as: 'usersEvents',
     })
