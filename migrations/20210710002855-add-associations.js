@@ -231,6 +231,23 @@ module.exports = {
       )
 
     await queryInterface
+      .addColumn('events', 'user_id', {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+      })
+      .then(() =>
+        queryInterface.addIndex('events', ['user_id'], {
+          name: 'events_user_id_idx_fkey',
+          using: 'BTREE',
+        })
+      )
+
+    await queryInterface
       .addColumn('event_occurrences', 'event_id', {
         type: Sequelize.INTEGER,
         references: {
@@ -246,16 +263,6 @@ module.exports = {
           using: 'BTREE',
         })
       )
-
-    await queryInterface.addIndex('users_events', ['event_id'], {
-      name: 'users_events_event_id_idx_fkey',
-      using: 'BTREE',
-    })
-
-    await queryInterface.addIndex('users_events', ['user_id'], {
-      name: 'users_events_user_id_idx_fkey',
-      using: 'BTREE',
-    })
 
     await queryInterface
       .addColumn('events', 'approval_status_id', {
@@ -286,7 +293,7 @@ module.exports = {
       })
       .then(() =>
         queryInterface.addIndex('users_event_occurrences', ['attendance_status_id'], {
-          name: 'users_events_attendance_status_id_idx_fkey',
+          name: 'users_event_occurrences_attendance_status_id_idx_fkey',
           using: 'BTREE',
         })
       )
@@ -346,12 +353,11 @@ module.exports = {
     await queryInterface.removeColumn('events', 'recurrence_type_id')
     await queryInterface.removeColumn('events', 'event_type_id')
 
+    await queryInterface.removeIndex('events', 'user_id')
+    await queryInterface.removeColumn('events', 'user_id')
+
     await queryInterface.removeIndex('event_occurrences', 'event_id')
-
     await queryInterface.removeColumn('event_occurrences', 'event_id')
-
-    await queryInterface.removeIndex('users_events', 'user_id')
-    await queryInterface.removeIndex('users_events', 'event_id')
 
     await queryInterface.removeIndex('events', 'approval_status_id')
     await queryInterface.removeColumn('events', 'approval_status_id')
