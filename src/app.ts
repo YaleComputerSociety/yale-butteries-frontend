@@ -1,10 +1,13 @@
 import express, { Application } from 'express'
 import cors from 'cors'
 import path from 'path'
+import db from '../models'
 
 const app: Application = express()
 
 const port = process.env.APP_PORT || 3000
+
+const { ImGame } = db
 
 app.use(express.json())
 app.use(
@@ -16,8 +19,9 @@ app.use(cors())
 
 const static_root = path.join(__dirname, 'frontend', 'dist')
 
-app.get('/apicall', (_, res) => {
-  res.send('Well done!')
+app.get('/apicall', async (_, res) => {
+  const test = await ImGame.findOne({ where: { id: 1 }, include: 'team1' })
+  res.send(JSON.stringify(test))
 })
 
 app.use(express.static(static_root))

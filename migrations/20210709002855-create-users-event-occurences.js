@@ -1,7 +1,7 @@
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('users_events', {
+    await queryInterface.createTable('users_event_occurrences', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -17,10 +17,10 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
-      event_id: {
+      event_occurrence_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'events',
+          model: 'event_occurrences',
           key: 'id',
         },
         onUpdate: 'CASCADE',
@@ -36,7 +36,7 @@ module.exports = {
       },
     })
   },
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('users_events')
+  down: async (queryInterface) => {
+    await queryInterface.dropTable('users_event_occurrences')
   },
 }
