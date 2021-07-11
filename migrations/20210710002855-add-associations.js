@@ -247,40 +247,6 @@ module.exports = {
         })
       )
 
-    await queryInterface
-      .addColumn('users_events', 'attendance_status_id', {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'attendance_statuses',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
-      })
-      .then(() =>
-        queryInterface.addIndex('users_events', ['attendance_status_id'], {
-          name: 'users_events_attendance_status_id_idx_fkey',
-          using: 'BTREE',
-        })
-      )
-
-    await queryInterface
-      .addColumn('users_events', 'relationship_id', {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'relationships',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
-      })
-      .then(() =>
-        queryInterface.addIndex('users_events', ['relationship_id'], {
-          name: 'users_events_relationship_id_idx_fkey',
-          using: 'BTREE',
-        })
-      )
-
     await queryInterface.addIndex('users_events', ['event_id'], {
       name: 'users_events_event_id_idx_fkey',
       using: 'BTREE',
@@ -307,6 +273,33 @@ module.exports = {
           using: 'BTREE',
         })
       )
+
+    await queryInterface
+      .addColumn('users_event_occurrences', 'attendance_status_id', {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'attendance_statuses',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+      })
+      .then(() =>
+        queryInterface.addIndex('users_event_occurrences', ['attendance_status_id'], {
+          name: 'users_events_attendance_status_id_idx_fkey',
+          using: 'BTREE',
+        })
+      )
+
+    await queryInterface.addIndex('users_event_occurrences', ['event_occurrence_id'], {
+      name: 'users_event_occurrences_event_occurrence_id_idx_fkey',
+      using: 'BTREE',
+    })
+
+    await queryInterface.addIndex('users_event_occurrences', ['user_id'], {
+      name: 'users_event_occurrences_user_id_idx_fkey',
+      using: 'BTREE',
+    })
   },
 
   down: async (queryInterface) => {
@@ -359,13 +352,14 @@ module.exports = {
 
     await queryInterface.removeIndex('users_events', 'user_id')
     await queryInterface.removeIndex('users_events', 'event_id')
-    await queryInterface.removeIndex('users_events', 'relationship_id')
-    await queryInterface.removeIndex('users_events', 'attendance_status_id')
-
-    await queryInterface.removeColumn('users_events', 'relationship_id')
-    await queryInterface.removeColumn('users_events', 'attendance_status_id')
 
     await queryInterface.removeIndex('events', 'approval_status_id')
     await queryInterface.removeColumn('events', 'approval_status_id')
+
+    await queryInterface.removeIndex('users_event_occurrences', 'user_id')
+    await queryInterface.removeIndex('users_event_occurrences', 'event_occurrence_id')
+
+    await queryInterface.removeIndex('users_event_occurrences', 'attendance_status_id')
+    await queryInterface.removeColumn('users_event_occurrences', 'attendance_status_id')
   },
 }
