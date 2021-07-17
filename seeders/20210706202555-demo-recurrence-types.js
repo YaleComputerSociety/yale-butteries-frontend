@@ -12,14 +12,19 @@ module.exports = {
      * }], {});
      */
 
-    await queryInterface.bulkInsert('sports', [
+    await queryInterface.bulkInsert('recurrence_types', [
       {
-        sport: 'Basketball',
+        type: 'Daily',
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        sport: 'Football',
+        type: 'Weekly',
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        type: 'Monthly',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -34,6 +39,6 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
-    await queryInterface.bulkDelete('sports', null, {})
+    await queryInterface.bulkDelete('recurrence_types', null, {})
   },
 }

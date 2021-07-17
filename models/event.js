@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
   )
 
   Event.associate = function (models) {
+    Event.belongsTo(models.User, {
+      foreignKey: 'user_id',
+      as: 'user',
+    })
     Event.belongsTo(models.EventType, {
       foreignKey: 'event_type_id',
       as: 'eventType',
@@ -39,8 +43,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'event_id',
       as: 'eventOccurrences',
     })
-
-    Event.belongsToMany(models.User, { through: 'users_events', foreignKey: 'event_id', as: 'users' })
   }
 
   return Event

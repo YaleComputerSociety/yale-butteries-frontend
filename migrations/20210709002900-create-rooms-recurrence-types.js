@@ -1,26 +1,26 @@
 'use strict'
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('users_events', {
+    await queryInterface.createTable('rooms_recurrence_types', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id: {
+      room_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'users',
+          model: 'rooms',
           key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
-      event_id: {
+      recurrence_type_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'events',
+          model: 'recurrence_types',
           key: 'id',
         },
         onUpdate: 'CASCADE',
@@ -36,7 +36,7 @@ module.exports = {
       },
     })
   },
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('users_events')
+  down: async (queryInterface) => {
+    await queryInterface.dropTable('rooms_recurrence_types')
   },
 }

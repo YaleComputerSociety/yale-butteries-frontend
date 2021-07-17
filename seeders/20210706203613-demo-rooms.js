@@ -11,76 +11,77 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    await queryInterface.bulkInsert('colleges', [
+
+    await queryInterface.bulkInsert('rooms', [
       {
-        college: 'Benjamin Franklin',
+        room_name: 'Room 1',
+        needs_approval: true,
         created_at: new Date(),
         updated_at: new Date(),
+        college_id: 3,
       },
       {
-        college: 'Berkeley',
+        room_name: 'Room 2',
+        needs_approval: true,
         created_at: new Date(),
         updated_at: new Date(),
+        college_id: 3,
       },
       {
-        college: 'Branford',
+        room_name: 'Room 3',
+        needs_approval: true,
         created_at: new Date(),
         updated_at: new Date(),
+        college_id: 3,
       },
       {
-        college: 'Davenport',
+        room_name: 'Room 4',
+        needs_approval: true,
         created_at: new Date(),
         updated_at: new Date(),
+        college_id: 3,
       },
       {
-        college: 'Ezra Stiles',
+        room_name: 'Room 5',
+        needs_approval: true,
         created_at: new Date(),
         updated_at: new Date(),
+        college_id: 3,
       },
       {
-        college: 'Grace Hopper',
+        room_name: 'Room 6',
+        needs_approval: true,
         created_at: new Date(),
         updated_at: new Date(),
+        college_id: 3,
       },
       {
-        college: 'Jonathan Edwards',
+        room_name: 'Room 7',
+        needs_approval: true,
         created_at: new Date(),
         updated_at: new Date(),
+        college_id: 3,
       },
       {
-        college: 'Morse',
+        room_name: 'Room 8',
+        needs_approval: true,
         created_at: new Date(),
         updated_at: new Date(),
+        college_id: 3,
       },
       {
-        college: 'Pauli Murray',
+        room_name: 'Room 9',
+        needs_approval: true,
         created_at: new Date(),
         updated_at: new Date(),
+        college_id: 3,
       },
       {
-        college: 'Pierson',
+        room_name: 'Room 10',
+        needs_approval: true,
         created_at: new Date(),
         updated_at: new Date(),
-      },
-      {
-        college: 'Saybrook',
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        college: 'Silliman',
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        college: 'Timothy Dwight',
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        college: 'Trumbull',
-        created_at: new Date(),
-        updated_at: new Date(),
+        college_id: 3,
       },
     ])
   },
@@ -92,6 +93,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete('colleges', null, {})
+
+    await queryInterface.bulkDelete('rooms', null, {})
   },
 }

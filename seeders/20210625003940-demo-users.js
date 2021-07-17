@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     /**
      * Add seed commands here.
      *
@@ -19,7 +19,7 @@ module.exports = {
           name: 'John Doe',
           netid: 'jd1234',
           position_id: 1,
-          college_id: 1,
+          college_id: 3,
           created_at: new Date(),
           updated_at: new Date(),
         },
@@ -27,7 +27,7 @@ module.exports = {
           name: 'Jane Smith',
           netid: 'js1234',
           position_id: 1,
-          college_id: 2,
+          college_id: 3,
           created_at: new Date(),
           updated_at: new Date(),
         },
@@ -43,7 +43,7 @@ module.exports = {
           name: 'Tom Cruise',
           netid: 'tc1023',
           position_id: 1,
-          college_id: 4,
+          college_id: 3,
           created_at: new Date(),
           updated_at: new Date(),
         },
@@ -51,7 +51,15 @@ module.exports = {
           name: 'Robert Cup',
           netid: 'rc2104',
           position_id: 1,
-          college_id: 5,
+          college_id: 3,
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          name: 'Enrique De La Cruz',
+          netid: 'dc1922',
+          position_id: 2,
+          college_id: 3,
           created_at: new Date(),
           updated_at: new Date(),
         },
@@ -60,7 +68,7 @@ module.exports = {
     )
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     /**
      * Add commands to revert seed here.
      *
