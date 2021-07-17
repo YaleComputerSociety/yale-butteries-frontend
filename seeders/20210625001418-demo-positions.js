@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     /**
      * Add seed commands here.
      *
@@ -20,12 +20,22 @@ module.exports = {
           created_at: new Date(),
           updated_at: new Date(),
         },
+        {
+          position: 'Administration',
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          position: 'Faculty',
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
       ],
       {}
     )
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     /**
      * Add commands to revert seed here.
      *
