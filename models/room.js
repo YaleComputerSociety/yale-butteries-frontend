@@ -18,13 +18,14 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'college_id',
       as: 'college',
     })
-    Room.belongsTo(models.RecurrenceType, {
-      foreignKey: 'recurrence_type_id',
-      as: 'recurrenceType',
-    })
     Room.hasMany(models.Event, {
       foreignKey: 'room_id',
       as: 'events',
+    })
+    Room.belongsToMany(models.RecurrenceType, {
+      through: 'rooms_recurrence_types',
+      foreignKey: 'room_id',
+      as: 'recurrenceTypes',
     })
   }
 

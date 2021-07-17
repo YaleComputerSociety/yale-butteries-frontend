@@ -54,7 +54,7 @@ module.exports = {
         user_id: 4,
         event_type_id: 1,
         recurrence_type_id: 2,
-        room_id: 1,
+        room_id: 7,
         approval_status_id: 3,
       },
       {
@@ -65,7 +65,7 @@ module.exports = {
         user_id: 5,
         event_type_id: 1,
         recurrence_type_id: 3,
-        room_id: 2,
+        room_id: 9,
         approval_status_id: 3,
       },
     ])
