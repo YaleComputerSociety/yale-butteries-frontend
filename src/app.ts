@@ -7,7 +7,7 @@ const app: Application = express()
 
 const port = process.env.APP_PORT || 3000
 
-const { ImGame } = db
+const { PositionEventType } = db
 
 app.use(express.json())
 app.use(
@@ -20,7 +20,7 @@ app.use(cors())
 const static_root = path.join(__dirname, 'frontend', 'dist')
 
 app.get('/apicall', async (_, res) => {
-  const test = await ImGame.findOne({ where: { id: 1 }, include: 'team1' })
+  const test = await PositionEventType.findOne({ where: { id: 1 } })
   res.send(JSON.stringify(test))
 })
 
