@@ -3,10 +3,13 @@ import express from 'express'
 import gameControllers from '../controllers/ims'
 
 const router = express.Router()
+const gameIdParameter = '/:gameId'
 
 // No ID: ALL, Putting in ID: Just put one
 router.get('/', gameControllers.getAllGames)
-router.get('/:gameId', gameControllers.getGame)
+router.get(gameIdParameter, gameControllers.getGame)
+router.delete(gameIdParameter, gameControllers.deleteGame)
+router.put(gameIdParameter, gameControllers.updateGame)
 
 export default router
 

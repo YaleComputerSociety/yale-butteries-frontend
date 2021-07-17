@@ -9,6 +9,7 @@ import userRouter from '../routes/userapi'
 import statRouter from '../routes/statapi'
 import eventRouter from '../routes/eventapi'
 import usersEventRouter from '../routes/userseventapi'
+import eventOccurenceRouter from '../routes/eventoccurrenceapi'
 
 const app: Application = express()
 
@@ -47,6 +48,7 @@ app.use('/api/users', userRouter)
 app.use('/api/stats', statRouter)
 app.use('/api/events', eventRouter)
 app.use('/api/usersevents', usersEventRouter)
+app.use('/api/eventoccurrences', eventOccurenceRouter)
 
 app.use(express.static(static_root))
 

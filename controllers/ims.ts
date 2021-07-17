@@ -1,9 +1,9 @@
 'use strict'
-// import ImGame from '../models'
 
 import db from '../models/'
+import express from 'express'
 
-const { ImGame } = db
+const { Stat, ImGame } = db
 
 interface Stats {
   name: string
@@ -14,13 +14,32 @@ interface Stats {
 }
 
 interface Game {
-  date: Date
+  id: number
+  date: string
   college_1: string
   college_2: string
   sport: string
   stat: Stats[]
   team_1_score: number
   team_2_score: number
+  createdAt: Date
+  updatedAt: Date
+}
+
+async function getGameProperties(game: any) {
+  const relatedSport = await game.getSport()
+  const collegeOne = await game.getTeam1()
+  const collegeTwo = await game.getTeam2()
+  const modifiedSport = relatedSport.dataValues.sport
+  const modifiedCollegeOne = collegeOne.dataValues.college
+  const modifiedCollegeTwo = collegeTwo.dataValues.college
+  const modifiedObject = {
+    ...game.dataValues,
+    sport: modifiedSport,
+    teamOne: modifiedCollegeOne,
+    teamTwo: modifiedCollegeTwo,
+  }
+  return modifiedObject
 }
 
 // TODO: Just make app.ts grab a single object from the database. Endpoint, testing, ping it, Grab an object from the database.
@@ -29,49 +48,80 @@ interface Game {
 // model ImGames.findbyid
 
 export default {
-  async getAllGames(req: any, res: any): Promise<void> {
+  async getAllGames(_req: express.Request, res: express.Response): Promise<void> {
     try {
       const gameCollection = await ImGame.findAll()
-      const games = []
-      for (let i = 0; i < gameCollection.length; i++) {
-        const relatedSport = await gameCollection[i].getSport()
-        const collegeOne = await gameCollection[i].getTeam1()
-        const collegeTwo = await gameCollection[i].getTeam2()
-        const modifiedSport = relatedSport.dataValues.sport
-        const modifiedCollegeOne = collegeOne.dataValues.college
-        const modifiedCollegeTwo = collegeTwo.dataValues.college
-        const modifiedObject = JSON.stringify({
-          ...gameCollection[i].dataValues,
-          sport: modifiedSport,
-          teamOne: modifiedCollegeOne,
-          teamTwo: modifiedCollegeTwo,
-        })
-        console.log(modifiedObject)
-        games.push(modifiedObject)
-      }
-      res.send(games)
+      const modifiedObjects = await Promise.all(gameCollection.map((game) => getGameProperties(game)))
+      res.send(JSON.stringify(modifiedObjects))
     } catch (e) {
       res.status(400).send(e)
     }
   },
-  async getGame(req: any, res: any): Promise<void> {
+  async getGame(req: express.Request, res: express.Response): Promise<void> {
     try {
       const id = req.params.gameId
       const targetGame = await ImGame.findByPk(id)
-      const relatedSport = await targetGame.getSport()
-      const collegeOne = await targetGame.getTeam1()
-      const collegeTwo = await targetGame.getTeam2()
-      const modifiedSport = relatedSport.dataValues.sport
-      const modifiedCollegeOne = collegeOne.dataValues.college
-      const modifiedCollegeTwo = collegeTwo.dataValues.college
-      res.send(
-        JSON.stringify({
-          ...targetGame.dataValues,
-          sport: modifiedSport,
-          teamOne: modifiedCollegeOne,
-          teamTwo: modifiedCollegeTwo,
-        })
+      const modifiedObject = await getGameProperties(targetGame)
+      res.send(JSON.stringify(modifiedObject))
+    } catch (e) {
+      res.status(400).send(e)
+    }
+  },
+  async deleteGame(req: express.Request, res: express.Response): Promise<void> {
+    try {
+      const id = req.params.eventId
+      const targetGame = await ImGame.findByPk(id)
+      const deletedStats = await ImGame.removeStats()
+      const deletedGame = await targetGame.destroy()
+      res.status(200).send(JSON.stringify({ game: deletedGame, stats: deletedStats }))
+    } catch (e) {
+      res.status(400).send(e)
+    }
+  },
+  async updateGame(req: express.Request, res: express.Response): Promise<void> {
+    try {
+      const id = req.params.eventId
+      let targetGame = await ImGame.findByPk(id)
+      targetGame = {
+        ...targetGame,
+        team_1_score: req.body.team_1_score,
+        team_2_score: req.body.team_2_score,
+        date: req.body.date,
+        team_1_key: req.body.team_1_key,
+        team_2_key: req.body.team_2_key,
+        sport_id: req.body.sport_id,
+        imgame_id: req.body.imgame_id,
+      }
+      const promise = await targetGame.save()
+      res.status(200).send(JSON.stringify(promise))
+    } catch (e) {
+      res.status(400).send(e)
+    }
+  },
+  // Look into doing all of the await requests in one move
+  // Efficient: 4 Requests, Wrap it into a promise array
+  async addGame(req: express.Request, res: express.Response): Promise<void> {
+    try {
+      const newGame = await ImGame.create(
+        {
+          team_1_score: req.body.teamOneScore,
+          team_2_score: req.body.teamTwoScore,
+          date: req.body.date,
+          sport_id: req.body.sport_id,
+          team_1_key: req.body.team_1_key,
+          team_2_key: req.body.team_2_key,
+          stats: [req.body.stat_team_1, req.body.stat_team_2],
+        },
+        {
+          include: [
+            {
+              association: Stat,
+              as: 'stats',
+            },
+          ],
+        }
       )
+      res.send(JSON.stringify({ message: 'Success', game: newGame }))
     } catch (e) {
       res.status(400).send(e)
     }
