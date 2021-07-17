@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     'EventType',
     {
       type: DataTypes.STRING,
-      position_id: DataTypes.INTEGER,
     },
     {
       tableName: 'event_types',
