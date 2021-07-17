@@ -7,12 +7,11 @@ import gameRouter from '../routes/imgamesapi'
 import userRouter from '../routes/userapi'
 import statRouter from '../routes/statapi'
 import eventRouter from '../routes/eventapi'
-import usersEventRouter from '../routes/userseventapi'
-import eventOccurenceRouter from '../routes/eventoccurrenceapi'
+import userEventOccurenceRouter from '../routes/usereventoccurrenceapi'
+import roomReccurenceTypeRouter from '../routes/roomrecurrencetypeapi'
+import positionEventTypeRouter from '../routes/positioneventtypeapi'
 
 const app: Application = express()
-
-const { ImGame } = db
 
 const port = process.env.APP_PORT || 3000
 
@@ -38,8 +37,9 @@ app.use('/api/intramurals', gameRouter)
 app.use('/api/users', userRouter)
 app.use('/api/stats', statRouter)
 app.use('/api/events', eventRouter)
-app.use('/api/usersevents', usersEventRouter)
-app.use('/api/eventoccurrences', eventOccurenceRouter)
+app.use('/api/usereventoccurrences', userEventOccurenceRouter)
+app.use('/api/roomrecurrencetypes', roomReccurenceTypeRouter)
+app.use('/api/positioneventtypes', positionEventTypeRouter)
 
 app.use(express.static(static_root))
 

@@ -4,14 +4,8 @@ import express from 'express'
 const { Event } = db
 
 async function getEventProperties(event: any) {
-  const eventApprovalStatus = await event.getApprovalStatus()
-  const statusString = eventApprovalStatus.dataValues.status
-  const eventRecurrenceStatus = await event.getRecurrenceType()
-  const recurrenceString = eventRecurrenceStatus.dataValues.status
   const modifiedObject = {
     ...event.dataValues,
-    approvalStatus: statusString,
-    recurrenceStatus: recurrenceString,
   }
   return modifiedObject
 }
@@ -20,8 +14,8 @@ export default {
   async getAllEvents(_req: express.Request, res: express.Response): Promise<void> {
     try {
       const eventCollection = await Event.findAll()
-      const modifiedObjects = await Promise.all(eventCollection.map((event) => getEventProperties(event)))
-      res.send(JSON.stringify(modifiedObjects))
+      // const modifiedObjects = await Promise.all(eventCollection.map((event) => getEventProperties(event)))
+      res.send(JSON.stringify(eventCollection))
     } catch (e) {
       res.status(400).send(e)
     }
