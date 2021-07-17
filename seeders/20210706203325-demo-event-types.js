@@ -14,22 +14,19 @@ module.exports = {
 
     await queryInterface.bulkInsert('event_types', [
       {
-        type: 'Regular',
+        type: 'Event',
         created_at: new Date(),
         updated_at: new Date(),
-        position_id: 1,
       },
       {
-        type: 'Regular',
+        type: 'Job Opportunity',
         created_at: new Date(),
         updated_at: new Date(),
-        position_id: 2,
       },
       {
-        type: 'Regular',
+        type: 'Study Group',
         created_at: new Date(),
         updated_at: new Date(),
-        position_id: 3,
       },
     ])
   },
