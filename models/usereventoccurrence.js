@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     'UserEventOccurrence',
     {
       user_id: DataTypes.INTEGER,
-      event_Occurrence_id: DataTypes.INTEGER,
+      event_occurrence_id: DataTypes.INTEGER,
       attendance_status_id: DataTypes.INTEGER,
     },
     {
