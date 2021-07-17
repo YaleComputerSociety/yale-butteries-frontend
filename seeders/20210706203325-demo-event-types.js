@@ -12,14 +12,19 @@ module.exports = {
      * }], {});
      */
 
-    await queryInterface.bulkInsert('sports', [
+    await queryInterface.bulkInsert('event_types', [
       {
-        sport: 'Basketball',
+        type: 'Event',
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        sport: 'Football',
+        type: 'Job Opportunity',
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        type: 'Study Group',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -34,6 +39,6 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
-    await queryInterface.bulkDelete('sports', null, {})
+    await queryInterface.bulkDelete('event_types', null, {})
   },
 }

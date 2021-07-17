@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -8,23 +8,6 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-
-    await queryInterface
-      .addColumn('event_types', 'position_id', {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'positions',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
-      })
-      .then(() =>
-        queryInterface.addIndex('event_types', ['position_id'], {
-          name: 'event_types_position_id_idx_fkey',
-          using: 'BTREE',
-        })
-      )
 
     await queryInterface
       .addColumn('users', 'position_id', {
@@ -141,23 +124,6 @@ module.exports = {
       .then(() =>
         queryInterface.addIndex('stats', ['user_id'], {
           name: 'stats_user_id_idx_fkey',
-          using: 'BTREE',
-        })
-      )
-
-    await queryInterface
-      .addColumn('rooms', 'recurrence_type_id', {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'recurrence_types',
-          key: 'id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
-      })
-      .then(() =>
-        queryInterface.addIndex('rooms', ['recurrence_type_id'], {
-          name: 'rooms_recurrence_type_id_idx_fkey',
           using: 'BTREE',
         })
       )
@@ -307,6 +273,26 @@ module.exports = {
       name: 'users_event_occurrences_user_id_idx_fkey',
       using: 'BTREE',
     })
+
+    await queryInterface.addIndex('rooms_recurrence_types', ['room_id'], {
+      name: 'rooms_recurrence_types_room_id_idx_fkey',
+      using: 'BTREE',
+    })
+
+    await queryInterface.addIndex('rooms_recurrence_types', ['recurrence_type_id'], {
+      name: 'rooms_recurrence_types_recurrence_type_id_idx_fkey',
+      using: 'BTREE',
+    })
+
+    await queryInterface.addIndex('positions_event_types', ['position_id'], {
+      name: 'positions_event_types_position_id_idx_fkey',
+      using: 'BTREE',
+    })
+
+    await queryInterface.addIndex('positions_event_types', ['event_type_id'], {
+      name: 'positions_event_types_event_type_id_idx_fkey',
+      using: 'BTREE',
+    })
   },
 
   down: async (queryInterface) => {
@@ -317,8 +303,6 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
 
-    await queryInterface.removeIndex('event_types', 'idx_position_id')
-    await queryInterface.removeColumn('event_types', 'position_id')
 
     await queryInterface.removeIndex('users', 'idx_college_id')
     await queryInterface.removeIndex('users', 'idx_position_id')
@@ -340,17 +324,13 @@ module.exports = {
     await queryInterface.removeColumn('stats', 'imgame_id')
 
     await queryInterface.removeIndex('rooms', 'college_id')
-    await queryInterface.removeIndex('rooms', 'recurrence_type_id')
 
     await queryInterface.removeColumn('rooms', 'college_id')
-    await queryInterface.removeColumn('rooms', 'recurrence_type_id')
 
     await queryInterface.removeIndex('events', 'room_id')
-    await queryInterface.removeIndex('events', 'recurrence_type_id')
     await queryInterface.removeIndex('events', 'event_type_id')
 
     await queryInterface.removeColumn('events', 'room_id')
-    await queryInterface.removeColumn('events', 'recurrence_type_id')
     await queryInterface.removeColumn('events', 'event_type_id')
 
     await queryInterface.removeIndex('events', 'user_id')
@@ -367,5 +347,11 @@ module.exports = {
 
     await queryInterface.removeIndex('users_event_occurrences', 'attendance_status_id')
     await queryInterface.removeColumn('users_event_occurrences', 'attendance_status_id')
+
+    await queryInterface.removeIndex('rooms_recurrence_types', 'room_id')
+    await queryInterface.removeIndex('rooms_recurrence_types', 'recurrence_type_id')
+
+    await queryInterface.removeIndex('positions_event_types', 'position_id')
+    await queryInterface.removeIndex('positions_event_types', 'event_type_id')
   },
 }

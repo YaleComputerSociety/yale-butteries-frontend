@@ -11,13 +11,14 @@ module.exports = (sequelize, DataTypes) => {
   )
 
   Position.associate = function (models) {
-    Position.hasMany(models.EventType, {
-      foreignKey: 'position_id',
-      as: 'eventTypes',
-    })
     Position.hasMany(models.User, {
       foreignKey: 'position_id',
       as: 'users',
+    })
+    Position.belongsToMany(models.EventType, {
+      through: 'positions_event_types',
+      foreignKey: 'position_id',
+      as: 'eventTypes',
     })
   }
 
