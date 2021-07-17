@@ -2,8 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const EventOccurrence = sequelize.define(
     'EventOccurrence',
     {
-      date: DataTypes.DATEONLY,
       event_id: DataTypes.INTEGER,
+      description: DataTypes.STRING,
+      start_time: DataTypes.DATE,
+      end_time: DataTypes.DATE,
     },
     {
       tableName: 'event_occurrences',
