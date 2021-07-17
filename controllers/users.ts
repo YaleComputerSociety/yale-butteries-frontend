@@ -1,15 +1,18 @@
 import db from '../models/'
 import express from 'express'
+import { User } from 'controllers/controllerInterfaces'
 
 const { User } = db
 
 async function getUserProperties(user: any) {
-  const userPosition = await user.getPosition()
-  const positionProperty = userPosition.dataValues.position
-  const userCollege = await user.getCollege()
-  const collegeProperty = userCollege.dataValues.college
-  const modifiedObject = {
-    ...user.dataValues,
+  const [userPosition, userCollege] = await Promise.all([user.getPosition(), user.getCollege()])
+  const positionProperty = userPosition.position
+  const collegeProperty = userCollege.college
+  const userValues = user.dataValues
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { position_id, college_id, ...rest } = userValues
+  const modifiedObject: User = {
+    ...rest,
     position: positionProperty,
     college: collegeProperty,
   }
@@ -30,6 +33,7 @@ export default {
     try {
       const id = req.params.userId
       const targetUser = await User.findByPk(id)
+      console.log(targetUser)
       const modifiedObject = await getUserProperties(targetUser)
       res.send(JSON.stringify(modifiedObject))
     } catch (e) {

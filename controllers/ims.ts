@@ -2,39 +2,22 @@
 
 import db from '../models/'
 import express from 'express'
+import { Game } from 'controllers/controllerInterfaces'
 
 const { Stat, ImGame } = db
 
-interface Stats {
-  name: string
-  isUser: boolean
-  points: number
-  rebounds: number
-  assists: number
-}
-
-interface Game {
-  id: number
-  date: string
-  college_1: string
-  college_2: string
-  sport: string
-  stat: Stats[]
-  team_1_score: number
-  team_2_score: number
-  createdAt: Date
-  updatedAt: Date
-}
+//-dev
 
 async function getGameProperties(game: any) {
-  const relatedSport = await game.getSport()
-  const collegeOne = await game.getTeam1()
-  const collegeTwo = await game.getTeam2()
-  const modifiedSport = relatedSport.dataValues.sport
-  const modifiedCollegeOne = collegeOne.dataValues.college
-  const modifiedCollegeTwo = collegeTwo.dataValues.college
-  const modifiedObject = {
-    ...game.dataValues,
+  const [sport, collegeOne, collegeTwo] = await Promise.all([game.getSport(), game.getTeam1(), game.getTeam2()])
+  const modifiedSport = sport.sport
+  const modifiedCollegeOne = collegeOne.college
+  const modifiedCollegeTwo = collegeTwo.college
+  const gameValues = game.dataValues
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { team_1_key, team_2_key, sport_id, ...rest } = gameValues
+  const modifiedObject: Game = {
+    ...rest,
     sport: modifiedSport,
     teamOne: modifiedCollegeOne,
     teamTwo: modifiedCollegeTwo,
