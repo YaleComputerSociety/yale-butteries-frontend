@@ -26,7 +26,15 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'user_id',
       as: 'stats',
     })
-    User.belongsToMany(models.Event, { through: 'users_events', foreignKey: 'user_id', as: 'events' })
+    User.hasMany(models.Event, {
+      foreignKey: 'user_id',
+      as: 'events',
+    })
+    User.belongsToMany(models.EventOccurrence, {
+      through: 'users_event_occurrences',
+      foreignKey: 'user_id',
+      as: 'eventOccurrences',
+    })
   }
 
   return User

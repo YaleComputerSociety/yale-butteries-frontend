@@ -9,6 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       type: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       created_at: {
@@ -21,7 +22,7 @@ module.exports = {
       },
     })
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('recurrence_types')
   },
 }

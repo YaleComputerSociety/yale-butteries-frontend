@@ -12,14 +12,19 @@ module.exports = {
      * }], {});
      */
 
-    await queryInterface.bulkInsert('sports', [
+    await queryInterface.bulkInsert('approval_statuses', [
       {
-        sport: 'Basketball',
+        status: 'Accepted',
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        sport: 'Football',
+        status: 'Rejected',
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        status: 'Pending',
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -34,6 +39,6 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
-    await queryInterface.bulkDelete('sports', null, {})
+    await queryInterface.bulkDelete('approval_statuses', null, {})
   },
 }

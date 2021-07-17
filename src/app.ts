@@ -1,7 +1,6 @@
 import express, { Application } from 'express'
 import cors from 'cors'
 import path from 'path'
-
 import db from '../models'
 
 import gameRouter from '../routes/imgamesapi'
@@ -17,9 +16,7 @@ const { ImGame } = db
 
 const port = process.env.APP_PORT || 3000
 
-// Use -> Integrate what's put in the () into the actual APP
-
-// /api/intramurals/4 < Primary Key of 4 (Path parameters)
+const { PositionEventType } = db
 
 app.use(express.json())
 app.use(
@@ -31,15 +28,9 @@ app.use(cors())
 
 const static_root = path.join(__dirname, 'frontend', 'dist')
 
-// Index -> Root of IM games
-// Show -> Reveal everything
-// Both are connected to root, only difference is if it's passed into the game, IM GAME with key, and return the object discussed.
-// No number after the resource, return all the IM games
-
 app.get('/apicall', async (_, res) => {
-  const gameCollection = await ImGame.findByPk(5)
-  res.send(JSON.stringify(gameCollection))
-  // const targetGame = await ImGame.findById(5)
+  const test = await PositionEventType.findOne({ where: { id: 1 } })
+  res.send(JSON.stringify(test))
 })
 
 // API Routes
