@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       room_name: DataTypes.STRING,
       needs_approval: DataTypes.BOOLEAN,
       college_id: DataTypes.INTEGER,
-      recurrence_type_id: DataTypes.INTEGER,
     },
     {
       tableName: 'rooms',
