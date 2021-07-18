@@ -7,7 +7,8 @@ const userIdParameter = '/:userId'
 
 router.get('/', userControllers.getAllUsers)
 router.get(userIdParameter, userControllers.getUser)
-router.delete(userIdParameter, userControllers.deleteUser)
-router.put(userIdParameter, userControllers.updateUser)
+router.get(`/me${userIdParameter}`, userControllers.getTestUser)
+// router.delete(userIdParameter, userControllers.deleteUser)
+// router.put(userIdParameter, userControllers.updateUser)
 
 export default router

@@ -1,11 +1,26 @@
 import db from '../models/'
 import express from 'express'
+import { Event } from 'controllers/controllerInterfaces'
 
 const { Event } = db
 
 async function getEventProperties(event: any) {
-  const modifiedObject = {
-    ...event.dataValues,
+  const [eventType, recurrenceType, approvalStatus] = await Promise.all([
+    event.getEventType(),
+    event.getRecurrenceType(),
+    event.getApprovalStatus(),
+  ])
+  const eventTypeProperty = eventType.type
+  const recurrenceTypeProperty = recurrenceType.type
+  const approvalStatusProperty = approvalStatus.status
+  const eventValues = event.dataValues
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { event_type_id, recurrence_type_id, approval_status_id, ...rest } = eventValues
+  const modifiedObject: Event = {
+    ...rest,
+    eventType: eventTypeProperty,
+    recurrenceType: recurrenceTypeProperty,
+    approvalStatus: approvalStatusProperty,
   }
   return modifiedObject
 }
@@ -14,8 +29,8 @@ export default {
   async getAllEvents(_req: express.Request, res: express.Response): Promise<void> {
     try {
       const eventCollection = await Event.findAll()
-      // const modifiedObjects = await Promise.all(eventCollection.map((event) => getEventProperties(event)))
-      res.send(JSON.stringify(eventCollection))
+      const modifiedCollection = await Promise.all(eventCollection.map((event) => getEventProperties(event)))
+      res.send(JSON.stringify(modifiedCollection))
     } catch (e) {
       res.status(400).send(e)
     }

@@ -8,8 +8,8 @@ const gameIdParameter = '/:gameId'
 // No ID: ALL, Putting in ID: Just put one
 router.get('/', gameControllers.getAllGames)
 router.get(gameIdParameter, gameControllers.getGame)
-router.delete(gameIdParameter, gameControllers.deleteGame)
-router.put(gameIdParameter, gameControllers.updateGame)
+// router.delete(gameIdParameter, gameControllers.deleteGame)
+// router.put(gameIdParameter, gameControllers.updateGame)
 
 export default router
 
