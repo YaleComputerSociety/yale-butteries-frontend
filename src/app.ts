@@ -8,8 +8,8 @@ import userRouter from '../routes/userapi'
 import statRouter from '../routes/statapi'
 import eventRouter from '../routes/eventapi'
 import userEventOccurenceRouter from '../routes/usereventoccurrenceapi'
-import roomReccurenceTypeRouter from '../routes/roomrecurrencetypeapi'
-import positionEventTypeRouter from '../routes/positioneventtypeapi'
+import roomRouter from '../routes/roomapi'
+import eventOccurrenceRouter from '../routes/eventoccurrenceapi'
 
 const app: Application = express()
 
@@ -38,8 +38,8 @@ app.use('/api/users', userRouter)
 app.use('/api/stats', statRouter)
 app.use('/api/events', eventRouter)
 app.use('/api/usereventoccurrences', userEventOccurenceRouter)
-app.use('/api/roomrecurrencetypes', roomReccurenceTypeRouter)
-app.use('/api/positioneventtypes', positionEventTypeRouter)
+app.use('/api/rooms', roomRouter)
+app.use('/api/eventoccurrences', eventOccurrenceRouter)
 
 app.use(express.static(static_root))
 

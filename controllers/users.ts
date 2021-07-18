@@ -2,7 +2,36 @@ import db from '../models/'
 import express from 'express'
 import { User } from 'controllers/controllerInterfaces'
 
-const { User } = db
+const { EventType, PositionEventType, User } = db
+
+async function getEventType(event_type: number) {
+  const eventTypeString = await EventType.findByPk(event_type)
+  const eventTypeProperty = eventTypeString.type
+  return eventTypeProperty
+}
+
+async function getPermissionUserProperties(user: any) {
+  const [userPosition, userCollege] = await Promise.all([user.getPosition(), user.getCollege()])
+  const positionProperty = userPosition.position
+  const collegeProperty = userCollege.college
+  const eventTypeArray = await PositionEventType.findAll({
+    where: {
+      position_id: user.position_id,
+    },
+    attributes: ['event_type_id'],
+  })
+  const eventTypes = await Promise.all(eventTypeArray.map((e) => getEventType(e.event_type_id)))
+  const userValues = user.dataValues
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { position_id, college_id, ...rest } = userValues
+  const modifiedObject: User = {
+    ...rest,
+    position: positionProperty,
+    college: collegeProperty,
+    eventTypes: eventTypes,
+  }
+  return modifiedObject
+}
 
 async function getUserProperties(user: any) {
   const [userPosition, userCollege] = await Promise.all([user.getPosition(), user.getCollege()])
@@ -33,8 +62,17 @@ export default {
     try {
       const id = req.params.userId
       const targetUser = await User.findByPk(id)
-      console.log(targetUser)
       const modifiedObject = await getUserProperties(targetUser)
+      res.send(JSON.stringify(modifiedObject))
+    } catch (e) {
+      res.status(400).send(e)
+    }
+  },
+  async getTestUser(req: express.Request, res: express.Response): Promise<void> {
+    try {
+      const id = req.params.userId
+      const targetUser = await User.findByPk(id)
+      const modifiedObject = await getPermissionUserProperties(targetUser)
       res.send(JSON.stringify(modifiedObject))
     } catch (e) {
       res.status(400).send(e)

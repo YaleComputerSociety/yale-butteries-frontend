@@ -1,57 +1,42 @@
 import db from '../models'
 import express from 'express'
+import { UserEventOccurrence } from 'controllers/controllerInterfaces'
 
 const { UserEventOccurrence } = db
 
-// function getEventOccurrenceValues(eventOccurrence: any) {
-//   const modifiedObject = {
-//     ...eventOccurrence.dataValues,
-//   }
-//   return modifiedObject
-// }
+async function getUserEventOccurrenceValues(userEventOccurrence: any) {
+  const attendanceStatus = await userEventOccurrence.getAttendanceStatus()
+  const statusProperty = attendanceStatus.status
+  const ueoValues = userEventOccurrence.dataValues
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { attendance_status_id, ...rest } = ueoValues
+  const modifiedObject: UserEventOccurrence = {
+    ...rest,
+    attendanceStatus: statusProperty,
+  }
+  return modifiedObject
+}
 
 export default {
   async getAllUserEventOccurrences(_req: express.Request, res: express.Response): Promise<void> {
     try {
       const userEventOccurrenceCollection = await UserEventOccurrence.findAll()
-      // const modifiedObjects = eventOccurrenceCollection.map((eventOccurrence) =>
-      //   getEventOccurrenceValues(eventOccurrence)
-      // )
-      res.send(JSON.stringify(userEventOccurrenceCollection))
+      const modifiedObjects = await Promise.all(
+        userEventOccurrenceCollection.map((userEventOccurrence) => getUserEventOccurrenceValues(userEventOccurrence))
+      )
+      res.send(JSON.stringify(modifiedObjects))
     } catch (e) {
       res.status(400).send(e)
     }
   },
-  // async getEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
-  //   try {
-  //     const id = req.params.eventOccurrenceId
-  //     const targetEventOccurrence = await EventOccurrence.findByPk(id)
-  //     const modifiedObject = await getEventOccurrenceValues(targetEventOccurrence)
-  //     res.send(JSON.stringify(modifiedObject))
-  //   } catch (e) {
-  //     res.status(400).send(e)
-  //   }
-  // },
-  // async deleteEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
-  //   try {
-  //     const id = req.params.eventOccurrenceId
-  //     const targetEventOccurrence = await EventOccurrence.findByPk(id)
-  //     const promise = await targetEventOccurrence.destroy()
-  //     res.send(JSON.stringify(promise))
-  //   } catch (e) {
-  //     res.status(400).send(e)
-  //   }
-  // },
-  // async updateEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
-  //   try {
-  //     const id = req.params.eventOccurrenceId
-  //     const targetEventOccurrence = await EventOccurrence.findByPk(id)
-  //     targetEventOccurrence.date = req.body.date
-  //     targetEventOccurrence.event_id = req.body.event_id
-  //     const promise = await targetEventOccurrence.save()
-  //     res.send(JSON.stringify(promise))
-  //   } catch (e) {
-  //     res.status(400).send(e)
-  //   }
-  // },
+  async getUserEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+    try {
+      const id = req.params.userEventOccurrenceId
+      const targetUserEventOccurrence = await UserEventOccurrence.findByPk(id)
+      const modifiedObject = await getUserEventOccurrenceValues(targetUserEventOccurrence)
+      res.send(JSON.stringify(modifiedObject))
+    } catch (e) {
+      res.status(400).send(e)
+    }
+  },
 }

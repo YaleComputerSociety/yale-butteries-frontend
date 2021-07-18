@@ -64,7 +64,7 @@ export default {
   // async addStat(req: express.Request, res: express.Response): Promise<void> {
   //   try {
   //     const id = req.params.statId
-  //     const targetStat = 
+  //     const targetStat =
   //   } catch (e) {
   //     res.status(400).send(e)
   //   }
