@@ -17,26 +17,30 @@ async function getUserEventOccurrenceValues(userEventOccurrence: any) {
   return modifiedObject
 }
 
+async function getAllUserEventOccurrences(_req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const userEventOccurrenceCollection = await UserEventOccurrence.findAll()
+    const modifiedObjects = await Promise.all(
+      userEventOccurrenceCollection.map((userEventOccurrence) => getUserEventOccurrenceValues(userEventOccurrence))
+    )
+    res.send(JSON.stringify(modifiedObjects))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
+async function getUserEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const id = req.params.userEventOccurrenceId
+    const targetUserEventOccurrence = await UserEventOccurrence.findByPk(id)
+    const modifiedObject = await getUserEventOccurrenceValues(targetUserEventOccurrence)
+    res.send(JSON.stringify(modifiedObject))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 export default {
-  async getAllUserEventOccurrences(_req: express.Request, res: express.Response): Promise<void> {
-    try {
-      const userEventOccurrenceCollection = await UserEventOccurrence.findAll()
-      const modifiedObjects = await Promise.all(
-        userEventOccurrenceCollection.map((userEventOccurrence) => getUserEventOccurrenceValues(userEventOccurrence))
-      )
-      res.send(JSON.stringify(modifiedObjects))
-    } catch (e) {
-      res.status(400).send(e)
-    }
-  },
-  async getUserEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
-    try {
-      const id = req.params.userEventOccurrenceId
-      const targetUserEventOccurrence = await UserEventOccurrence.findByPk(id)
-      const modifiedObject = await getUserEventOccurrenceValues(targetUserEventOccurrence)
-      res.send(JSON.stringify(modifiedObject))
-    } catch (e) {
-      res.status(400).send(e)
-    }
-  },
+  getAllUserEventOccurrences,
+  getUserEventOccurrence,
 }

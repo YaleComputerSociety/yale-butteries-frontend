@@ -11,36 +11,28 @@ function getEventOccurrenceProperties(eventOccurrence: any) {
   return modifiedObject
 }
 
+async function getAllEventOccurrences(_req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const eventOccurrenceCollection = await EventOccurrence.findAll()
+    const modifiedCollection = eventOccurrenceCollection.map((eo) => getEventOccurrenceProperties(eo))
+    res.send(JSON.stringify(modifiedCollection))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
+async function getEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const id = req.params.eventOccurrenceId
+    const targetEventOccurrence = await EventOccurrence.findByPk(id)
+    const modifiedOccurrence = getEventOccurrenceProperties(targetEventOccurrence)
+    res.send(JSON.stringify(modifiedOccurrence))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 export default {
-  async getAllEventOccurrences(_req: express.Request, res: express.Response): Promise<void> {
-    try {
-      const eventOccurrenceCollection = await EventOccurrence.findAll()
-      const modifiedCollection = eventOccurrenceCollection.map((eo) => getEventOccurrenceProperties(eo))
-      res.send(JSON.stringify(modifiedCollection))
-    } catch (e) {
-      res.status(400).send(e)
-    }
-  },
-  async getEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
-    try {
-      const id = req.params.eventOccurrenceId
-      const targetEventOccurrence = await EventOccurrence.findByPk(id)
-      const modifiedOccurrence = getEventOccurrenceProperties(targetEventOccurrence)
-      res.send(JSON.stringify(modifiedOccurrence))
-    } catch (e) {
-      res.status(400).send(e)
-    }
-  },
-  // async getRoom(req: express.Request, res: express.Response): Promise<void> {
-  //   try {
-  //     const id = req.params.roomId
-  //     const targetRoom = await Room.findByPk(id)
-  //     // const targetRecurrenceTypes = await targetRoom.getRecurrenceTypes()
-  //     // console.log(targetRecurrenceTypes.rooms_recurrence_types)
-  //     const modifiedObject = await getRoomProperties(targetRoom)
-  //     res.send(JSON.stringify(modifiedObject))
-  //   } catch (e) {
-  //     res.status(400).send(e)
-  //   }
-  // },
+  getAllEventOccurrences,
+  getEventOccurrence,
 }

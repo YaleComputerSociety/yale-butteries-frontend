@@ -20,24 +20,28 @@ async function getRoomProperties(room: any) {
   return modifiedObject
 }
 
+async function getAllRooms(_req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const roomCollection = await Room.findAll()
+    const modifiedCollection = await Promise.all(roomCollection.map((room) => getRoomProperties(room)))
+    res.send(JSON.stringify(modifiedCollection))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
+async function getRoom(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const id = req.params.roomId
+    const targetRoom = await Room.findByPk(id)
+    const modifiedObject = await getRoomProperties(targetRoom)
+    res.send(JSON.stringify(modifiedObject))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 export default {
-  async getAllRooms(_req: express.Request, res: express.Response): Promise<void> {
-    try {
-      const roomCollection = await Room.findAll()
-      const modifiedCollection = await Promise.all(roomCollection.map((room) => getRoomProperties(room)))
-      res.send(JSON.stringify(modifiedCollection))
-    } catch (e) {
-      res.status(400).send(e)
-    }
-  },
-  async getRoom(req: express.Request, res: express.Response): Promise<void> {
-    try {
-      const id = req.params.roomId
-      const targetRoom = await Room.findByPk(id)
-      const modifiedObject = await getRoomProperties(targetRoom)
-      res.send(JSON.stringify(modifiedObject))
-    } catch (e) {
-      res.status(400).send(e)
-    }
-  },
+  getAllRooms,
+  getRoom,
 }
