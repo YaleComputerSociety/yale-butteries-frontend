@@ -41,7 +41,28 @@ async function getRoom(req: express.Request, res: express.Response): Promise<voi
   }
 }
 
+async function updateRoom(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const id = req.params.roomId
+    const targetRoom = await Room.findByPk(id)
+    if ('room_name' in req.body) {
+      targetRoom.room_name = req.body.room_name
+    }
+    if ('needs_approval' in req.body) {
+      targetRoom.needs_approval = req.body.needs_approval
+    }
+    if ('college_id' in req.body) {
+      targetRoom.college_id = req.body.college_id
+    }
+    const promise = await targetRoom.save()
+    res.status(200).send(JSON.stringify(promise))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 export default {
   getAllRooms,
   getRoom,
+  updateRoom,
 }

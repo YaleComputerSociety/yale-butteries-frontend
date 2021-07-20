@@ -6,5 +6,6 @@ const router = express.Router()
 
 router.get('/', eventOccurrenceControllers.getAllEventOccurrences)
 router.get('/:eventOccurrenceId', eventOccurrenceControllers.getEventOccurrence)
+router.put('/:eventOccurrenceId', eventOccurrenceControllers.updateEventOccurrence)
 
 export default router
