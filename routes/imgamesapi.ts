@@ -7,5 +7,6 @@ const gameIdParameter = '/:gameId'
 
 router.get('/', gameControllers.getAllGames)
 router.get(gameIdParameter, gameControllers.getGame)
+router.put(gameIdParameter, gameControllers.updateGame)
 
 export default router

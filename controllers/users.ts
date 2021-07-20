@@ -80,8 +80,32 @@ async function getTestUser(req: express.Request, res: express.Response): Promise
   }
 }
 
+async function updateUser(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const id = req.params.userId
+    const targetUser = await User.findByPk(id)
+    if ('netid' in req.body) {
+      targetUser.netid = req.body.netid
+    }
+    if ('name' in req.body) {
+      targetUser.name = req.body.name
+    }
+    if ('position_id' in req.body) {
+      targetUser.position_id = req.body.position_id
+    }
+    if ('college_id' in req.body) {
+      targetUser.college_id = req.body.college_id
+    }
+    const promise = await targetUser.save()
+    res.send(JSON.stringify(promise))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 export default {
   getAllUsers,
   getUser,
   getTestUser,
+  updateUser,
 }

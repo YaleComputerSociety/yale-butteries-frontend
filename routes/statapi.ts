@@ -7,5 +7,6 @@ const statIdParameter = '/:statId'
 
 router.get('/', statControllers.getAllStats)
 router.get(statIdParameter, statControllers.getStat)
+router.put(statIdParameter, statControllers.updateStat)
 
 export default router

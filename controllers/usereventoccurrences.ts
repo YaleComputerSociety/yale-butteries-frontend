@@ -40,7 +40,28 @@ async function getUserEventOccurrence(req: express.Request, res: express.Respons
   }
 }
 
+async function updateUserEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const id = req.params.userEventOccurrenceId
+    const targetUserEventOccurrence = await UserEventOccurrence.findByPk(id)
+    if ('user_id' in req.body) {
+      targetUserEventOccurrence.user_id = req.body.user_id
+    }
+    if ('event_occurrence_id' in req.body) {
+      targetUserEventOccurrence.event_occurrence_id = req.body.event_occurrence_id
+    }
+    if ('attendance_status_id' in req.body) {
+      targetUserEventOccurrence.attendance_status_id = req.body.attendance_status_id
+    }
+    const promise = await targetUserEventOccurrence.save()
+    res.send(JSON.stringify(promise))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 export default {
   getAllUserEventOccurrences,
   getUserEventOccurrence,
+  updateUserEventOccurrence,
 }

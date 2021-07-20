@@ -46,7 +46,40 @@ async function getEvent(req: express.Request, res: express.Response): Promise<vo
   }
 }
 
+async function updateEvent(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const id = req.params.eventId
+    const targetEvent = await Event.findByPk(id)
+    if ('name' in req.body) {
+      targetEvent.name = req.body.name
+    }
+    if ('description' in req.body) {
+      targetEvent.description = req.body.description
+    }
+    if ('room_id' in req.body) {
+      targetEvent.room_id = req.body.room_id
+    }
+    if ('user_id' in req.body) {
+      targetEvent.user_id = req.body.user_id
+    }
+    if ('event_type_id' in req.body) {
+      targetEvent.event_type_id = req.body.event_type_id
+    }
+    if ('recurrence_type_id' in req.body) {
+      targetEvent.recurrence_type_id = req.body.recurrence_type_id
+    }
+    if ('approval_status_id' in req.body) {
+      targetEvent.approval_status_id = req.body.approval_status_id
+    }
+    const promise = await targetEvent.save()
+    res.status(200).send(JSON.stringify(promise))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 export default {
   getAllEvents,
   getEvent,
+  updateEvent,
 }
