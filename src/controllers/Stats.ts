@@ -1,6 +1,6 @@
-import db from '../models/'
+import db from '../models'
 import express from 'express'
-import { Stat } from 'controllers/controllerInterfaces'
+import { Stat } from './ControllerInterfaces'
 
 const { Stat } = db
 

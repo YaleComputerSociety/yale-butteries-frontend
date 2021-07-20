@@ -1,6 +1,6 @@
 import express from 'express'
 
-import gameControllers from '../controllers/ims'
+import gameControllers from '../controllers/ImGames'
 
 const router = express.Router()
 const gameIdParameter = '/:gameId'
