@@ -1,6 +1,6 @@
 import express from 'express'
 
-import roomControllers from '../controllers/rooms'
+import roomControllers from '../controllers/Rooms'
 
 const router = express.Router()
 const roomIdParam = '/:roomId'

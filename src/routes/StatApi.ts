@@ -1,6 +1,6 @@
 import express from 'express'
 
-import statControllers from '../controllers/stats'
+import statControllers from '../controllers/Stats'
 
 const router = express.Router()
 const statIdParameter = '/:statId'
