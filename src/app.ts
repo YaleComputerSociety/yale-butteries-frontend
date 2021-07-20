@@ -3,6 +3,14 @@ import cors from 'cors'
 import path from 'path'
 import db from '../models'
 
+import gameRouter from '../routes/imgamesapi'
+import userRouter from '../routes/userapi'
+import statRouter from '../routes/statapi'
+import eventRouter from '../routes/eventapi'
+import userEventOccurenceRouter from '../routes/usereventoccurrenceapi'
+import roomRouter from '../routes/roomapi'
+import eventOccurrenceRouter from '../routes/eventoccurrenceapi'
+
 const app: Application = express()
 
 const port = process.env.APP_PORT || 3000
@@ -23,6 +31,15 @@ app.get('/apicall', async (_, res) => {
   const test = await PositionEventType.findOne({ where: { id: 1 } })
   res.send(JSON.stringify(test))
 })
+
+// API Routes
+app.use('/api/intramurals', gameRouter)
+app.use('/api/users', userRouter)
+app.use('/api/stats', statRouter)
+app.use('/api/events', eventRouter)
+app.use('/api/usereventoccurrences', userEventOccurenceRouter)
+app.use('/api/rooms', roomRouter)
+app.use('/api/eventoccurrences', eventOccurrenceRouter)
 
 app.use(express.static(static_root))
 
