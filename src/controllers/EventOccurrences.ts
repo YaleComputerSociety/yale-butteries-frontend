@@ -1,6 +1,6 @@
-import db from '../models/'
+import db from '../models'
 import express from 'express'
-import { EventOccurrence } from 'controllers/controllerInterfaces'
+import { EventOccurrence } from './ControllerInterfaces'
 
 const { EventOccurrence } = db
 

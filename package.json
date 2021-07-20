@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.26.1",
-    "@typescript-eslint/parser": "^4.26.1",
+    "@typescript-eslint/parser": "^4.28.4",
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.4",
@@ -43,13 +43,18 @@
       "eslint:recommended",
       "plugin:import/errors",
       "plugin:@typescript-eslint/recommended",
-      "plugin:prettier/recommended"
+      "plugin:prettier/recommended",
+      "plugin:import/recommended",
+      "plugin:import/typescript"
     ],
     "plugins": [
       "prettier",
       "import"
     ],
-    "ignorePatterns": ["/src/frontend/package.json", "/src/frontend/webpack.config.js"],
+    "ignorePatterns": [
+      "/src/frontend/package.json",
+      "/src/frontend/webpack.config.js"
+    ],
     "rules": {
       "@typescript-eslint/ban-ts-ignore": 0,
       "@typescript-eslint/explicit-function-return-type": 0,
