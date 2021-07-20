@@ -1,6 +1,6 @@
 import express from 'express'
 
-import userControllers from '../controllers/users'
+import userControllers from '../controllers/Users'
 
 const router = express.Router()
 const userIdParameter = '/:userId'

@@ -1,15 +1,15 @@
 import express, { Application } from 'express'
 import cors from 'cors'
 import path from 'path'
-import db from '../models'
+import db from './models'
 
-import gameRouter from '../routes/imgamesapi'
-import userRouter from '../routes/userapi'
-import statRouter from '../routes/statapi'
-import eventRouter from '../routes/eventapi'
-import userEventOccurenceRouter from '../routes/usereventoccurrenceapi'
-import roomRouter from '../routes/roomapi'
-import eventOccurrenceRouter from '../routes/eventoccurrenceapi'
+import gameRouter from './routes/ImGameApi'
+import userRouter from './routes/UserApi'
+import statRouter from './routes/StatApi'
+import eventRouter from './routes/EventApi'
+import userEventOccurenceRouter from './routes/UserEventOccurrenceApi'
+import roomRouter from './routes/RoomApi'
+import eventOccurrenceRouter from './routes/EventOccurrenceApi'
 
 const app: Application = express()
 
