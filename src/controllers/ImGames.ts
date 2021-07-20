@@ -1,6 +1,6 @@
-import db from '../models/'
+import db from '../models'
 import express from 'express'
-import { Game } from 'controllers/controllerInterfaces'
+import { Game } from './ControllerInterfaces'
 
 const { ImGame } = db
 
