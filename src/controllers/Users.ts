@@ -103,9 +103,21 @@ async function updateUser(req: express.Request, res: express.Response): Promise<
   }
 }
 
+async function deleteUser(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const id = req.params.userId
+    const targetUser = await User.findByPk(id)
+    const deletedUser = await targetUser.destroy()
+    res.status(200).send(JSON.stringify({ mesesage: 'Success', user: deletedUser }))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 export default {
   getAllUsers,
   getUser,
   getTestUser,
   updateUser,
+  deleteUser,
 }

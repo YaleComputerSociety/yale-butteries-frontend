@@ -55,8 +55,36 @@ async function updateEventOccurrence(req: express.Request, res: express.Response
   }
 }
 
+async function deleteEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const id = req.params.eventOccurrenceId
+    const targetEventOccurrence = await EventOccurrence.findByPk(id)
+    const deletedOccurrence = await targetEventOccurrence.destroy()
+    res.send(JSON.stringify(deletedOccurrence))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
+async function addEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const { event_id, description, start_time, end_time } = req.body
+    const createdEventOccurrence = await EventOccurrence.create({
+      event_id: event_id,
+      description: description,
+      start_time: start_time,
+      end_time: end_time,
+    })
+    res.send(JSON.stringify({ message: 'Success', eventOccurrence: createdEventOccurrence }))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 export default {
   getAllEventOccurrences,
   getEventOccurrence,
   updateEventOccurrence,
+  deleteEventOccurrence,
+  addEventOccurrence,
 }

@@ -75,7 +75,7 @@ async function deleteGame(req: express.Request, res: express.Response): Promise<
   try {
     const id = req.params.gameId
     const targetGame = await ImGame.findByPk(id)
-    const deletedStats = await ImGame.removeStats()
+    const deletedStats = await targetGame.removeStats()
     const deletedGame = await targetGame.destroy()
     res.status(200).send(JSON.stringify({ message: 'Succesful', game: deletedGame, stats: deletedStats }))
   } catch (e) {

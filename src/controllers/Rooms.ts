@@ -61,8 +61,20 @@ async function updateRoom(req: express.Request, res: express.Response): Promise<
   }
 }
 
+async function deleteRoom(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const id = req.params.roomId
+    const targetRoom = await Room.findByPk(id)
+    const deletedRoom = await targetRoom.destroy()
+    res.status(200).send(JSON.stringify({ message: 'Deleted', room: deletedRoom }))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 export default {
   getAllRooms,
   getRoom,
   updateRoom,
+  deleteRoom,
 }

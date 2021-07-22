@@ -60,8 +60,20 @@ async function updateUserEventOccurrence(req: express.Request, res: express.Resp
   }
 }
 
+async function deleteUserEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const id = req.params.userEventOccurrenceId
+    const targetUserEventOccurrence = await UserEventOccurrence.findByPk(id)
+    const deletedUserEventOccurrence = await targetUserEventOccurrence.destroy()
+    res.status(200).send(JSON.stringify({ message: 'Deleted', userEventOccurrence: deletedUserEventOccurrence }))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 export default {
   getAllUserEventOccurrences,
   getUserEventOccurrence,
   updateUserEventOccurrence,
+  deleteUserEventOccurrence,
 }
