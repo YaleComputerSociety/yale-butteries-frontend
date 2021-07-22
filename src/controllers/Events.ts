@@ -78,8 +78,42 @@ async function updateEvent(req: express.Request, res: express.Response): Promise
   }
 }
 
+async function deleteEvent(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const id = req.params.eventId
+    const targetEvent = await Event.findByPk(id)
+    const targetEventOccurrences = await targetEvent.removeEventOccurrences()
+    const deletedEvent = await targetEvent.destroy()
+    res.status(200).send(JSON.stringify({ event: deletedEvent, eventOccurrences: targetEventOccurrences }))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
+async function addEvent(req: express.Request, res: express.Response): Promise<void> {
+  try {
+    const { name, description, event_type_id, room_id, recurrence_type_id, approval_status_id, user_id } = req.body
+    const createdEvent = await Event.create({
+      name: name,
+      description: description,
+      event_type_id: event_type_id,
+      room_id: room_id,
+      user_id: user_id,
+      recurrence_type_id: recurrence_type_id,
+      approval_status_id: approval_status_id,
+      created_at: new Date(),
+      updated_at: new Date(),
+    })
+    res.send(JSON.stringify({ message: 'Success', event: createdEvent }))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 export default {
   getAllEvents,
   getEvent,
   updateEvent,
+  deleteEvent,
+  addEvent,
 }
