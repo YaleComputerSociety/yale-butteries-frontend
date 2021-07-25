@@ -2,17 +2,12 @@ import db from '../models'
 import express from 'express'
 import { Event } from './ControllerInterfaces'
 
-const { Event } = db
+const { EventType, RecurrenceType, ApprovalStatus, Event } = db
 
 async function getEventProperties(event: any) {
-  const [eventType, recurrenceType, approvalStatus] = await Promise.all([
-    event.getEventType(),
-    event.getRecurrenceType(),
-    event.getApprovalStatus(),
-  ])
-  const eventTypeProperty = eventType.type
-  const recurrenceTypeProperty = recurrenceType.type
-  const approvalStatusProperty = approvalStatus.status
+  const eventTypeProperty = event.eventType.type
+  const recurrenceTypeProperty = event.recurrenceType.type
+  const approvalStatusProperty = event.approvalStatus.status
   const eventValues = event.dataValues
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { event_type_id, recurrence_type_id, approval_status_id, ...rest } = eventValues
@@ -25,9 +20,17 @@ async function getEventProperties(event: any) {
   return modifiedObject
 }
 
+const enumInclude = {
+  include: [
+    { model: EventType, as: 'eventType' },
+    { model: RecurrenceType, as: 'recurrenceType' },
+    { model: ApprovalStatus, as: 'approvalStatus' },
+  ],
+}
+
 async function getAllEvents(_req: express.Request, res: express.Response): Promise<void> {
   try {
-    const eventCollection = await Event.findAll()
+    const eventCollection = await Event.findAll(enumInclude)
     const modifiedCollection = await Promise.all(eventCollection.map((event) => getEventProperties(event)))
     res.send(JSON.stringify(modifiedCollection))
   } catch (e) {
@@ -38,7 +41,7 @@ async function getAllEvents(_req: express.Request, res: express.Response): Promi
 async function getEvent(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = req.params.eventId
-    const targetEvent = await Event.findByPk(id)
+    const targetEvent = await Event.findByPk(id, enumInclude)
     const modifiedObject = await getEventProperties(targetEvent)
     res.send(JSON.stringify(modifiedObject))
   } catch (e) {

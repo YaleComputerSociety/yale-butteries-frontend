@@ -2,28 +2,35 @@ import db from '../models'
 import express from 'express'
 import { Game } from './ControllerInterfaces'
 
-const { ImGame } = db
+const { ImGame, Sport, College } = db
 
 async function getGameProperties(game: any) {
-  const [sport, collegeOne, collegeTwo] = await Promise.all([game.getSport(), game.getTeam1(), game.getTeam2()])
-  const modifiedSport = sport.sport
-  const modifiedCollegeOne = collegeOne.college
-  const modifiedCollegeTwo = collegeTwo.college
+  const modifiedSport = game.sport.sport
+  const modifiedCollegeOne = game.team1.college
+  const modifiedCollegeTwo = game.team2.college
   const gameValues = game.dataValues
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { team_1_key, team_2_key, sport_id, ...rest } = gameValues
   const modifiedObject: Game = {
     ...rest,
     sport: modifiedSport,
-    teamOne: modifiedCollegeOne,
-    teamTwo: modifiedCollegeTwo,
+    team1: modifiedCollegeOne,
+    team2: modifiedCollegeTwo,
   }
   return modifiedObject
 }
 
+const enumInclude = {
+  include: [
+    { model: Sport, as: 'sport' },
+    { model: College, as: 'team1' },
+    { model: College, as: 'team2' },
+  ],
+}
+
 async function getAllGames(_req: express.Request, res: express.Response): Promise<void> {
   try {
-    const gameCollection = await ImGame.findAll()
+    const gameCollection = await ImGame.findAll(enumInclude)
     const modifiedObjects = await Promise.all(gameCollection.map((game) => getGameProperties(game)))
     res.send(JSON.stringify(modifiedObjects))
   } catch (e) {
@@ -34,7 +41,7 @@ async function getAllGames(_req: express.Request, res: express.Response): Promis
 async function getGame(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = req.params.gameId
-    const targetGame = await ImGame.findByPk(id)
+    const targetGame = await ImGame.findByPk(id, enumInclude)
     const modifiedObject = await getGameProperties(targetGame)
     res.send(JSON.stringify(modifiedObject))
   } catch (e) {
