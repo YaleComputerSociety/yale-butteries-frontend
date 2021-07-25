@@ -2,13 +2,11 @@ import db from '../models'
 import express from 'express'
 import { Room } from './ControllerInterfaces'
 
-const { Room } = db
+const { College, RecurrenceType, Room } = db
 
 async function getRoomProperties(room: any) {
-  const college = await room.getCollege()
-  const collegeProperty = college.college
-  const recurrenceTypes = await room.getRecurrenceTypes()
-  const recurrenceTypesStrings = recurrenceTypes.map((rt) => rt.type)
+  const collegeProperty = room.college.college
+  const recurrenceTypesStrings = room.recurrenceTypes.map((rt) => rt.type)
   const roomValues = room.dataValues
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { college_id, ...rest } = roomValues
@@ -20,9 +18,16 @@ async function getRoomProperties(room: any) {
   return modifiedObject
 }
 
+const enumInclude = {
+  include: [
+    { model: College, as: 'college' },
+    { model: RecurrenceType, as: 'recurrenceTypes' },
+  ],
+}
+
 async function getAllRooms(_req: express.Request, res: express.Response): Promise<void> {
   try {
-    const roomCollection = await Room.findAll()
+    const roomCollection = await Room.findAll(enumInclude)
     const modifiedCollection = await Promise.all(roomCollection.map((room) => getRoomProperties(room)))
     res.send(JSON.stringify(modifiedCollection))
   } catch (e) {
@@ -33,7 +38,7 @@ async function getAllRooms(_req: express.Request, res: express.Response): Promis
 async function getRoom(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = req.params.roomId
-    const targetRoom = await Room.findByPk(id)
+    const targetRoom = await Room.findByPk(id, enumInclude)
     const modifiedObject = await getRoomProperties(targetRoom)
     res.send(JSON.stringify(modifiedObject))
   } catch (e) {

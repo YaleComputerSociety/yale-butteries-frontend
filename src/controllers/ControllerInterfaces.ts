@@ -9,8 +9,8 @@ export interface Game extends ModelInstance {
   team_2_score: number
   date: string
   sport: string
-  teamOne: string
-  teamTwo: string
+  team1: string
+  team2: string
 }
 
 export interface Stat extends ModelInstance {
