@@ -1,24 +1,19 @@
 import React, { FC, useState } from 'react'
 
 import Default from 'layouts/Default'
-import Form from 'components/Form'
+import { getJSON } from 'utils/fetch'
 
 const Inner: FC = () => {
-  const [isVisible, setIsVisible] = useState(false)
+  const pathPrefix = '/api/users'
 
-  function makeVisible() {
-    setIsVisible(true)
+  async function makeAPICall() {
+    const results = await getJSON(pathPrefix)
+    console.log(results)
   }
 
   return (
     <>
-      <button onClick={makeVisible}>{'Form Click'}</button>
-      <Form isVisible={isVisible} setIsVisible={setIsVisible}>
-        <div>
-          <p>Hello first paragraph!</p>
-          <p>Hello second paragraph!</p>
-        </div>
-      </Form>
+      <button onClick={makeAPICall}>{'Api Call'}</button>
     </>
   )
 }
