@@ -11,7 +11,7 @@ function getEventOccurrenceProperties(eventOccurrence: any) {
   return modifiedObject
 }
 
-async function getAllEventOccurrences(_req: express.Request, res: express.Response): Promise<void> {
+export async function getAllEventOccurrences(_req: express.Request, res: express.Response): Promise<void> {
   try {
     const eventOccurrenceCollection = await EventOccurrence.findAll()
     const modifiedCollection = eventOccurrenceCollection.map((eo) => getEventOccurrenceProperties(eo))
@@ -21,7 +21,7 @@ async function getAllEventOccurrences(_req: express.Request, res: express.Respon
   }
 }
 
-async function getEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+export async function getEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = req.params.eventOccurrenceId
     const targetEventOccurrence = await EventOccurrence.findByPk(id)
@@ -32,13 +32,11 @@ async function getEventOccurrence(req: express.Request, res: express.Response): 
   }
 }
 
-async function updateEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+// List data type, wht's inside of the list should be able to be abritray: T is the generic type express.Request<EventOccurrence> if it doesn't work just cast it
+export async function updateEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = req.params.eventOccurrenceId
     const targetEventOccurrence = await EventOccurrence.findByPk(id)
-    if ('event_id' in req.body) {
-      targetEventOccurrence.event_id = req.body.event_id
-    }
     if ('description' in req.body) {
       targetEventOccurrence.description = req.body.description
     }
@@ -55,7 +53,7 @@ async function updateEventOccurrence(req: express.Request, res: express.Response
   }
 }
 
-async function deleteEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+export async function deleteEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = req.params.eventOccurrenceId
     const targetEventOccurrence = await EventOccurrence.findByPk(id)
@@ -64,27 +62,4 @@ async function deleteEventOccurrence(req: express.Request, res: express.Response
   } catch (e) {
     res.status(400).send(e)
   }
-}
-
-async function addEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
-  try {
-    const { event_id, description, start_time, end_time } = req.body
-    const createdEventOccurrence = await EventOccurrence.create({
-      event_id: event_id,
-      description: description,
-      start_time: start_time,
-      end_time: end_time,
-    })
-    res.send(JSON.stringify({ message: 'Success', eventOccurrence: createdEventOccurrence }))
-  } catch (e) {
-    res.status(400).send(e)
-  }
-}
-
-export default {
-  getAllEventOccurrences,
-  getEventOccurrence,
-  updateEventOccurrence,
-  deleteEventOccurrence,
-  addEventOccurrence,
 }

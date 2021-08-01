@@ -25,7 +25,7 @@ const enumInclude = {
   ],
 }
 
-async function getAllRooms(_req: express.Request, res: express.Response): Promise<void> {
+export async function getAllRooms(_req: express.Request, res: express.Response): Promise<void> {
   try {
     const roomCollection = await Room.findAll(enumInclude)
     const modifiedCollection = await Promise.all(roomCollection.map((room) => getRoomProperties(room)))
@@ -35,7 +35,7 @@ async function getAllRooms(_req: express.Request, res: express.Response): Promis
   }
 }
 
-async function getRoom(req: express.Request, res: express.Response): Promise<void> {
+export async function getRoom(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = req.params.roomId
     const targetRoom = await Room.findByPk(id, enumInclude)
@@ -46,7 +46,7 @@ async function getRoom(req: express.Request, res: express.Response): Promise<voi
   }
 }
 
-async function updateRoom(req: express.Request, res: express.Response): Promise<void> {
+export async function updateRoom(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = req.params.roomId
     const targetRoom = await Room.findByPk(id)
@@ -66,7 +66,7 @@ async function updateRoom(req: express.Request, res: express.Response): Promise<
   }
 }
 
-async function deleteRoom(req: express.Request, res: express.Response): Promise<void> {
+export async function deleteRoom(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = req.params.roomId
     const targetRoom = await Room.findByPk(id)
@@ -75,11 +75,4 @@ async function deleteRoom(req: express.Request, res: express.Response): Promise<
   } catch (e) {
     res.status(400).send(e)
   }
-}
-
-export default {
-  getAllRooms,
-  getRoom,
-  updateRoom,
-  deleteRoom,
 }
