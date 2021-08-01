@@ -1,13 +1,12 @@
 import express from 'express'
-
-import roomControllers from '../controllers/Rooms'
+import { deleteRoom, getAllRooms, getRoom, updateRoom } from '../controllers/Rooms'
 
 const router = express.Router()
 const roomIdParam = '/:roomId'
 
-router.get('/', roomControllers.getAllRooms)
-router.get(roomIdParam, roomControllers.getRoom)
-router.put(roomIdParam, roomControllers.updateRoom)
-router.delete(roomIdParam, roomControllers.deleteRoom)
+router.get('/', getAllRooms)
+router.get(roomIdParam, getRoom)
+router.put(roomIdParam, updateRoom)
+router.delete(roomIdParam, deleteRoom)
 
 export default router

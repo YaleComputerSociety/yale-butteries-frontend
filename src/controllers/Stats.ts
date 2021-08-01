@@ -11,7 +11,7 @@ function getStatValues(stat: any) {
   return modifiedStat
 }
 
-async function getAllStats(_req: express.Request, res: express.Response): Promise<void> {
+export async function getAllStats(_req: express.Request, res: express.Response): Promise<void> {
   try {
     const statCollection = await Stat.findAll()
     const modifiedObjects = statCollection.map((stat) => getStatValues(stat))
@@ -21,7 +21,7 @@ async function getAllStats(_req: express.Request, res: express.Response): Promis
   }
 }
 
-async function getStat(req: express.Request, res: express.Response): Promise<void> {
+export async function getStat(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = req.params.statId
     const targetStat = await Stat.findByPk(id)
@@ -32,7 +32,7 @@ async function getStat(req: express.Request, res: express.Response): Promise<voi
   }
 }
 
-async function updateStat(req: express.Request, res: express.Response): Promise<void> {
+export async function updateStat(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = req.params.statId
     const targetStat = await Stat.findByPk(id)
@@ -45,12 +45,6 @@ async function updateStat(req: express.Request, res: express.Response): Promise<
     if ('assists' in req.body) {
       targetStat.assists = req.body.assists
     }
-    if ('imgame_id' in req.body) {
-      targetStat.imgame_id = req.body.imgame_id
-    }
-    if ('user_id' in req.body) {
-      targetStat.user_id = req.body.user_id
-    }
     const promise = await targetStat.save()
     res.send(JSON.stringify(promise))
   } catch (e) {
@@ -58,7 +52,7 @@ async function updateStat(req: express.Request, res: express.Response): Promise<
   }
 }
 
-async function deleteStat(req: express.Request, res: express.Response): Promise<void> {
+export async function deleteStat(req: express.Request, res: express.Response): Promise<void> {
   try {
     const id = req.params.statId
     const targetStat = await Stat.findByPk(id)
@@ -69,7 +63,7 @@ async function deleteStat(req: express.Request, res: express.Response): Promise<
   }
 }
 
-async function addStat(req: express.Request, res: express.Response): Promise<void> {
+export async function addStat(req: express.Request, res: express.Response): Promise<void> {
   try {
     const { points, rebounds, assists, imgame_id, user_id } = req.body
     const createdStat = await Stat.create({
@@ -86,13 +80,3 @@ async function addStat(req: express.Request, res: express.Response): Promise<voi
     res.status(400).send(e)
   }
 }
-
-export default {
-  getAllStats,
-  getStat,
-  updateStat,
-  deleteStat,
-  addStat,
-}
-
-//{"id":1,"points":4,"rebounds":15,"assists":8,"createdAt":"2021-07-17T00:19:06.695Z","updatedAt":"2021-07-19T21:22:23.363Z","imgame_id":1,"user_id":1}
