@@ -108,6 +108,8 @@ export async function deleteEvent(req: express.Request, res: express.Response): 
   }
 }
 
+// Check overlap, don't pass it with a room, get the rooms events before each function, .filter, comparator
+
 // WITH CAS, add constraints. Add event: Pending. logic to check.
 export async function addEvent(req: express.Request, res: express.Response): Promise<void> {
   try {
