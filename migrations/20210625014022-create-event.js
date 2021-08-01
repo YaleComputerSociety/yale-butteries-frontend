@@ -15,6 +15,18 @@ module.exports = {
       description: {
         type: Sequelize.TEXT,
       },
+      first_start_timestamp: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      first_end_timestamp: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      end_date: {
+        allowNull: true,
+        type: Sequelize.DATE,
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
