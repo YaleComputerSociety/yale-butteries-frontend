@@ -1,6 +1,9 @@
 import db from '../models'
-import express from 'express'
+import { Request, Response } from 'express'
 import { EventOccurrence } from './ControllerInterfaces'
+
+// eslint-disable-next-line import/no-unresolved
+import { ParamsDictionary } from 'express-serve-static-core'
 
 const { EventOccurrence } = db
 
@@ -11,7 +14,7 @@ function getEventOccurrenceProperties(eventOccurrence: any) {
   return modifiedObject
 }
 
-export async function getAllEventOccurrences(_req: express.Request, res: express.Response): Promise<void> {
+export async function getAllEventOccurrences(_: Request, res: Response): Promise<void> {
   try {
     const eventOccurrenceCollection = await EventOccurrence.findAll()
     const modifiedCollection = eventOccurrenceCollection.map((eo) => getEventOccurrenceProperties(eo))
@@ -21,7 +24,7 @@ export async function getAllEventOccurrences(_req: express.Request, res: express
   }
 }
 
-export async function getEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+export async function getEventOccurrence(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.eventOccurrenceId
     const targetEventOccurrence = await EventOccurrence.findByPk(id)
@@ -32,8 +35,11 @@ export async function getEventOccurrence(req: express.Request, res: express.Resp
   }
 }
 
-// List data type, wht's inside of the list should be able to be abritray: T is the generic type express.Request<EventOccurrence> if it doesn't work just cast it
-export async function updateEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+// List data type, wht's inside of the list should be able to be abritray: T is the generic type Request<EventOccurrence> if it doesn't work just cast it
+export async function updateEventOccurrence(
+  req: Request<ParamsDictionary, any, EventOccurrence>,
+  res: Response
+): Promise<void> {
   try {
     const id = req.params.eventOccurrenceId
     const targetEventOccurrence = await EventOccurrence.findByPk(id)
@@ -53,7 +59,7 @@ export async function updateEventOccurrence(req: express.Request, res: express.R
   }
 }
 
-export async function deleteEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+export async function deleteEventOccurrence(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.eventOccurrenceId
     const targetEventOccurrence = await EventOccurrence.findByPk(id)

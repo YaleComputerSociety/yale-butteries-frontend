@@ -3,6 +3,7 @@ import {
   deleteUserEventOccurrence,
   getAllUserEventOccurrences,
   getUserEventOccurrence,
+  addUserEventOccurrence,
   updateUserEventOccurrence,
 } from '../controllers/UserEventOccurrences'
 
@@ -10,6 +11,7 @@ const router = express.Router()
 
 router.get('/', getAllUserEventOccurrences)
 router.get('/:userEventOccurrenceId', getUserEventOccurrence)
+router.post('/', addUserEventOccurrence)
 router.put('/:userEventOccurrenceId', updateUserEventOccurrence)
 router.delete('/:userEventOccurrenceId', deleteUserEventOccurrence)
 

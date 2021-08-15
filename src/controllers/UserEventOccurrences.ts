@@ -1,13 +1,15 @@
 import db from '../models'
-import express from 'express'
+import { Request, Response } from 'express'
 import { UserEventOccurrence } from './ControllerInterfaces'
+
+// eslint-disable-next-line import/no-unresolved
+import { ParamsDictionary } from 'express-serve-static-core'
 
 const { AttendanceStatus, UserEventOccurrence } = db
 
 async function getUserEventOccurrenceValues(userEventOccurrence: any) {
   const statusProperty = userEventOccurrence.attendanceStatus.status
   const ueoValues = userEventOccurrence.dataValues
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { attendance_status_id, ...rest } = ueoValues
   const modifiedObject: UserEventOccurrence = {
     ...rest,
@@ -20,11 +22,11 @@ const enumInclude = {
   include: [{ model: AttendanceStatus, as: 'attendanceStatus' }],
 }
 
-export async function getAllUserEventOccurrences(_req: express.Request, res: express.Response): Promise<void> {
+export async function getAllUserEventOccurrences(_: Request, res: Response): Promise<void> {
   try {
     const userEventOccurrenceCollection = await UserEventOccurrence.findAll(enumInclude)
-    const modifiedObjects = await Promise.all(
-      userEventOccurrenceCollection.map((userEventOccurrence) => getUserEventOccurrenceValues(userEventOccurrence))
+    const modifiedObjects = userEventOccurrenceCollection.map((userEventOccurrence) =>
+      getUserEventOccurrenceValues(userEventOccurrence)
     )
     res.send(JSON.stringify(modifiedObjects))
   } catch (e) {
@@ -32,7 +34,7 @@ export async function getAllUserEventOccurrences(_req: express.Request, res: exp
   }
 }
 
-export async function getUserEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+export async function getUserEventOccurrence(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.userEventOccurrenceId
     const targetUserEventOccurrence = await UserEventOccurrence.findByPk(id, enumInclude)
@@ -43,12 +45,36 @@ export async function getUserEventOccurrence(req: express.Request, res: express.
   }
 }
 
-export async function updateUserEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+export async function addUserEventOccurrence(
+  req: Request<ParamsDictionary, any, UserEventOccurrence>,
+  res: Response
+): Promise<void> {
+  try {
+    const { user_id, event_occurrence_id, attendance_status } = req.body
+    const attendance_status_id = await AttendanceStatus.findOne({ where: { status: attendance_status } }).id
+    const createdUserEventOccurrence = await UserEventOccurrence.create({
+      user_id: user_id,
+      event_occurrence_id: event_occurrence_id,
+      attendance_status_id: attendance_status_id,
+      created_at: new Date(),
+      updated_at: new Date(),
+    })
+    res.send(JSON.stringify({ message: 'Success', UserEventOccurrence: createdUserEventOccurrence }))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
+export async function updateUserEventOccurrence(
+  req: Request<ParamsDictionary, any, UserEventOccurrence>,
+  res: Response
+): Promise<void> {
   try {
     const id = req.params.userEventOccurrenceId
     const targetUserEventOccurrence = await UserEventOccurrence.findByPk(id)
-    if ('attendance_status_id' in req.body) {
-      targetUserEventOccurrence.attendance_status_id = req.body.attendance_status_id
+    if ('attendance_status' in req.body) {
+      const attendance_status_id = await AttendanceStatus.findOne({ where: { status: req.body.attendance_status } }).id
+      targetUserEventOccurrence.attendance_status_id = attendance_status_id
     }
     const promise = await targetUserEventOccurrence.save()
     res.send(JSON.stringify(promise))
@@ -57,7 +83,7 @@ export async function updateUserEventOccurrence(req: express.Request, res: expre
   }
 }
 
-export async function deleteUserEventOccurrence(req: express.Request, res: express.Response): Promise<void> {
+export async function deleteUserEventOccurrence(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.userEventOccurrenceId
     const targetUserEventOccurrence = await UserEventOccurrence.findByPk(id)

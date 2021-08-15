@@ -1,5 +1,5 @@
 import db from '../models'
-import express from 'express'
+import { Request, Response } from 'express'
 import { Game } from './ControllerInterfaces'
 
 const { ImGame, Sport, College } = db
@@ -9,7 +9,6 @@ async function getGameProperties(game: any) {
   const modifiedCollegeOne = game.team1.college
   const modifiedCollegeTwo = game.team2.college
   const gameValues = game.dataValues
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { team_1_key, team_2_key, sport_id, ...rest } = gameValues
   const modifiedObject: Game = {
     ...rest,
@@ -28,7 +27,7 @@ const enumInclude = {
   ],
 }
 
-export async function getAllGames(_req: express.Request, res: express.Response): Promise<void> {
+export async function getAllGames(_: Request, res: Response): Promise<void> {
   try {
     const gameCollection = await ImGame.findAll(enumInclude)
     const modifiedObjects = await Promise.all(gameCollection.map((game) => getGameProperties(game)))
@@ -38,7 +37,7 @@ export async function getAllGames(_req: express.Request, res: express.Response):
   }
 }
 
-export async function getGame(req: express.Request, res: express.Response): Promise<void> {
+export async function getGame(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.gameId
     const targetGame = await ImGame.findByPk(id, enumInclude)
@@ -49,7 +48,7 @@ export async function getGame(req: express.Request, res: express.Response): Prom
   }
 }
 
-// async function updateGame(req: express.Request, res: express.Response): Promise<void> {
+// async function updateGame(req: Request, res: Response): Promise<void> {
 //   try {
 //     const id = req.params.gameId
 //     const targetGame = await ImGame.findByPk(id)
@@ -78,7 +77,7 @@ export async function getGame(req: express.Request, res: express.Response): Prom
 //   }
 // }
 
-// async function deleteGame(req: express.Request, res: express.Response): Promise<void> {
+// async function deleteGame(req: Request, res: Response): Promise<void> {
 //   try {
 //     const id = req.params.gameId
 //     const targetGame = await ImGame.findByPk(id)
