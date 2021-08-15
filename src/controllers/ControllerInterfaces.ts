@@ -1,7 +1,7 @@
 interface ModelInstance {
   id: number
-  createdAt: Date
-  updatedAt: Date
+  created_at: Date
+  updated_at: Date
 }
 
 export interface Game extends ModelInstance {
@@ -9,8 +9,8 @@ export interface Game extends ModelInstance {
   team_2_score: number
   date: string
   sport: string
-  teamOne: string
-  teamTwo: string
+  team1: string
+  team2: string
 }
 
 export interface Stat extends ModelInstance {
@@ -33,22 +33,22 @@ export interface Event extends ModelInstance {
   description: string
   room_id: number
   user_id: number
-  eventType: string
-  recurrenceType: string
-  approvalStatus: string
+  event_type: string
+  recurrence_type: string
+  approval_status: string
 }
 
 export interface Room extends ModelInstance {
   room_name: string
   needs_approval: boolean
   college: string
-  recurrenceTypes: string[]
+  recurrence_types: string[]
 }
 
 export interface UserEventOccurrence extends ModelInstance {
   user_id: number
-  event_occurrence: number
-  attendanceStatus: string
+  event_occurrence_id: number
+  attendance_status: string
 }
 
 export interface EventOccurrence extends ModelInstance {
