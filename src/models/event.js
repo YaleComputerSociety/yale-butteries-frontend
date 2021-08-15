@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: DataTypes.STRING,
       description: DataTypes.STRING,
+      first_start_timestamp: DataTypes.DATE,
+      first_end_timestamp: DataTypes.DATE,
+      end_date: DataTypes.DATE,
       event_type_id: DataTypes.INTEGER,
       room_id: DataTypes.INTEGER,
       recurrence_type_id: DataTypes.INTEGER,
