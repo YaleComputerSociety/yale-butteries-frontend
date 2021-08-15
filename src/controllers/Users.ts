@@ -24,7 +24,7 @@ async function getUserProperties(user: any, type: string) {
   const positionProperty = user.position.position
   const collegeProperty = user.college.college
   const userValues = user.dataValues
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const { position_id, college_id, ...rest } = userValues
   const modifiedObject: User =
     type === 'me'
@@ -85,17 +85,8 @@ export async function updateUser(req: express.Request, res: express.Response): P
   try {
     const id = req.params.userId
     const targetUser = await User.findByPk(id)
-    if ('netid' in req.body) {
-      targetUser.netid = req.body.netid
-    }
     if ('name' in req.body) {
       targetUser.name = req.body.name
-    }
-    if ('position_id' in req.body) {
-      targetUser.position_id = req.body.position_id
-    }
-    if ('college_id' in req.body) {
-      targetUser.college_id = req.body.college_id
     }
     const promise = await targetUser.save()
     res.send(JSON.stringify(promise))

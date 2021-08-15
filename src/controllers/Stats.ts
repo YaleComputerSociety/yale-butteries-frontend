@@ -1,6 +1,9 @@
 import db from '../models'
-import express from 'express'
+import { Request, Response } from 'express'
 import { Stat } from './ControllerInterfaces'
+
+// eslint-disable-next-line import/no-unresolved
+import { ParamsDictionary } from 'express-serve-static-core'
 
 const { Stat } = db
 
@@ -11,7 +14,7 @@ function getStatValues(stat: any) {
   return modifiedStat
 }
 
-export async function getAllStats(_req: express.Request, res: express.Response): Promise<void> {
+export async function getAllStats(_: Request, res: Response): Promise<void> {
   try {
     const statCollection = await Stat.findAll()
     const modifiedObjects = statCollection.map((stat) => getStatValues(stat))
@@ -21,7 +24,7 @@ export async function getAllStats(_req: express.Request, res: express.Response):
   }
 }
 
-export async function getStat(req: express.Request, res: express.Response): Promise<void> {
+export async function getStat(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.statId
     const targetStat = await Stat.findByPk(id)
@@ -32,7 +35,25 @@ export async function getStat(req: express.Request, res: express.Response): Prom
   }
 }
 
-export async function updateStat(req: express.Request, res: express.Response): Promise<void> {
+export async function addStat(req: Request<ParamsDictionary, any, Stat>, res: Response): Promise<void> {
+  try {
+    const { points, rebounds, assists, imgame_id, user_id } = req.body
+    const createdStat = await Stat.create({
+      points: points,
+      rebounds: rebounds,
+      assists: assists,
+      imgame_id: imgame_id,
+      user_id: user_id,
+      created_at: new Date(),
+      updated_at: new Date(),
+    })
+    res.send(JSON.stringify({ message: 'Success', stat: createdStat }))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
+export async function updateStat(req: Request<ParamsDictionary, any, Stat>, res: Response): Promise<void> {
   try {
     const id = req.params.statId
     const targetStat = await Stat.findByPk(id)
@@ -52,30 +73,12 @@ export async function updateStat(req: express.Request, res: express.Response): P
   }
 }
 
-export async function deleteStat(req: express.Request, res: express.Response): Promise<void> {
+export async function deleteStat(req: Request, res: Response): Promise<void> {
   try {
     const id = req.params.statId
     const targetStat = await Stat.findByPk(id)
     const deletedStat = await targetStat.destroy()
     res.send(JSON.stringify({ message: 'Success', stat: deletedStat }))
-  } catch (e) {
-    res.status(400).send(e)
-  }
-}
-
-export async function addStat(req: express.Request, res: express.Response): Promise<void> {
-  try {
-    const { points, rebounds, assists, imgame_id, user_id } = req.body
-    const createdStat = await Stat.create({
-      points: points,
-      rebounds: rebounds,
-      assists: assists,
-      imgame_id: imgame_id,
-      user_id: user_id,
-      created_at: new Date(),
-      updated_at: new Date(),
-    })
-    res.send(JSON.stringify({ message: 'Success', stat: createdStat }))
   } catch (e) {
     res.status(400).send(e)
   }

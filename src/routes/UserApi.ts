@@ -2,12 +2,11 @@ import express from 'express'
 import { deleteUser, getAllUsers, getTestUser, getUser, updateUser } from '../controllers/Users'
 
 const router = express.Router()
-const userIdParameter = '/:userId'
 
 router.get('/', getAllUsers)
-router.get(userIdParameter, getUser)
-router.get(`/me${userIdParameter}`, getTestUser)
-router.put(userIdParameter, updateUser)
-router.delete(userIdParameter, deleteUser)
+router.get('/:userId', getUser)
+router.get('/me/:userId', getTestUser)
+router.put('/:userId', updateUser)
+router.delete('/:userId', deleteUser)
 
 export default router
