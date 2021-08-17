@@ -38,6 +38,10 @@ export async function patchJSON(path: string, body: Record<string, unknown>): Pr
   return sendJSON(path, body, 'PATCH')
 }
 
+export async function putJSON(path: string, body: Record<string, unknown>): Promise<FetchResponse> {
+  return sendJSON(path, body, 'PUT')
+}
+
 export async function postJSON(path: string, body: Record<string, unknown>): Promise<FetchResponse> {
   return sendJSON(path, body, 'POST')
 }
@@ -47,8 +51,8 @@ export async function deleteJSON(path: string): Promise<FetchResponse> {
 }
 
 function sendJSON(path, body, method: 'POST' | 'PUT' | 'PATCH' | 'DELETE'): Promise<FetchResponse> {
-  const param = document.querySelector('meta[name=csrf-param]').getAttribute('content')
-  const token = document.querySelector('meta[name=csrf-token]').getAttribute('content')
+  // const param = document.querySelector('meta[name=csrf-param]').getAttribute('content')
+  // const token = document.querySelector('meta[name=csrf-token]').getAttribute('content')
 
   return handleResponse(() =>
     fetch(path, {
@@ -60,7 +64,7 @@ function sendJSON(path, body, method: 'POST' | 'PUT' | 'PATCH' | 'DELETE'): Prom
       },
       body: JSON.stringify({
         ...body,
-        [param]: token,
+        // [param]: token,
       }),
     })
   )
