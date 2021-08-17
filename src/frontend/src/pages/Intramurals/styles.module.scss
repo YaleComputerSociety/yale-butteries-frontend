@@ -1,0 +1,23 @@
+.scoresPage {
+  margin: 0.9rem 0;
+  width: 100%;
+}
+
+.pageRow {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: calc(var(--bs-gutter-y) * -1);
+  margin-right: calc(var(--bs-gutter-x)/ -2);
+  margin-left: calc(var(--bs-gutter-x)/ -2);
+}
+
+.twoCol {
+  flex: 20%;
+}
+
+.eightCol {
+  flex: 80%;
+}

@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import classnames from 'classnames'
-import CloseIcon from 'svgs/CloseIcon'
+import CloseIcon from '../../svgs/CloseIcon'
 
 import styles from './styles.module.scss'
 
