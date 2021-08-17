@@ -37,15 +37,17 @@
     "webpack-cli": "^4.7.2"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.6.1",
     "@types/react": "^17.0.11",
     "@types/react-dom": "^17.0.7",
+    "@types/react-redux": "^7.1.18",
     "@types/react-router-dom": "^5.1.7",
     "classnames": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
-    "redux": "^4.1.0",
-    "reselect": "^4.0.0"
+    "redux": "^4.1.0"
   },
   "eslintConfig": {
     "root": true,
@@ -91,6 +93,7 @@
       "@typescript-eslint/ban-ts-ignore": 0,
       "@typescript-eslint/explicit-function-return-type": 0,
       "@typescript-eslint/no-explicit-any": 0,
+      "@typescript-eslint/explicit-module-boundary-types": 0,
       "jsx-a11y/no-autofocus": 0,
       "jsx-a11y/media-has-caption": 0,
       "jsx-a11y/click-events-have-key-events": 0,
