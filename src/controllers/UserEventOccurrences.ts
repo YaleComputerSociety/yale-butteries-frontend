@@ -7,21 +7,6 @@ import { ParamsDictionary } from 'express-serve-static-core'
 
 const { AttendanceStatus, UserEventOccurrence } = db
 
-async function getUserEventOccurrenceValues(userEventOccurrence: any) {
-  const statusProperty = userEventOccurrence.attendanceStatus.status
-  const ueoValues = userEventOccurrence.dataValues
-  const { attendance_status_id, ...rest } = ueoValues
-  const modifiedObject: UserEventOccurrence = {
-    ...rest,
-    attendanceStatus: statusProperty,
-  }
-  return modifiedObject
-}
-
-const enumInclude = {
-  include: [{ model: AttendanceStatus, as: 'attendanceStatus' }],
-}
-
 export async function getAllUserEventOccurrences(_: Request, res: Response): Promise<void> {
   try {
     const userEventOccurrenceCollection = await UserEventOccurrence.findAll(enumInclude)
@@ -70,8 +55,8 @@ export async function updateUserEventOccurrence(
   res: Response
 ): Promise<void> {
   try {
-    const id = req.params.userEventOccurrenceId
-    const targetUserEventOccurrence = await UserEventOccurrence.findByPk(id)
+    // const id = req.params.userEventOccurrenceId
+    const targetUserEventOccurrence = await UserEventOccurrence.findByPk(req.body.id)
     if ('attendance_status' in req.body) {
       const attendance_status_id = await AttendanceStatus.findOne({ where: { status: req.body.attendance_status } }).id
       targetUserEventOccurrence.attendance_status_id = attendance_status_id
@@ -92,4 +77,19 @@ export async function deleteUserEventOccurrence(req: Request, res: Response): Pr
   } catch (e) {
     res.status(400).send(e)
   }
+}
+
+const enumInclude = {
+  include: [{ model: AttendanceStatus, as: 'attendanceStatus' }],
+}
+
+async function getUserEventOccurrenceValues(userEventOccurrence: any) {
+  const statusProperty = userEventOccurrence.attendanceStatus.status
+  const ueoValues = userEventOccurrence.dataValues
+  const { attendance_status_id, ...rest } = ueoValues
+  const modifiedObject: UserEventOccurrence = {
+    ...rest,
+    attendanceStatus: statusProperty,
+  }
+  return modifiedObject
 }
