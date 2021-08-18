@@ -54,8 +54,8 @@ export const asyncFetchEvents = () => {
   return async (dispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
-      const event = await getJSON<Event[]>('/api/events')
-      dispatch(setEventsState(event))
+      const events = await getJSON<Event[]>('/api/events')
+      dispatch(setEventsState(events))
     } catch (e) {
       console.log(e)
     }
