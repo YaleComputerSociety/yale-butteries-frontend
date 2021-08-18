@@ -33,7 +33,7 @@ app.get('/apicall', async (_, res) => {
 })
 
 // API Routes
-app.use('/api/intramurals', gameRouter)
+app.use('/api/games', gameRouter)
 app.use('/api/users', userRouter)
 app.use('/api/stats', statRouter)
 app.use('/api/events', eventRouter)

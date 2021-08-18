@@ -18,11 +18,6 @@ const Inner: FC = () => {
 
   const dispatch = useAppDispatch()
 
-  async function makeAPICall() {
-    const results = await getJSON(pathPrefix)
-    console.log(results)
-  }
-
   useEffect(() => {
     if (events == null) {
       dispatch(asyncFetchEvents())
