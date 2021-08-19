@@ -54,8 +54,9 @@ export const asyncFetchGames = () => {
       dispatch(setGamesState(games))
     } catch (e) {
       console.log(e)
+    } finally {
+      dispatch(setIsLoading(false))
     }
-    dispatch(setIsLoading(false))
   }
 }
 

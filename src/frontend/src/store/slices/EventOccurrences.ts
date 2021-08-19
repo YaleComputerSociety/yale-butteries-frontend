@@ -61,8 +61,9 @@ export const asyncFetchEventOccurrences = () => {
       dispatch(setEventOccurrencesState(eventOccurrences))
     } catch (e) {
       console.log(e)
+    } finally {
+      dispatch(setIsLoading(false))
     }
-    dispatch(setIsLoading(false))
   }
 }
 

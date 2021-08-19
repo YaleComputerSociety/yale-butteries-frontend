@@ -43,7 +43,7 @@ const getGames = (state) => state.games.games
 const getUsers = (state) => state.users.users
 const getStats = (state) => state.stats.stats
 
-export const getGameWithUserStats = createSelector(
+export const getGamesWithUserStats = createSelector(
   [getGames, getUsers, getStats],
   (games: Game[], users: User[], stats: Stat[]): gameWithUserStats[] | null => {
     if (games == null || users == null || stats == null) {

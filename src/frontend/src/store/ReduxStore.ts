@@ -1,14 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import eventOccurrencesReducer from './slices/EventOccurrences'
+import usersReducer from './slices/Users'
 import eventsReducer from './slices/Events'
 import gamesReducer from './slices/Games'
+import statsReducer from './slices/Stats'
 
 const store = configureStore({
   reducer: {
     eventOccurrences: eventOccurrencesReducer,
     events: eventsReducer,
+    users: usersReducer,
     games: gamesReducer,
+    stats: statsReducer,
   },
 })
 
