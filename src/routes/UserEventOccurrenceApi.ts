@@ -1,10 +1,18 @@
 import express from 'express'
-
-import userEventOccurrenceControllers from '../controllers/UserEventOccurrences'
+import {
+  deleteUserEventOccurrence,
+  getAllUserEventOccurrences,
+  getUserEventOccurrence,
+  addUserEventOccurrence,
+  updateUserEventOccurrence,
+} from '../controllers/UserEventOccurrences'
 
 const router = express.Router()
 
-router.get('/', userEventOccurrenceControllers.getAllUserEventOccurrences)
-router.get('/:userEventOccurrenceId', userEventOccurrenceControllers.getUserEventOccurrence)
+router.get('/', getAllUserEventOccurrences)
+router.get('/:userEventOccurrenceId', getUserEventOccurrence)
+router.post('/', addUserEventOccurrence)
+router.put('/:userEventOccurrenceId', updateUserEventOccurrence)
+router.delete('/:userEventOccurrenceId', deleteUserEventOccurrence)
 
 export default router

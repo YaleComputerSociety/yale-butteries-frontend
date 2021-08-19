@@ -1,12 +1,12 @@
 import express from 'express'
-
-import userControllers from '../controllers/Users'
+import { deleteUser, getAllUsers, getTestUser, getUser, updateUser } from '../controllers/Users'
 
 const router = express.Router()
-const userIdParameter = '/:userId'
 
-router.get('/', userControllers.getAllUsers)
-router.get(userIdParameter, userControllers.getUser)
-router.get(`/me${userIdParameter}`, userControllers.getTestUser)
+router.get('/', getAllUsers)
+router.get('/:userId', getUser)
+router.get('/me/:userId', getTestUser)
+router.put('/:userId', updateUser)
+router.delete('/:userId', deleteUser)
 
 export default router

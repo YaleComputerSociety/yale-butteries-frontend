@@ -1,11 +1,12 @@
 import express from 'express'
-
-import statControllers from '../controllers/Stats'
+import { addStat, deleteStat, getAllStats, getStat, updateStat } from '../controllers/Stats'
 
 const router = express.Router()
-const statIdParameter = '/:statId'
 
-router.get('/', statControllers.getAllStats)
-router.get(statIdParameter, statControllers.getStat)
+router.get('/', getAllStats)
+router.get('/:statId', getStat)
+router.put('/:statId', updateStat)
+router.delete('/:statId', deleteStat)
+router.post('/', addStat)
 
 export default router
