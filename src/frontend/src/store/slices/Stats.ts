@@ -53,8 +53,9 @@ export const asyncFetchStats = () => {
       dispatch(setStatsState(stats))
     } catch (e) {
       console.log(e)
+    } finally {
+      dispatch(setIsLoading(false))
     }
-    dispatch(setIsLoading(false))
   }
 }
 

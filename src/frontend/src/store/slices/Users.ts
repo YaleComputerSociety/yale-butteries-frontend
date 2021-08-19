@@ -52,8 +52,9 @@ export const asyncFetchUsers = () => {
       dispatch(setUsersState(users))
     } catch (e) {
       console.log(e)
+    } finally {
+      dispatch(setIsLoading(false))
     }
-    dispatch(setIsLoading(false))
   }
 }
 
