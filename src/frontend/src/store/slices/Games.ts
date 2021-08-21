@@ -61,7 +61,7 @@ export const asyncFetchGames = () => {
 }
 
 // WARNING: FUNCTIONS NOT CURRENTLY SUPPORTED ON BACKEND
-export const asynceUpdateGame = (game: Game) => {
+export const asyncUpdateGame = (game: Game) => {
   return async (dispatch): Promise<void> => {
     try {
       // Spread operator is typescript hack.
@@ -74,7 +74,7 @@ export const asynceUpdateGame = (game: Game) => {
   }
 }
 
-export const asynceInsertGame = (game: Game) => {
+export const asyncInsertGame = (game: Game) => {
   return async (dispatch): Promise<void> => {
     try {
       const newGame = await postJSON('/api/games', { ...game })
