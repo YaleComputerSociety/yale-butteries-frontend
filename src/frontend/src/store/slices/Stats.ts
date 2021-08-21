@@ -59,7 +59,7 @@ export const asyncFetchStats = () => {
   }
 }
 
-export const asynceUpdateStat = (stat: Stat) => {
+export const asyncUpdateStat = (stat: Stat) => {
   return async (dispatch): Promise<void> => {
     try {
       // Spread operator is typescript hack.
@@ -72,7 +72,7 @@ export const asynceUpdateStat = (stat: Stat) => {
   }
 }
 
-export const asynceInsertStat = (stat: Stat) => {
+export const asyncInsertStat = (stat: Stat) => {
   return async (dispatch): Promise<void> => {
     try {
       const newStat = await postJSON('/api/stats', { ...stat })

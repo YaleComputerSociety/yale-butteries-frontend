@@ -37,7 +37,7 @@ app.use('/api/games', gameRouter)
 app.use('/api/users', userRouter)
 app.use('/api/stats', statRouter)
 app.use('/api/events', eventRouter)
-app.use('/api/usereventoccurrences', userEventOccurenceRouter)
+app.use('/api/userseventoccurrences', userEventOccurenceRouter)
 app.use('/api/rooms', roomRouter)
 app.use('/api/eventoccurrences', eventOccurrenceRouter)
 
