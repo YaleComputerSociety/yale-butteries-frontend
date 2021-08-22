@@ -7,13 +7,6 @@ import { ParamsDictionary } from 'express-serve-static-core'
 
 const { EventOccurrence } = db
 
-function getEventOccurrenceProperties(eventOccurrence: any) {
-  const modifiedObject: EventOccurrence = {
-    ...eventOccurrence.dataValues,
-  }
-  return modifiedObject
-}
-
 export async function getAllEventOccurrences(_: Request, res: Response): Promise<void> {
   try {
     const eventOccurrenceCollection = await EventOccurrence.findAll()
@@ -35,14 +28,13 @@ export async function getEventOccurrence(req: Request, res: Response): Promise<v
   }
 }
 
-// List data type, wht's inside of the list should be able to be abritray: T is the generic type Request<EventOccurrence> if it doesn't work just cast it
 export async function updateEventOccurrence(
   req: Request<ParamsDictionary, any, EventOccurrence>,
   res: Response
 ): Promise<void> {
   try {
-    const id = req.params.eventOccurrenceId
-    const targetEventOccurrence = await EventOccurrence.findByPk(id)
+    // const id = req.params.eventOccurrenceId
+    const targetEventOccurrence = await EventOccurrence.findByPk(req.body.id)
     if ('description' in req.body) {
       targetEventOccurrence.description = req.body.description
     }
@@ -68,4 +60,11 @@ export async function deleteEventOccurrence(req: Request, res: Response): Promis
   } catch (e) {
     res.status(400).send(e)
   }
+}
+
+function getEventOccurrenceProperties(eventOccurrence: any) {
+  const modifiedObject: EventOccurrence = {
+    ...eventOccurrence.dataValues,
+  }
+  return modifiedObject
 }
