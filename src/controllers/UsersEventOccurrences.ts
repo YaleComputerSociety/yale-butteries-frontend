@@ -83,7 +83,7 @@ const enumInclude = {
   include: [{ model: AttendanceStatus, as: 'attendanceStatus' }],
 }
 
-async function getUserEventOccurrenceValues(userEventOccurrence: any) {
+function getUserEventOccurrenceValues(userEventOccurrence: any) {
   const statusProperty = userEventOccurrence.attendanceStatus.status
   const ueoValues = userEventOccurrence.dataValues
   const { attendance_status_id, ...rest } = ueoValues
