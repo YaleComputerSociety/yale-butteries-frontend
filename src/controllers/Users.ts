@@ -96,7 +96,7 @@ async function getUserProperties(user: any, type: string) {
           ...rest,
           position: positionProperty,
           college: collegeProperty,
-          eventTypes: eventTypes,
+          event_types: eventTypes,
         }
       : {
           ...rest,

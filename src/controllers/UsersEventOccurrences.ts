@@ -89,7 +89,7 @@ async function getUserEventOccurrenceValues(userEventOccurrence: any) {
   const { attendance_status_id, ...rest } = ueoValues
   const modifiedObject: UserEventOccurrence = {
     ...rest,
-    attendanceStatus: statusProperty,
+    attendance_status: statusProperty,
   }
   return modifiedObject
 }
