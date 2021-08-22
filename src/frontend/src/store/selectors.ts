@@ -72,23 +72,19 @@ interface UserEventOccurrenceWithUser {
   user: User
 }
 
-const getUsersEventOccurrencesByEventOccurrence = (state, props) => {
-  return state.usersEventOccurrences.filter(
-    (userEventOccurrence) => userEventOccurrence.event_occurrence_id == props.eventOccurrence.id
-  )
+const getUsersEventOccurrences = (state) => {
+  return state.usersEventOccurrences
 }
 
-export const makeGetUsersWithUsersEventOccurrences = () => {
-  return createSelector(
-    [getUsers, getUsersEventOccurrencesByEventOccurrence],
-    (users: User[], usersEventOccurrences: UserEventOccurrence[]): UserEventOccurrenceWithUser[] | null => {
-      return usersEventOccurrences.map((userEventOccurrence) => {
-        const userIndex = users.findIndex((user) => user.id == userEventOccurrence.user_id)
-        return {
-          userEventOccurrence: userEventOccurrence,
-          user: users[userIndex],
-        }
-      })
-    }
-  )
-}
+export const getUsersWithUsersEventOccurrences = createSelector(
+  [getUsers, getUsersEventOccurrences],
+  (users: User[], usersEventOccurrences: UserEventOccurrence[]): UserEventOccurrenceWithUser[] | null => {
+    return usersEventOccurrences.map((userEventOccurrence) => {
+      const userIndex = users.findIndex((user) => user.id == userEventOccurrence.user_id)
+      return {
+        userEventOccurrence: userEventOccurrence,
+        user: users[userIndex],
+      }
+    })
+  }
+)

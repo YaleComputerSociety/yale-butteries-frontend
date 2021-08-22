@@ -1,19 +1,46 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useMemo } from 'react'
 
 import { useAppSelector, useAppDispatch } from 'store/TypedHooks'
-import { getGamesWithUserStats } from 'store/selectors'
+import { getGamesWithUserStats, getUsersWithUsersEventOccurrences } from 'store/selectors'
 import { asyncFetchUsers } from 'store/slices/Users'
-import { asyncFetchGames } from 'store/slices/Games'
-import { asyncFetchStats } from 'store/slices/Stats'
+import { asyncFetchEventOccurrences } from 'store/slices/EventOccurrences'
+import { asyncFetchUsersEventOccurrences } from 'store/slices/UsersEventOccurrences'
+
+import { EventOccurrence } from 'store/slices/EventOccurrences'
 
 import Default from 'layouts/Default'
+
+const TestSelect: FC<{ eventOccurrence: EventOccurrence }> = ({ eventOccurrence }) => {
+  const usersWithUsersEventOccurrences = useAppSelector(getUsersWithUsersEventOccurrences)
+
+  const selectedUsersWithUserEventOccurrence = useMemo(
+    () =>
+      usersWithUsersEventOccurrences.filter(
+        (userWithUserEventOccurrence) =>
+          userWithUserEventOccurrence.userEventOccurrence.event_occurrence_id == eventOccurrence.id
+      ),
+    [usersWithUsersEventOccurrences, eventOccurrence.id]
+  )
+
+  return (
+    <div>
+      <div>{`Event Occurrence: ${eventOccurrence.id}`}</div>
+      {selectedUsersWithUserEventOccurrence.map((userWithUserEventOccurrence) => {
+        return (
+          <div
+            key={userWithUserEventOccurrence.user.id}
+          >{`User: ${userWithUserEventOccurrence.user.id}, attendance status: ${userWithUserEventOccurrence.userEventOccurrence.attendance_status}`}</div>
+        )
+      })}
+    </div>
+  )
+}
 
 const Inner: FC = () => {
   const dispatch = useAppDispatch()
   const { users, isLoading: isLoadingUsers } = useAppSelector((state) => state.users)
-  const { games, isLoading: isLoadingGames } = useAppSelector((state) => state.games)
-  const { stats, isLoading: isLoadingStats } = useAppSelector((state) => state.stats)
-  const gamesWithUserStats = useAppSelector(getGamesWithUserStats)
+  const { eventOccurrences, isLoading: isLoadingEventOccurrences } = useAppSelector((state) => state.eventOccurrences)
+  const { usersEventOccurrences, isLoading: isLoadingUsersEventOccurrences } = useAppSelector((state) => state.usersEventOccurrences)
 
   useEffect(() => {
     if (users == null) {
@@ -22,43 +49,19 @@ const Inner: FC = () => {
   }, [dispatch, users])
 
   useEffect(() => {
-    if (games == null) {
-      dispatch(asyncFetchGames())
+    if (eventOccurrences == null) {
+      dispatch(asyncFetchEventOccurrences())
     }
-  }, [dispatch, games])
+  }, [dispatch, eventOccurrences])
 
   useEffect(() => {
-    if (stats == null) {
-      dispatch(asyncFetchStats())
+    if (usersEventOccurrences == null) {
+      dispatch(asyncFetchUsersEventOccurrences())
     }
-  }, [dispatch, stats])
+  }, [dispatch, usersEventOccurrences])
+
 
   return (
-    <>
-      {/* {eventOccurrences == null && <button onClick={loadData}>{'Api Call'}</button>} */}
-      {isLoadingUsers == true || isLoadingGames || isLoadingStats ? (
-        <div>{'Loading...'}</div>
-      ) : (
-        gamesWithUserStats != null &&
-        gamesWithUserStats.map((gameWithUserStats) => {
-          return (
-            <ul key={gameWithUserStats.game.id}>
-              <li>{`${gameWithUserStats.game.team1} vs ${gameWithUserStats.game.team2}`}</li>
-              {gameWithUserStats.userStats.map((userStat) => {
-                return (
-                  <>
-                    <li>{`Player ${userStat.user.name}`}</li>
-                    <li>{`Points: ${userStat.stat.points}`}</li>
-                    <li>{`Rebounds: ${userStat.stat.rebounds}`}</li>
-                    <li>{`Assists: ${userStat.stat.assists}`}</li>
-                  </>
-                )
-              })}
-            </ul>
-          )
-        })
-      )}
-    </>
   )
 }
 
