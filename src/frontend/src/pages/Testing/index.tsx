@@ -1,24 +1,81 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useMemo } from 'react'
+
+import { useAppSelector, useAppDispatch } from 'store/TypedHooks'
+import { getUsersWithUsersEventOccurrences } from 'store/selectors'
+import { asyncFetchUsers } from 'store/slices/Users'
+import { asyncFetchEventOccurrences } from 'store/slices/EventOccurrences'
+import { asyncFetchUsersEventOccurrences } from 'store/slices/UsersEventOccurrences'
+
+import { EventOccurrence } from 'store/slices/EventOccurrences'
 
 import Default from 'layouts/Default'
-import Form from 'components/Form'
+
+const TestSelect: FC<{ eventOccurrence: EventOccurrence }> = ({ eventOccurrence }) => {
+  const usersWithUsersEventOccurrences = useAppSelector(getUsersWithUsersEventOccurrences)
+
+  const selectedUsersWithUserEventOccurrence = useMemo(
+    () =>
+      usersWithUsersEventOccurrences.filter(
+        (userWithUserEventOccurrence) =>
+          userWithUserEventOccurrence.userEventOccurrence.event_occurrence_id == eventOccurrence.id
+      ),
+    [usersWithUsersEventOccurrences, eventOccurrence.id]
+  )
+
+  return (
+    <div>
+      <div>{`Event Occurrence: ${eventOccurrence.id}`}</div>
+      {selectedUsersWithUserEventOccurrence.map((userWithUserEventOccurrence) => {
+        return (
+          <div
+            key={userWithUserEventOccurrence.user.id}
+          >{`User: ${userWithUserEventOccurrence.user.id}, attendance status: ${userWithUserEventOccurrence.userEventOccurrence.attendance_status}`}</div>
+        )
+      })}
+    </div>
+  )
+}
 
 const Inner: FC = () => {
-  const [isVisible, setIsVisible] = useState(false)
+  const dispatch = useAppDispatch()
+  const { users, isLoading: isLoadingUsers } = useAppSelector((state) => state.users)
+  const { eventOccurrences, isLoading: isLoadingEventOccurrences } = useAppSelector((state) => state.eventOccurrences)
+  const { usersEventOccurrences, isLoading: isLoadingUsersEventOccurrences } = useAppSelector(
+    (state) => state.usersEventOccurrences
+  )
 
-  function makeVisible() {
-    setIsVisible(true)
-  }
+  useEffect(() => {
+    if (users == null) {
+      dispatch(asyncFetchUsers())
+    }
+  }, [dispatch, users])
+
+  useEffect(() => {
+    if (eventOccurrences == null) {
+      dispatch(asyncFetchEventOccurrences())
+    }
+  }, [dispatch, eventOccurrences])
+
+  useEffect(() => {
+    if (usersEventOccurrences == null) {
+      dispatch(asyncFetchUsersEventOccurrences())
+    }
+  }, [dispatch, usersEventOccurrences])
 
   return (
     <>
-      <button onClick={makeVisible}>{'Form Click'}</button>
-      <Form isVisible={isVisible} setIsVisible={setIsVisible}>
-        <div>
-          <p>Hello first paragraph!</p>
-          <p>Hello second paragraph!</p>
-        </div>
-      </Form>
+      {isLoadingUsers ||
+      isLoadingEventOccurrences ||
+      isLoadingUsersEventOccurrences ||
+      users == null ||
+      eventOccurrences == null ||
+      usersEventOccurrences == null ? (
+        <div>{'Loading...'}</div>
+      ) : (
+        eventOccurrences.map((eventOccurrence) => {
+          return <TestSelect eventOccurrence={eventOccurrence} key={eventOccurrence.id} />
+        })
+      )}
     </>
   )
 }

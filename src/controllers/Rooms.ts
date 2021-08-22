@@ -12,7 +12,7 @@ async function getRoomProperties(room: any) {
   const modifiedObject: Room = {
     ...rest,
     college: collegeProperty,
-    recurrenceTypes: recurrenceTypesStrings,
+    recurrence_types: recurrenceTypesStrings,
   }
   return modifiedObject
 }

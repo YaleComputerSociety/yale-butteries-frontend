@@ -7,13 +7,13 @@ import { ParamsDictionary } from 'express-serve-static-core'
 
 const { AttendanceStatus, UserEventOccurrence } = db
 
-async function getUserEventOccurrenceValues(userEventOccurrence: any) {
+function getUserEventOccurrenceValues(userEventOccurrence: any) {
   const statusProperty = userEventOccurrence.attendanceStatus.status
   const ueoValues = userEventOccurrence.dataValues
   const { attendance_status_id, ...rest } = ueoValues
   const modifiedObject: UserEventOccurrence = {
     ...rest,
-    attendanceStatus: statusProperty,
+    attendance_status: statusProperty,
   }
   return modifiedObject
 }

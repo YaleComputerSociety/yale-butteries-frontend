@@ -31,8 +31,11 @@ export interface User extends ModelInstance {
 export interface Event extends ModelInstance {
   name: string
   description: string
-  room_id: number
+  first_start_timestamp: Date
+  first_end_timestamp: Date
+  end_date: Date
   user_id: number
+  room_id: number
   event_type: string
   recurrence_type: string
   approval_status: string
