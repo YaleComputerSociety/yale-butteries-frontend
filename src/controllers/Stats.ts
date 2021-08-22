@@ -7,13 +7,6 @@ import { ParamsDictionary } from 'express-serve-static-core'
 
 const { Stat } = db
 
-function getStatValues(stat: any) {
-  const modifiedStat: Stat = {
-    ...stat.dataValues,
-  }
-  return modifiedStat
-}
-
 export async function getAllStats(_: Request, res: Response): Promise<void> {
   try {
     const statCollection = await Stat.findAll()
@@ -55,8 +48,8 @@ export async function addStat(req: Request<ParamsDictionary, any, Stat>, res: Re
 
 export async function updateStat(req: Request<ParamsDictionary, any, Stat>, res: Response): Promise<void> {
   try {
-    const id = req.params.statId
-    const targetStat = await Stat.findByPk(id)
+    // const id = req.params.statId
+    const targetStat = await Stat.findByPk(req.body.id)
     if ('points' in req.body) {
       targetStat.points = req.body.points
     }
@@ -82,4 +75,11 @@ export async function deleteStat(req: Request, res: Response): Promise<void> {
   } catch (e) {
     res.status(400).send(e)
   }
+}
+
+function getStatValues(stat: any) {
+  const modifiedStat: Stat = {
+    ...stat.dataValues,
+  }
+  return modifiedStat
 }

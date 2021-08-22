@@ -5,8 +5,8 @@ const router = express.Router()
 
 router.get('/', getAllEvents)
 router.get('/:eventId', getEvent)
-router.put(`/:eventId`, updateEvent)
-router.delete(`/:eventId`, deleteEvent)
 router.post('/', addEvent)
+router.put(`/`, updateEvent)
+router.delete(`/:eventId`, deleteEvent)
 
 export default router
