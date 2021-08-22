@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useMemo } from 'react'
 
 import { useAppSelector, useAppDispatch } from 'store/TypedHooks'
-import { getGamesWithUserStats, getUsersWithUsersEventOccurrences } from 'store/selectors'
+import { getUsersWithUsersEventOccurrences } from 'store/selectors'
 import { asyncFetchUsers } from 'store/slices/Users'
 import { asyncFetchEventOccurrences } from 'store/slices/EventOccurrences'
 import { asyncFetchUsersEventOccurrences } from 'store/slices/UsersEventOccurrences'
@@ -40,7 +40,9 @@ const Inner: FC = () => {
   const dispatch = useAppDispatch()
   const { users, isLoading: isLoadingUsers } = useAppSelector((state) => state.users)
   const { eventOccurrences, isLoading: isLoadingEventOccurrences } = useAppSelector((state) => state.eventOccurrences)
-  const { usersEventOccurrences, isLoading: isLoadingUsersEventOccurrences } = useAppSelector((state) => state.usersEventOccurrences)
+  const { usersEventOccurrences, isLoading: isLoadingUsersEventOccurrences } = useAppSelector(
+    (state) => state.usersEventOccurrences
+  )
 
   useEffect(() => {
     if (users == null) {
@@ -60,8 +62,21 @@ const Inner: FC = () => {
     }
   }, [dispatch, usersEventOccurrences])
 
-
   return (
+    <>
+      {isLoadingUsers ||
+      isLoadingEventOccurrences ||
+      isLoadingUsersEventOccurrences ||
+      users == null ||
+      eventOccurrences == null ||
+      usersEventOccurrences == null ? (
+        <div>{'Loading...'}</div>
+      ) : (
+        eventOccurrences.map((eventOccurrence) => {
+          return <TestSelect eventOccurrence={eventOccurrence} key={eventOccurrence.id} />
+        })
+      )}
+    </>
   )
 }
 

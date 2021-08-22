@@ -5,7 +5,7 @@ import {
   getUserEventOccurrence,
   addUserEventOccurrence,
   updateUserEventOccurrence,
-} from '../controllers/UserEventOccurrences'
+} from '../controllers/UsersEventOccurrences'
 
 const router = express.Router()
 

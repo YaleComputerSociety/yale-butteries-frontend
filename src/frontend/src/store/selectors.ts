@@ -73,7 +73,7 @@ interface UserEventOccurrenceWithUser {
 }
 
 const getUsersEventOccurrences = (state) => {
-  return state.usersEventOccurrences
+  return state.usersEventOccurrences.usersEventOccurrences
 }
 
 export const getUsersWithUsersEventOccurrences = createSelector(

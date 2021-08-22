@@ -15,9 +15,9 @@ async function getEventProperties(event: any) {
   const { event_type_id, recurrence_type_id, approval_status_id, ...rest } = eventValues
   const modifiedObject: Event = {
     ...rest,
-    eventType: eventTypeProperty,
-    recurrenceType: recurrenceTypeProperty,
-    approvalStatus: approvalStatusProperty,
+    event_type: eventTypeProperty,
+    recurrence_type: recurrenceTypeProperty,
+    approval_status: approvalStatusProperty,
   }
   return modifiedObject
 }
