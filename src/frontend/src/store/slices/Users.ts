@@ -58,7 +58,7 @@ export const asyncFetchUsers = () => {
   }
 }
 
-export const asynceUpdateUser = (user: User) => {
+export const asyncUpdateUser = (user: User) => {
   return async (dispatch): Promise<void> => {
     try {
       // Spread operator is typescript hack.
@@ -71,7 +71,7 @@ export const asynceUpdateUser = (user: User) => {
   }
 }
 
-export const asynceInsertUser = (user: User) => {
+export const asyncInsertUser = (user: User) => {
   return async (dispatch): Promise<void> => {
     try {
       const newUser = await postJSON('/api/users', { ...user })

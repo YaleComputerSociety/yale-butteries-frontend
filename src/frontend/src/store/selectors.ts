@@ -4,6 +4,7 @@ import { Event } from './slices/Events'
 import { Stat } from './slices/Stats'
 import { User } from './slices/Users'
 import { Game } from './slices/Games'
+import { UserEventOccurrence } from './slices/UsersEventOccurrences'
 
 interface EventOccurrenceWithEvent {
   eventOccurrence: EventOccurrence
@@ -61,6 +62,28 @@ export const getGamesWithUserStats = createSelector(
       return {
         game: game,
         userStats: usersWithStats,
+      }
+    })
+  }
+)
+
+interface UserEventOccurrenceWithUser {
+  userEventOccurrence: UserEventOccurrence
+  user: User
+}
+
+const getUsersEventOccurrences = (state) => {
+  return state.usersEventOccurrences.usersEventOccurrences
+}
+
+export const getUsersWithUsersEventOccurrences = createSelector(
+  [getUsers, getUsersEventOccurrences],
+  (users: User[], usersEventOccurrences: UserEventOccurrence[]): UserEventOccurrenceWithUser[] | null => {
+    return usersEventOccurrences.map((userEventOccurrence) => {
+      const userIndex = users.findIndex((user) => user.id == userEventOccurrence.user_id)
+      return {
+        userEventOccurrence: userEventOccurrence,
+        user: users[userIndex],
       }
     })
   }

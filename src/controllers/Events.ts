@@ -7,21 +7,6 @@ import { Event } from './ControllerInterfaces'
 
 const { EventType, RecurrenceType, ApprovalStatus, Event, EventOccurrence } = db
 
-async function getEventProperties(event: any) {
-  const eventTypeProperty = event.eventType.type
-  const recurrenceTypeProperty = event.recurrenceType.type
-  const approvalStatusProperty = event.approvalStatus.status
-  const eventValues = event.dataValues
-  const { event_type_id, recurrence_type_id, approval_status_id, ...rest } = eventValues
-  const modifiedObject: Event = {
-    ...rest,
-    eventType: eventTypeProperty,
-    recurrenceType: recurrenceTypeProperty,
-    approvalStatus: approvalStatusProperty,
-  }
-  return modifiedObject
-}
-
 const enumInclude = {
   include: [
     { model: EventType, as: 'eventType' },
@@ -98,8 +83,8 @@ export async function addEvent(req: Request<ParamsDictionary, any, Event>, res: 
 // Check if the original value from the original record was pending, check if value after it is accepting. check if not accepted, check accepted. if true, run method to create event occurrences. check recurrence type, no recurrence type then just 1, start time starts, december 31 end of semester, keep on adding event occurrences, end_date: nullable, if null, use december 31
 export async function updateEvent(req: Request<ParamsDictionary, any, Event>, res: Response): Promise<void> {
   try {
-    const id = req.body.id
-    const targetEvent = await Event.findByPk(id)
+    // const id = req.body.id
+    const targetEvent = await Event.findByPk(req.body.id)
     // !1 = Not Accepted, 1 = Accepted
     let newlyAccepted = false
 
@@ -139,4 +124,19 @@ export async function deleteEvent(req: Request, res: Response): Promise<void> {
   } catch (e) {
     res.status(400).send(e)
   }
+}
+
+async function getEventProperties(event: any) {
+  const eventTypeProperty = event.eventType.type
+  const recurrenceTypeProperty = event.recurrenceType.type
+  const approvalStatusProperty = event.approvalStatus.status
+  const eventValues = event.dataValues
+  const { event_type_id, recurrence_type_id, approval_status_id, ...rest } = eventValues
+  const modifiedObject: Event = {
+    ...rest,
+    event_type: eventTypeProperty,
+    recurrence_type: recurrenceTypeProperty,
+    approval_status: approvalStatusProperty,
+  }
+  return modifiedObject
 }

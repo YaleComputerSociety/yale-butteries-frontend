@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { getJSON, putJSON, postJSON } from 'utils/fetch'
 
-export interface Event {
+interface EventWithoutVisibility {
   id: number
   name: string
   description: string
@@ -16,6 +16,10 @@ export interface Event {
   approval_status: string
   createdAt: Date
   updatedAt: Date
+}
+
+export interface Event extends EventWithoutVisibility {
+  isVisible: boolean
 }
 
 export interface EventsState {
@@ -54,7 +58,13 @@ export const asyncFetchEvents = () => {
   return async (dispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
-      const events = await getJSON<Event[]>('/api/events')
+      const eventsWithoutVisibility = await getJSON<EventWithoutVisibility[]>('/api/events')
+      const events = eventsWithoutVisibility.map((event) => {
+        return {
+          ...event,
+          isVisible: false,
+        }
+      })
       dispatch(setEventsState(events))
     } catch (e) {
       console.log(e)
@@ -64,24 +74,34 @@ export const asyncFetchEvents = () => {
   }
 }
 
-export const asynceUpdateEvent = (event: Event) => {
+export const asyncUpdateEvent = (event: Event) => {
   return async (dispatch): Promise<void> => {
+    const isVisible = event.isVisible
     try {
       // Spread operator is typescript hack.
       // See: https://stackoverflow.com/questions/60697214/how-to-fix-index-signature-is-missing-in-type-error
-      const updatedEvent = await putJSON('/api/events', { ...event })
-      dispatch(updateEvent(updatedEvent.jsonBody))
+      const updatedEventWithoutVisibility = await putJSON('/api/events', { ...event })
+      const updatedEvent = {
+        ...updatedEventWithoutVisibility.jsonBody,
+        isVisible: isVisible,
+      }
+      dispatch(updateEvent(updatedEvent))
     } catch (e) {
       console.log(e)
     }
   }
 }
 
-export const asynceInsertEvent = (event: Event) => {
+export const asyncInsertEvent = (event: EventWithoutVisibility) => {
   return async (dispatch): Promise<void> => {
     try {
       const newEvent = await postJSON('/api/events', { ...event })
-      dispatch(insertEvent(newEvent.jsonBody))
+      dispatch(
+        insertEvent({
+          ...newEvent.jsonBody,
+          isVisible: false,
+        })
+      )
     } catch (e) {
       console.log(e)
     }

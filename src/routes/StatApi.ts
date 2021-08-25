@@ -5,8 +5,8 @@ const router = express.Router()
 
 router.get('/', getAllStats)
 router.get('/:statId', getStat)
-router.put('/:statId', updateStat)
-router.delete('/:statId', deleteStat)
 router.post('/', addStat)
+router.put('/', updateStat)
+router.delete('/:statId', deleteStat)
 
 export default router

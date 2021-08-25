@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { getJSON, putJSON } from 'utils/fetch'
 
-export interface EventOccurrence {
+interface EventOccurrenceWithoutVisibility {
   id: number
   event_id: number
   description: string | null
@@ -10,6 +10,10 @@ export interface EventOccurrence {
   end_time: Date
   createdAt: Date
   updatedAt: Date
+}
+
+export interface EventOccurrence extends EventOccurrenceWithoutVisibility {
+  isVisible: boolean
 }
 
 export interface EventOccurrencesState {
@@ -57,7 +61,15 @@ export const asyncFetchEventOccurrences = () => {
   return async (dispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
-      const eventOccurrences = await getJSON<EventOccurrence[]>('/api/eventoccurrences')
+      const eventOccurrencesWithoutVisibility = await getJSON<EventOccurrenceWithoutVisibility[]>(
+        '/api/eventoccurrences'
+      )
+      const eventOccurrences = eventOccurrencesWithoutVisibility.map((eventOccurrence) => {
+        return {
+          ...eventOccurrence,
+          isVisible: false,
+        }
+      })
       dispatch(setEventOccurrencesState(eventOccurrences))
     } catch (e) {
       console.log(e)
@@ -67,13 +79,18 @@ export const asyncFetchEventOccurrences = () => {
   }
 }
 
-export const asynceUpdateEventOccurrence = (eventOccurrence: EventOccurrence) => {
+export const asyncUpdateEventOccurrence = (eventOccurrence: EventOccurrence) => {
   return async (dispatch): Promise<void> => {
     try {
+      const { isVisible } = eventOccurrence
       // Spread operator is typescript hack.
       // See: https://stackoverflow.com/questions/60697214/how-to-fix-index-signature-is-missing-in-type-error
-      const updatedEventOccurrence = await putJSON('/api/eventoccurrences', { ...eventOccurrence })
-      dispatch(updateEventOccurrence(updatedEventOccurrence.jsonBody))
+      const updatedEventOccurrenceWithoutVisibility = await putJSON('/api/eventoccurrences', { ...eventOccurrence })
+      const updatedEventOccurrence = {
+        ...updatedEventOccurrenceWithoutVisibility.jsonBody,
+        isVisible: isVisible,
+      }
+      dispatch(updateEventOccurrence(updatedEventOccurrence))
     } catch (e) {
       console.log(e)
     }
