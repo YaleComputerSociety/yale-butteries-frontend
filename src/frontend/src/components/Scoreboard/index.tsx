@@ -1,18 +1,35 @@
 import React, { FC, useState } from 'react'
 
 import styles from './styles.module.scss'
-import classnames from 'classnames'
 
-import { Game, Stat } from '../../../../controllers/ControllerInterfaces'
+import { Game } from '../../store/slices/Games'
+import { User } from '../../store/slices/Users'
+import { Stat } from '../../store/slices/Stats'
+import DownArrow from 'svgs/DownArrow'
+import classNames from 'classnames'
+
+interface userWithStat {
+  user: User
+  stat: Stat
+}
 
 interface ScoreboardProps {
   match: Game
-  homePlayers: Stat[]
-  awayPlayers: Stat[]
+  homePlayers: userWithStat[]
+  awayPlayers: userWithStat[]
 }
 
 interface PlayerTableProps {
-  players: Stat[]
+  players: userWithStat[]
+}
+
+const collegeImageMap = {
+  'Ezra Stiles': 'https://upload.wikimedia.org/wikipedia/en/b/b7/EzraStilesshield.png',
+  Branford: 'https://upload.wikimedia.org/wikipedia/en/3/30/Branford_College_shield.png',
+  Davenport: 'https://upload.wikimedia.org/wikipedia/en/b/b3/Davenportshield.png',
+  Morse: 'https://upload.wikimedia.org/wikipedia/en/7/7b/Morseshield.png',
+  Pierson: 'https://upload.wikimedia.org/wikipedia/en/thumb/d/da/Piersonshield.png/280px-Piersonshield.png',
+  Berkeley: 'https://upload.wikimedia.org/wikipedia/en/thumb/1/13/Berkeleyshield.png/280px-Berkeleyshield.png',
 }
 
 const HeaderRow = () => {
@@ -33,14 +50,20 @@ const HeaderRow = () => {
 const TableBody = ({ players }: PlayerTableProps) => {
   return (
     <tbody>
-      {players.map((player: Stat, index: number) => (
-        <tr key={index}>
-          <td>{player.user_id}</td>
-          <td>{player.points}</td>
-          <td>{player.rebounds}</td>
-          <td>{player.assists}</td>
+      {players.length > 0 ? (
+        players.map((player: userWithStat, index: number) => (
+          <tr className={styles.headerRow} key={index}>
+            <td>{player.user.name}</td>
+            <td>{player.stat.points}</td>
+            <td>{player.stat.rebounds}</td>
+            <td>{player.stat.assists}</td>
+          </tr>
+        ))
+      ) : (
+        <tr>
+          <td colSpan={4}>{'No player stats available'}</td>
         </tr>
-      ))}
+      )}
     </tbody>
   )
 }
@@ -78,38 +101,40 @@ const Scoreboard: FC<ScoreboardProps> = ({ match, homePlayers, awayPlayers }: Sc
         </div>
         <div className={styles.scoreResult}>
           <div className={styles.teamAndIcon}>
-            <img
-              className={styles.logo}
-              alt="Residential College Logo"
-              src="https://upload.wikimedia.org/wikipedia/en/3/30/Branford_College_shield.png"
-            />
-            <h6>{match.teamOne}</h6>
+            <img className={styles.logo} alt="Home Residential College Logo" src={collegeImageMap[match.team1]} />
+            <h4>{match.team1}</h4>
           </div>
-          <h3>{match.team_1_score}</h3>
-          <h3>{' - '}</h3>
-          <h3>{match.team_2_score}</h3>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+              maxWidth: '20%',
+            }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'row', paddingBottom: '50%' }}>
+              <h1>{match.team_1_score}</h1>
+              <h3>{' - '}</h3>
+              <h1>{match.team_2_score}</h1>
+            </div>
+            <div style={{ textAlign: 'center', paddingTop: '50%' }}>
+              <DownArrow className={classNames(styles.test, { [styles.open]: open })} />
+            </div>
+          </div>
           <div className={styles.teamAndIcon}>
-            <img
-              className={styles.logo}
-              alt="Residential College Logo"
-              src="https://upload.wikimedia.org/wikipedia/en/b/b3/Davenportshield.png"
-            />
-            <h6>{match.teamTwo}</h6>
+            <img className={styles.logo} alt="Away Residential College Logo" src={collegeImageMap[match.team2]} />
+            <h4>{match.team2}</h4>
           </div>
         </div>
       </section>
       <div
-        className={classnames(styles.collapseContent, open ? styles.expanded : styles.collapsed)}
+        className={classNames(styles.collapseContent, open ? styles.expanded : styles.collapsed)}
         aria-expanded={open}
       >
         <div>
           <div className={styles.tabMenu}>
-            <button onClick={changeToHome} className={isHome ? styles.focus : ''}>
-              {' Home '}
-            </button>
-            <button onClick={changeToAway} className={isHome ? '' : styles.focus}>
-              {' Away '}
-            </button>
+            <button onClick={changeToHome}>{' Home '}</button>
+            <button onClick={changeToAway}>{' Away '}</button>
           </div>
           <div>
             <PlayerTable players={isHome ? homePlayers : awayPlayers} />

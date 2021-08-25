@@ -41,6 +41,7 @@ const Inner: FC = () => {
       ) : (
         gamesWithUserStats != null &&
         gamesWithUserStats.map((gameWithUserStats) => {
+          console.log(gameWithUserStats)
           return (
             <ul key={gameWithUserStats.game.id}>
               <li>{`${gameWithUserStats.game.team1} vs ${gameWithUserStats.game.team2}`}</li>

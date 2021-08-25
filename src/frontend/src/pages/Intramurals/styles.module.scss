@@ -16,8 +16,85 @@
 
 .twoCol {
   flex: 20%;
+  margin-left: auto;
+  margin-right: 0;
+  // border-right: 1px solid black;
 }
 
 .eightCol {
   flex: 80%;
+  background-color: white;
+}
+
+.buttonHolder {
+  position: relative;
+  // display: flex;
+  // justify-content: flex-end;
+  // align-items: center;
+  // top: 40%;
+  // left: 50%;
+  border: 1px #00356b solid;
+  border-right: 0;
+  border-radius: 0 10px 10px 0;
+  height: fit-content;
+  width: fit-content;
+  &::before {
+    position: absolute;
+    border: 2px black solid;
+    background-color: #0074D9;
+    border-radius: 10px;
+  }
+}
+
+.testIT {
+  position: sticky;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  top: 40%;
+  left: 50%;
+}
+
+// relative positioning, game container should be relative, anything
+// relative does not change, just allows you; relative object is initial to relative children; use it to describe the relative grouping; won't affect flexbox
+// svg gray arrow, start pointingdownwards, css animation rotating it upwards, 
+
+.tab {
+  background-color: white;
+  color: #00356b;
+  border-radius: 10px;
+  border: 1px #00356b solid;
+  border-right: 0;
+  width: 100%;
+  // border-top: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  padding: 10px 30px;
+  overflow: hidden;
+  // margin: 5% 0;
+  transition: ease-in-out 0.3s;
+  &:hover {
+    background-color: #00356b;
+    color: white;
+  }
+  &.firstChild {
+    border-bottom-right-radius: 0;
+  }
+  &.lastChild {
+    border-top-right-radius: 0;
+  }
+  &.normal {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  &.highlighted {
+    background-color: #00356b;
+    color: white;
+  }
+}
+
+ul {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  padding-inline-start: 0;
 }
