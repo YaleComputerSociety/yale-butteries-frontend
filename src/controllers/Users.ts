@@ -25,10 +25,9 @@ export async function getUser(req: express.Request, res: express.Response): Prom
   }
 }
 
-export async function getTestUser(req: express.Request, res: express.Response): Promise<void> {
+export async function getMe(req: express.Request, res: express.Response): Promise<void> {
   try {
-    const id = req.params.userId
-    const targetUser = await User.findByPk(id, enumInclude)
+    const targetUser = await User.findOne({ where: { name: 'Tom Cruise' }, ...enumInclude })
     const modifiedObject = await getUserProperties(targetUser, 'me')
     res.send(JSON.stringify(modifiedObject))
   } catch (e) {
@@ -96,7 +95,7 @@ async function getUserProperties(user: any, type: string) {
           ...rest,
           position: positionProperty,
           college: collegeProperty,
-          event_types: eventTypes,
+          eventTypes: eventTypes,
         }
       : {
           ...rest,
