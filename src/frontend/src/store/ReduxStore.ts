@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import usersReducer from './slices/Users'
+import currentUserReducer from './slices/CurrentUser'
 import eventsReducer from './slices/Events'
 import eventOccurrencesReducer from './slices/EventOccurrences'
 import usersEventOccurrencesReducer from './slices/UsersEventOccurrences'
@@ -11,6 +12,7 @@ import roomsReducer from './slices/Rooms'
 const store = configureStore({
   reducer: {
     users: usersReducer,
+    currentUser: currentUserReducer,
     events: eventsReducer,
     eventOccurrences: eventOccurrencesReducer,
     usersEventOccurrences: usersEventOccurrencesReducer,
