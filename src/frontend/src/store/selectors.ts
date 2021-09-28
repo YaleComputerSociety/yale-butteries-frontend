@@ -88,5 +88,3 @@ export const getUsersWithUsersEventOccurrences = createSelector(
     })
   }
 )
-
-export const getCurrentUserWithGamesAndUserStats = createSelector
