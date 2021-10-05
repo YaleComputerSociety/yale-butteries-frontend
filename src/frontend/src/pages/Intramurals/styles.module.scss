@@ -12,6 +12,7 @@
   margin-top: calc(var(--bs-gutter-y) * -1);
   margin-right: calc(var(--bs-gutter-x)/ -2);
   margin-left: calc(var(--bs-gutter-x)/ -2);
+  min-height: 100vh;
 }
 
 .twoCol {
@@ -26,6 +27,11 @@
   background-color: white;
 }
 
+.sixCol {
+  flex: 60%;
+  background-color: white;
+}
+
 .buttonHolder {
   position: relative;
   // display: flex;
@@ -35,7 +41,7 @@
   // left: 50%;
   border: 1px #00356b solid;
   border-right: 0;
-  border-radius: 0 10px 10px 0;
+  border-radius: 10px 0 0 10px;
   height: fit-content;
   width: fit-content;
   &::before {
@@ -46,7 +52,7 @@
   }
 }
 
-.testIT {
+.navbar{
   position: sticky;
   display: flex;
   justify-content: flex-end;
@@ -67,8 +73,8 @@
   border-right: 0;
   width: 100%;
   // border-top: 0;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
   padding: 10px 30px;
   overflow: hidden;
   // margin: 5% 0;
@@ -78,14 +84,14 @@
     color: white;
   }
   &.firstChild {
-    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
   }
   &.lastChild {
-    border-top-right-radius: 0;
+    border-top-left-radius: 0;
   }
   &.normal {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
   &.highlighted {
     background-color: #00356b;

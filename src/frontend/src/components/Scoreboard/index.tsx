@@ -23,6 +23,7 @@ interface PlayerTableProps {
   players: userWithStat[]
 }
 
+// Object that maps college names with its logo.
 const collegeImageMap = {
   'Ezra Stiles': 'https://upload.wikimedia.org/wikipedia/en/b/b7/EzraStilesshield.png',
   Branford: 'https://upload.wikimedia.org/wikipedia/en/3/30/Branford_College_shield.png',
@@ -32,6 +33,7 @@ const collegeImageMap = {
   Berkeley: 'https://upload.wikimedia.org/wikipedia/en/thumb/1/13/Berkeleyshield.png/280px-Berkeleyshield.png',
 }
 
+// Stats Table, one stats table collection of bunch of different sports state, for a given sport, will be set to null, any stat with this record that isn't display to null will be displayed
 const HeaderRow = () => {
   const header = ['Player', 'Rebounds', 'Assists', 'Points']
   return (
@@ -47,6 +49,10 @@ const HeaderRow = () => {
   )
 }
 
+/**
+ * @param {userWithStat[]} players List of players whose stats shall be displayed.
+ * @returns The body of the table displaying the stats of players.
+ */
 const TableBody = ({ players }: PlayerTableProps) => {
   return (
     <tbody>
@@ -68,6 +74,10 @@ const TableBody = ({ players }: PlayerTableProps) => {
   )
 }
 
+/**
+ * @param {userWithStat[]} players List of players whose stats shall be displayed.
+ * @returns Table that displays stats of players in a team.
+ */
 const PlayerTable = ({ players }: PlayerTableProps) => (
   <table className={styles.scoreTable}>
     <HeaderRow />
@@ -75,10 +85,20 @@ const PlayerTable = ({ players }: PlayerTableProps) => (
   </table>
 )
 
+/**
+ * @param {Game} match A match instance.
+ * @param {userWithStat[]} homePlayers An array of player users for team one with stats included for each player.
+ * @param {userWithStat[]} awayPlayers An array of players users for team two with stats included for each player.
+ * @returns Scoreboard component displaying statistics of the players participating in the match.
+ */
 const Scoreboard: FC<ScoreboardProps> = ({ match, homePlayers, awayPlayers }: ScoreboardProps) => {
   const [open, setOpen] = useState(false)
   const [isHome, setIsHome] = useState(true)
 
+  /**
+   * @param {boolean} isHomeTeam Whether we are displaying the stats of team one players or not.
+   * @returns Changes to whether or not home team [team one]'s player stats should be displayed.
+   */
   const changeTeamStatus = (isHomeTeam: boolean) => setIsHome(isHomeTeam)
   function changeToHome() {
     changeTeamStatus(true)
@@ -96,7 +116,6 @@ const Scoreboard: FC<ScoreboardProps> = ({ match, homePlayers, awayPlayers }: Sc
       {/*eslint-disable-next-line jsx-a11y/no-static-element-interactions*/}
       <section className={styles.scoreDisplay} onClick={changeCollapseStatus}>
         <div className={styles.scoreIntroduction}>
-          <p>{match.sport}</p>
           <p>{match.date}</p>
         </div>
         <div className={styles.scoreResult}>
@@ -108,16 +127,24 @@ const Scoreboard: FC<ScoreboardProps> = ({ match, homePlayers, awayPlayers }: Sc
             style={{
               display: 'flex',
               flexDirection: 'column',
-              height: '100%',
-              maxWidth: '20%',
+              alignItems: 'stretch',
+              justifyContent: 'space-between',
+              flex: '30%',
+              padding: '10px 0',
             }}
           >
-            <div style={{ display: 'flex', flexDirection: 'row', paddingBottom: '50%' }}>
-              <h1>{match.team_1_score}</h1>
-              <h3>{' - '}</h3>
-              <h1>{match.team_2_score}</h1>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+              <div>
+                <h1 style={{ fontSize: '2.25em' }}>{match.team_1_score}</h1>
+              </div>
+              <div>
+                <h1 style={{ fontSize: '2.25em' }}>{' - '}</h1>
+              </div>
+              <div>
+                <h1 style={{ fontSize: '2.25em' }}>{match.team_2_score}</h1>
+              </div>
             </div>
-            <div style={{ textAlign: 'center', paddingTop: '50%' }}>
+            <div style={{ textAlign: 'center' }}>
               <DownArrow className={classNames(styles.test, { [styles.open]: open })} />
             </div>
           </div>
@@ -133,8 +160,12 @@ const Scoreboard: FC<ScoreboardProps> = ({ match, homePlayers, awayPlayers }: Sc
       >
         <div>
           <div className={styles.tabMenu}>
-            <button onClick={changeToHome}>{' Home '}</button>
-            <button onClick={changeToAway}>{' Away '}</button>
+            <button className={classNames(styles.tabButton, styles.home)} onClick={changeToHome}>
+              {' Home '}
+            </button>
+            <button className={classNames(styles.tabButton, styles.away)} onClick={changeToAway}>
+              {' Away '}
+            </button>
           </div>
           <div>
             <PlayerTable players={isHome ? homePlayers : awayPlayers} />

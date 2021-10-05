@@ -10,13 +10,21 @@ import { getGamesWithUserStats } from '../../store/selectors'
 import { asyncFetchUsers } from '../../store/slices/Users'
 import { asyncFetchGames } from '../../store/slices/Games'
 import { asyncFetchStats } from '../../store/slices/Stats'
+import { asyncFetchCurrentUser } from 'store/slices/CurrentUser'
 import classNames from 'classnames'
+
+interface NavbarButtonProps {
+  sport: string
+  buttonType: string
+  changeFn: () => void
+}
 
 const IntramuralsDashboard = () => {
   const dispatch = useAppDispatch()
   const { users, isLoading: isLoadingUsers } = useAppSelector((state) => state.users)
   const { games, isLoading: isLoadingGames } = useAppSelector((state) => state.games)
   const { stats, isLoading: isLoadingStats } = useAppSelector((state) => state.stats)
+  const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
   const gamesWithUserStats = useAppSelector(getGamesWithUserStats)
 
   useEffect(() => {
@@ -37,199 +45,92 @@ const IntramuralsDashboard = () => {
     }
   }, [dispatch, stats])
 
+  useEffect(() => {
+    if (!currentUser) {
+      dispatch(asyncFetchCurrentUser())
+    }
+  }, [dispatch, currentUser])
+
   const [tabState, setTabState] = useState('Basketball')
 
+  /**
+   * Changes tabState to hold the type of matches that should be displayed on the intramurals page.
+   * @param {string} str A sport to display / User matches.
+   */
   const changeTabState = (str: string) => setTabState(str)
+
+  // Change navbar state to display Basketball matches.
   function changeToBasketball() {
     changeTabState('Basketball')
   }
+
+  // Change navbar state to display Football matches.
   function changeToFootball() {
     changeTabState('Football')
   }
 
-  // const TEAMONEGAMEONE = [
-  //   {
-  //     user_id: 1,
-  //     imgame_id: 1,
-  //     rebounds: 5,
-  //     assists: 6,
-  //     points: 3,
-  //     id: 1,
-  //     created_at: new Date(),
-  //     updated_at: new Date(),
-  //   },
-  //   {
-  //     user_id: 2,
-  //     imgame_id: 1,
-  //     rebounds: 12,
-  //     assists: 9,
-  //     points: 3,
-  //     id: 2,
-  //     created_at: new Date(),
-  //     updated_at: new Date(),
-  //   },
-  // ]
+  // Just to test styling.
+  function changeToTest() {
+    changeTabState('Test')
+  }
 
-  // const TEAMTWOGAMEONE = [
-  //   {
-  //     user_id: 3,
-  //     imgame_id: 1,
-  //     rebounds: 5,
-  //     assists: 6,
-  //     points: 3,
-  //     id: 3,
-  //     created_at: new Date(),
-  //     updated_at: new Date(),
-  //   },
-  //   {
-  //     user_id: 4,
-  //     imgame_id: 1,
-  //     rebounds: 5,
-  //     assists: 6,
-  //     points: 3,
-  //     id: 4,
-  //     created_at: new Date(),
-  //     updated_at: new Date(),
-  //   },
-  // ]
+  // Change navbar state to display matches containing the current user.
+  function changeToMyUser() {
+    changeTabState('User')
+  }
 
-  // const TEAMONEGAMETWO = [
-  //   {
-  //     user_id: 5,
-  //     imgame_id: 2,
-  //     rebounds: 5,
-  //     assists: 6,
-  //     points: 3,
-  //     id: 5,
-  //     created_at: new Date(),
-  //     updated_at: new Date(),
-  //   },
-  //   {
-  //     user_id: 6,
-  //     imgame_id: 2,
-  //     rebounds: 5,
-  //     assists: 6,
-  //     points: 3,
-  //     id: 6,
-  //     created_at: new Date(),
-  //     updated_at: new Date(),
-  //   },
-  // ]
+  function filterGamesToTabs(tabState: string, gameWithUserStat, currentUser) {
+    if (tabState === 'User') {
+      return gameWithUserStat.userStats.user.netid === currentUser.netid
+    } else {
+      return gameWithUserStat.game.sport == tabState
+    }
+  }
 
-  // const TEAMTWOGAMETWO = [
-  //   {
-  //     user_id: 7,
-  //     imgame_id: 2,
-  //     rebounds: 15,
-  //     assists: 6,
-  //     points: 37,
-  //     id: 7,
-  //     created_at: new Date(),
-  //     updated_at: new Date(),
-  //   },
-  //   {
-  //     user_id: 8,
-  //     imgame_id: 2,
-  //     rebounds: 12,
-  //     assists: 9,
-  //     points: 3,
-  //     id: 8,
-  //     created_at: new Date(),
-  //     updated_at: new Date(),
-  //   },
-  // ]
-
-  // const matches = [
-  //   {
-  //     gameInfo: {
-  //       team_1_score: 21,
-  //       team_2_score: 17,
-  //       date: 'Mon, Jan 20',
-  //       sport: 'Basketball',
-  //       team1: 'Davenport',
-  //       team2: 'Branford',
-  //       id: 1,
-  //       created_at: new Date(),
-  //       updated_at: new Date(),
-  //     },
-  //     homePlayers: TEAMONEGAMEONE,
-  //     awayPlayers: TEAMTWOGAMEONE,
-  //   },
-  //   {
-  //     gameInfo: {
-  //       team_1_score: 25,
-  //       team_2_score: 30,
-  //       date: 'Tue, Jan 21',
-  //       sport: 'Football',
-  //       team1: 'Franklin',
-  //       team2: 'Branford',
-  //       id: 2,
-  //       created_at: new Date(),
-  //       updated_at: new Date(),
-  //     },
-  //     homePlayers: TEAMONEGAMETWO,
-  //     awayPlayers: TEAMTWOGAMETWO,
-  //   },
-  // ]
+  /**
+   * @param {string} sport The sport/text to be displayed in the button.
+   * @param {string} buttonType Whether it's the first, last, or middle button in the list of buttons.
+   * @param {function} changeFn Function to change intramural navbar state.
+   * @returns Button tab component on intramural navbar.
+   */
+  const NavbarButton = ({ sport, buttonType, changeFn }: NavbarButtonProps) => {
+    return (
+      <li>
+        <button
+          className={classNames(
+            styles.tab,
+            buttonType === 'first' ? styles.firstChild : buttonType === 'last' ? styles.lastChild : styles.normal,
+            {
+              [styles.highlighted]: tabState === sport,
+            }
+          )}
+          onClick={changeFn}
+        >
+          <p style={{ fontWeight: 'bold' }}>{sport}</p>
+        </button>
+      </li>
+    )
+  }
 
   return (
     <div className={styles.scorePage}>
       <div className={styles.pageRow}>
         <div className={styles.twoCol}>
-          <div className={styles.testIT}>
+          <div className={styles.navbar}>
             <div className={styles.buttonHolder}>
               <ul style={{ listStyleType: 'none', textAlign: 'right' }}>
-                <li>
-                  <button
-                    className={classNames(styles.tab, styles.firstChild, {
-                      [styles.highlighted]: tabState === 'Basketball',
-                    })}
-                    onClick={changeToBasketball}
-                  >
-                    <p style={{ fontWeight: 'bold' }}>{'Basketball'}</p>
-                  </button>
-                </li>
-                <li>
-                  <button className={classNames(styles.tab, styles.normal)}>
-                    <p style={{ fontWeight: 'bold' }}>{'TEST'}</p>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className={classNames(styles.tab, styles.lastChild, {
-                      [styles.highlighted]: tabState === 'Football',
-                    })}
-                    onClick={changeToFootball}
-                  >
-                    <p style={{ fontWeight: 'bold' }}>{'Football'}</p>
-                  </button>
-                </li>
+                <NavbarButton sport={'Basketball'} buttonType={'first'} changeFn={changeToBasketball} />
+                <NavbarButton sport={'Test'} buttonType={'normal'} changeFn={changeToTest} />
+                <NavbarButton sport={'Football'} buttonType={'normal'} changeFn={changeToFootball} />
+                <NavbarButton sport={'My User'} buttonType={'last'} changeFn={changeToMyUser} />
               </ul>
             </div>
           </div>
         </div>
-        <div className={styles.eightCol}>
-          {isLoadingUsers == true || isLoadingGames || isLoadingStats ? (
+        <div className={styles.sixCol}>
+          {isLoadingUsers == true || isLoadingGames || isLoadingStats || isLoadingCurrentUser ? (
             <div>{'Loading...'}</div>
           ) : (
-            // gamesWithUserStats != null &&
-            // gamesWithUserStats.map((gameWithUserStats) => {
-            //   return (
-            //     <ul key={gameWithUserStats.game.id}>
-            //       <li>{`${gameWithUserStats.game.team1} vs ${gameWithUserStats.game.team2}`}</li>
-            //       {gameWithUserStats.userStats.map((userStat) => {
-            //         return (
-            //           <>
-            //             <li>{`Player ${userStat.user.name}`}</li>
-            //             <li>{`Points: ${userStat.stat.points}`}</li>
-            //             <li>{`Rebounds: ${userStat.stat.rebounds}`}</li>
-            //             <li>{`Assists: ${userStat.stat.assists}`}</li>
-            //           </>
-            //         )
-            //       })}
-            //     </ul>
-            //   )
-            // })
             gamesWithUserStats != null &&
             gamesWithUserStats
               .filter((gameWithUserStat) => gameWithUserStat.game.sport == tabState)
@@ -240,24 +141,18 @@ const IntramuralsDashboard = () => {
                 const awayPlayers = gameUserStat.userStats.filter(
                   (userStat) => userStat.user.college == gameUserStat.game.team2
                 )
-                // console.log(homePlayers)
-                // console.log(awayPlayers)
-                // console.log(gameUserStat)
-                // return <div key={i}>{tabState}</div>
+                console.log(currentUser)
                 return (
                   <Scoreboard key={i} match={gameUserStat.game} homePlayers={homePlayers} awayPlayers={awayPlayers} />
                 )
               })
           )}
         </div>
+        <div className={styles.twoCol}></div>
       </div>
     </div>
   )
 }
-
-// const Inner: FC = () => {
-//   return <IntramuralsDashboard />
-// }
 
 const Intramurals: FC = () => {
   return (
