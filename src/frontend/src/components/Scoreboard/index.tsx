@@ -2,18 +2,24 @@ import React, { FC, useState } from 'react'
 
 import styles from './styles.module.scss'
 
+// Various store slices.
 import { Game } from '../../store/slices/Games'
 import { User } from '../../store/slices/Users'
 import { Stat } from '../../store/slices/Stats'
+
 import DownArrow from 'svgs/DownArrow'
 import classNames from 'classnames'
 
+/**
+ * The following are typescript interfaces for components in this document.
+ */
 interface userWithStat {
   user: User
   stat: Stat
 }
 
 interface ScoreboardProps {
+  showSport: boolean
   match: Game
   homePlayers: userWithStat[]
   awayPlayers: userWithStat[]
@@ -33,7 +39,8 @@ const collegeImageMap = {
   Berkeley: 'https://upload.wikimedia.org/wikipedia/en/thumb/1/13/Berkeleyshield.png/280px-Berkeleyshield.png',
 }
 
-// Stats Table, one stats table collection of bunch of different sports state, for a given sport, will be set to null, any stat with this record that isn't display to null will be displayed
+// Header component of the table.
+// TODO: Make dynamic [In other words: Capable of handling stats for different sports]
 const HeaderRow = () => {
   const header = ['Player', 'Rebounds', 'Assists', 'Points']
   return (
@@ -86,12 +93,13 @@ const PlayerTable = ({ players }: PlayerTableProps) => (
 )
 
 /**
+ * @param {boolean} showSport Whether to show the sport in the scoreboard.
  * @param {Game} match A match instance.
  * @param {userWithStat[]} homePlayers An array of player users for team one with stats included for each player.
  * @param {userWithStat[]} awayPlayers An array of players users for team two with stats included for each player.
  * @returns Scoreboard component displaying statistics of the players participating in the match.
  */
-const Scoreboard: FC<ScoreboardProps> = ({ match, homePlayers, awayPlayers }: ScoreboardProps) => {
+const Scoreboard: FC<ScoreboardProps> = ({ showSport, match, homePlayers, awayPlayers }: ScoreboardProps) => {
   const [open, setOpen] = useState(false)
   const [isHome, setIsHome] = useState(true)
 
@@ -100,13 +108,18 @@ const Scoreboard: FC<ScoreboardProps> = ({ match, homePlayers, awayPlayers }: Sc
    * @returns Changes to whether or not home team [team one]'s player stats should be displayed.
    */
   const changeTeamStatus = (isHomeTeam: boolean) => setIsHome(isHomeTeam)
+
+  // Scoreboard should now display team one players.
   function changeToHome() {
     changeTeamStatus(true)
   }
+
+  // Scoreboard should now display team two players.
   function changeToAway() {
     changeTeamStatus(false)
   }
 
+  // Scoreboard should flip status of whether or not it displays the player stats.
   function changeCollapseStatus() {
     setOpen(!open)
   }
@@ -116,6 +129,7 @@ const Scoreboard: FC<ScoreboardProps> = ({ match, homePlayers, awayPlayers }: Sc
       {/*eslint-disable-next-line jsx-a11y/no-static-element-interactions*/}
       <section className={styles.scoreDisplay} onClick={changeCollapseStatus}>
         <div className={styles.scoreIntroduction}>
+          {showSport ? <p>{match.sport}</p> : <></>}
           <p>{match.date}</p>
         </div>
         <div className={styles.scoreResult}>
@@ -123,16 +137,7 @@ const Scoreboard: FC<ScoreboardProps> = ({ match, homePlayers, awayPlayers }: Sc
             <img className={styles.logo} alt="Home Residential College Logo" src={collegeImageMap[match.team1]} />
             <h4>{match.team1}</h4>
           </div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'stretch',
-              justifyContent: 'space-between',
-              flex: '30%',
-              padding: '10px 0',
-            }}
-          >
+          <div className={styles.scoreColumn}>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
               <div>
                 <h1 style={{ fontSize: '2.25em' }}>{match.team_1_score}</h1>

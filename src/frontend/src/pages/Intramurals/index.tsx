@@ -27,30 +27,35 @@ const IntramuralsDashboard = () => {
   const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
   const gamesWithUserStats = useAppSelector(getGamesWithUserStats)
 
+  // Ask the redux store to call on backend and fetch users.
   useEffect(() => {
     if (users == null) {
       dispatch(asyncFetchUsers())
     }
   }, [dispatch, users])
 
+  // Ask the redux store to call on backend and fetch games.
   useEffect(() => {
     if (games == null) {
       dispatch(asyncFetchGames())
     }
   }, [dispatch, games])
 
+  // Ask the redux store to call on backend and fetch stats.
   useEffect(() => {
     if (stats == null) {
       dispatch(asyncFetchStats())
     }
   }, [dispatch, stats])
 
+  // Ask the redux store to call on backend and fetch current user.
   useEffect(() => {
     if (!currentUser) {
       dispatch(asyncFetchCurrentUser())
     }
   }, [dispatch, currentUser])
 
+  // Tracks what tab the intramural navbar should display.
   const [tabState, setTabState] = useState('Basketball')
 
   /**
@@ -81,7 +86,7 @@ const IntramuralsDashboard = () => {
 
   function filterGamesToTabs(tabState: string, gameWithUserStat, currentUser) {
     if (tabState === 'User') {
-      return gameWithUserStat.userStats.user.netid === currentUser.netid
+      return gameWithUserStat.userStats.filter((userStat) => userStat.user.netid === currentUser.netid).length > 0
     } else {
       return gameWithUserStat.game.sport == tabState
     }
@@ -118,11 +123,11 @@ const IntramuralsDashboard = () => {
         <div className={styles.twoCol}>
           <div className={styles.navbar}>
             <div className={styles.buttonHolder}>
-              <ul style={{ listStyleType: 'none', textAlign: 'right' }}>
+              <ul className={styles.intramuralNavbar}>
                 <NavbarButton sport={'Basketball'} buttonType={'first'} changeFn={changeToBasketball} />
                 <NavbarButton sport={'Test'} buttonType={'normal'} changeFn={changeToTest} />
                 <NavbarButton sport={'Football'} buttonType={'normal'} changeFn={changeToFootball} />
-                <NavbarButton sport={'My User'} buttonType={'last'} changeFn={changeToMyUser} />
+                <NavbarButton sport={'User'} buttonType={'last'} changeFn={changeToMyUser} />
               </ul>
             </div>
           </div>
@@ -133,7 +138,7 @@ const IntramuralsDashboard = () => {
           ) : (
             gamesWithUserStats != null &&
             gamesWithUserStats
-              .filter((gameWithUserStat) => gameWithUserStat.game.sport == tabState)
+              .filter((gameWithUserStat) => filterGamesToTabs(tabState, gameWithUserStat, currentUser))
               .map((gameUserStat, i) => {
                 const homePlayers = gameUserStat.userStats.filter(
                   (userStat) => userStat.user.college == gameUserStat.game.team1
@@ -141,9 +146,14 @@ const IntramuralsDashboard = () => {
                 const awayPlayers = gameUserStat.userStats.filter(
                   (userStat) => userStat.user.college == gameUserStat.game.team2
                 )
-                console.log(currentUser)
                 return (
-                  <Scoreboard key={i} match={gameUserStat.game} homePlayers={homePlayers} awayPlayers={awayPlayers} />
+                  <Scoreboard
+                    showSport={tabState === 'User'}
+                    key={i}
+                    match={gameUserStat.game}
+                    homePlayers={homePlayers}
+                    awayPlayers={awayPlayers}
+                  />
                 )
               })
           )}
