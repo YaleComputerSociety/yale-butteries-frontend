@@ -140,13 +140,13 @@ const Scoreboard: FC<ScoreboardProps> = ({ showSport, match, homePlayers, awayPl
           <div className={styles.scoreColumn}>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
               <div>
-                <h1 style={{ fontSize: '2.25em' }}>{match.team_1_score}</h1>
+                <h1 className={styles.scoreSize}>{match.team_1_score}</h1>
               </div>
               <div>
-                <h1 style={{ fontSize: '2.25em' }}>{' - '}</h1>
+                <h1 className={styles.scoreSize}>{' - '}</h1>
               </div>
               <div>
-                <h1 style={{ fontSize: '2.25em' }}>{match.team_2_score}</h1>
+                <h1 className={styles.scoreSize}>{match.team_2_score}</h1>
               </div>
             </div>
             <div style={{ textAlign: 'center' }}>
