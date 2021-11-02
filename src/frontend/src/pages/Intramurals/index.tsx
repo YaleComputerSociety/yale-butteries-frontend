@@ -19,6 +19,9 @@ interface NavbarButtonProps {
   changeFn: () => void
 }
 
+/**
+ * @returns Intramurals Dashboard component showing all the Intramural games, as well as navbar to filter based on sport preference or matches that current user was involved in.
+ */
 const IntramuralsDashboard = () => {
   const dispatch = useAppDispatch()
   const { users, isLoading: isLoadingUsers } = useAppSelector((state) => state.users)
@@ -92,6 +95,12 @@ const IntramuralsDashboard = () => {
     }
   }
 
+  function filterForPlayers(gameUserStatObj, isTeamOne: boolean) {
+    return isTeamOne
+      ? gameUserStatObj.userStats.filter((playerStatObj) => playerStatObj.user.college == gameUserStatObj.game.team1)
+      : gameUserStatObj.userStats.filter((playerStatObj) => playerStatObj.user.college == gameUserStatObj.game.team2)
+  }
+
   /**
    * @param {string} sport The sport/text to be displayed in the button.
    * @param {string} buttonType Whether it's the first, last, or middle button in the list of buttons.
@@ -140,12 +149,8 @@ const IntramuralsDashboard = () => {
             gamesWithUserStats
               .filter((gameWithUserStat) => filterGamesToTabs(tabState, gameWithUserStat, currentUser))
               .map((gameUserStat, i) => {
-                const homePlayers = gameUserStat.userStats.filter(
-                  (userStat) => userStat.user.college == gameUserStat.game.team1
-                )
-                const awayPlayers = gameUserStat.userStats.filter(
-                  (userStat) => userStat.user.college == gameUserStat.game.team2
-                )
+                const homePlayers = filterForPlayers(gameUserStat, true)
+                const awayPlayers = filterForPlayers(gameUserStat, false)
                 return (
                   <Scoreboard
                     showSport={tabState === 'User'}

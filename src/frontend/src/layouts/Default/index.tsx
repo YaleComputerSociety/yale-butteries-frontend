@@ -11,9 +11,9 @@ const Default: FC = ({ children }) => {
         <h1>{'Branford Hub'}</h1>
       </div>
       <div className={styles.content}>
-        <div className={styles.naviagtionBar}>
+        {/* <div className={styles.naviagtionBar}>
           <Navigation />
-        </div>
+        </div> */}
         <div className={styles.siteLayoutWrapper}>
           <div className={styles.siteLayoutContent}>{children}</div>
         </div>

@@ -124,6 +124,12 @@ const Scoreboard: FC<ScoreboardProps> = ({ showSport, match, homePlayers, awayPl
     setOpen(!open)
   }
 
+  // const ScoreboardTeamButton = ({teamStyle, clickFn, teamDisplay}) => {
+  //   return (
+
+  //   )
+  // }
+
   return (
     <div className={styles.scoreboard}>
       {/*eslint-disable-next-line jsx-a11y/no-static-element-interactions*/}
