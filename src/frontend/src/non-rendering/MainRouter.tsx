@@ -1,11 +1,20 @@
 import React, { FC } from 'react'
 import { BrowserRouter as Router, Route, Switch, Redirect, useParams, generatePath } from 'react-router-dom'
 
+<<<<<<< HEAD
 import Root from '../pages/Root'
 import Dashboard from '../pages/Dashboard'
 import Events from '../pages/Events'
 import Intramurals from '../pages/Intramurals'
 import Testing from '../pages/Testing'
+=======
+import Root from 'pages/Root'
+import Dashboard from 'pages/Dashboard'
+import Events from 'pages/Events'
+import Intramurals from 'pages/Intramurals'
+import Testing from 'pages/Testing'
+import Login from 'pages/Login'
+>>>>>>> d5febeca56012a11671388fdc8d99d759ae938f8
 
 export const MainRouter: FC = () => {
   return (
@@ -22,6 +31,7 @@ export const MainRouter: FC = () => {
         <Route path="/events" component={Events} />
         <Route path="/intramurals" component={Intramurals} />
         <Route path="/testing" component={Testing} />
+        <Route path="/login" component={Login} />
         <Route path="/" component={Root} />
       </Switch>
     </Router>

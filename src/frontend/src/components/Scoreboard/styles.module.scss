@@ -178,3 +178,16 @@ td {
 .test.open {
   transform: scaleY(-1);
 }
+
+.scoreColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  flex: 30%;
+  padding: 10px 0;
+}
+
+.scoreSize {
+  font-size: 2.25em;
+}
