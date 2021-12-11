@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom'
 
 import { Provider } from 'react-redux'
 
-import reduxStore from 'store/ReduxStore'
+import reduxStore from './store/ReduxStore'
 
-import MainRouter from 'non-rendering/MainRouter'
+import MainRouter from './non-rendering/MainRouter'
 
 import './styles.module.scss'
 

@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
 import { BrowserRouter as Router, Route, Switch, Redirect, useParams, generatePath } from 'react-router-dom'
 
-import Root from 'pages/Root'
-import Dashboard from 'pages/Dashboard'
-import Events from 'pages/Events'
-import Intramurals from 'pages/Intramurals'
-import Testing from 'pages/Testing'
+import Root from '../pages/Root'
+import Dashboard from '../pages/Dashboard'
+import Events from '../pages/Events'
+import Intramurals from '../pages/Intramurals'
+import Testing from '../pages/Testing'
 
 export const MainRouter: FC = () => {
   return (

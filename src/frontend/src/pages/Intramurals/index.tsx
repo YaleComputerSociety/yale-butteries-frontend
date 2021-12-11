@@ -10,7 +10,7 @@ import { getGamesWithUserStats } from '../../store/selectors'
 import { asyncFetchUsers } from '../../store/slices/Users'
 import { asyncFetchGames } from '../../store/slices/Games'
 import { asyncFetchStats } from '../../store/slices/Stats'
-import { asyncFetchCurrentUser } from 'store/slices/CurrentUser'
+import { asyncFetchCurrentUser } from '../../store/slices/CurrentUser'
 import classNames from 'classnames'
 
 interface NavbarButtonProps {
