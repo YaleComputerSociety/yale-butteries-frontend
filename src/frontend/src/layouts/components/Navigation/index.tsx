@@ -26,6 +26,7 @@ export const Navigation: FC = () => {
       <NavTab linkStr={'/dashboard'} displayStr={'Dashboard'} />
       <NavTab linkStr={'/events'} displayStr={'Events'} />
       <NavTab linkStr={'/intramurals'} displayStr={'Intramurals'} />
+      <NavTab linkStr={'/sign_up'} displayStr={'Signup'}/>
       <NavTab linkStr={'/testing'} displayStr={'test components'} />
     </div>
   )

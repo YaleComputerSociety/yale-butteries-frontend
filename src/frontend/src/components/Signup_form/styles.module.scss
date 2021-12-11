@@ -1,0 +1,34 @@
+* {
+  box-sizing: border-box;
+}
+
+form {
+  background-color: white;
+
+  .button {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color:white;
+    margin: 0;
+    color: currentColor;
+    width: 1.15em;
+    height: 1.15em;
+    border: .15em solid currentColor;
+    border-radius: 50%;
+  }
+
+  .button:hover {
+    background-color: #ccc;
+  }
+  .button:checked {
+    background-color: #00356b;
+  }
+
+  .textButton {
+    visibility: hidden;
+  }
+  .button:checked ~ .textButton {
+    visibility:visible;
+    
+  }
+}
