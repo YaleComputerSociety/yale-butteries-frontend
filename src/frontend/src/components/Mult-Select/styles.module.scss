@@ -1,10 +1,21 @@
 fieldset {
   box-sizing: border-box;
   border: none;
+  margin: 0;
+  padding-left: 10%;
+  padding-bottom: 0;
+  
+  .header {
+    margin: 0;
+  }
   
   .inputControl{
     line-height: 1.1;
-    
+
+    label {
+      padding-left: 5px;
+    }
+      
     .button {
       -webkit-appearance: none;
       appearance: none;
@@ -15,15 +26,13 @@ fieldset {
       height: 1.15em;
       border: .15em solid currentColor;
       border-radius: 50%;
+      &:hover {
+        background-color: #ccc;
+      }
+      &:checked {
+        background-color: #00356b;
+      }
     }
-
-    .button:hover {
-      background-color: #ccc;
-    }
-    .button:checked {
-      background-color: #00356b;
-    }
-
   }
   
   

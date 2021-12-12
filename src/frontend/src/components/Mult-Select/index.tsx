@@ -12,10 +12,10 @@ interface MultSelect {
 const Selector: FC<MultSelect> = ({heading, labels, grouping}) => {
   return (
     <fieldset className={styles.fieldset}>
-      <h1>{heading}</h1>
+      <h1 className={styles.header}>{heading}</h1>
       {
         labels.map(label =>
-        <div className={styles.inputControl}>
+        <div className={styles.inputControl} key={label}>
           <input type="radio" className={styles.button} id={label} name={grouping} value={label}/>
           <label htmlFor={label}>{label}</label>
         </div>)
