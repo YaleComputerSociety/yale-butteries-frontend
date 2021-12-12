@@ -8,7 +8,7 @@ const Default: FC = ({ children }) => {
   return (
     <div className={styles.layout}>
       <div className={styles.title}>
-        <h1>{'Branford Hub'}</h1>
+        <h1>{'Intramurals Hub'}</h1>
       </div>
       <div className={styles.content}>
         {/* <div className={styles.naviagtionBar}>
@@ -19,7 +19,7 @@ const Default: FC = ({ children }) => {
         </div>
       </div>
       <div className={styles.footer}>
-        <h5>{'Yale Research Registry ©2021 Created by YCS'}</h5>
+        <h5>{'Yale Campus Hub ©2021 Created by YCS'}</h5>
       </div>
     </div>
   )

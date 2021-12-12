@@ -20,7 +20,8 @@ interface NavbarButtonProps {
 }
 
 /**
- * @returns Intramurals Dashboard component showing all the Intramural games, as well as navbar to filter based on sport preference or matches that current user was involved in.
+ * @returns Intramurals Dashboard component showing all the Intramural games,
+ * as well as navbar to filter based on sport preference or matches that current user was involved in.
  */
 const IntramuralsDashboard = () => {
   const dispatch = useAppDispatch()

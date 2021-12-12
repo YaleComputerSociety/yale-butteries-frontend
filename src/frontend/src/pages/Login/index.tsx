@@ -3,13 +3,21 @@ import { NavLink } from 'react-router-dom'
 
 import Default from '../../layouts/Default'
 
+import styles from './styles.module.scss'
+
 const Inner: FC = () => {
   return (
-    <div>
-      <input type="text" name="user" placeholder="Username" />
-      <input type="text" name="password" placeholder="Password" />
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
+      <input className={styles.input} type="text" name="user" placeholder="Username" />
+      <input className={styles.input} type="text" name="password" placeholder="Password" />
       <NavLink to={'/intramurals'}>
-        <button>{'Login'}</button>
+        <button style={{ backgroundColor: 'blue', color: 'white' }}>{'Login'}</button>
       </NavLink>
     </div>
   )
