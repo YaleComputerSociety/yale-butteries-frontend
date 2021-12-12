@@ -6,26 +6,22 @@ import styles from './styles.module.scss'
 import { Game } from '../../store/slices/Games'
 import { User } from '../../store/slices/Users'
 import { Stat } from '../../store/slices/Stats'
-
-import DownArrow from 'svgs/DownArrow'
+import DownArrow from '../../svgs/DownArrow'
 import classNames from 'classnames'
+import PlayerTable from '../Scoreboard/components/Player-Table'
 
-/**
- * The following are typescript interfaces for components in this document.
- */
-interface userWithStat {
+export interface userWithStat {
   user: User
   stat: Stat
 }
 
-interface ScoreboardProps {
-  showSport: boolean
+export interface ScoreboardProps {
   match: Game
   homePlayers: userWithStat[]
   awayPlayers: userWithStat[]
 }
 
-interface PlayerTableProps {
+export interface PlayerTableProps {
   players: userWithStat[]
 }
 
@@ -38,59 +34,6 @@ const collegeImageMap = {
   Pierson: 'https://upload.wikimedia.org/wikipedia/en/thumb/d/da/Piersonshield.png/280px-Piersonshield.png',
   Berkeley: 'https://upload.wikimedia.org/wikipedia/en/thumb/1/13/Berkeleyshield.png/280px-Berkeleyshield.png',
 }
-
-// Header component of the table.
-// TODO: Make dynamic [In other words: Capable of handling stats for different sports]
-const HeaderRow = () => {
-  const header = ['Player', 'Rebounds', 'Assists', 'Points']
-  return (
-    <thead>
-      <tr>
-        {header.map((h, index) => (
-          <th key={index}>
-            <p>{h}</p>
-          </th>
-        ))}
-      </tr>
-    </thead>
-  )
-}
-
-/**
- * @param {userWithStat[]} players List of players whose stats shall be displayed.
- * @returns The body of the table displaying the stats of players.
- */
-const TableBody = ({ players }: PlayerTableProps) => {
-  return (
-    <tbody>
-      {players.length > 0 ? (
-        players.map((player: userWithStat, index: number) => (
-          <tr className={styles.headerRow} key={index}>
-            <td>{player.user.name}</td>
-            <td>{player.stat.points}</td>
-            <td>{player.stat.rebounds}</td>
-            <td>{player.stat.assists}</td>
-          </tr>
-        ))
-      ) : (
-        <tr>
-          <td colSpan={4}>{'No player stats available'}</td>
-        </tr>
-      )}
-    </tbody>
-  )
-}
-
-/**
- * @param {userWithStat[]} players List of players whose stats shall be displayed.
- * @returns Table that displays stats of players in a team.
- */
-const PlayerTable = ({ players }: PlayerTableProps) => (
-  <table className={styles.scoreTable}>
-    <HeaderRow />
-    <TableBody players={players} />
-  </table>
-)
 
 /**
  * @param {boolean} showSport Whether to show the sport in the scoreboard.
@@ -179,7 +122,7 @@ const Scoreboard: FC<ScoreboardProps> = ({ showSport, match, homePlayers, awayPl
             </button>
           </div>
           <div>
-            <PlayerTable players={isHome ? homePlayers : awayPlayers} />
+            <PlayerTable players={isHome ? homePlayers : awayPlayers} game={match} />
           </div>
         </div>
       </div>
