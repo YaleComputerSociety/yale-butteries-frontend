@@ -79,9 +79,9 @@ const IntramuralsDashboard = () => {
   }
 
   // Just to test styling.
-  function changeToTest() {
-    changeTabState('Test')
-  }
+  // function changeToTest() {
+  //   changeTabState('Test')
+  // }
 
   // Change navbar state to display matches containing the current user.
   function changeToMyUser() {
@@ -135,7 +135,7 @@ const IntramuralsDashboard = () => {
             <div className={styles.buttonHolder}>
               <ul className={styles.intramuralNavbar}>
                 <NavbarButton sport={'Basketball'} buttonType={'first'} changeFn={changeToBasketball} />
-                <NavbarButton sport={'Test'} buttonType={'normal'} changeFn={changeToTest} />
+                {/* <NavbarButton sport={'Test'} buttonType={'normal'} changeFn={changeToTest} /> */}
                 <NavbarButton sport={'Football'} buttonType={'normal'} changeFn={changeToFootball} />
                 <NavbarButton sport={'User'} buttonType={'last'} changeFn={changeToMyUser} />
               </ul>

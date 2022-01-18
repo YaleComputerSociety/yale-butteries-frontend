@@ -19,10 +19,12 @@ export interface ScoreboardProps {
   match: Game
   homePlayers: userWithStat[]
   awayPlayers: userWithStat[]
+  showSport: boolean
 }
 
 export interface PlayerTableProps {
   players: userWithStat[]
+  game: Game
 }
 
 // Object that maps college names with its logo.
@@ -76,7 +78,10 @@ const Scoreboard: FC<ScoreboardProps> = ({ showSport, match, homePlayers, awayPl
   return (
     <div className={styles.scoreboard}>
       {/*eslint-disable-next-line jsx-a11y/no-static-element-interactions*/}
-      <section className={styles.scoreDisplay} onClick={changeCollapseStatus}>
+      <section
+        className={classNames(open ? styles.scoreDisplayNoBox : styles.scoreDisplay)}
+        onClick={changeCollapseStatus}
+      >
         <div className={styles.scoreIntroduction}>
           {showSport ? <p>{match.sport}</p> : <></>}
           <p>{match.date}</p>
@@ -113,14 +118,18 @@ const Scoreboard: FC<ScoreboardProps> = ({ showSport, match, homePlayers, awayPl
         aria-expanded={open}
       >
         <div>
-          <div className={styles.tabMenu}>
-            <button className={classNames(styles.tabButton, styles.home)} onClick={changeToHome}>
-              {' Home '}
-            </button>
-            <button className={classNames(styles.tabButton, styles.away)} onClick={changeToAway}>
-              {' Away '}
-            </button>
-          </div>
+          {new Date(match.date) > new Date(2021, 10, 30) ? (
+            <></>
+          ) : (
+            <div className={styles.tabMenu}>
+              <button className={classNames(styles.tabButton, styles.home)} onClick={changeToHome}>
+                {' Home '}
+              </button>
+              <button className={classNames(styles.tabButton, styles.away)} onClick={changeToAway}>
+                {' Away '}
+              </button>
+            </div>
+          )}
           <div>
             <PlayerTable players={isHome ? homePlayers : awayPlayers} game={match} />
           </div>

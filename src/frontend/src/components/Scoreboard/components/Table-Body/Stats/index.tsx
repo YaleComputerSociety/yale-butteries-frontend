@@ -1,13 +1,16 @@
 import React from 'react'
 import styles from './styles.module.scss'
 import { userWithStat } from '../../../index'
-import { PlayerTableProps } from '../../../index'
+
+interface StatsProps {
+  players: userWithStat[]
+}
 
 /**
  * @param {userWithStat[]} players List of players whose stats shall be displayed.
  * @returns The body of the table displaying the stats of players.
  */
-const Stats = ({ players }: PlayerTableProps) => {
+const Stats = ({ players }: StatsProps) => {
   return (
     <tbody>
       {players.length > 0 ? (

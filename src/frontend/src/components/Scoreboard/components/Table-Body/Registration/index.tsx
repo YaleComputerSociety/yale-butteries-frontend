@@ -8,11 +8,18 @@ import { addStat, deleteStat } from '../../../../../../../controllers/Stats'
  * @returns The body of the table displaying the stats of players.
  */
 const Registration = (players, game) => {
+  function alertAdd() {
+    alert('add')
+  }
+
+  function alertRemove() {
+    alert('remove')
+  }
+
   return (
     <div>
-      <Button onClick={addStat({null, null, null, game.id, currentPlayer}, )} value="register" />
-
-      <Button onClick={deleteStat} value="unregister" />
+      <Button onClick={alertAdd} value="Register" />
+      {/* <Button onClick={alertRemove} value="Unregister" /> */}
     </div>
   )
 }
