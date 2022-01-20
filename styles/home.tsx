@@ -8,8 +8,7 @@ export const homeStyles = StyleSheet.create({
   outerContainer: {
     flex: 1,
     flexDirection: 'row',
-    paddingTop: 75,
-    padding: 25,
+    paddingTop: 25,
   },
 
   innerContainer: {
@@ -19,7 +18,7 @@ export const homeStyles = StyleSheet.create({
   },
 
   butteryIcon: {
-    width: 150,
+    width: 175,
     height: 150,
   },
 
@@ -65,4 +64,9 @@ export const homeStyles = StyleSheet.create({
     marginVertical: 5,
     opacity: 1,
   },
+
+  menuView: { 
+    flex: 1, alignItems: 'center', justifyContent: 'center'
+  },
+
 });

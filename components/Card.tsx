@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, Text } from 'react-native';
 import {homeStyles} from '../styles/home';
 
-export default function Card(props) {
+export default function Card( props ) {
   return (
     <View style={homeStyles.card}>
       <View style={homeStyles.cardContent}>
