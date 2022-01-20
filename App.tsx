@@ -149,7 +149,19 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Home" 
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#676FA3',
+          },
+          headerTintColor: '#FFF',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+          },
+          animation: 'default',
+        }}>
+
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Berkeley" component={BerkeleyScreen} />
         <Stack.Screen name="Branford" component={BranfordScreen} />
@@ -165,6 +177,7 @@ function App() {
         <Stack.Screen name="Stiles" component={StilesScreen} />
         <Stack.Screen name="TD" component={TDScreen} />
         <Stack.Screen name="Trumbull" component={TrumbullScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
