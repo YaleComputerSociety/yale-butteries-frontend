@@ -1,37 +1,11 @@
-import db from '../models'
 import { Request, Response } from 'express'
-import { Game } from './ControllerInterfaces'
-
-const { ImGame, Sport, College } = db
-
-async function getGameProperties(game: any) {
-  const modifiedSport = game.sport.sport
-  const modifiedCollegeOne = game.team1.college
-  const modifiedCollegeTwo = game.team2.college
-  const gameValues = game.dataValues
-  const { team_1_key, team_2_key, sport_id, ...rest } = gameValues
-  const modifiedObject: Game = {
-    ...rest,
-    sport: modifiedSport,
-    team1: modifiedCollegeOne,
-    team2: modifiedCollegeTwo,
-  }
-  return modifiedObject
-}
-
-const enumInclude = {
-  include: [
-    { model: Sport, as: 'sport' },
-    { model: College, as: 'team1' },
-    { model: College, as: 'team2' },
-  ],
-}
+import { Intramural } from 'src/models/imgame'
+import { getRepository } from 'typeorm'
 
 export async function getAllGames(_: Request, res: Response): Promise<void> {
   try {
-    const gameCollection = await ImGame.findAll(enumInclude)
-    const modifiedObjects = await Promise.all(gameCollection.map((game) => getGameProperties(game)))
-    res.send(JSON.stringify(modifiedObjects))
+    const gameCollection = await getRepository(Intramural).find()
+    res.send(JSON.stringify(gameCollection))
   } catch (e) {
     res.status(400).send(e)
   }
@@ -39,10 +13,8 @@ export async function getAllGames(_: Request, res: Response): Promise<void> {
 
 export async function getGame(req: Request, res: Response): Promise<void> {
   try {
-    const id = req.params.gameId
-    const targetGame = await ImGame.findByPk(id, enumInclude)
-    const modifiedObject = await getGameProperties(targetGame)
-    res.send(JSON.stringify(modifiedObject))
+    const targetGame = await getRepository(Intramural).findOne(req.params.gameId)
+    res.send(JSON.stringify(targetGame))
   } catch (e) {
     res.status(400).send(e)
   }
