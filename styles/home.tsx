@@ -2,13 +2,14 @@ import { StyleSheet } from 'react-native';
 
 export const homeStyles = StyleSheet.create({
   app: {
-    backgroundColor: '#fff',
+    flex:1,
+    backgroundColor: '#EEF2FF',
   },
 
   outerContainer: {
     flex: 1,
     flexDirection: 'row',
-    paddingTop: 25,
+    padding: 10,
   },
 
   innerContainer: {
@@ -20,11 +21,15 @@ export const homeStyles = StyleSheet.create({
   butteryIcon: {
     width: 175,
     height: 150,
+    borderTopRightRadius: 6,
+    borderTopLeftRadius: 6,
+    backgroundColor: '#eee'
   },
 
   cardText1: {
     marginBottom: 0,
     margin: 10,
+    fontFamily: 'Nunito',
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 18,
@@ -40,13 +45,13 @@ export const homeStyles = StyleSheet.create({
   card: {
     borderRadius: 6,
     elevation: 3,
-    shadowOffset: { width: 1, height: 1 },
+    shadowOffset: { width: 0, height: 0},
     backgroundColor: '#fff',
     shadowColor: '#333',
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    marginHorizontal: 10,
-    marginVertical: 10,
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    marginHorizontal: 15,
+    marginVertical: 15,
     opacity: 1,
   },
 
@@ -60,13 +65,15 @@ export const homeStyles = StyleSheet.create({
   },
 
   cardContent: {
-    marginHorizontal: 5,
-    marginVertical: 5,
+    marginHorizontal: 0,
+    marginVertical: 0,
     opacity: 1,
   },
 
   menuView: { 
-    flex: 1, alignItems: 'center', justifyContent: 'center'
-  },
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center'},
+  }
 
-});
+);

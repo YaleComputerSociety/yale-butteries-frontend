@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, Text } from 'react-native';
 import {homeStyles} from '../styles/home';
 
-export default function Card( props ) {
+export default function Card( props:any ) {
   return (
     <View style={homeStyles.card}>
       <View style={homeStyles.cardContent}>
@@ -15,7 +15,7 @@ export default function Card( props ) {
   );
 }
 
-Card.defaultProps = {
-  college: 'Placeholder',
-  image: require('../assets/butteryIconPlaceholder.jpg'),
-}
+// Card.defaultProps = {
+//   college: 'Placeholder',
+//   image: require('../assets/BerkeleyIcon.png'),
+// }

@@ -1,11 +1,15 @@
 import * as React from 'react';
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
 import { Text, Image, View, Button, ScrollView, Pressable } from 'react-native';
 import { homeStyles } from './styles/home';
 import Card from './components/Card';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Assets } from 'react-navigation-stack';
+import useFonts from './styles/fonts';
 
-function HomeScreen({ navigation }) {
+function HomeScreen( {navigation} : {navigation:any} ) {
   return (
     <ScrollView style={homeStyles.app}>
       <View style={homeStyles.outerContainer}>  
@@ -127,6 +131,7 @@ function StilesScreen() {
     </View>
   );
 }
+
 function TDScreen() {
   return (
     <View style={homeStyles.menuView}>
@@ -142,11 +147,25 @@ function TrumbullScreen() {
   );
 }
 
-
-
 const Stack = createNativeStackNavigator();
 
 function App() {
+  const [IsReady, SetIsReady] = React.useState(false);
+
+  const LoadFonts = async () => {
+    await useFonts();
+  };
+
+  if (!IsReady) {
+    return (
+      <AppLoading
+        startAsync={LoadFonts}
+        onFinish={() => SetIsReady(true)}
+        onError={() => {}}
+      />
+    );
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home" 
