@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const homeStyles = StyleSheet.create({
   app: {
     flex:1,
-    backgroundColor: '#EEF2FF',
+    backgroundColor: '#FFF',
   },
 
   outerContainer: {
@@ -29,7 +29,6 @@ export const homeStyles = StyleSheet.create({
   cardText1: {
     marginBottom: 0,
     margin: 10,
-    fontFamily: 'Nunito',
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 18,

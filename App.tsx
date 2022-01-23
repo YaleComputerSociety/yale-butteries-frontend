@@ -1,7 +1,6 @@
 import * as React from 'react';
-import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
-import { Text, Image, View, Button, ScrollView, Pressable } from 'react-native';
+import { Text, ImageBackground, View, Button, ScrollView, Pressable } from 'react-native';
 import { homeStyles } from './styles/home';
 import Card from './components/Card';
 import { NavigationContainer } from '@react-navigation/native';
