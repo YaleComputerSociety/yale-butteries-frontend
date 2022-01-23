@@ -19,7 +19,7 @@ export const homeStyles = StyleSheet.create({
   },
 
   butteryIcon: {
-    width: 175,
+    width: 150,
     height: 150,
     borderTopRightRadius: 6,
     borderTopLeftRadius: 6,
@@ -73,6 +73,6 @@ export const homeStyles = StyleSheet.create({
     flex: 1, 
     alignItems: 'center', 
     justifyContent: 'center'},
-  }
+  },
 
 );
