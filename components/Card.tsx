@@ -15,7 +15,7 @@ export default function Card( props:any ) {
   );
 }
 
-// Card.defaultProps = {
-//   college: 'Placeholder',
-//   image: require('../assets/BerkeleyIcon.png'),
-// }
+Card.defaultProps = {
+  college: 'Placeholder',
+  image: require('../assets/images/butteryIconPlaceholder.jpg'),
+}

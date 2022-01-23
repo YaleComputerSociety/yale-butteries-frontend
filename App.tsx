@@ -14,7 +14,7 @@ function HomeScreen( {navigation} : {navigation:any} ) {
     <ScrollView style={homeStyles.app}>
       <View style={homeStyles.outerContainer}>  
         <View style={homeStyles.innerContainer}>
-          <Pressable onPress={() => navigation.navigate('Berkeley')}><Card college='Berkeley' openTime='10:00pm' closeTime='1:00am'/></Pressable>
+          <Pressable onPress={() => navigation.navigate('Berkeley')}><Card college='Berkeley' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/BerkeleyIcon.png')} /></Pressable>
           <Pressable onPress={() => navigation.navigate('Branford')}><Card college='Branford' openTime='10:00pm' closeTime='1:00am'/></Pressable>
           <Pressable onPress={() => navigation.navigate('Davenport')}><Card college='Davenport' openTime='10:00pm' closeTime='1:00am'/></Pressable>
           <Pressable onPress={() => navigation.navigate('Franklin')}><Card college='Franklin' openTime='10:00pm' closeTime='1:00am'/></Pressable>

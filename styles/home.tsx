@@ -19,11 +19,12 @@ export const homeStyles = StyleSheet.create({
   },
 
   butteryIcon: {
-    width: 175,
+    width: 150,
     height: 150,
+    margin: 10,
     borderTopRightRadius: 6,
     borderTopLeftRadius: 6,
-    backgroundColor: '#eee'
+    
   },
 
   cardText1: {
