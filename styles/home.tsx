@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const homeStyles = StyleSheet.create({
   app: {
     flex:1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#EEF2FF',
   },
 
   outerContainer: {
@@ -21,14 +21,15 @@ export const homeStyles = StyleSheet.create({
   butteryIcon: {
     width: 150,
     height: 150,
+    margin: 10,
     borderTopRightRadius: 6,
     borderTopLeftRadius: 6,
-    backgroundColor: '#eee'
   },
 
   cardText1: {
     marginBottom: 0,
     margin: 10,
+    fontFamily: 'Nunito',
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 18,
@@ -73,6 +74,6 @@ export const homeStyles = StyleSheet.create({
     flex: 1, 
     alignItems: 'center', 
     justifyContent: 'center'},
-  },
+  }
 
 );
