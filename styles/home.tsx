@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+
 export const homeStyles = StyleSheet.create({
   app: {
     flex:1,
@@ -21,7 +22,7 @@ export const homeStyles = StyleSheet.create({
   butteryIcon: {
     width: 150,
     height: 150,
-    margin: 10,
+    margin: 15,
     borderTopRightRadius: 6,
     borderTopLeftRadius: 6,
   },
@@ -44,6 +45,8 @@ export const homeStyles = StyleSheet.create({
 
   card: {
     borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#eee',
     elevation: 3,
     shadowOffset: { width: 0, height: 0},
     backgroundColor: '#fff',
