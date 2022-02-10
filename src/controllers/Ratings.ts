@@ -23,6 +23,9 @@ export async function getAllItemRatings(_req: Request, res: Response): Promise<v
 export async function getRating(req: Request, res: Response): Promise<void> {
   try {
     const rating = await prisma.itemRating.findUnique({
+      where: {
+        id: req.params.ratingId
+      },
       include: {
         menu_item: {
           include: {

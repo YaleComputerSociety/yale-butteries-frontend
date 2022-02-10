@@ -18,7 +18,14 @@ export async function getAllIngredients(_: Request, res: Response): Promise<void
 
 export async function getIngredient(req: Request, res: Response): Promise<void> {
   try {
-    const ingredient = await getRepository(Ingredient).findOne(req.params.ingredientId, { relations: ["college"] })
+    const ingredient = await prisma.ingredient.findUnique({
+      where: {
+        id: req.params.ingredientId
+      },
+      include: {
+        college: true
+      }
+    })
     res.send(JSON.stringify(ingredient))
   } catch (e) {
     res.status(400).send(e)
@@ -28,14 +35,20 @@ export async function getIngredient(req: Request, res: Response): Promise<void> 
 export async function createIngredient(req: Request, res: Response): Promise<void> {
   try {
     const { ingredient, price, available, college } = req.body
-    const newIngredient = new Ingredient()
-    newIngredient.ingredient = ingredient
-    newIngredient.price = price
-    newIngredient.available = available
-    const associatedCollege = await getRepository(College).findOne({college: college})
-    newIngredient.buttery = associatedCollege
-    const promise = await getRepository(Ingredient).save(newIngredient)
-    res.send(JSON.stringify(promise))
+    const associatedCollege = await prisma.college.findUnique({
+      where: {
+        college: college
+      }
+    })
+    const newIngredient = await prisma.ingredient.create({
+      data: {
+        ingredient: ingredient,
+        price: price,
+        available: available,
+        college: associatedCollege
+      }
+    })
+    res.send(JSON.stringify(newIngredient))
   } catch (e) {
     res.status(400).send(e)
   }
@@ -43,18 +56,17 @@ export async function createIngredient(req: Request, res: Response): Promise<voi
 
 export async function updateIngredient(req: Request, res: Response): Promise<void> {
   try {
-    const ingredient = await getRepository(Ingredient).findOne(req.body.id)
-    if('ingredient' in req.body) {
-      ingredient.ingredient = req.body.ingredient
-    }
-    if('price' in req.body) {
-      ingredient.price = req.body.price
-    }
-    if('available' in req.body) {
-      ingredient.available = req.body.available
-    }
-    const promise = await getRepository(Ingredient).save(ingredient)
-    res.send(JSON.stringify(promise))
+    const ingredient = await prisma.ingredient.update({
+      where: {
+        id: req.body.id
+      },
+      data: {
+        ingredient: req.body.ingredient || undefined,
+        price: req.body.price || undefined,
+        available: req.body.available || undefined
+      }
+    })
+    res.send(JSON.stringify(ingredient))
   } catch (e) {
     res.status(400).send(e)
   }
