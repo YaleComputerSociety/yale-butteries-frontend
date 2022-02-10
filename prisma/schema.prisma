@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int      @id @default(autoincrement())
+  netid            String   
+  email            String
+  name             String
+  credit_card_hash String
+  college   College @relation(fields: [collegeId], references: [id])
+  collegeId Int
+  transaction_histories TransactionHistory[]
+  position  Position @relation(fields: [positionId], references: [id])
+  positionId Int
+}
+
+model College {
+  id Int @id @default(autoincrement())
+  college String
+  image_url String
+  buttery_activated Boolean
+  users User[]
+  transaction_histories TransactionHistory[]
+  buttery_meta_data ButteryMetaData?
+  menu_items MenuItem[]
+  ingredients Ingredient[]
+}
+
+model ButteryMetaData {
+  id Int @id @default(autoincrement())
+  max_queue_size Int
+  reserved_queue_spots Int
+  college College @relation(fields: [collegeId], references: [id])
+  collegeId Int
+}
+
+model Day {
+  id Int @id @default(autoincrement())
+  day String
+  menu_items MenuItem[]
+}
+
+model Exception {
+  id Int @id @default(autoincrement())
+  day_start DateTime
+  day_stop DateTime
+  menu_items MenuItem[]
+}
+
+model Ingredient {
+  id Int @id @default(autoincrement())
+  ingredient String
+  price Decimal
+  available Boolean
+  college College @relation(fields: [collegeId], references: [id])
+  collegeId Int
+  item_ratings ItemRating[]
+  menu_items MenuItemToIngredients[]
+}
+
+model MenuItem {
+  id Int @id @default(autoincrement())
+  item String
+  price Decimal
+  college College @relation(fields: [collegeId], references: [id])
+  collegeId Int
+  days Day[]
+  exceptions Exception[]
+  item_ratings ItemRating[]
+  ingredients MenuItemToIngredients[]
+}
+
+model MenuItemToIngredients {
+  optional Boolean
+  menu_item MenuItem @relation(fields: [menuItemId], references: [id])
+  menuItemId Int
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId Int
+  @@id([menuItemId, ingredientId])
+}
+
+model ItemRating {
+  id Int @id @default(autoincrement())
+  rating Int
+  order_complete DateTime
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId Int
+  menu_item MenuItem @relation(fields: [menuItemId], references: [id])
+  menuItemId Int
+}
+
+model TransactionItem {
+  id Int @id @default(autoincrement())
+  item_name String
+  item_cost Decimal
+  transaction_history TransactionHistory @relation(fields: [transactionHistoryId], references: [id])
+  transactionHistoryId Int
+}
+
+model TransactionHistory {
+  id Int @id @default(autoincrement())
+  order_placed DateTime
+  order_complete DateTime
+  queue_size_on_placement Int
+  queue_size_on_complete Int
+  in_progress Boolean
+  total_price Decimal
+  college College @relation(fields: [collegeId], references: [id])
+  collegeId Int
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  transaction_items TransactionItem[]
+}
+
+model Position {
+  id Int @id @default(autoincrement())
+  position String
+  users User[]
+  permission_types PermissionType[]
+}
+
+model PermissionType {
+  id Int @id @default(autoincrement())
+  type String
+  positions Position[]
+}

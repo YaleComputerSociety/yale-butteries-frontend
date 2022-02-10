@@ -1,19 +1,18 @@
-import { getRepository } from 'typeorm'
 import { Request, Response } from 'express'
-import { User } from 'src/models/user'
-import { Position } from 'src/models/position'
-import { College } from 'src/models/college'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 export async function getAllUsers(_req: Request, res: Response): Promise<void> {
   try {
-    const users = await getRepository(User).find({
-      join: {
-        alias: "user",
-        leftJoinAndSelect: {
-          "position": "user.position",
-          "permissionTypes": "position.permissionTypes",
-          "college": "user.college"
-        }
+    const users = await prisma.user.findMany({
+      include: {
+        position: {
+          include: {
+            permission_types: true
+          }
+        },
+        college: true,
       }
     })
     res.send(JSON.stringify(users))
@@ -24,14 +23,17 @@ export async function getAllUsers(_req: Request, res: Response): Promise<void> {
 
 export async function getUser(req: Request, res: Response): Promise<void> {
   try {
-    const user = await getRepository(User).findOne(req.params.userId, {
-      join: {
-        alias: "user",
-        leftJoinAndSelect: {
-          "position": "user.position",
-          "permissionTypes": "position.permissionTypes",
-          "college": "user.college"
-        }
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.params.userId
+      },
+      include: {
+        position: {
+          include: {
+            permission_types: true
+          }
+        },
+        college: true,
       }
     })
     res.send(JSON.stringify(user))
@@ -43,19 +45,28 @@ export async function getUser(req: Request, res: Response): Promise<void> {
 export async function createUser(req: Request, res: Response): Promise<void> {
   try {
     const { netid, email, name, credit_card_hash, position, college } = req.body
-    const newUser = new User()
-    newUser.netid = netid
-    newUser.email = email
-    newUser.name = name
-    newUser.credit_card_hash = credit_card_hash
-    const associatedPosition = await getRepository(Position).findOne({ position: position })
-    const associatedCollege = await getRepository(College).findOne({ college: college })
-    newUser.position = associatedPosition
-    newUser.college = associatedCollege
-    newUser.stats = []
-    newUser.transaction_histories = []
-    const promise = await getRepository(User).save(newUser)
-    res.send(JSON.stringify(promise))
+    const associatedPosition = await prisma.position.findUnique({
+      where: {
+        position: position
+      }
+    })
+    const associatedCollege = await prisma.college.findUnique({
+      where: {
+        collge: college
+      }
+    })
+    const newUser = await prisma.user.create({
+      data: {
+        netid: netid,
+        email: email,
+        name: name,
+        credit_card_hash: credit_card_hash,
+        transaction_histories: [],
+        position: associatedPosition,
+        college: associatedCollege,
+      }
+    })
+    res.send(JSON.stringify(newUser))
   } catch (e) {
     res.status(400).send(e)
   }
@@ -63,21 +74,18 @@ export async function createUser(req: Request, res: Response): Promise<void> {
 
 export async function updateUser(req: Request, res: Response): Promise<void> {
   try {
-    const user = await getRepository(User).findOne(req.body.id)
-    if ('netid' in req.body) {
-      user.netid = req.body.netid
-    }
-    if ('email' in req.body) {
-      user.email = req.body.email
-    }
-    if ('name' in req.body) {
-      user.name = req.body.name
-    }
-    if ('credit_card_hash' in req.body) {
-      user.credit_card_hash = req.body.credit_card_hash
-    }
-    const promise = await getRepository(User).save(user)
-    res.send(JSON.stringify(promise))
+    const user = await prisma.user.update({
+      where: {
+        id: req.body.id
+      },
+      data: {
+        netid: req.body.netid || undefined,
+        email: req.body.email || undefined,
+        name: req.body.name || undefined,
+        credit_card_hash: req.body.credit_card_hash || undefined
+      }
+    })
+    res.send(JSON.stringify(user))
   } catch (e) {
     res.status(400).send(e)
   }

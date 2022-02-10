@@ -1,19 +1,19 @@
-import { getRepository } from 'typeorm'
+import { PrismaClient } from '@prisma/client'
 import { Request, Response } from 'express'
-import { ItemRating } from 'src/models/itemrating'
-import { MenuItem } from 'src/models/menuitem'
+
+const prisma = new PrismaClient()
 
 export async function getAllItemRatings(_req: Request, res: Response): Promise<void> {
   try {
-    const itemRatings = await getRepository(ItemRating).find({
-      join: {
-        alias: "rating",
-        leftJoinAndSelect: {
-          "menu_item": "rating.menu_item",
-          "buttery": "menu_item.buttery",
+    const itemRatings = await prisma.itemRating.findMany({
+      include: {
+        menu_item: {
+          include: {
+            college: true,
+          }
         }
       }
-    })
+    }) 
     res.send(JSON.stringify(itemRatings))
   } catch (e) {
     res.status(400).send(e)
@@ -22,15 +22,15 @@ export async function getAllItemRatings(_req: Request, res: Response): Promise<v
 
 export async function getRating(req: Request, res: Response): Promise<void> {
   try {
-    const rating = await getRepository(ItemRating).findOne(req.params.ratingId, {
-      join: {
-        alias: "rating",
-        leftJoinAndSelect: {
-          "menu_item": "rating.menu_item",
-          "buttery": "menu_item.buttery",
+    const rating = await prisma.itemRating.findUnique({
+      include: {
+        menu_item: {
+          include: {
+            college: true,
+          }
         }
       }
-    })
+    }) 
     res.send(JSON.stringify(rating))
   } catch (e) {
     res.status(400).send(e)
@@ -40,13 +40,20 @@ export async function getRating(req: Request, res: Response): Promise<void> {
 export async function createRating(req: Request, res: Response): Promise<void> {
   try {
     const { rating, order_complete, menu_item, college } = req.body
-    const newRating = new ItemRating()
-    newRating.rating = rating
-    newRating.order_complete = order_complete
-    const associatedMenuItem = await getRepository(MenuItem).findOne({ item: menu_item, buttery: college })
-    newRating.menu_item = associatedMenuItem
-    const promise = await getRepository(ItemRating).save(newRating)
-    res.send(JSON.stringify(promise))
+    const associatedMenuItem = await prisma.itemRating.findUnique({
+      where: {
+        item: menu_item,
+        college: college,
+      }
+    })
+    const newRating = await prisma.itemRating.create({
+      data: {
+        rating: rating,
+        order_complete: order_complete,
+        menu_item: associatedMenuItem
+      }
+    })
+    res.send(JSON.stringify(newRating))
   } catch (e) {
     res.status(400).send(e)
   }

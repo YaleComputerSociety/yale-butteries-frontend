@@ -1,13 +1,15 @@
-import { getRepository } from 'typeorm'
+import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express'
-import { Ingredient } from 'src/models/ingredient';
-import { College } from 'src/models/college';
 
-// TODO: Create function.
+const prisma = new PrismaClient()
 
 export async function getAllIngredients(_: Request, res: Response): Promise<void> {
   try {
-    const ingredients = await getRepository(Ingredient).find({ relations: ["college"] });
+    const ingredients = await prisma.ingredient.findMany({
+      include: {
+        college: true
+      }
+    })
     res.send(JSON.stringify(ingredients))
   } catch (e) {
     res.status(400).send(e)
