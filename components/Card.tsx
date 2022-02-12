@@ -1,15 +1,69 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ImageBackground, Text } from 'react-native';
-import {homeStyles} from '../styles/home';
+import {homeStyles, cardStyles} from '../styles/home';
 
-export default function Card( props:any ) {
+export const Card = (props:any) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // determines whether the buttery is currently open
+  function currentlyOpen(){
+    const a = props.openTimeHours;
+    const b = props.closeTimeHours;
+    const am = props.openTimeMinutes;
+    const bm = props.closeTimeMinutes;
+    const h = new Date().getHours();
+    const m = new Date().getMinutes();
+    if (a<b){ // standard case
+      return ((h>a && h<b) || (h==a && m>=am) || (h==b && m<bm));
+    } else if (a>b){ // time wraps around midnight
+      //if ((h>a || h<b) || (h==a && m>=am) || (h==b && m<bm))
+      //  console.log("weird case works for "+props.college);
+      return ((h>a || h<b) || (h==a && m>=am) || (h==b && m<bm));
+      
+    } else { // within the same hour
+      return (m>=am && m<bm);
+    }
+  }
+
+  // check every 0.5 seconds whether the buttery is open :( 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      //console.log(currentlyOpen());
+      if(currentlyOpen()){
+        setIsOpen(true);
+      }
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
+
+  // takes openTime and closeTime and puts them into clean text form. Assumes (h)h:(m)m form with optional pm/am
+  // also stores the props openTimeHours, openTimeMinutes, closeTimeHours, and closeTimeMinutes
+  // DOESN'T WORK ON FIRST RENDER - HOW DO I FIX THIS
+  function cleanTime(){
+    // get open time
+    var cleanOpen = '';
+    props.openTimeHours = parseInt(props.openTime.substring(0, props.openTime.indexOf(':'))) + (props.openTime.toString().includes("pm") ? 12 : 0);
+    props.openTimeMinutes = parseInt(props.openTime.substring(props.openTime.indexOf(':')+1));
+    cleanOpen =  (props.openTimeHours%12) + ':' + (props.openTimeMinutes<10 ? '0': '') + props.openTimeMinutes + (props.openTimeHours>12 ? 'pm' : 'am');
+    
+    // get close time
+    var cleanClose = '';
+    props.closeTimeHours = parseInt(props.closeTime.substring(0, props.closeTime.indexOf(':'))) + (props.closeTime.toString().includes("pm") ? 12 : 0);
+    props.closeTimeMinutes = parseInt(props.closeTime.substring(props.closeTime.indexOf(':')+1));
+    cleanClose =  (props.closeTimeHours%12) + ':' + (props.closeTimeMinutes<10 ? '0': '') + props.closeTimeMinutes + (props.closeTimeHours>12 ? 'pm' : 'am');
+    
+    return cleanOpen + ' - ' + cleanClose;
+  }
+
+  //var cleanedTime = cleanTime();
+  //console.log(props.openTimeHours);
+
   return (
-    <View style={homeStyles.card}>
-      <View style={homeStyles.cardContent}>
-        {/* <View style={homeStyles.darkCard}></View> */}
+    <View style={[cardStyles.card, isOpen ? cardStyles.cardOpen : cardStyles.cardClosed]}>
+      <View style={cardStyles.cardContent}>
         <ImageBackground style={homeStyles.butteryIcon} source={props.image}/>
-        <Text style={homeStyles.cardText1}>{props.college}</Text> 
-        <Text style={homeStyles.cardText2}>{props.openTime} - {props.closeTime}</Text> 
+        <Text style={cardStyles.cardText1}>{props.college}</Text> 
+        <Text style={cardStyles.cardText2}>{cleanTime()}</Text> 
       </View>
     </View>
   );

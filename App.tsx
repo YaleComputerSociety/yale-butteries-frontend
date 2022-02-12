@@ -2,7 +2,7 @@ import * as React from 'react';
 import AppLoading from 'expo-app-loading';
 import { Text, ImageBackground, View, Button, ScrollView, Pressable } from 'react-native';
 import { homeStyles } from './styles/home';
-import Card from './components/Card';
+import { Card } from './components/Card';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Assets } from 'react-navigation-stack';
@@ -13,27 +13,28 @@ function HomeScreen( {navigation} : {navigation:any} ) {
     <ScrollView style={homeStyles.app}>
       <View style={homeStyles.outerContainer}>  
         <View style={homeStyles.innerContainer}>
-          <Pressable onPress={() => navigation.navigate('Berkeley')}><Card college='Berkeley' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/BerkeleyIcon.png')} /></Pressable>
-          <Pressable onPress={() => navigation.navigate('Branford')}><Card college='Branford' openTime='10:00pm' closeTime='1:00am'/></Pressable>
-          <Pressable onPress={() => navigation.navigate('Davenport')}><Card college='Davenport' openTime='10:00pm' closeTime='1:00am'/></Pressable>
-          <Pressable onPress={() => navigation.navigate('Franklin')}><Card college='Franklin' openTime='10:00pm' closeTime='1:00am'/></Pressable>
+          <Pressable onPress={() => navigation.navigate('Berkeley')}><Card college='Berkeley' openTime='13:00' closeTime='16:00' image={require('./assets/images/BerkeleyIcon.png')}/></Pressable>
+          <Pressable onPress={() => navigation.navigate('Branford')}><Card college='Branford' openTime='22:00' closeTime='4:00pm'/></Pressable>
+          <Pressable onPress={() => navigation.navigate('Davenport')}><Card college='Davenport' openTime='13:00' closeTime='14:00'/></Pressable>
+          <Pressable onPress={() => navigation.navigate('Franklin')}><Card college='Franklin' openTime='13:00' closeTime='14:00'/></Pressable>
           <Pressable onPress={() => navigation.navigate('Hopper')}><Card college='Hopper' openTime='10:00pm' closeTime='1:00am'/></Pressable>
           <Pressable onPress={() => navigation.navigate('JE')}><Card college='JE' openTime='10:00pm' closeTime='1:00am'/></Pressable>
           <Pressable onPress={() => navigation.navigate('Morse')}><Card college='Morse' openTime='10:00pm' closeTime='1:00am'/></Pressable>
         </View>
         <View style={homeStyles.innerContainer}>
-          <Pressable onPress={() => navigation.navigate('Murray')}><Card college='Murray' openTime='10:00pm' closeTime='1:00am'/></Pressable>
-          <Pressable onPress={() => navigation.navigate('Pierson')}><Card college='Pierson' openTime='10:00pm' closeTime='1:00am'/></Pressable>
+          <Pressable onPress={() => navigation.navigate('Murray')}><Card college='Murray' openTime='2:00pm' closeTime='1:00am'/></Pressable>
+          <Pressable onPress={() => navigation.navigate('Pierson')}><Card college='Pierson' openTime='1:00pm' closeTime='17:00'/></Pressable>
           <Pressable onPress={() => navigation.navigate('Saybrook')}><Card college='Saybrook' openTime='10:00pm' closeTime='1:00am'/></Pressable>
-          <Pressable onPress={() => navigation.navigate('Siliman')}><Card college='Silliman' openTime='10:00pm' closeTime='1:00am'/></Pressable>
+          <Pressable onPress={() => navigation.navigate('Siliman')}><Card college='Silliman' openTime='18:00' closeTime='3:00'/></Pressable>
           <Pressable onPress={() => navigation.navigate('Stiles')}><Card college='Stiles' openTime='10:00pm' closeTime='1:00am'/></Pressable>
-          <Pressable onPress={() => navigation.navigate('TD')}><Card college='TD' openTime='10:00pm' closeTime='1:00am'/></Pressable>
-          <Pressable onPress={() => navigation.navigate('Trumbull')}><Card college='Trumbull' openTime='10:00pm' closeTime='1:00am'/></Pressable>
+          <Pressable onPress={() => navigation.navigate('TD')}><Card college='TD' openTime='4:00pm' closeTime='1:00am'/></Pressable>
+          <Pressable onPress={() => navigation.navigate('Trumbull')}><Card college='Trumbull' openTime='7:00' closeTime='1:00'/></Pressable>
         </View>
       </View>
     </ScrollView>
   );
 }
+//hi
 
 function BerkeleyScreen() {
   return (
