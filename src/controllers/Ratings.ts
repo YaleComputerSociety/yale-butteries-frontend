@@ -10,10 +10,10 @@ export async function getAllItemRatings(_req: Request, res: Response): Promise<v
         menu_item: {
           include: {
             college: true,
-          }
-        }
-      }
-    }) 
+          },
+        },
+      },
+    })
     res.send(JSON.stringify(itemRatings))
   } catch (e) {
     res.status(400).send(e)
@@ -24,16 +24,16 @@ export async function getRating(req: Request, res: Response): Promise<void> {
   try {
     const rating = await prisma.itemRating.findUnique({
       where: {
-        id: req.params.ratingId
+        id: parseInt(req.params.ratingId),
       },
       include: {
         menu_item: {
           include: {
             college: true,
-          }
-        }
-      }
-    }) 
+          },
+        },
+      },
+    })
     res.send(JSON.stringify(rating))
   } catch (e) {
     res.status(400).send(e)
@@ -42,19 +42,23 @@ export async function getRating(req: Request, res: Response): Promise<void> {
 
 export async function createRating(req: Request, res: Response): Promise<void> {
   try {
-    const { rating, order_complete, menu_item, college } = req.body
-    const associatedMenuItem = await prisma.itemRating.findUnique({
-      where: {
-        item: menu_item,
-        college: college,
-      }
+    const { rating, order_complete, menu_item_id, rating_ids } = req.body
+    const formatted_rating_ids = (rating_ids as number[] | string[]).map((id) => {
+      return { id: parseInt(id) }
     })
     const newRating = await prisma.itemRating.create({
       data: {
         rating: rating,
         order_complete: order_complete,
-        menu_item: associatedMenuItem
-      }
+        menu_item: {
+          connect: {
+            id: menu_item_id,
+          },
+        },
+        ingredients: {
+          connect: formatted_rating_ids,
+        },
+      },
     })
     res.send(JSON.stringify(newRating))
   } catch (e) {

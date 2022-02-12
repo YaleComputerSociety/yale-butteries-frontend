@@ -7,8 +7,8 @@ export async function getAllIngredients(_: Request, res: Response): Promise<void
   try {
     const ingredients = await prisma.ingredient.findMany({
       include: {
-        college: true
-      }
+        college: true,
+      },
     })
     res.send(JSON.stringify(ingredients))
   } catch (e) {

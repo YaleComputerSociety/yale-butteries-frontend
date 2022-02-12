@@ -9,11 +9,11 @@ export async function getAllUsers(_req: Request, res: Response): Promise<void> {
       include: {
         position: {
           include: {
-            permission_types: true
-          }
+            permission_types: true,
+          },
         },
         college: true,
-      }
+      },
     })
     res.send(JSON.stringify(users))
   } catch (e) {
@@ -25,16 +25,16 @@ export async function getUser(req: Request, res: Response): Promise<void> {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        id: req.params.userId
+        id: parseInt(req.params.userId),
       },
       include: {
         position: {
           include: {
-            permission_types: true
-          }
+            permission_types: true,
+          },
         },
         college: true,
-      }
+      },
     })
     res.send(JSON.stringify(user))
   } catch (e) {
@@ -44,27 +44,24 @@ export async function getUser(req: Request, res: Response): Promise<void> {
 
 export async function createUser(req: Request, res: Response): Promise<void> {
   try {
-    const { netid, email, name, credit_card_hash, position, college } = req.body
-    const associatedPosition = await prisma.position.findUnique({
-      where: {
-        position: position
-      }
-    })
-    const associatedCollege = await prisma.college.findUnique({
-      where: {
-        collge: college
-      }
-    })
+    const { netid, email, name, credit_card_hash, position_id, college_id } = req.body
     const newUser = await prisma.user.create({
       data: {
         netid: netid,
         email: email,
         name: name,
         credit_card_hash: credit_card_hash,
-        transaction_histories: [],
-        position: associatedPosition,
-        college: associatedCollege,
-      }
+        position: {
+          connect: {
+            id: parseInt(position_id),
+          },
+        },
+        college: {
+          connect: {
+            id: parseInt(college_id),
+          },
+        },
+      },
     })
     res.send(JSON.stringify(newUser))
   } catch (e) {
@@ -76,14 +73,14 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
   try {
     const user = await prisma.user.update({
       where: {
-        id: req.body.id
+        id: req.body.id,
       },
       data: {
         netid: req.body.netid || undefined,
         email: req.body.email || undefined,
         name: req.body.name || undefined,
-        credit_card_hash: req.body.credit_card_hash || undefined
-      }
+        credit_card_hash: req.body.credit_card_hash || undefined,
+      },
     })
     res.send(JSON.stringify(user))
   } catch (e) {

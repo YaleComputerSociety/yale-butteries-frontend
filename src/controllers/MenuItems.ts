@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Ingredient, PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express'
 
 const prisma = new PrismaClient()
@@ -8,9 +8,7 @@ export async function getAllMenuItems(_: Request, res: Response): Promise<void> 
     const menuItems = await prisma.menuItem.findMany({
       include: {
         college: true,
-        days: true,
-        exceptions: true,
-      }
+      },
     })
     res.send(JSON.stringify(menuItems))
   } catch (e) {
@@ -22,14 +20,12 @@ export async function getMenuItem(req: Request, res: Response): Promise<void> {
   try {
     const menuItem = await prisma.menuItem.findUnique({
       where: {
-        id: req.params.menuItemId
-      }, 
+        id: parseInt(req.params.menuItemId),
+      },
       include: {
         college: true,
-        days: true,
-        exceptions: true,
-      }
-    }) 
+      },
+    })
     res.send(JSON.stringify(menuItem))
   } catch (e) {
     res.status(400).send(e)
@@ -38,33 +34,36 @@ export async function getMenuItem(req: Request, res: Response): Promise<void> {
 
 export async function createMenuItem(req: Request, res: Response): Promise<void> {
   try {
-    const { item, price, days, college, exceptions, ingredients } = req.body
-    const associatedDays = []
-    const associatedExceptions = []
-    const associatedIngredients = []
-    for (const day of days) {
-      const associatedDay = await prisma.day.findUnique({ where: { day: day }})
-      associatedDays.push(associatedDay)
-    }
-    for (const exception of exceptions) {
-      const associatedException = await prisma.exception.findUnique({ where: { day_start: exception.day_start, day_stop: exception.day_stop }})
-      associatedExceptions.push(associatedException)
-    }
-    for (const ingredient of ingredients) {
-      const associatedIngredient = await prisma.ingredient.findUnique({ where: {ingredient: ingredient}})
-      associatedIngredients.push(associatedIngredient)
-    }
-    const associatedCollege = await prisma.college.findUnique({where: {college: college}})
+    const {
+      item,
+      price,
+      limited_time,
+      college_id,
+      ingredients,
+    }: {
+      item: string
+      price: number
+      limited_time: boolean
+      college_id: number
+      ingredients: { optional: boolean; ingredientId: number }
+    } = req.body
+
     const newMenuItem = await prisma.menuItem.create({
       data: {
         item: item,
         price: price,
-        item_ratings: [],
-        days: associatedDays,
-        exceptions: associatedExceptions,
-        ingredients: associatedIngredients,
-        college: associatedCollege 
-      }
+        limited_time: limited_time,
+        ingredients: {
+          createMany: {
+            data: ingredients,
+          },
+        },
+        college: {
+          connect: {
+            id: college_id,
+          },
+        },
+      },
     })
     res.send(JSON.stringify(newMenuItem))
   } catch (e) {
@@ -76,12 +75,12 @@ export async function updateMenuItem(req: Request, res: Response): Promise<void>
   try {
     const targetMenuItem = prisma.menuItem.update({
       where: {
-        id: req.body.id
+        id: req.body.id,
       },
       data: {
         item: req.body.item || undefined,
-        price: req.body.price || undefined
-      }
+        price: req.body.price || undefined,
+      },
     })
     res.send(JSON.stringify(targetMenuItem))
   } catch (e) {

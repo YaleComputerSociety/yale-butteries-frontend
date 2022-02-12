@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+
 import { Request, Response } from 'express'
 
 const prisma = new PrismaClient()
@@ -10,7 +11,7 @@ export async function getAllTransactionHistories(_req: Request, res: Response): 
         transaction_items: true,
         college: true,
         user: true,
-      }
+      },
     })
     res.send(JSON.stringify(transactionHistories))
   } catch (e) {
@@ -22,13 +23,13 @@ export async function getTransactionHistory(req: Request, res: Response): Promis
   try {
     const transactionHistory = await prisma.transactionHistory.findUnique({
       where: {
-        id: req.params.transactionId
+        id: parseInt(req.params.transactionId),
       },
       include: {
         transaction_items: true,
         college: true,
         user: true,
-      }
+      },
     })
     res.send(JSON.stringify(transactionHistory))
   } catch (e) {
@@ -38,17 +39,23 @@ export async function getTransactionHistory(req: Request, res: Response): Promis
 
 export async function createTransactionHistory(req: Request, res: Response): Promise<void> {
   try {
-    const { order_placed, order_complete, queue_size_on_placement, queue_size_on_complete, in_progress, total_price, transaction_items, college, user } = req.body
-    const associatedCollege = await prisma.college.findUnique({ where: { college: college } })
-    const associatedUser = await prisma.user.findUnique({ where: { name: user } })
+    const {
+      order_placed,
+      order_complete,
+      queue_size_on_placement,
+      queue_size_on_complete,
+      in_progress,
+      total_price,
+      transaction_items,
+      college_id,
+      user_id,
+    } = req.body
     const transactionItems = []
     for (const transactionItem of transaction_items) {
-      const newItem = await prisma.transactionItem.create({
-        data: {
-          item_cost: transactionItem.item_cost,
-          item_name: transactionItem.item_name
-        }
-      })
+      const newItem = {
+        item_name: transactionItem.item_name,
+        item_cost: transactionItem.item_cost,
+      }
       transactionItems.push(newItem)
     }
     const newTransaction = await prisma.transactionHistory.create({
@@ -59,10 +66,22 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
         queue_size_on_placement: queue_size_on_placement,
         in_progress: in_progress,
         total_price: total_price,
-        college: associatedCollege,
-        user: associatedUser,
-        transaction_items: transactionItems
-      }
+        college: {
+          connect: {
+            id: parseInt(college_id),
+          },
+        },
+        user: {
+          connect: {
+            id: parseInt(user_id),
+          },
+        },
+        transaction_items: {
+          createMany: {
+            data: transactionItems,
+          },
+        },
+      },
     })
     res.send(JSON.stringify(newTransaction))
   } catch (e) {
