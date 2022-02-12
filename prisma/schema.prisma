@@ -21,6 +21,8 @@ model User {
   transaction_histories TransactionHistory[]
   position  Position @relation(fields: [positionId], references: [id])
   positionId Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model College {
@@ -32,7 +34,10 @@ model College {
   transaction_histories TransactionHistory[]
   buttery_meta_data ButteryMetaData?
   menu_items MenuItem[]
+  availabilities Availability[]
   ingredients Ingredient[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model ButteryMetaData {
@@ -41,19 +46,19 @@ model ButteryMetaData {
   reserved_queue_spots Int
   college College @relation(fields: [collegeId], references: [id])
   collegeId Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
-model Day {
+model Availability {
   id Int @id @default(autoincrement())
-  day String
+  start_time DateTime
+  end_time DateTime
+  collegeId Int
+  college College @relation(fields: [collegeId], references: [id])
   menu_items MenuItem[]
-}
-
-model Exception {
-  id Int @id @default(autoincrement())
-  day_start DateTime
-  day_stop DateTime
-  menu_items MenuItem[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Ingredient {
@@ -61,41 +66,37 @@ model Ingredient {
   ingredient String
   price Decimal
   available Boolean
-  college College @relation(fields: [collegeId], references: [id])
   collegeId Int
+  college College @relation(fields: [collegeId], references: [id])
   item_ratings ItemRating[]
   menu_items MenuItemToIngredients[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model MenuItem {
   id Int @id @default(autoincrement())
   item String
   price Decimal
+  limited_time Boolean
   college College @relation(fields: [collegeId], references: [id])
   collegeId Int
-  days Day[]
-  exceptions Exception[]
+  availibilities Availability[]
   item_ratings ItemRating[]
   ingredients MenuItemToIngredients[]
-}
-
-model MenuItemToIngredients {
-  optional Boolean
-  menu_item MenuItem @relation(fields: [menuItemId], references: [id])
-  menuItemId Int
-  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
-  ingredientId Int
-  @@id([menuItemId, ingredientId])
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model ItemRating {
   id Int @id @default(autoincrement())
   rating Int
   order_complete DateTime
-  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
-  ingredientId Int
+  ingredients Ingredient[] 
   menu_item MenuItem @relation(fields: [menuItemId], references: [id])
   menuItemId Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model TransactionItem {
@@ -104,6 +105,8 @@ model TransactionItem {
   item_cost Decimal
   transaction_history TransactionHistory @relation(fields: [transactionHistoryId], references: [id])
   transactionHistoryId Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model TransactionHistory {
@@ -119,6 +122,8 @@ model TransactionHistory {
   user User @relation(fields: [userId], references: [id])
   userId Int
   transaction_items TransactionItem[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model Position {
@@ -126,10 +131,25 @@ model Position {
   position String
   users User[]
   permission_types PermissionType[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model PermissionType {
   id Int @id @default(autoincrement())
   type String
   positions Position[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model MenuItemToIngredients {
+  optional Boolean
+  menu_item MenuItem @relation(fields: [menuItemId], references: [id])
+  menuItemId Int
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@id([menuItemId, ingredientId])
 }
