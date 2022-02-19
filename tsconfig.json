@@ -1,6 +1,17 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
-  }
+    "declaration": false,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+        "*": ["node_modules/*", "src/*"]
+    },
+  },
+  "exclude": [
+    "**/*.spec.ts",
+    "node_modules",
+    "dist",
+  ],
+  "compileOnSave": false
 }
