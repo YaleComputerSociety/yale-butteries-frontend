@@ -33,13 +33,22 @@ export const homeStyles = StyleSheet.create({
     marginLeft: 10,
   },
 
+  menuView: { 
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center',
+  },
+})
+
+export const cardStyles = StyleSheet.create({
   cardText1: {
     fontFamily: 'Nunito-Regular',
     textAlignVertical: 'bottom',
     fontWeight: 'bold',
     color: '#fff',
-    fontSize: 22, 
-    marginBottom: 25,   
+    fontSize: 22,
+    marginBottom: 25,  
+    marginTop: 15, 
   },
 
   cardText2: {
@@ -50,24 +59,27 @@ export const homeStyles = StyleSheet.create({
     flex: 1,
     height: 100,
     elevation: 3,
-    shadowOffset: { width: 1, height: 1},
+    shadowOffset: { width: 0, height: 1},
     backgroundColor: '#fff',
     shadowColor: '#333',
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.5,
     borderRadius: 6,
-    shadowRadius: 1,
+    shadowRadius: 2,
     marginVertical: 10,
-    opacity: 1,
-    alignContent: 'space-between',
   },
 
-  //not in use
-  darkCard: {
-    borderRadius: 6,
-    backgroundColor: 'black',
-    opacity: 0.3,
-    zIndex: 2,
-    position: 'absolute',
+  cardOpen: {
+    backgroundColor: '#fff',
+    elevation: 3,
+    shadowOffset: { width: 0, height: 0},
+    shadowColor: '#333',
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+  },
+
+  cardClosed: {
+    //backgroundColor: '#ccc',
+    //opacity: 1,
   },
   
   cardContent: {
@@ -75,13 +87,7 @@ export const homeStyles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: 10,
     justifyContent: 'space-between',
-    marginVertical: 0,
+    paddingLeft:10,
     opacity: 1,
   },
-
-  menuView: { 
-    flex: 1, 
-    alignItems: 'center', 
-    justifyContent: 'center'},
-  },
-);
+})

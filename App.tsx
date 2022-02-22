@@ -2,7 +2,7 @@ import * as React from 'react';
 import AppLoading from 'expo-app-loading';
 import { Text, ImageBackground, View, Button, ScrollView, Pressable } from 'react-native';
 import { homeStyles } from './styles/home';
-import Card from './components/Card';
+import { Card } from './components/Card';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
