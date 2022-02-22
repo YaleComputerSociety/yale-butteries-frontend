@@ -1,61 +1,64 @@
 import { StyleSheet } from 'react-native';
 
-
 export const homeStyles = StyleSheet.create({
   app: {
     flex:1,
-    backgroundColor: '#EEF2FF',
+    backgroundColor: '#F0F0F0',
+  },
+
+  container:{
+    width:100,
+    height: 100
   },
 
   outerContainer: {
     flex: 1,
-    flexDirection: 'row',
-    padding: 10,
-  },
-
-  innerContainer: {
-    flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
+    padding: 0,
+    marginTop: 5,
+    marginBottom: 10,
+    marginHorizontal: 12,
   },
 
   butteryIcon: {
-    width: 150,
-    height: 150,
+    width: 75,
+    height: 75,
     margin: 15,
-    borderTopRightRadius: 6,
-    borderTopLeftRadius: 6,
+    marginRight: 0,
+  },
+
+  textContent: {
+    justifyContent: 'flex-end',
+    marginBottom: 15,
+    marginLeft: 10,
   },
 
   cardText1: {
-    marginBottom: 0,
-    margin: 10,
-    fontFamily: 'Nunito',
-    textAlign: 'center',
+    fontFamily: 'Nunito-Regular',
+    textAlignVertical: 'bottom',
     fontWeight: 'bold',
-    fontSize: 18,
+    color: '#fff',
+    fontSize: 22, 
+    marginBottom: 25,   
   },
 
   cardText2: {
-    margin: 10,
-    textAlign: 'center',
-    fontWeight: '200',
-    fontSize: 14,
+    fontStyle: 'italic'
   },
 
   card: {
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: '#eee',
+    flex: 1,
+    height: 100,
     elevation: 3,
-    shadowOffset: { width: 0, height: 0},
+    shadowOffset: { width: 1, height: 1},
     backgroundColor: '#fff',
     shadowColor: '#333',
     shadowOpacity: 0.2,
-    shadowRadius: 5,
-    marginHorizontal: 15,
-    marginVertical: 15,
+    borderRadius: 6,
+    shadowRadius: 1,
+    marginVertical: 10,
     opacity: 1,
+    alignContent: 'space-between',
   },
 
   //not in use
@@ -66,9 +69,12 @@ export const homeStyles = StyleSheet.create({
     zIndex: 2,
     position: 'absolute',
   },
-
+  
   cardContent: {
-    marginHorizontal: 0,
+    flex: 1,
+    flexDirection: 'row',
+    marginHorizontal: 10,
+    justifyContent: 'space-between',
     marginVertical: 0,
     opacity: 1,
   },
@@ -77,6 +83,5 @@ export const homeStyles = StyleSheet.create({
     flex: 1, 
     alignItems: 'center', 
     justifyContent: 'center'},
-  }
-
+  },
 );
