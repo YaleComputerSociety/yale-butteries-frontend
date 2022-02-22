@@ -3,12 +3,12 @@ import { StyleSheet } from 'react-native';
 export const homeStyles = StyleSheet.create({
   app: {
     flex:1,
-    backgroundColor: '#F0F0F0',
+    backgroundColor: '#eaeaea',//'#343a40',
   },
 
   container:{
-    width:100,
-    height: 100
+    width: 100,
+    height: 100,
   },
 
   outerContainer: {
@@ -23,7 +23,7 @@ export const homeStyles = StyleSheet.create({
   butteryIcon: {
     width: 75,
     height: 75,
-    margin: 15,
+    marginVertical: 12,
     marginRight: 0,
   },
 
@@ -42,8 +42,8 @@ export const homeStyles = StyleSheet.create({
 
 export const cardStyles = StyleSheet.create({
   cardText1: {
-    fontFamily: 'Nunito-Regular',
     textAlignVertical: 'bottom',
+    fontFamily: 'Roboto',
     fontWeight: 'bold',
     color: '#fff',
     fontSize: 22,
@@ -52,20 +52,19 @@ export const cardStyles = StyleSheet.create({
   },
 
   cardText2: {
+    fontFamily: 'Roboto-Italic',
     fontStyle: 'italic'
+    
   },
 
   card: {
     flex: 1,
-    height: 100,
-    elevation: 3,
-    shadowOffset: { width: 0, height: 1},
+    height: 95,
+    elevation: 3, 
     backgroundColor: '#fff',
-    shadowColor: '#333',
-    shadowOpacity: 0.5,
     borderRadius: 6,
     shadowRadius: 2,
-    marginVertical: 10,
+    marginVertical: 8,
   },
 
   cardOpen: {
