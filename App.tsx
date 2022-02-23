@@ -1,5 +1,5 @@
 import React from 'react';
-import { Component , useState } from 'react';
+import { useState } from 'react';
 import AppLoading from 'expo-app-loading';
 import Navigator from './routes/homeStack';
 import * as Font from 'expo-font';
