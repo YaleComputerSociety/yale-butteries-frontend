@@ -20,12 +20,7 @@ export const homeStyles = StyleSheet.create({
     marginHorizontal: 12,
   },
 
-  butteryIcon: {
-    width: 75,
-    height: 75,
-    marginVertical: 12,
-    marginRight: 0,
-  },
+  
 
   textContent: {
     justifyContent: 'flex-end',
@@ -54,7 +49,6 @@ export const cardStyles = StyleSheet.create({
   cardText2: {
     fontFamily: 'Roboto-Italic',
     fontStyle: 'italic'
-    
   },
 
   card: {
@@ -83,11 +77,19 @@ export const cardStyles = StyleSheet.create({
   
   cardContent: {
     flex: 1,
-    flexDirection: 'column',
-    marginHorizontal: 10,
+    flexDirection: 'row',
+    marginLeft: 10,
     justifyContent: 'space-between',
     paddingLeft:10,
     opacity: 1,
+  },
+
+  butteryIcon: {
+    width: 75,
+    height: 75,
+    marginVertical: 12,
+    marginRight: 10,
+
   },
 })
 

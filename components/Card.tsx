@@ -16,8 +16,6 @@ export const Card = (props:any) => {
     if (a<b){ // standard case
       return ((h>a && h<b) || (h==a && m>=am) || (h==b && m<bm));
     } else if (a>b){ // time wraps around midnight
-      //if ((h>a || h<b) || (h==a && m>=am) || (h==b && m<bm))
-      //  console.log("weird case works for "+props.college);
       return ((h>a || h<b) || (h==a && m>=am) || (h==b && m<bm));
       
     } else { // within the same hour
@@ -41,21 +39,19 @@ export const Card = (props:any) => {
   // DOESN'T WORK ON FIRST RENDER - HOW DO I FIX THIS
   function cleanTime(){
     // get open time
-    var cleanOpen = '';
-    props.openTimeHours = parseInt(props.openTime.substring(0, props.openTime.indexOf(':'))) + (props.openTime.toString().includes("pm") ? 12 : 0);
-    props.openTimeMinutes = parseInt(props.openTime.substring(props.openTime.indexOf(':')+1));
-    cleanOpen =  (props.openTimeHours%12) + ':' + (props.openTimeMinutes<10 ? '0': '') + props.openTimeMinutes + (props.openTimeHours>12 ? 'pm' : 'am');
+    const openTimeHours = parseInt(props.openTime.substring(0, props.openTime.indexOf(':'))) + (props.openTime.toString().includes("pm") ? 12 : 0);
+    const openTimeMinutes = parseInt(props.openTime.substring(props.openTime.indexOf(':')+1));
+    const cleanOpen =  (openTimeHours%12) + ':' + (openTimeMinutes<10 ? '0': '') + openTimeMinutes + (openTimeHours>12 ? 'pm' : 'am');
     
     // get close time
-    var cleanClose = '';
-    props.closeTimeHours = parseInt(props.closeTime.substring(0, props.closeTime.indexOf(':'))) + (props.closeTime.toString().includes("pm") ? 12 : 0);
-    props.closeTimeMinutes = parseInt(props.closeTime.substring(props.closeTime.indexOf(':')+1));
-    cleanClose =  (props.closeTimeHours%12) + ':' + (props.closeTimeMinutes<10 ? '0': '') + props.closeTimeMinutes + (props.closeTimeHours>12 ? 'pm' : 'am');
+    const closeTimeHours = parseInt(props.closeTime.substring(0, props.closeTime.indexOf(':'))) + (props.closeTime.toString().includes("pm") ? 12 : 0);
+    const closeTimeMinutes = parseInt(props.closeTime.substring(props.closeTime.indexOf(':')+1));
+    const cleanClose =  (closeTimeHours%12) + ':' + (closeTimeMinutes<10 ? '0': '') + closeTimeMinutes + (closeTimeHours>12 ? 'pm' : 'am');
     
     return cleanOpen + ' - ' + cleanClose;
   }
 
-  //var cleanedTime = cleanTime();
+  var cleanedTime = cleanTime();
   //console.log(props.openTimeHours);
 
   return (
@@ -64,9 +60,9 @@ export const Card = (props:any) => {
       <View style={cardStyles.cardContent}>
         <View>
           <Text style={cardStyles.cardText1}>{props.college}</Text>
-          <Text style={cardStyles.cardText2}>{props.openTime} - {props.closeTime}</Text>
+          <Text style={cardStyles.cardText2}>{cleanTime()}</Text>
         </View>
-        <Image style={homeStyles.butteryIcon} source={props.image}/>
+        <Image style={cardStyles.butteryIcon} source={props.image}/>
       </View>
   </ImageBackground>
   );

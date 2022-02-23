@@ -1,6 +1,6 @@
 import * as React from 'react';
 import AppLoading from 'expo-app-loading';
-import { Text, ImageBackground, View, Button, ScrollView, Pressable } from 'react-native';
+import { Text, ImageBackground, View, ScrollView, Pressable } from 'react-native';
 import { homeStyles } from './styles/home';
 import { Card } from './components/Card';
 import { MenuItem } from './components/MenuItem';
@@ -13,15 +13,15 @@ function HomeScreen( {navigation} : {navigation:any} ) {
     <ScrollView style={homeStyles.app} showsVerticalScrollIndicator={false} >
       <View style={homeStyles.outerContainer}>  
           <Pressable onPress={() => navigation.navigate('Berkeley')}><Card backgroundImage={require('./assets/gradient_backgrounds/red-to-pink.png')} college='Berkeley' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/berkeley.png')} /></Pressable>
-          <Pressable onPress={() => navigation.navigate('Branford')}><Card backgroundImage={require('./assets/gradient_backgrounds/blue-to-green.png')} college='Branford' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/branford.png')}/></Pressable>
+          <Pressable onPress={() => navigation.navigate('Branford')}><Card backgroundImage={require('./assets/gradient_backgrounds/blue-to-green.png')} college='Branford' openTime='2:00pm' closeTime='17:00' image={require('./assets/images/collegeIcons/branford.png')}/></Pressable>
           <Pressable onPress={() => navigation.navigate('Davenport')}><Card backgroundImage={require('./assets/gradient_backgrounds/black-to-grey.png')} college='Davenport' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/davenport.png')}/></Pressable>
           <Pressable onPress={() => navigation.navigate('Franklin')}><Card backgroundImage={require('./assets/gradient_backgrounds/red-to-blue.png')} college='Franklin' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/franklin.png')}/></Pressable>
           <Pressable onPress={() => navigation.navigate('Hopper')}><Card backgroundImage={require('./assets/gradient_backgrounds/yellow-to-orange.png')} college='Hopper' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/hopper.png')}/></Pressable>
           <Pressable onPress={() => navigation.navigate('JE')}><Card backgroundImage={require('./assets/gradient_backgrounds/green-to-pink.png')} college='JE' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/JE.png')}/></Pressable>
           <Pressable onPress={() => navigation.navigate('Morse')}><Card backgroundImage={require('./assets/gradient_backgrounds/red-to-pink.png')} college='Morse' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/morse.png')}/></Pressable>
-          <Pressable onPress={() => navigation.navigate('Murray')}><Card backgroundImage={require('./assets/gradient_backgrounds/blue-to-green.png')} college='Murray' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/murray.png')}/></Pressable>
+          <Pressable onPress={() => navigation.navigate('Murray')}><Card backgroundImage={require('./assets/gradient_backgrounds/red-to-blue.png')} college='Murray' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/murray.png')}/></Pressable>
           <Pressable onPress={() => navigation.navigate('Pierson')}><Card backgroundImage={require('./assets/gradient_backgrounds/yellow-to-orange.png')} college='Pierson' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/pierson.png')}/></Pressable>
-          <Pressable onPress={() => navigation.navigate('Saybrook')}><Card backgroundImage={require('./assets/gradient_backgrounds/red-to-blue.png')} college='Saybrook' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/saybrook.png')}/></Pressable>
+          <Pressable onPress={() => navigation.navigate('Saybrook')}><Card backgroundImage={require('./assets/gradient_backgrounds/blue-to-green.png')} college='Saybrook' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/saybrook.png')}/></Pressable>
           <Pressable onPress={() => navigation.navigate('Siliman')}><Card backgroundImage={require('./assets/gradient_backgrounds/green-to-pink.png')} college='Silliman' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/silliman.png')}/></Pressable>
           <Pressable onPress={() => navigation.navigate('Stiles')}><Card backgroundImage={require('./assets/gradient_backgrounds/yellow-to-orange.png')} college='Stiles' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/ezrastiles.png')}/></Pressable>
           <Pressable onPress={() => navigation.navigate('TD')}><Card backgroundImage={require('./assets/gradient_backgrounds/red-to-pink.png')}college='TD' openTime='10:00pm' closeTime='1:00am' image={require('./assets/images/collegeIcons/TD.png')}/></Pressable>
