@@ -1,5 +1,9 @@
 Arguments: 
+<<<<<<< HEAD
   /usr/local/bin/node /usr/local/bin/yarn add react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masker-view
+=======
+  /usr/local/bin/node /usr/local/bin/yarn add expo-font
+>>>>>>> 7438a5a50014ace23caafbdcb48224e372c91900
 
 PATH: 
   /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
@@ -11,7 +15,7 @@ Node version:
   14.18.0
 
 Platform: 
-  darwin x64
+  darwin arm64
 
 Trace: 
   Error: https://registry.yarnpkg.com/@react-native-community%2fmasker-view: Not found
@@ -1221,6 +1225,7 @@ Lockfile:
   
   "@expo-google-fonts/inter@^0.2.2":
     version "0.2.2"
+<<<<<<< HEAD
     resolved "https://registry.npmjs.org/@expo-google-fonts/inter/-/inter-0.2.2.tgz"
     integrity sha512-dU6mSczI2xkRZbUhQQ5VB+D4AqLOF8ufCIfA1iBjrPZ/Qnka88E5Ez2Mvm41exdKR76norVvYD5GJIQYEEoO/Q==
   
@@ -1228,6 +1233,15 @@ Lockfile:
     version "4.0.16"
     resolved "https://registry.npmjs.org/@expo/config-plugins/-/config-plugins-4.0.16.tgz"
     integrity sha512-UTyE5JTBatMSwoOZCtX0u2H3zkp/ybMftc1228ARMop35Dbq+sYO11Ym3MrY5RPh8PYPofokDSOvoUq1jjORXw==
+=======
+    resolved "https://registry.yarnpkg.com/@expo-google-fonts/inter/-/inter-0.2.2.tgz#bd5624be6c92e7621aa9ddb5bd72757604729121"
+    integrity sha512-dU6mSczI2xkRZbUhQQ5VB+D4AqLOF8ufCIfA1iBjrPZ/Qnka88E5Ez2Mvm41exdKR76norVvYD5GJIQYEEoO/Q==
+  
+  "@expo/config-plugins@3.1.0":
+    version "3.1.0"
+    resolved "https://registry.npmjs.org/@expo/config-plugins/-/config-plugins-3.1.0.tgz"
+    integrity sha512-V5qxaxCAExBM0TXmbU1QKiZcAGP3ecu7KXede8vByT15cro5PkcWu2sSdJCYbHQ/gw6Vf/i8sr8gKlN8V8TSLg==
+>>>>>>> 7438a5a50014ace23caafbdcb48224e372c91900
     dependencies:
       "@expo/config-types" "^43.0.1"
       "@expo/json-file" "8.2.34"
@@ -3475,10 +3489,24 @@ Lockfile:
       "@expo/config-plugins" "^4.0.2"
       uuid "^3.4.0"
   
+<<<<<<< HEAD
   expo-font@^10.0.5, expo-font@~10.0.5:
     version "10.0.5"
     resolved "https://registry.npmjs.org/expo-font/-/expo-font-10.0.5.tgz"
     integrity sha512-x9YwM0xLkDdSvFjeNbyuh33Q1Hk3uc2jbMuuAN5W2ZVcUZqG0M8GCX/KV/D/7rYqdXKbliQA5r44MyDwZe/XRw==
+=======
+  expo-font@^10.0.5:
+    version "10.0.5"
+    resolved "https://registry.yarnpkg.com/expo-font/-/expo-font-10.0.5.tgz#8010060ec5326b3b462f7a1ac6b232dc4d1a7317"
+    integrity sha512-x9YwM0xLkDdSvFjeNbyuh33Q1Hk3uc2jbMuuAN5W2ZVcUZqG0M8GCX/KV/D/7rYqdXKbliQA5r44MyDwZe/XRw==
+    dependencies:
+      fontfaceobserver "^2.1.0"
+  
+  expo-font@~10.0.3:
+    version "10.0.4"
+    resolved "https://registry.npmjs.org/expo-font/-/expo-font-10.0.4.tgz"
+    integrity sha512-ieEsT6tD6yD6qT7WUzzJ5el0UvACr53RqICu0GI9GUiWuwDFPM2Oi5WfWwYFFStCRuaP6kEtpkJDUZ9cjT5F+w==
+>>>>>>> 7438a5a50014ace23caafbdcb48224e372c91900
     dependencies:
       fontfaceobserver "^2.1.0"
   
@@ -3489,8 +3517,24 @@ Lockfile:
   
   expo-linear-gradient@^11.0.3:
     version "11.0.3"
+<<<<<<< HEAD
     resolved "https://registry.npmjs.org/expo-linear-gradient/-/expo-linear-gradient-11.0.3.tgz"
     integrity sha512-LuzTM5+iEHCQfC2TBHAAI+ZjPvf0TvGiA7GYMsyTnakGA2r4JtsV8Ah/miQPKhfG06jLDOo4grUoSMGqbmSrEw==
+=======
+    resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-11.0.3.tgz#bc559b9a251c9dc8aa37fb6c66c7a497fe92993c"
+    integrity sha512-LuzTM5+iEHCQfC2TBHAAI+ZjPvf0TvGiA7GYMsyTnakGA2r4JtsV8Ah/miQPKhfG06jLDOo4grUoSMGqbmSrEw==
+  
+  expo-modules-autolinking@~0.3.4:
+    version "0.3.4"
+    resolved "https://registry.npmjs.org/expo-modules-autolinking/-/expo-modules-autolinking-0.3.4.tgz"
+    integrity sha512-Mu3CIMqEAI8aNM18U/l+7CCi+afU8dERrKjDDEx/Hu7XX3v3FcnnP+NuWDLY/e9/ETzwTJaqoRoBuzhawsuLWw==
+    dependencies:
+      chalk "^4.1.0"
+      commander "^7.2.0"
+      fast-glob "^3.2.5"
+      find-up "~5.0.0"
+      fs-extra "^9.1.0"
+>>>>>>> 7438a5a50014ace23caafbdcb48224e372c91900
   
   expo-modules-autolinking@0.5.5, expo-modules-autolinking@~0.5.1:
     version "0.5.5"
@@ -5431,6 +5475,7 @@ Lockfile:
   
   moment@^2.29.1:
     version "2.29.1"
+<<<<<<< HEAD
     resolved "https://registry.npmjs.org/moment/-/moment-2.29.1.tgz"
     integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
   
@@ -5445,6 +5490,11 @@ Lockfile:
       on-finished "~2.3.0"
       on-headers "~1.0.2"
   
+=======
+    resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+    integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+  
+>>>>>>> 7438a5a50014ace23caafbdcb48224e372c91900
   ms@2.0.0:
     version "2.0.0"
     resolved "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
@@ -6285,7 +6335,11 @@ Lockfile:
   
   react@^17.0.2:
     version "17.0.2"
+<<<<<<< HEAD
     resolved "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
+=======
+    resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
+>>>>>>> 7438a5a50014ace23caafbdcb48224e372c91900
     integrity sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==
     dependencies:
       loose-envify "^1.1.0"
