@@ -1,9 +1,5 @@
 Arguments: 
-<<<<<<< HEAD
   /usr/local/bin/node /usr/local/bin/yarn add react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-community/masker-view
-=======
-  /usr/local/bin/node /usr/local/bin/yarn add expo-font
->>>>>>> 7438a5a50014ace23caafbdcb48224e372c91900
 
 PATH: 
   /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
