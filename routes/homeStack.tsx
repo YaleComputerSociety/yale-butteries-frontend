@@ -1,7 +1,7 @@
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
-import Home from '../screens/home';
-import ButteryScreen from "../screens/butteryScreen";
+import Home from '../screens/HomeScreen';
+import ButteryScreen from "../screens/MenuScreen";
 import React from 'react'
 
 const screens = {

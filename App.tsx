@@ -4,7 +4,7 @@ import AppLoading from 'expo-app-loading';
 import Navigator from './routes/homeStack';
 import * as Font from 'expo-font';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { homeStyles } from './styles/home';
+import { homeStyles } from './styles/HomeStyles';
 import { MenuItem } from './components/MenuItem';
 const Stack = createNativeStackNavigator();
 

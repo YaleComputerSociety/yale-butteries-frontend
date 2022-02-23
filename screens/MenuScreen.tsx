@@ -1,7 +1,8 @@
 import React from 'react';
 import { Text, View, Button, ScrollView} from 'react-native';
 import {MenuItem} from '../components/MenuItem';
-import {homeStyles } from '../styles/home';
+import {MenuCheckout} from '../components/MenuCheckout';
+import {homeStyles } from '../styles/HomeStyles';
 
 export default function butteryScreen( {navigation} : {navigation:any} ) { 
   const pressHandler = () => {
@@ -16,6 +17,9 @@ export default function butteryScreen( {navigation} : {navigation:any} ) {
         <MenuItem name='Face Slap' description="Not necessarily food, but refreshing nonetheless" price={0.06}/>
         <MenuItem name='Burger' description="No, this was NOT stolen from the dining hall" price={2.044}/>
         <MenuItem name='Chicken Stir Fry' description="Fried rice with eggs and chicken" price={2}/>
+      </View>
+      <View>
+        <MenuCheckout/>
       </View>
     </ScrollView>
   )
