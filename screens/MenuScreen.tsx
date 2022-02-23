@@ -2,15 +2,15 @@ import React from 'react';
 import { Text, View, Button, ScrollView} from 'react-native';
 import {MenuItem} from '../components/MenuItem';
 import {MenuCheckout} from '../components/MenuCheckout';
-import {homeStyles } from '../styles/HomeStyles';
+import {home } from '../styles/HomeStyles';
 
 export default function butteryScreen( {navigation} : {navigation:any} ) { 
   const pressHandler = () => {
     navigation.goBack()
   }
   return (
-    <ScrollView style={homeStyles.app} showsVerticalScrollIndicator={false} >
-      <View style={homeStyles.menuView}>
+    <ScrollView style={home.app} showsVerticalScrollIndicator={false} >
+      <View style={home.menuView}>
         <MenuItem name='Chicken Sandwich' price={1.75} description="Not only is there a chicken, but as part of a limited time special offer, we're adding two additional flaps of bread."/>
         <MenuItem name='Milkshake' description="I'm cold." price={2.5}/>
         <MenuItem name='Floor Scraps' description="An economical choice" price={0.6}/>

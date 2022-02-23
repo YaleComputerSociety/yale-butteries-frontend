@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ImageBackground, Text, Image, Pressable} from 'react-native';
-import {homeStyles, cardStyles} from '../styles/HomeStyles';
+import {card} from '../styles/HomeStyles';
 
 export const Card = (props:any) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -64,13 +64,13 @@ export const Card = (props:any) => {
   return (
 
     <Pressable onPress={props.onPress} disabled={!isOpen}>
-      <ImageBackground source={props.backgroundImage} resizeMode="cover" style={isOpen ? cardStyles.card : [cardStyles.card, {opacity: 0.5}]} imageStyle={{borderRadius: 6}}>
-      <View style={cardStyles.cardContent}>
+      <ImageBackground source={props.backgroundImage} resizeMode="cover" style={isOpen ? card.card : [card.card, {opacity: 0.5}]} imageStyle={{borderRadius: 6}}>
+      <View style={card.cardContent}>
         <View>
-          <Text style={cardStyles.cardText1}>{props.college}</Text>
-          <Text style={cardStyles.cardText2}>{cleanTime()}</Text>
+          <Text style={card.cardText1}>{props.college}</Text>
+          <Text style={card.cardText2}>{cleanTime()}</Text>
         </View>
-        <Image style={cardStyles.butteryIcon} source={props.image}/>
+        <Image style={card.butteryIcon} source={props.image}/>
       </View>
     </ImageBackground>
   </Pressable>

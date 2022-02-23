@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const homeStyles = StyleSheet.create({
+export const home = StyleSheet.create({
   app: {
     flex:1,
     backgroundColor: '#eaeaea',//'#343a40',
@@ -33,7 +33,7 @@ export const homeStyles = StyleSheet.create({
   },
 })
 
-export const cardStyles = StyleSheet.create({
+export const card = StyleSheet.create({
   cardText1: {
     textAlignVertical: 'bottom',
     fontFamily: 'Roboto',

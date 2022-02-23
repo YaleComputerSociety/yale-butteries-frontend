@@ -33,7 +33,7 @@ export const MenuItem = (props:any) => {
       <Pressable onPress={decrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
         <Text style={item.buttonText}>-</Text>
       </Pressable>
-      <View style={item.button}>
+      <View style={item.spacer}>
         <Text style={item.countText}>{quantity}</Text>
       </View>
       <Pressable onPress={incrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
