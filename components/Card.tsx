@@ -27,10 +27,8 @@ export const Card = (props:any) => {
   useEffect(() => {
     const interval = setInterval(() => {
       //console.log(currentlyOpen());
-      if(currentlyOpen()){
-        setIsOpen(true);
-      }
-    }, 500);
+      setIsOpen(currentlyOpen());
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
