@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ImageBackground, Text, Image} from 'react-native';
-import {homeStyles, cardStyles} from '../styles/home';
+import {homeStyles, cardStyles} from '../styles/HomeStyles';
 
 export const Card = (props:any) => {
   const [isOpen, setIsOpen] = useState(false);

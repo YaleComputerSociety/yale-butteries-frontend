@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ImageBackground, Text, Image, Pressable} from 'react-native';
-import {homeStyles, cardStyles, itemStyles} from '../styles/home';
+import {item} from '../styles/MenuStyles';
 
 export const MenuItem = (props:any) => {
   const [quantity, setQuantity] = useState(0);
@@ -21,24 +21,24 @@ export const MenuItem = (props:any) => {
 
 
   return (
-    <View style={itemStyles.card}>
-      <View style={itemStyles.leftSide}>
-        <View style={itemStyles.spacer}/>
-        <Text style={itemStyles.itemName}>{props.name}</Text>
-        <Text style={itemStyles.itemDescription}>{props.description}</Text>
-        <Text style={itemStyles.itemPrice}>{priceToText(props.price)}</Text>
+    <View style={item.card}>
+      <View style={item.leftSide}>
+        <View style={item.spacer}/>
+        <Text style={item.itemName}>{props.name}</Text>
+        <Text style={item.itemDescription}>{props.description}</Text>
+        <Text style={item.itemPrice}>{priceToText(props.price)}</Text>
       </View>
       
-      <View style={itemStyles.spacer}/>
-        <Pressable onPress={decrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, itemStyles.button]}>
-          <Text style={itemStyles.buttonText}>−</Text>
-        </Pressable>
-        <View style={itemStyles.buttonSpacer}>
-          <Text style={itemStyles.countText}>{quantity}</Text>
-        </View>
-        <Pressable onPress={incrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, itemStyles.button]}>
-          <Text style={itemStyles.buttonText}>+</Text>
-        </Pressable>
+      <View style={item.spacer}/>
+      <Pressable onPress={decrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
+        <Text style={item.buttonText}>-</Text>
+      </Pressable>
+      <View style={item.spacer}>
+        <Text style={item.countText}>{quantity}</Text>
+      </View>
+      <Pressable onPress={incrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
+        <Text style={item.buttonText}>+</Text>
+      </Pressable>
     </View>
   );
 }

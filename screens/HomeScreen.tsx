@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, View, ScrollView, Pressable } from 'react-native';
-import { homeStyles } from '../styles/home';
+import { homeStyles } from '../styles/HomeStyles';
 import { Card } from '../components/Card';
 
 

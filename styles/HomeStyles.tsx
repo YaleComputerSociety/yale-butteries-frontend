@@ -91,6 +91,7 @@ export const cardStyles = StyleSheet.create({
   },
 })
 
+<<<<<<< HEAD:styles/home.tsx
 export const itemStyles = StyleSheet.create({
   card: {
     flex: 1,
@@ -174,3 +175,5 @@ export const itemStyles = StyleSheet.create({
   }
 
 })
+=======
+>>>>>>> 9d89505300cd302b44033305f96804035a53db18:styles/HomeStyles.tsx
