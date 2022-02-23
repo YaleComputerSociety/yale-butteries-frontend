@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ImageBackground, Text, Image, Pressable} from 'react-native';
-import {item} from '../styles/MenuStyles';
+import { item } from '../styles/MenuStyles';
 
 export const MenuItem = (props:any) => {
   const [quantity, setQuantity] = useState(0);
@@ -30,13 +30,13 @@ export const MenuItem = (props:any) => {
       </View>
       
       <View style={item.spacer}/>
-      <Pressable onPress={decrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#fff' }, item.button ]}>
+      <Pressable onPress={decrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
         <Text style={item.buttonText}>-</Text>
       </Pressable>
-      <View style={item.spacer}>
+      <View style={item.button}>
         <Text style={item.countText}>{quantity}</Text>
       </View>
-      <Pressable onPress={incrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#fff' }, item.button ]}>
+      <Pressable onPress={incrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
         <Text style={item.buttonText}>+</Text>
       </Pressable>
     </View>
