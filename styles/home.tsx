@@ -20,8 +20,6 @@ export const homeStyles = StyleSheet.create({
     marginHorizontal: 12,
   },
 
-  
-
   textContent: {
     justifyContent: 'flex-end',
     marginBottom: 15,
@@ -113,20 +111,21 @@ export const itemStyles = StyleSheet.create({
     flex: 6,
   },
 
-
   itemName: {
     fontFamily: 'Roboto',
     fontWeight: 'bold',
     color: '#222',
     fontSize: 20,
+    marginBottom: 5,
   },
 
   itemDescription: {
-    fontFamily: 'Roboto',
+    fontFamily: 'Roboto-Italic',
     color: '#777',
     fontSize: 12,
     flex: 2,
     lineHeight: 12,
+    paddingRight: 10,
   },
 
   itemPrice: {
@@ -137,23 +136,22 @@ export const itemStyles = StyleSheet.create({
   },
 
   button: {
-    elevation: 6,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 0},
-    shadowOpacity: 0.4,
-    flex: 1.58,
-    borderRadius: 100,
-    height: 50,
+    shadowOpacity: 0.3,
+    flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
+    borderRadius: 5,
+    height: '38%',
+    width: '10%',
   },
 
   buttonText: {
     fontFamily: 'Roboto',
     fontWeight: 'bold',
-
+    justifyContent: 'center',
+    alignSelf: 'center',
     fontSize: 30,
-    height: 40,
   },
 
   countText: {
@@ -165,8 +163,14 @@ export const itemStyles = StyleSheet.create({
   },
 
   spacer: {
-    flex: 1.1,
     justifyContent: 'center',
+    alignItems: 'center',
   },
+
+  buttonSpacer: {
+    flex: 1,
+    //justifyContent: 'center',
+    //alignItems: 'center',
+  }
 
 })
