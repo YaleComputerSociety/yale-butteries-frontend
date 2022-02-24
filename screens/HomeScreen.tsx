@@ -3,7 +3,6 @@ import { Text, View, ScrollView, Pressable } from 'react-native';
 import { homeStyles } from '../styles/HomeStyles';
 import { Card } from '../components/Card';
 
-
 export default function Home( { navigation } : {navigation:any} ) {
   return (
     <ScrollView style={homeStyles.app} showsVerticalScrollIndicator={false} >

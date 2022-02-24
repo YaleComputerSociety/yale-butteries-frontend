@@ -2,6 +2,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
 import Home from '../screens/HomeScreen';
 import ButteryScreen from "../screens/MenuScreen";
+import CheckoutScreen from "../screens/CheckoutScreen";
 import React from 'react'
 
 const screens = {
@@ -15,9 +16,16 @@ const screens = {
   ButteryScreen: {
     screen: ButteryScreen,
     navigationOptions: {
-      title : 'Buttery_Name'
+      title : 'Menu'
     }
   },
+
+  CheckoutScreen: {
+    screen: CheckoutScreen,
+    navigationOptions: {
+      title: 'Checkout'
+    }
+  }
 }
 
 const HomeStack = createStackNavigator(screens, {

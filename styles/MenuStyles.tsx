@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+
 export const item = StyleSheet.create({
   card: {
     flex: 1,
@@ -12,8 +13,8 @@ export const item = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 6,
     shadowRadius: 2,
-    margin: 12,
-    marginBottom: 0,
+    margin: 4,
+    marginVertical: 8,
   },
 
   leftSide: {
@@ -25,14 +26,16 @@ export const item = StyleSheet.create({
     fontWeight: 'bold',
     color: '#222',
     fontSize: 20,
+    marginBottom: 5,
   },
 
   itemDescription: {
-    fontFamily: 'Roboto',
+    fontFamily: 'Roboto-Italic',
     color: '#777',
     fontSize: 12,
     flex: 2,
     lineHeight: 12,
+    paddingRight: 10,
   },
 
   itemPrice: {
@@ -43,40 +46,82 @@ export const item = StyleSheet.create({
   },
 
   button: {
-    elevation: 6,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 0},
-    shadowOpacity: 0.4,
-    flex: 1.58,
-    borderRadius: 100,
-    height: 50,
+    shadowOpacity: 0.3,
+    flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
+    borderRadius: 5,
+    height: '38%',
+    width: '10%',
   },
 
   buttonText: {
     fontFamily: 'Roboto',
-    fontWeight: 'bold',
-
+    justifyContent: 'center',
+    alignSelf: 'center',
     fontSize: 30,
-    height: 40,
   },
 
   countText: {
     fontFamily: 'Roboto',
     fontWeight: 'bold',
-    color: '#000',
     fontSize: 30,
     textAlign: 'center',
   },
 
   spacer: {
-    flex: 1.1,
     justifyContent: 'center',
+    alignItems: 'center',
   },
 
+  buttonSpacer: {
+    flex: 1,
+    //justifyContent: 'center',
+    //alignItems: 'center',
+  },
+
+  outerContainer: {
+    flex: 2,
+    backgroundColor: '#6fff'
+  },
+
+  upperContainer: {
+    flex: 0.75,
+    flexDirection: 'row',
+    backgroundColor: '#eee',
+    alignItems: 'center',
+    justifyContent: 'space-evenly'
+  },
+
+  lowerContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  priceText: {
+    fontFamily: 'Roboto-Light',
+    color: '#000',
+    fontSize: 18,
+    padding: 10,
+  },
+
+  checkoutText: {
+    fontFamily: 'Roboto',
+    color: '#fff',
+    fontSize: 25,
+  },
 })
 
-export const menu = StyleSheet.create({
-
+export const checkout = StyleSheet.create({
+  outerContainer: {
+    backgroundColor: "#fff",
+    flex: 1,
+    flexDirection: 'column',
+    height: 100,
+    width: '100%',
+    position: 'absolute',
+  }
 })

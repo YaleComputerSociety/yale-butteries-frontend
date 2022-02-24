@@ -3,7 +3,8 @@ import { View, ImageBackground, Text, Image, Pressable} from 'react-native';
 import { item } from '../styles/MenuStyles';
 
 export const MenuItem = (props:any) => {
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setLocalQuantity] = useState(0);
+  const [totalItems, setGlobalQuantity] = useState(0);
 
   function priceToText(num: number){
     const dollars = Math.floor(num);
@@ -12,11 +13,11 @@ export const MenuItem = (props:any) => {
   }
 
   const incrementQuantity = () => {
-    if(quantity<12) setQuantity(quantity+1);
+    if(quantity<12) setLocalQuantity(quantity+1); setGlobalQuantity(totalItems+1);
   }
 
   const decrementQuantity = () => {
-    if(quantity>0) setQuantity(quantity-1);
+    if(quantity>0) setLocalQuantity(quantity-1);  setGlobalQuantity(totalItems-1);
   }
 
 
@@ -30,22 +31,21 @@ export const MenuItem = (props:any) => {
       </View>
       
       <View style={item.spacer}/>
-      <Pressable onPress={decrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
-        <Text style={item.buttonText}>-</Text>
-      </Pressable>
-      <View style={item.button}>
-        <Text style={item.countText}>{quantity}</Text>
-      </View>
-      <Pressable onPress={incrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
-        <Text style={item.buttonText}>+</Text>
-      </Pressable>
+        <Pressable onPress={decrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
+          <Text style={item.buttonText}>-</Text>
+        </Pressable>
+        <View style={item.buttonSpacer}>
+          <Text style={item.countText}>{quantity}</Text>
+        </View>
+        <Pressable onPress={incrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button]}>
+          <Text style={item.buttonText}>+</Text>
+        </Pressable>
     </View>
   );
 }
 
 MenuItem.defaultProps = {
   name: 'Undefined',
-  
 }
 
 {/* <ScrollView style={homeStyles.app} showsVerticalScrollIndicator={false} >
