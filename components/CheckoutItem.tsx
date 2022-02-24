@@ -5,9 +5,9 @@ import { checkout } from '../styles/CheckoutStyles';
 export const CheckoutItem = (props:any) => {
   return (
     <View style={checkout.item}>
-      <Text>{props.Name}</Text>
-      <Text>{props.Price}</Text>
+      <Text style={checkout.itemNameText}>{props.Name}</Text>
       <Text>{props.Count}</Text>
+      <Text>{props.Price}</Text>
     </View>
   );
 }

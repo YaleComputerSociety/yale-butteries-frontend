@@ -6,8 +6,6 @@ export const MenuItem = (props:any) => {
   const [quantity, setLocalQuantity] = useState(0);
   const [totalItems, setGlobalQuantity] = useState(0);
 
-  const location = props.navigation
-
   function priceToText(num: number){
     const dollars = Math.floor(num);
     const cents = Math.floor(num*100 - dollars*100);
