@@ -72,11 +72,5 @@ export const card = StyleSheet.create({
     height: 75,
     marginVertical: 12,
     marginRight: 10,
-<<<<<<< HEAD
   },
 })
-=======
-
-  },
-})
->>>>>>> cb124120cfbb5af3cad4e6381aa253a45b071c40
