@@ -58,7 +58,6 @@ export const checkout = StyleSheet.create({
     height: '100%',
     margin: '8%',
     borderRadius: 10,
-    backgroundColor: '#61ad24',
     justifyContent: 'center',
     alignItems: 'center',
   },

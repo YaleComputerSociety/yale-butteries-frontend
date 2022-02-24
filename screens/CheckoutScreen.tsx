@@ -22,7 +22,7 @@ export default function CheckoutScreen( { navigation } : {navigation:any} ) {
         </View>
       </View>
       <View style={checkout.lowerContainer}>
-        <Pressable style={checkout.checkoutButton}><Text style={checkout.checkoutText}>Complete Order</Text></Pressable>
+        <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, checkout.checkoutButton]}><Text style={checkout.checkoutText}>Complete Order</Text></Pressable>
       </View>
     </View>
   ); 
