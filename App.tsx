@@ -3,7 +3,8 @@ import { useState } from 'react';
 import AppLoading from 'expo-app-loading';
 import Navigator from './routes/homeStack';
 import * as Font from 'expo-font';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';import { home } from './styles/HomeStyles';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { home } from './styles/HomeStyles';
 
 const Stack = createNativeStackNavigator();
 
