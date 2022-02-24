@@ -6,6 +6,7 @@ export interface TransactionItem {
   id: number
   itemName: string
   itemCost: number
+  order_status: 'cancelled' | 'queued' | 'in_progress' | 'complete'
   transactionHistoryId: number
 }
 
@@ -56,36 +57,42 @@ async function dummyTransactionItems(): Promise<TransactionItem[]> {
       id: 1,
       itemName: 'Americano',
       itemCost: 1.50,
+      order_status: 'complete',
       transactionHistoryId: 1,
     },
     {
       id: 2,
       itemName: 'Quesadilla',
       itemCost: 1.50,
+      order_status: 'queued',
       transactionHistoryId: 1,
     },
     {
       id: 3,
       itemName: 'Coke',
       itemCost: 1.00,
+      order_status: 'complete',
       transactionHistoryId: 2,
     },
     {
       id: 4,
       itemName: 'Quesadilla',
       itemCost: 1.50,
+      order_status: 'in_progress',
       transactionHistoryId: 2,
     },
     {
       id: 4,
       itemName: "David's Tux",
       itemCost: 3.00,
+      order_status: 'queued',
       transactionHistoryId: 3,
     },
     {
       id: 5,
       itemName: 'Americano',
       itemCost: 3.00,
+      order_status: 'complete',
       transactionHistoryId: 3,
     },
   ]
