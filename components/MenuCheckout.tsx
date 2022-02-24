@@ -10,9 +10,10 @@ function priceToText(num: number){
 }
 
 // the bottom component on the menu screen with a checkout button and the current price and number of items
+
 export const MenuCheckout = (props:any) => {
   return (
-    <View style={item.outerContainer}> 
+    <View style={checkout.outerContainer}> 
       <View style={item.upperContainer}>
         <Text style={item.priceText}>Total: $10.00 </Text>
         <Text style={item.priceText}>Item Count: 4</Text>
