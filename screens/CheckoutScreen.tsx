@@ -11,7 +11,7 @@ function getPriceTotal(item:any){
 function CheckoutItemList(props:any) {
   const checkoutItemList = props.checkoutItemList;
   const listItems = checkoutItemList.map((item:any) => 
-    <CheckoutItem Name={item.name} Count={item.count} Price={priceToText(getPriceTotal(item))}/>
+    <CheckoutItem item={item} totalPrice={priceToText(getPriceTotal(item))} key={item.id}/>
   );
   return (
     <View style={checkout.orderDetailsContainer}>

@@ -84,7 +84,7 @@ export const item = StyleSheet.create({
 
   outerContainer: {
     flex: 2,
-    backgroundColor: '#6fff'
+    backgroundColor: '#fff'
   },
 
   upperContainer: {
