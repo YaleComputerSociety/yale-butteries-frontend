@@ -3,12 +3,8 @@ import { useState } from 'react';
 import AppLoading from 'expo-app-loading';
 import Navigator from './routes/homeStack';
 import * as Font from 'expo-font';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-<<<<<<< HEAD
-=======
-import { home } from './styles/HomeStyles';
-import { MenuItem } from './components/MenuItem';
->>>>>>> cb124120cfbb5af3cad4e6381aa253a45b071c40
+import { createNativeStackNavigator } from '@react-navigation/native-stack';import { home } from './styles/HomeStyles';
+
 const Stack = createNativeStackNavigator();
 
 const loadFonts = () => Font.loadAsync({
