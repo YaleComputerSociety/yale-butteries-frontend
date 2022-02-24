@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component} from 'react';
 import { View, ImageBackground, Text, Image, Pressable} from 'react-native';
 import { item , checkout} from '../styles/MenuStyles';
 
@@ -11,7 +11,7 @@ function priceToText(num: number){
 
 // the bottom component on the menu screen with a checkout button and the current price and number of items
 
-export const MenuCheckout = (props:any) => {
+export const MenuCheckout = (props:any, navigation:any) => {
   return (
     <View style={item.outerContainer}> 
       <View style={item.upperContainer}>
