@@ -30,48 +30,20 @@ export const MenuItem = (props:any) => {
       </View>
       
       <View style={item.spacer}/>
-<<<<<<< HEAD
-        <Pressable onPress={decrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
-          <Text style={item.buttonText}>-</Text>
-        </Pressable>
-        <View style={item.buttonSpacer}>
-          <Text style={item.countText}>{quantity}</Text>
-        </View>
-        <Pressable onPress={incrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button]}>
-          <Text style={item.buttonText}>+</Text>
-        </Pressable>
-=======
       <Pressable onPress={decrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
         <Text style={item.buttonText}>-</Text>
       </Pressable>
-      <View style={item.spacer}>
+      <View style={item.buttonSpacer}>
         <Text style={item.countText}>{quantity}</Text>
       </View>
       <Pressable onPress={incrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
         <Text style={item.buttonText}>+</Text>
       </Pressable>
->>>>>>> cb124120cfbb5af3cad4e6381aa253a45b071c40
     </View>
   );
 }
 
 MenuItem.defaultProps = {
-<<<<<<< HEAD
-  name: 'Undefined',
-}
-
-{/* <ScrollView style={homeStyles.app} showsVerticalScrollIndicator={false} >
-  <View style={homeStyles.menuView}>
-    <MenuItem name='Chicken Sandwich' price={1.75} description="Not only is there a chicken, but as part of a limited time special offer, we're adding two additional flaps of bread."/>
-    <MenuItem name='Milkshake' description="I'm cold." price={2.5}/>
-    <MenuItem name='Floor Scraps' description="An economical choice" price={0.6}/>
-    <MenuItem name='Face Slap' description="Not necessarily food, but refreshing nonetheless" price={0.06}/>
-    <MenuItem name='Burger' description="No, this was NOT stolen from the dining hall" price={2.044}/>
-    <MenuItem name='Chicken Stir Fry' description="Fried rice with eggs and chicken" price={2}/>
-  </View>
-</ScrollView> */}
-=======
   name: 'Uundefined',
   price: 0,
 }
->>>>>>> cb124120cfbb5af3cad4e6381aa253a45b071c40

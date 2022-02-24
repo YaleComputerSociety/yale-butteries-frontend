@@ -66,7 +66,7 @@ export const item = StyleSheet.create({
   countText: {
     fontFamily: 'Roboto',
     fontWeight: 'bold',
-    fontSize: 30,
+    fontSize: 24,
     textAlign: 'center',
   },
 
