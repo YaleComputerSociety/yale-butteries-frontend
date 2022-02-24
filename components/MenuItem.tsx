@@ -2,9 +2,7 @@ import React, { useState} from 'react';
 import { View, Text, Pressable} from 'react-native';
 import { item } from '../styles/MenuStyles';
 
-export const MenuItem = (props:any) => {
-  const [quantity, setLocalQuantity] = useState(0);
-  const [totalItems, setGlobalQuantity] = useState(0);
+export const MenuItem = ({menuItem, updateItem}:any) => {
 
   function priceToText(num: number){
     const dollars = Math.floor(num);
@@ -13,20 +11,26 @@ export const MenuItem = (props:any) => {
   }
 
   const incrementQuantity = () => {
-    if(quantity<12) setLocalQuantity(quantity+1); setGlobalQuantity(totalItems+1);
+    if(menuItem.count<12) {
+      ++menuItem.count;
+      updateItem(menuItem);
+    } 
   }
 
   const decrementQuantity = () => {
-    if(quantity>0) setLocalQuantity(quantity-1);  setGlobalQuantity(totalItems-1);
+    if(menuItem.count>0) {
+      --menuItem.count;
+      updateItem(menuItem);
+    } 
   }
 
   return (
     <View style={item.card}>
       <View style={item.leftSide}>
         <View style={item.spacer}/>
-        <Text style={item.itemName}>{props.name}</Text>
-        <Text style={item.itemDescription}>{props.description}</Text>
-        <Text style={item.itemPrice}>{priceToText(props.price)}</Text>
+        <Text style={item.itemName}>{menuItem.name}</Text>
+        <Text style={item.itemDescription}>{menuItem.description}</Text>
+        <Text style={item.itemPrice}>{priceToText(menuItem.price)}</Text>
       </View>
       
       <View style={item.spacer}/>
@@ -34,16 +38,11 @@ export const MenuItem = (props:any) => {
         <Text style={item.buttonText}>-</Text>
       </Pressable>
       <View style={item.buttonSpacer}>
-        <Text style={item.countText}>{quantity}</Text>
+        <Text style={item.countText}>{menuItem.count}</Text>
       </View>
       <Pressable onPress={incrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
         <Text style={item.buttonText}>+</Text>
       </Pressable>
     </View>
   );
-}
-
-MenuItem.defaultProps = {
-  name: 'Undefined',
-  price: 0,
 }
