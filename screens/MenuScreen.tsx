@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, View, Button, ScrollView} from 'react-native';
-import { MenuItem } from '../components/MenuItem';
-import { MenuCheckout } from '../components/MenuCheckout';
-import { home } from '../styles/HomeStyles';
+import {MenuItem} from '../components/MenuItem';
+import {MenuCheckout} from '../components/MenuCheckout';
+import {home } from '../styles/HomeStyles';
 
 export default function butteryScreen( {navigation} : {navigation:any} ) { 
   const pressHandler = () => {

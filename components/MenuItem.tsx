@@ -44,6 +44,10 @@ export const MenuItem = (props:any) => {
 }
 
 MenuItem.defaultProps = {
+<<<<<<< HEAD
   name: 'Uundefined',
+=======
+  name: 'Undefined',
+>>>>>>> adb13d0084d082f652d77d0a868c4f274fb7f883
   price: 0,
 }
