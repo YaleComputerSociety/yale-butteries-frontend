@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, Pressable, ScrollView } from 'react-native';
 import { MenuItem } from '../components/MenuItem';
 import { home } from '../styles/HomeStyles';
@@ -15,6 +15,7 @@ export default function butteryScreen( {navigation} : {navigation:any} ) {
     {name:'Chicken Stir Fry', description:"Fried rice with eggs and chicken", price: 2.75, count: 0, id:5},
     {name:'Lemon', description:"Slurp", price:0.75, count: 0, id:6},
   ]);
+  const [itemTotal, setItemTotal] = useState(0);
 
   const updateItem = (newItem:any) => {
     let newItems = [...items];
@@ -31,13 +32,17 @@ export default function butteryScreen( {navigation} : {navigation:any} ) {
     return sum;
   }
 
-  function getItemCount(){
+  function updateItemCount(){
     let sum = 0;
     for(let i = 0; i<items.length; i++){
       sum += items[i].count;
     }
-    return sum;
+    setItemTotal(sum);
   }
+
+  useEffect(() => {
+    updateItemCount();
+  }, [items]);
 
   function getTotalItemData(){
     const ITEMDATA = []
@@ -58,19 +63,19 @@ export default function butteryScreen( {navigation} : {navigation:any} ) {
           ))}
         </View>
       </ScrollView>
-      <View style={home.footer}>
-        <View style={item.outerContainer}> 
-        <View style={item.upperContainer}>
-          <Text style={item.priceText}>Total: {priceToText(getPriceTotal())} </Text>
-          <Text style={item.priceText}>Items: {getItemCount()}</Text>
+        <View style={home.footer}>
+          <View style={item.outerContainer}> 
+          <View style={item.upperContainer}>
+            <Text style={item.priceText}>Total: {priceToText(getPriceTotal())} </Text>
+            <Text style={item.priceText}>Items: {itemTotal}</Text>
+          </View>
+          <Pressable onPress={() => navigation.navigate("CheckoutScreen",
+              {
+                item : getTotalItemData(), //get total items to display in checkout screen
+                totalPrice : priceToText(getPriceTotal())
+              })} 
+              disabled={itemTotal===0} style={({ pressed }) => [{ backgroundColor: (pressed && itemTotal>0) ? '#222' : '#333', opacity: itemTotal>0 ? 1 : 0.5}, item.lowerContainer]}><Text style={item.checkoutText}>Go to Checkout</Text></Pressable>
         </View>
-        <Pressable onPress={() => navigation.navigate("CheckoutScreen", 
-            {
-              item : getTotalItemData(), //get total items to display in checkout screen
-              totalPrice : priceToText(getPriceTotal())
-            })} 
-            style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, item.lowerContainer]}><Text style={item.checkoutText}>Go to Checkout</Text></Pressable>
-      </View>
       </View>
     </View>
   )
