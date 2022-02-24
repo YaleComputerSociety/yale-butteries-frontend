@@ -20,7 +20,6 @@ function CheckoutItemList(props:any) {
   );
 }
 
-
 export default function CheckoutScreen( { navigation } : {navigation:any} ) {
   return (
     <View style={checkout.wrapper}>
