@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, View, Button, ScrollView} from 'react-native';
-import {MenuItem} from '../components/MenuItem';
-import {MenuCheckout} from '../components/MenuCheckout';
-import {home } from '../styles/HomeStyles';
+import { Text, View, Button, ScrollView, Pressable} from 'react-native';
+import { MenuItem } from '../components/MenuItem';
+import { MenuCheckout } from '../components/MenuCheckout';
+import { home } from '../styles/HomeStyles';
+import { item , checkout} from '../styles/MenuStyles';
 
 export default function butteryScreen( {navigation} : {navigation:any} ) { 
   const pressHandler = () => {
@@ -23,7 +24,13 @@ export default function butteryScreen( {navigation} : {navigation:any} ) {
         </View>
       </ScrollView>
       <View style={home.footer}>
-          <MenuCheckout/>
+        <View style={item.outerContainer}> 
+        <View style={item.upperContainer}>
+          <Text style={item.priceText}>Total: $10.00 </Text>
+          <Text style={item.priceText}>Item Count: 4</Text>
+        </View>
+        <Pressable onPress={ () => navigation.navigate("CheckoutScreen")} style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, item.lowerContainer]}><Text style={item.checkoutText}>Checkout</Text></Pressable>
+      </View>
       </View>
     </View>
   )
