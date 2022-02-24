@@ -23,20 +23,18 @@ function CheckoutItemList(props:any) {
 export default function CheckoutScreen( { navigation } : {navigation:any} ) {
   return (
     <View style={checkout.wrapper}>
-      <View style={{flex:1}}>
-        <View style={checkout.upperContainer}>
+      <View style={checkout.upperContainer}>
+        <View style={checkout.itemList}>
         <View style={checkout.header}><Text style={checkout.totalText}>Order Summary:</Text></View>
-          <ScrollView>
+          <ScrollView style={checkout.scrollStyle}>
             <CheckoutItemList checkoutItemList={navigation.getParam('item')}/>
           </ScrollView>
           <View style={checkout.footer}><Text style={checkout.totalText}>Total:  { navigation.getParam('totalPrice') }</Text></View>
         </View>
       </View>
-      <View style={checkout.lowerContainer}>
-        <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, checkout.checkoutButton]}>
+      <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, checkout.checkoutButton]}>
           <Text style={checkout.checkoutText}>Complete Order</Text>
-        </Pressable>
-      </View>
+      </Pressable>
     </View>
   ); 
 }

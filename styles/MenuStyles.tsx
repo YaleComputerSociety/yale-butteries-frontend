@@ -97,7 +97,7 @@ export const item = StyleSheet.create({
 
   lowerContainer: {
     flexDirection: 'row',
-    flex: 1,
+    flex: 1.25,
     justifyContent: 'center',
     alignItems: 'center',
   },
