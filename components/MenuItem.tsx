@@ -1,14 +1,9 @@
 import React, { useState} from 'react';
 import { View, Text, Pressable} from 'react-native';
 import { item } from '../styles/MenuStyles';
+import { priceToText } from '../Functions';
 
 export const MenuItem = ({menuItem, updateItem}:any) => {
-
-  function priceToText(num: number){
-    const dollars = Math.floor(num);
-    const cents = Math.floor(num*100 - dollars*100);
-    return '$'+dollars+'.'+(cents<10 ? '0' + cents : cents);
-  }
 
   const incrementQuantity = () => {
     if(menuItem.count<12) {
