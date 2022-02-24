@@ -53,8 +53,8 @@ export const Card = (props:any) => {
   }
 
   return (
-    <Pressable onPress={props.onPress} disabled={!isOpen}>
-      <ImageBackground source={props.backgroundImage} resizeMode="cover" style={isOpen ? card.card : [card.card, {opacity: 0.5}]} imageStyle={{borderRadius: 6}}>
+    <Pressable onPress={props.onPress} disabled={!isOpen} style={({pressed}) => [{ opacity: pressed ? 0.8 : 1}]}>
+      <ImageBackground source={props.backgroundImage} resizeMode="cover" style={[card.card, {opacity: isOpen ? 1 : 0.5,}]} imageStyle={{borderRadius: 6}}>
       <View style={card.cardContent}>
         <View style={card.textContainer}>
           <Text style={card.cardText1}>{props.college}</Text>
