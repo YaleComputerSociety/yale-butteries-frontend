@@ -1,4 +1,3 @@
-import { setStatusBarBackgroundColor } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 
 
@@ -11,7 +10,7 @@ export const checkout = StyleSheet.create({
     flex: 1.75,
     margin: 20,
     backgroundColor: '#eee',
-    borderRadius: 6
+    borderRadius: 6,
   },
 
   orderDetailsContainer: {
@@ -20,32 +19,50 @@ export const checkout = StyleSheet.create({
 
   itemNameText: {
     fontFamily: 'Roboto',
+    fontSize: 18,
   },
 
   totalText: {
-    fontFamily: 'Roboto',
-    fontSize: 20,
+    fontFamily: 'HindSiliguri-Bold',
+    fontSize: 18,
   },
 
   text: {
-    fontFamily: 'Roboto-Light',
+    fontFamily: 'HindSiliguri',
+    fontSize: 18,
   },
 
   item: {
+    flex: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 10,
   },
 
+  header: {
+    height: '8%',
+    borderTopRightRadius: 6,
+    borderTopLeftRadius: 6,
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#eee',
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+  },
+
   footer: {
     width: '100%',
-    height: '10%',
+    height: '8%',
     justifyContent: 'center',
     alignItems: 'flex-start',
     paddingLeft: 20,
-    backgroundColor: '#ddd',
+    backgroundColor: '#eee',
     borderBottomLeftRadius: 6,
-    borderBottomRightRadius: 6
+    borderBottomRightRadius: 6,
+    borderTopWidth: 1,
+    borderColor: '#ddd',
   },
 
   lowerContainer: {
@@ -55,16 +72,40 @@ export const checkout = StyleSheet.create({
 
   checkoutButton: {
     flex: 1,
-    height: '100%',
-    margin: '8%',
+    marginVertical: '8%',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
   
   checkoutText: {
-    fontFamily: 'Roboto',
+    fontFamily: 'HindSiliguri-Bold',
     fontSize: 25,
     color: '#fff'
   },
+
+  NAME: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    //backgroundColor:'yellow'
+  },
+
+  COUNT: {
+    flex: 0.5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    //backgroundColor:'red'
+  },
+
+  PRICE: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    //backgroundColor:'green',
+    paddingLeft: '10%',
+  }
 })

@@ -35,7 +35,7 @@ export const home = StyleSheet.create({
 export const card = StyleSheet.create({
   cardText1: {
     textAlignVertical: 'bottom',
-    fontFamily: 'Roboto',
+    fontFamily: 'HindSiliguri-Bold',
     fontWeight: 'bold',
     color: '#fff',
     fontSize: 22,
@@ -43,14 +43,20 @@ export const card = StyleSheet.create({
     marginTop: 15, 
   },
 
+  textContainer:{
+    flex:1,
+    //backgroundColor:'green',
+  },
+
   cardText2: {
     fontFamily: 'Roboto-Italic',
-    fontStyle: 'italic'
+    marginBottom: 15,
+    //backgroundColor:'red',
   },
 
   card: {
     flex: 1,
-    height: 95,
+    height: '100%',
     elevation: 3, 
     backgroundColor: '#fff',
     borderRadius: 6,

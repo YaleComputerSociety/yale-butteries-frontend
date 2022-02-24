@@ -1,4 +1,3 @@
-
 export function priceToText(num: number){
   const dollars = Math.floor(num);
   const cents = Math.floor(num*100 - dollars*100);

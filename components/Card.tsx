@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, ImageBackground, Text, Image, Pressable} from 'react-native';
-import {card} from '../styles/HomeStyles';
+import { View, ImageBackground, Text, Image, Pressable } from 'react-native';
+import { card } from '../styles/HomeStyles';
 
 export const Card = (props:any) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -56,7 +56,7 @@ export const Card = (props:any) => {
     <Pressable onPress={props.onPress} disabled={!isOpen}>
       <ImageBackground source={props.backgroundImage} resizeMode="cover" style={isOpen ? card.card : [card.card, {opacity: 0.5}]} imageStyle={{borderRadius: 6}}>
       <View style={card.cardContent}>
-        <View>
+        <View style={card.textContainer}>
           <Text style={card.cardText1}>{props.college}</Text>
           <Text style={card.cardText2}>{cleanTime()}</Text>
         </View>

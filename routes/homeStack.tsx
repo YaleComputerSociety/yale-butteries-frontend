@@ -1,4 +1,3 @@
-import React from 'react';
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
 import Home from '../screens/HomeScreen';
@@ -32,9 +31,9 @@ const screens = {
 const HomeStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerStyle: { backgroundColor : '#00b2db'},
-    headerTitleStyle: { fontFamily : 'Roboto' , fontSize: 20},
+    headerTitleStyle: { fontFamily : 'HindSiliguri-Bolder' , fontSize: 20},
     headerTintColor: '#FFF',
-    headerBackTitleStyle: { fontFamily: 'Roboto' , color: '#FFF', fontSize: 20},
+    headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bolder' , color: '#FFF', fontSize: 20},
   }
 });
 

@@ -5,15 +5,15 @@ import { checkout } from '../styles/CheckoutStyles';
 export const CheckoutItem = (props:any) => {
   return (
     <View style={checkout.item}>
-      <Text style={checkout.itemNameText}>{props.Name}</Text>
-      <Text>{props.Count}</Text>
-      <Text>{props.Price}</Text>
-    </View>
+      <View style={checkout.NAME}><Text style={checkout.itemNameText}>{props.Name}</Text></View>
+      <View style={checkout.COUNT}><Text style={checkout.text}>{props.Count}</Text></View>
+      <View style={checkout.PRICE}><Text style={checkout.text}>{props.Price}</Text></View>
+    </View> 
   );
 }
 
 CheckoutItem.defaultProps = {
-  Name: 'Hello World!',
+  Name: 'Chicken Sandwhich',
   Price: '$2.00',
-  Count: '1'
+  Count: '10'
 }

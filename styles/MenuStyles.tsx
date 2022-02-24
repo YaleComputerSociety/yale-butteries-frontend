@@ -22,7 +22,7 @@ export const item = StyleSheet.create({
   },
 
   itemName: {
-    fontFamily: 'Roboto',
+    fontFamily: 'HindSiliguri-Bold',
     fontWeight: 'bold',
     color: '#222',
     fontSize: 20,
@@ -30,19 +30,20 @@ export const item = StyleSheet.create({
   },
 
   itemDescription: {
+    //backgroundColor:'red',
     fontFamily: 'Roboto-Italic',
     color: '#777',
-    fontSize: 12,
+    fontSize: 8,
     flex: 2,
-    lineHeight: 12,
-    paddingRight: 10,
+    marginRight: 10,
   },
 
   itemPrice: {
-    fontFamily: 'Roboto',
+    fontFamily: 'HindSiliguri',
     fontWeight: 'bold',
     color: '#222',
-    fontSize: 20,
+    fontSize: 18,
+    //backgroundColor: 'blue'
   },
 
   button: {
@@ -57,10 +58,10 @@ export const item = StyleSheet.create({
   },
 
   buttonText: {
+   // flex:1,
     fontFamily: 'Roboto',
-    justifyContent: 'center',
-    alignSelf: 'center',
     fontSize: 30,
+   // backgroundColor:'blue',
   },
 
   countText: {
@@ -102,14 +103,14 @@ export const item = StyleSheet.create({
   },
 
   priceText: {
-    fontFamily: 'Roboto-Light',
+    fontFamily: 'HindSiliguri',
     color: '#000',
     fontSize: 18,
     padding: 10,
   },
 
   checkoutText: {
-    fontFamily: 'Roboto',
+    fontFamily: 'HindSiliguri-Bold',
     color: '#fff',
     fontSize: 25,
   },
