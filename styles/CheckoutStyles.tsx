@@ -3,18 +3,27 @@ import { StyleSheet } from 'react-native';
 
 export const checkout = StyleSheet.create({
   wrapper: {
-    flex: 2,
+    flex: 1,
+    backgroundColor: '#eee',
   },
 
   upperContainer: {
+    flex: 8,
+  },
+
+  itemList: {
     flex: 1.75,
     margin: 20,
-    backgroundColor: '#eee',
+    backgroundColor: '#ddd',
     borderRadius: 6,
   },
 
+  scrollStyle: {
+    padding: 15,
+  },
+
   orderDetailsContainer: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
 
   itemNameText: {
@@ -30,12 +39,12 @@ export const checkout = StyleSheet.create({
   text: {
     fontFamily: 'HindSiliguri',
     fontSize: 18,
+    marginRight: -20,
   },
 
   item: {
-    flex: 4,
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     marginVertical: 10,
   },
 
@@ -47,9 +56,9 @@ export const checkout = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#eee',
+    backgroundColor: '#ddd',
     borderBottomWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#bbb',
   },
 
   footer: {
@@ -58,22 +67,21 @@ export const checkout = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
     paddingLeft: 20,
-    backgroundColor: '#eee',
+    backgroundColor: '#ddd',
     borderBottomLeftRadius: 6,
     borderBottomRightRadius: 6,
     borderTopWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#bbb',
   },
 
   lowerContainer: {
     flex: 0.25,
     margin: 20,
+    backgroundColor: 'blue',
   },
 
   checkoutButton: {
     flex: 1,
-    marginVertical: '8%',
-    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
