@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, ImageBackground, Text, Image, Pressable} from 'react-native';
+import React, { useState} from 'react';
+import { View, Text, Pressable} from 'react-native';
 import { item } from '../styles/MenuStyles';
 
 export const MenuItem = (props:any) => {
@@ -20,7 +20,6 @@ export const MenuItem = (props:any) => {
     if(quantity>0) setLocalQuantity(quantity-1);  setGlobalQuantity(totalItems-1);
   }
 
-
   return (
     <View style={item.card}>
       <View style={item.leftSide}>
@@ -31,6 +30,7 @@ export const MenuItem = (props:any) => {
       </View>
       
       <View style={item.spacer}/>
+<<<<<<< HEAD
         <Pressable onPress={decrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
           <Text style={item.buttonText}>-</Text>
         </Pressable>
@@ -40,11 +40,23 @@ export const MenuItem = (props:any) => {
         <Pressable onPress={incrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button]}>
           <Text style={item.buttonText}>+</Text>
         </Pressable>
+=======
+      <Pressable onPress={decrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
+        <Text style={item.buttonText}>-</Text>
+      </Pressable>
+      <View style={item.spacer}>
+        <Text style={item.countText}>{quantity}</Text>
+      </View>
+      <Pressable onPress={incrementQuantity} style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button ]}>
+        <Text style={item.buttonText}>+</Text>
+      </Pressable>
+>>>>>>> cb124120cfbb5af3cad4e6381aa253a45b071c40
     </View>
   );
 }
 
 MenuItem.defaultProps = {
+<<<<<<< HEAD
   name: 'Undefined',
 }
 
@@ -58,3 +70,8 @@ MenuItem.defaultProps = {
     <MenuItem name='Chicken Stir Fry' description="Fried rice with eggs and chicken" price={2}/>
   </View>
 </ScrollView> */}
+=======
+  name: 'Uundefined',
+  price: 0,
+}
+>>>>>>> cb124120cfbb5af3cad4e6381aa253a45b071c40

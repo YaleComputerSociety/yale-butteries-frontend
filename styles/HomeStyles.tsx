@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const homeStyles = StyleSheet.create({
+export const home = StyleSheet.create({
   app: {
     flex:1,
     backgroundColor: '#eaeaea',//'#343a40',
@@ -32,7 +32,7 @@ export const homeStyles = StyleSheet.create({
   }
 })
 
-export const cardStyles = StyleSheet.create({
+export const card = StyleSheet.create({
   cardText1: {
     textAlignVertical: 'bottom',
     fontFamily: 'Roboto',
@@ -57,20 +57,6 @@ export const cardStyles = StyleSheet.create({
     shadowRadius: 2,
     marginVertical: 8,
   },
-
-  cardOpen: {
-    backgroundColor: '#fff',
-    elevation: 3,
-    shadowOffset: { width: 0, height: 0},
-    shadowColor: '#333',
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-  },
-
-  cardClosed: {
-    //backgroundColor: '#ccc',
-    //opacity: 1,
-  },
   
   cardContent: {
     flex: 1,
@@ -86,5 +72,11 @@ export const cardStyles = StyleSheet.create({
     height: 75,
     marginVertical: 12,
     marginRight: 10,
+<<<<<<< HEAD
   },
 })
+=======
+
+  },
+})
+>>>>>>> cb124120cfbb5af3cad4e6381aa253a45b071c40
