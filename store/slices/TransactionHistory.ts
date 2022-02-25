@@ -27,17 +27,21 @@ export const transactionHistorySlice = createSlice({
     setTransactionHistoryState: (state, action: PayloadAction<TransactionHistoryEntry[]>) => {
       state.transactionHistory = action.payload
     },
-    setIsLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload
+    addTransactionHistoryEntry: (state, action: PayloadAction<TransactionHistoryEntry>) => {
+      state.transactionHistory = [...state.transactionHistory, action.payload]
     },
     updateTransactionHistory: (state, action: PayloadAction<TransactionHistoryEntry>) => {
       const transactionHistoryIndex = state.transactionHistory.findIndex((element) => element.id == action.payload.id)
       state.transactionHistory[transactionHistoryIndex] = action.payload
     },
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload
+    },
   },
 })
 
-export const { setTransactionHistoryState, setIsLoading, updateTransactionHistory } = transactionHistorySlice.actions
+export const { setTransactionHistoryState, addTransactionHistoryEntry, updateTransactionHistory, setIsLoading } =
+  transactionHistorySlice.actions
 
 export const asyncFetchTransactionHistory = () => {
   return async (dispatch): Promise<void> => {

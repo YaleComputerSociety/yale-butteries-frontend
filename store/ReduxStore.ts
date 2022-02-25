@@ -7,6 +7,14 @@ import menuItemsReducer from './slices/MenuItems'
 import menuItemToIngredientsReducer from './slices/MenuItemToIngredients'
 import transactionHistoryReducer from './slices/TransactionHistory'
 import transactionItemsReducer from './slices/TransactionItems'
+import transactionItemToIngredientsReducer from './slices/TransactionItemToIngredients'
+import orderCartReducer from './slices/OrderCart'
+
+export interface APIError {
+  errors: Array<{ message: string }>
+  callback: unknown
+  parameters: unknown
+}
 
 const store = configureStore({
   reducer: {
@@ -17,6 +25,8 @@ const store = configureStore({
     menuItemToIngredients: menuItemToIngredientsReducer,
     transactionHistory: transactionHistoryReducer,
     transactionItems: transactionItemsReducer,
+    transactionItemToIngredients: transactionItemToIngredientsReducer,
+    orderCart: orderCartReducer,
   },
 })
 

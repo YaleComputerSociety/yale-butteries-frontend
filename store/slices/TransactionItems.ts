@@ -4,9 +4,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface TransactionItem {
   id: number
-  itemName: string
   itemCost: number
-  order_status: 'cancelled' | 'queued' | 'in_progress' | 'complete'
+  orderStatus: 'cancelled' | 'queued' | 'in_progress' | 'complete'
+  menuItemId: number
   transactionHistoryId: number
 }
 
@@ -27,13 +27,20 @@ export const transactionItemsSlice = createSlice({
     setTransactionItemsState: (state, action: PayloadAction<TransactionItem[]>) => {
       state.transactionItems = action.payload
     },
+    addTransactionItem: (state, action: PayloadAction<TransactionItem>) => {
+      state.transactionItems = [...state.transactionItems, action.payload]
+    },
+    updateTransactionItem: (state, action: PayloadAction<TransactionItem>) => {
+      const updateIndex = state.transactionItems.findIndex((item) => item.id == action.payload.id)
+      state.transactionItems[updateIndex] = action.payload
+    },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload
     },
   },
 })
 
-export const { setTransactionItemsState, setIsLoading } = transactionItemsSlice.actions
+export const { setTransactionItemsState, addTransactionItem, updateTransactionItem, setIsLoading } = transactionItemsSlice.actions
 
 export const asyncFetchTransactionItems = () => {
   return async (dispatch): Promise<void> => {
@@ -55,44 +62,44 @@ async function dummyTransactionItems(): Promise<TransactionItem[]> {
   return [
     {
       id: 1,
-      itemName: 'Americano',
       itemCost: 1.50,
-      order_status: 'complete',
+      orderStatus: 'complete',
+      menuItemId: 1,
       transactionHistoryId: 1,
     },
     {
       id: 2,
-      itemName: 'Quesadilla',
       itemCost: 1.50,
-      order_status: 'queued',
+      orderStatus: 'queued',
+      menuItemId: 6,
       transactionHistoryId: 1,
     },
     {
       id: 3,
-      itemName: 'Coke',
       itemCost: 1.00,
-      order_status: 'complete',
+      orderStatus: 'complete',
+      menuItemId: 2,
       transactionHistoryId: 2,
     },
     {
       id: 4,
-      itemName: 'Quesadilla',
       itemCost: 1.50,
-      order_status: 'in_progress',
+      orderStatus: 'in_progress',
+      menuItemId: 6,
       transactionHistoryId: 2,
     },
     {
       id: 4,
-      itemName: "David's Tux",
       itemCost: 3.00,
-      order_status: 'queued',
+      orderStatus: 'queued',
+      menuItemId: 5,
       transactionHistoryId: 3,
     },
     {
       id: 5,
-      itemName: 'Americano',
       itemCost: 3.00,
-      order_status: 'complete',
+      orderStatus: 'complete',
+      menuItemId: 1,
       transactionHistoryId: 3,
     },
   ]
