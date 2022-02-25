@@ -5,6 +5,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface MenuItem {
   id: number
   item: string
+  college: 'morse'
   price: number
   limited_time: boolean
 }
@@ -55,36 +56,42 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
     {
       id: 1,
       item: 'Americano',
+      college: "morse",
       price: 1.50,
       limited_time: false,
     },
     {
       id: 2,
       item: 'Coke',
+      college: "morse",
       price: 1.00,
       limited_time: false,
     },
     {
       id: 3,
       item: 'Sprite',
+      college: "morse",
       price: 1.00,
       limited_time: false,
     },
     {
       id: 4,
       item: 'Diet Coke',
+      college: "morse",
       price: 1.00,
       limited_time: false,
     },
     {
       id: 5,
       item: "David's Tux",
+      college: "morse",
       price: 3.00,
       limited_time: false,
     },
     {
       id: 6,
       item: 'Quesadilla',
+      college: "morse",
       price: 1.50,
       limited_time: false,
     },
