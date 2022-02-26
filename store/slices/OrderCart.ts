@@ -32,8 +32,8 @@ export const orderCartSlice = createSlice({
   name: 'OrderCart',
   initialState: orderCartInitialState,
   reducers: {
-    setOrderCartState: (state, action: PayloadAction<OrderItem[]>) => {
-      state.orderItems = action.payload
+    resetOrderCartState: (state, action: PayloadAction<OrderItem[]>) => {
+      state.orderItems = []
     },
     addOrderItem: (state, action: PayloadAction<OrderItem>) => {
       state.orderItems = [...state.orderItems, action.payload]
@@ -55,7 +55,7 @@ export const orderCartSlice = createSlice({
 })
 
 export const {
-  setOrderCartState,
+  resetOrderCartState,
   addOrderItem,
   removeOrderItem,
   incrementTransactionItemCounter,
@@ -80,6 +80,8 @@ export const submitOrder = (
         callback: submitOrder,
         parameters: [],
       })
+    } finally {
+      dispatch(resetOrderCartState())
     }
   }
 }
