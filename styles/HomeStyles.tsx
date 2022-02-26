@@ -69,6 +69,7 @@ export const card = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 10,
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingLeft:10,
     opacity: 1,
   },

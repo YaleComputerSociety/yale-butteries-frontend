@@ -52,16 +52,19 @@ export const item = StyleSheet.create({
     shadowOpacity: 0.3,
     flexDirection: 'row',
     justifyContent: 'center',
-    borderRadius: 5,
+    textAlign: 'center',
+    borderRadius: 10,
     height: '38%',
+    alignItems:'center',
     width: '10%',
   },
 
   buttonText: {
-   // flex:1,
+    justifyContent: 'center',
     fontFamily: 'Roboto',
-    fontSize: 30,
-   // backgroundColor:'blue',
+    alignItems:'center',
+    fontSize: 25 ,
+    textAlignVertical: 'center',
   },
 
   countText: {

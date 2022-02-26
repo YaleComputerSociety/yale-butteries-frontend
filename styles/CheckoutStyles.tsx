@@ -3,27 +3,18 @@ import { StyleSheet } from 'react-native';
 
 export const checkout = StyleSheet.create({
   wrapper: {
-    flex: 1,
-    backgroundColor: '#eee',
+    flex: 2,
   },
 
   upperContainer: {
-    flex: 8,
-  },
-
-  itemList: {
     flex: 1.75,
     margin: 20,
     backgroundColor: '#ddd',
     borderRadius: 6,
   },
 
-  scrollStyle: {
-    padding: 15,
-  },
-
   orderDetailsContainer: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
 
   itemNameText: {
@@ -39,12 +30,12 @@ export const checkout = StyleSheet.create({
   text: {
     fontFamily: 'HindSiliguri',
     fontSize: 18,
-    marginRight: -20,
   },
 
   item: {
-    flex: 1,
+    flex: 4,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     marginVertical: 10,
   },
 
@@ -77,11 +68,12 @@ export const checkout = StyleSheet.create({
   lowerContainer: {
     flex: 0.25,
     margin: 20,
-    backgroundColor: 'blue',
   },
 
   checkoutButton: {
     flex: 1,
+    marginVertical: '8%',
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -96,7 +88,7 @@ export const checkout = StyleSheet.create({
     flex: 2,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     //backgroundColor:'yellow'
   },
 
