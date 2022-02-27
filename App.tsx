@@ -1,27 +1,33 @@
-import React from 'react';
+import React, { FC, useEffect } from 'react'
+import { StatusBar } from 'expo-status-bar'
+import { useAppSelector, useAppDispatch } from './store/TypedHooks'
+import { asyncFetchCurrentUser } from './store/slices/CurrentUser'
 import { useState } from 'react';
+import { Provider } from 'react-redux'
+import { home } from './styles/HomeStyles';
+import { Text, View } from 'react-native'
+import store from './store/ReduxStore'
 import AppLoading from 'expo-app-loading';
 import Navigator from './routes/homeStack';
 import * as Font from 'expo-font';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-const Stack = createNativeStackNavigator();
-
-const loadFonts = () => Font.loadAsync({
-  'Roboto' : require('./assets/fonts/Roboto-Black.ttf'),
-  'HindSiliguri-Bold' : require('./assets/fonts/HindSiliguri-SemiBold.ttf'),
-  'HindSiliguri-Bolder' : require('./assets/fonts/HindSiliguri-Bold.ttf'),
-  'HindSiliguri' : require('./assets/fonts/HindSiliguri-Regular.ttf'),
-  'Roboto-Light' : require('./assets/fonts/HindSiliguri-Light.ttf'),
-  'Roboto-Italic' : require('./assets/fonts/Roboto-LightItalic.ttf'),
-})
 
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false)
-  
+
+  const loadFonts = () => Font.loadAsync({
+    'Roboto' : require('./assets/fonts/Roboto-Black.ttf'),
+    'HindSiliguri-Bold' : require('./assets/fonts/HindSiliguri-SemiBold.ttf'),
+    'HindSiliguri-Bolder' : require('./assets/fonts/HindSiliguri-Bold.ttf'),
+    'HindSiliguri' : require('./assets/fonts/HindSiliguri-Regular.ttf'),
+    'Roboto-Light' : require('./assets/fonts/HindSiliguri-Light.ttf'),
+    'Roboto-Italic' : require('./assets/fonts/Roboto-LightItalic.ttf'),
+  })
+
   if (fontsLoaded) {
     return (
-      <Navigator />
+      <Provider store={store}>
+        <TestingInner/>
+      </Provider>
     );
   } else {
     return (
@@ -34,24 +40,24 @@ export default function App() {
   }
 }
 
-  /* return (
-    <NavigationContainer>
+const TestingInner: FC = () => {
+  const dispatch = useAppDispatch()
+  const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
 
-      <Stack.Navigator initialRouteName="Home" 
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: '#00b2db',
-          },
-          headerTintColor: '#FFF',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontFamily: 'Roboto',
-            fontSize: 20,
-          },
-          animation: 'default',
-        }}>
+  useEffect(() => {
+    if (currentUser == null) {
+      dispatch(asyncFetchCurrentUser())
+    }
+  })
 
-        <Stack.Screen name="Home" component={HomeScreen} />
-
-      </Stack.Navigator>
-    </NavigationContainer> */
+  return (
+    <View style={home.container}> 
+      {isLoadingCurrentUser || currentUser == null ? (
+        <Text>{'Loading...'}</Text>
+      ) : (
+        <Navigator/> //login page ?? --> to buttery navigator
+      )}
+      <StatusBar style="auto" />
+    </View>
+  )
+}
