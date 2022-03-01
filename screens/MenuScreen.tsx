@@ -4,6 +4,11 @@ import { MenuItem } from '../components/MenuItem';
 import { home } from '../styles/HomeStyles';
 import { item } from '../styles/MenuStyles';
 import { priceToText } from '../Functions';
+import { debug } from 'react-native-reanimated';
+import store from '../store/ReduxStore';
+import { getMenuItemWithIngredients } from '../store/selectors';
+import { asyncFetchMenuItems } from '../store/slices/MenuItems';
+import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 
 export default function butteryScreen( {navigation} : {navigation:any} ) { 
   const [items, setItems] = useState([
@@ -15,6 +20,13 @@ export default function butteryScreen( {navigation} : {navigation:any} ) {
     {name:'Chicken Stir Fry', description:"Fried rice with eggs and chicken", price: 2.75, count: 0, id:5},
     {name:'Lemon', description:"Slurp", price:0.75, count: 0, id:6},
   ]);
+
+  const dispatch = useAppDispatch()
+  const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
+
+  dispatch(asyncFetchMenuItems());
+  console.log(store.getState().menuItems);
+  console.log(getMenuItemWithIngredients(store.getState()));
   const [itemTotal, setItemTotal] = useState(0);
 
   const updateItem = (newItem:any) => {
