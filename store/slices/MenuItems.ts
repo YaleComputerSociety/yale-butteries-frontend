@@ -5,8 +5,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface MenuItem {
   id: number
   item: string
-  college: 'morse'
+  college: string
   price: number
+  description: string
   limitedTime: boolean
   isActive: boolean
 }
@@ -59,6 +60,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       item: 'Americano',
       college: 'morse',
       price: 1.50,
+      description: 'Espresso and water',
       limitedTime: false,
       isActive: true,
     },
@@ -67,6 +69,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       item: 'Coke',
       college: 'morse',
       price: 1.00,
+      description: 'Polar bear',
       limitedTime: false,
       isActive: true,
     },
@@ -75,6 +78,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       item: 'Sprite',
       college: 'morse',
       price: 1.00,
+      description: 'Lemon lime yum yum',
       limitedTime: false,
       isActive: true,
     },
@@ -83,6 +87,16 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       item: 'Diet Coke',
       college: 'morse',
       price: 1.00,
+      description: 'Coke but culty',
+      limitedTime: false,
+      isActive: true,
+    },
+    {
+      id: 4,
+      item: 'Berkeley Yum Coke',
+      college: 'berkeley',
+      price: 1.00,
+      description: 'Coke but make it ~berkeley~',
       limitedTime: false,
       isActive: true,
     },
@@ -91,6 +105,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       item: "David's Tux",
       college: 'morse',
       price: 3.00,
+      description: 'Quesadilla with chicken nuggets',
       limitedTime: false,
       isActive: true,
     },
@@ -99,6 +114,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       item: 'Quesadilla',
       college: 'morse',
       price: 1.50,
+      description: 'Cheesy goodness with tortilla',
       limitedTime: false,
       isActive: true,
     },

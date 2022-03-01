@@ -1,8 +1,7 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { useAppSelector, useAppDispatch } from './store/TypedHooks'
 import { asyncFetchCurrentUser } from './store/slices/CurrentUser'
-import { useState } from 'react';
 import { Provider } from 'react-redux'
 import { home } from './styles/HomeStyles';
 import { Text, View } from 'react-native'

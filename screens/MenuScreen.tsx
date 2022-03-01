@@ -1,94 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react'
 import { Text, View, Pressable, ScrollView } from 'react-native';
+import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
+import { asyncFetchMenuItems } from '../store/slices/MenuItems';
 import { MenuItem } from '../components/MenuItem';
 import { home } from '../styles/HomeStyles';
 import { item } from '../styles/MenuStyles';
-import { priceToText } from '../Functions';
-import { debug } from 'react-native-reanimated';
 import store from '../store/ReduxStore';
-import { getMenuItemWithIngredients } from '../store/selectors';
-import { asyncFetchMenuItems } from '../store/slices/MenuItems';
-import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
+import { Provider } from 'react-redux'
 
 export default function butteryScreen( {navigation} : {navigation:any} ) { 
-  const [items, setItems] = useState([
-    {name:'Chicken Sandwich', price:56.75, count: 0, description:"Not only is there a chicken, but as part of a limited time special offer, we're adding two additional flaps of bread.", id:0},
-    {name:'Milkshake', description:"I'm cold.", price:225.35, count: 0, id:1},
-    {name:'Floor Scraps', description:"An economical choice", price:0.6, count: 0, id:2},
-    {name:'Face Slap', description:"Not necessarily food, but refreshig nonetheless", price:0.056, count: 0, id:3},
-    {name:'Burger', description:"No, this was NOT stolen from the dining hall", price:3, count: 0, id:4},
-    {name:'Chicken Stir Fry', description:"Fried rice with eggs and chicken", price: 2.75, count: 0, id:5},
-    {name:'Lemon', description:"Slurp", price:0.75, count: 0, id:6},
-  ]);
-
-  const dispatch = useAppDispatch()
-  const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
-
-  dispatch(asyncFetchMenuItems());
-  console.log(store.getState().menuItems);
-  console.log(getMenuItemWithIngredients(store.getState()));
   const [itemTotal, setItemTotal] = useState(0);
 
-  const updateItem = (newItem:any) => {
-    let newItems = [...items];
+/*  const updateItem = (newItem:any) => {
+    let newItems = [...];
     var temp = newItems.find(menuItem => newItem.id === menuItem.id);
     temp = newItem;
-    setItems(newItems);
-  }
+    setItemTotal(newItems);
+  } */
 
-  function getPriceTotal(){
-    let sum = 0;
-    for (let i = 0; i < items.length; i++) {
-      sum += items[i].count*(Math.floor(items[i].price * 100) / 100);
-    }
-    return sum;
-  }
+  const TestingMenuItems: FC = () => {
+    const dispatch = useAppDispatch()
+    const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
 
-  function updateItemCount(){
-    let sum = 0;
-    for(let i = 0; i<items.length; i++){
-      sum += items[i].count;
-    }
-    setItemTotal(sum);
-  }
-
-  useEffect(() => {
-    updateItemCount();
-  }, [items]);
-
-  function getTotalItemData(){
-    const ITEMDATA = []
-    for(let i = 0; i<items.length; i++){
-      if (items[i].count > 0) {
-        ITEMDATA.push(items[i])
+    
+    useEffect(() => {
+      if (menuItems == null) {
+        dispatch(asyncFetchMenuItems())
       }
-    }
-    return ITEMDATA;
+    })
+
+    useEffect(() => {itemTotal})
+
+    //console.log(menuItems)
+  
+    return (
+      <View style={home.container}> 
+        {isLoadingMenuItems || menuItems == null ? (
+          <View style={{flex:1, backgroundColor: "#fff", flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
+            <Text>{'Loading...'}</Text>
+          </View>
+        ) : (
+          <View style={{flex:1}}>
+            <ScrollView style={home.app} showsVerticalScrollIndicator={false} >
+              <View style={home.menuView}>
+                {menuItems.filter(menuItem => {return menuItem.college === navigation.getParam('college_Name') && menuItem.isActive === true}).map(menuItem => (
+                  <MenuItem menuItem={menuItem} key={menuItem.id}/>
+                ))}
+              </View>
+            </ScrollView>
+              <View style={home.footer}>
+                <View style={item.outerContainer}> 
+                <View style={item.upperContainer}>
+                  <Text style={item.priceText}>Total: $0.00 </Text>
+                  <Text style={item.priceText}>Items: {itemTotal}</Text>
+                </View>
+                <Pressable onPress={() => navigation.navigate("CheckoutScreen")} style={[item.lowerContainer, {backgroundColor: '#bbb'}]}><Text style={item.checkoutText}>Go to Checkout</Text></Pressable>
+              </View>
+            </View>
+          </View>
+        )}
+      </View>
+    )
   }
 
   return (
-    <View style={{flex:1}}>
-      <ScrollView style={home.app} showsVerticalScrollIndicator={false} >
-        <View style={home.menuView}>
-          {items.map((menuItem) => (
-            <MenuItem menuItem={menuItem} updateItem={updateItem} key={menuItem.id}/>
-          ))}
-        </View>
-      </ScrollView>
-        <View style={home.footer}>
-          <View style={item.outerContainer}> 
-          <View style={item.upperContainer}>
-            <Text style={item.priceText}>Total: {priceToText(getPriceTotal())} </Text>
-            <Text style={item.priceText}>Items: {itemTotal}</Text>
-          </View>
-          <Pressable onPress={() => navigation.navigate("CheckoutScreen",
-              {
-                item : getTotalItemData(), //get total items to display in checkout screen
-                totalPrice : priceToText(getPriceTotal())
-              })} 
-              disabled={itemTotal===0} style={({ pressed }) => [{ backgroundColor: (pressed && itemTotal>0) ? '#222' : '#333', opacity: itemTotal>0 ? 1 : 0.5}, item.lowerContainer]}><Text style={item.checkoutText}>Go to Checkout</Text></Pressable>
-        </View>
-      </View>
-    </View>
-  )
+    <Provider store={store}>
+      <TestingMenuItems/>
+    </Provider>
+  );
 }

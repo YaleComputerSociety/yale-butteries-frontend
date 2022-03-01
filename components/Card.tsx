@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ImageBackground, Text, Image, Pressable } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { card } from '../styles/HomeStyles';
 
 export const Card = (props:any) => {
@@ -54,7 +55,13 @@ export const Card = (props:any) => {
 
   return (
     <Pressable onPress={props.onPress} disabled={!isOpen} style={({pressed}) => [{ opacity: pressed ? 0.8 : 1}]}>
-      <ImageBackground source={props.backgroundImage} resizeMode="cover" style={[card.card, {opacity: isOpen ? 1 : 0.5,}]} imageStyle={{borderRadius: 6}}>
+      <LinearGradient
+        // Button Linear Gradient
+        colors={props.gradientColors}
+        locations={props.locations}
+        start={props.start}
+        end={props.end}
+        style={[card.card, {opacity: isOpen ? 1 : 0.5,}]}>
       <View style={card.cardContent}>
         <View style={card.textContainer}>
           <Text style={card.cardText1}>{props.college}</Text>
@@ -62,7 +69,7 @@ export const Card = (props:any) => {
         </View>
         <Image style={card.butteryIcon} source={props.image}/>
       </View>
-    </ImageBackground>
+    </LinearGradient>
   </Pressable>
   );
 }
@@ -70,4 +77,8 @@ export const Card = (props:any) => {
 Card.defaultProps = {
   college: 'Placeholder',
   image: require('../assets/images/butteryIconPlaceholder.jpg'),
+  gradientColors: ['#ed0025', '#dcb8fc'],
+  locations: [0, 1],
+  start: {x:0.1, y:0},
+  end: {x: 1, y:0}
 }
