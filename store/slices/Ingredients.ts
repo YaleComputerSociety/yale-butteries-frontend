@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface Ingredient {
   id: number
+  college: string
   ingredient: string
   price: number
   available: boolean
@@ -58,48 +59,56 @@ async function dummyIngredients(): Promise<Ingredient[]> {
   return [
     {
       id: 1,
+      college: 'morse',
       ingredient: 'Espresso',
       price: 0,
       available: false,
     },
     {
       id: 2,
+      college: 'morse',
       ingredient: 'Coke',
       price: 0,
       available: false,
     },
     {
       id: 3,
+      college: 'morse',
       ingredient: 'Sprite',
       price: 1.00,
       available: true,
     },
     {
       id: 4,
+      college: 'morse',
       ingredient: 'Diet Coke',
       price: 1.00,
       available: true,
     },
     {
       id: 5,
+      college: 'morse',
       ingredient: 'Egg',
       price: 0,
       available: true,
     },
     {
       id: 6,
+      college: 'morse',
       ingredient: 'Bacon',
       price: 0,
       available: true,
     },
     {
       id: 7,
+      college: 'morse',
       ingredient: 'Cheese',
       price: 0,
       available: true,
     },
     {
       id: 8,
+      college: 'morse',
       ingredient: 'tortilla',
       price: 0,
       available: true,
