@@ -41,16 +41,25 @@ const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
   }
 
   const removeOrder = (newItem) => {
-    const temp: OrderItem = { orderItem: newItem }
-    dispatch(removeOrderItem(temp))
+    // console.log(orderItems.find((item) => item.orderItem.id == newItem.id))
+    dispatch(removeOrderItem(orderItems.find((item) => item.orderItem.id == newItem.id)))
     setItemTotal(itemTotal - 1)
     setPriceTotal(priceTotal - newItem.price)
   }
 
   useEffect(() => {
-    console.log(orderItems)
-    console.log('OOOOOOOOOOOOOO\nWEEEEEEEEEEE')
+    console.log('start')
+    console.log(orderItems.length)
+    console.log('OOOOOOOOOOOOOO')
   }, [orderItems])
+
+  // useEffect(() => {
+  //   // console.log('clear the stuff?')
+  //   // console.log(orderItems)
+  //   // console.log('BREAK')
+  //   dispatch(resetOrderCartState())
+  //   // console.log(orderItems)
+  // }, [])
 
   return (
     <View style={home.container}>
