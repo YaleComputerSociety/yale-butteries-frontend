@@ -30,10 +30,9 @@ export const item = StyleSheet.create({
   },
 
   itemDescription: {
-    //backgroundColor:'red',
     fontFamily: 'Roboto-Italic',
     color: '#777',
-    fontSize: 8,
+    fontSize: 11,
     flex: 2,
     marginRight: 10,
   },

@@ -52,13 +52,11 @@ export const card = StyleSheet.create({
 
   textContainer:{
     flex:1,
-    //backgroundColor:'green',
   },
 
   cardText2: {
     fontFamily: 'Roboto-Italic',
     marginBottom: 15,
-    //backgroundColor:'red',
   },
 
   card: {

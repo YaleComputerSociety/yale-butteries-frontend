@@ -59,7 +59,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       id: 1,
       item: 'Americano',
       college: 'morse',
-      price: 1.50,
+      price: 1.5,
       description: 'Espresso and water',
       limitedTime: false,
       isActive: true,
