@@ -5,16 +5,7 @@ const prisma = new PrismaClient()
 
 export async function getAllUsers(_req: Request, res: Response): Promise<void> {
   try {
-    const users = await prisma.user.findMany({
-      include: {
-        position: {
-          include: {
-            permission_types: true,
-          },
-        },
-        college: true,
-      },
-    })
+    const users = await prisma.user.findMany(includeProperty)
     res.send(JSON.stringify(users))
   } catch (e) {
     res.status(400).send(e)
@@ -24,16 +15,9 @@ export async function getAllUsers(_req: Request, res: Response): Promise<void> {
 export async function getUser(req: Request, res: Response): Promise<void> {
   try {
     const user = await prisma.user.findUnique({
+      ...includeProperty,
       where: {
         id: parseInt(req.params.userId),
-      },
-      include: {
-        position: {
-          include: {
-            permission_types: true,
-          },
-        },
-        college: true,
       },
     })
     res.send(JSON.stringify(user))
@@ -86,4 +70,15 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
   } catch (e) {
     res.status(400).send(e)
   }
+}
+
+const includeProperty = {
+  include: {
+    position: {
+      include: {
+        permission_types: true,
+      },
+    },
+    college: true,
+  },
 }

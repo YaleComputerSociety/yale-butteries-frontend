@@ -6,13 +6,7 @@ const prisma = new PrismaClient()
 
 export async function getAllTransactionHistories(_req: Request, res: Response): Promise<void> {
   try {
-    const transactionHistories = await prisma.transactionHistory.findMany({
-      include: {
-        transaction_items: true,
-        college: true,
-        user: true,
-      },
-    })
+    const transactionHistories = await prisma.transactionHistory.findMany(includeProperty)
     res.send(JSON.stringify(transactionHistories))
   } catch (e) {
     res.status(400).send(e)
@@ -22,13 +16,9 @@ export async function getAllTransactionHistories(_req: Request, res: Response): 
 export async function getTransactionHistory(req: Request, res: Response): Promise<void> {
   try {
     const transactionHistory = await prisma.transactionHistory.findUnique({
+      ...includeProperty,
       where: {
         id: parseInt(req.params.transactionId),
-      },
-      include: {
-        transaction_items: true,
-        college: true,
-        user: true,
       },
     })
     res.send(JSON.stringify(transactionHistory))
@@ -93,7 +83,7 @@ export async function updateTransactionHistory(req: Request, res: Response): Pro
   try {
     const transactionHistory = await prisma.transactionHistory.update({
       where: {
-        id: req.body.id
+        id: req.body.id,
       },
       data: {
         order_complete: req.body.order_complete || undefined,
@@ -102,10 +92,18 @@ export async function updateTransactionHistory(req: Request, res: Response): Pro
         queue_size_on_placement: req.body.queue_size_on_placement || undefined,
         in_progress: req.body.in_progress || undefined,
         total_price: req.body.total_price || undefined,
-      }
+      },
     })
     res.send(JSON.stringify(transactionHistory))
   } catch (e) {
     res.status(400).send(e)
   }
+}
+
+const includeProperty = {
+  include: {
+    transaction_items: true,
+    college: true,
+    user: true,
+  },
 }

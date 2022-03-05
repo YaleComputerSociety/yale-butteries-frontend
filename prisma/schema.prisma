@@ -70,6 +70,7 @@ model Ingredient {
   college College @relation(fields: [collegeId], references: [id])
   item_ratings ItemRating[]
   menu_items MenuItemToIngredients[]
+  transaction_items TransactionItem[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
@@ -79,11 +80,13 @@ model MenuItem {
   item String
   price Decimal
   limited_time Boolean
+  is_active Boolean
   college College @relation(fields: [collegeId], references: [id])
   collegeId Int
   availibilities Availability[]
   item_ratings ItemRating[]
   ingredients MenuItemToIngredients[]
+  transaction_item TransactionItem?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
@@ -101,12 +104,22 @@ model ItemRating {
 
 model TransactionItem {
   id Int @id @default(autoincrement())
-  item_name String
   item_cost Decimal
+  order_status OrderStatus @default(PENDING)
+  ingredients Ingredient[]
   transaction_history TransactionHistory @relation(fields: [transactionHistoryId], references: [id])
   transactionHistoryId Int
+  menu_item MenuItem @relation(fields: [menuItemId], references: [id])
+  menuItemId Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  CANCELLED
+  IN_PROGRESS
+  FINISHED
 }
 
 model TransactionHistory {
