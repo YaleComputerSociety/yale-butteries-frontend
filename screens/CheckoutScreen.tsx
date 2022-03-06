@@ -16,12 +16,8 @@ import CheckoutItem from '../components/CheckoutItem'
 
 const CheckoutScreen: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
-  const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
   const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
 
-  function CheckoutItemList() {
-    console.log('HELLO')
-  }
 
   return (
     <View style={checkout.wrapper}>
@@ -46,7 +42,6 @@ const CheckoutScreen: React.FC<{ navigation: Navigator }> = ({ navigation }) => 
           </View>
           <View style={checkout.lowerContainer}>
             <Pressable
-              onPress={CheckoutItemList}
               style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, checkout.checkoutButton]}
             >
               <Text style={checkout.checkoutText}>Complete Order</Text>
