@@ -11,9 +11,7 @@ import { priceToText } from '../Functions'
 import { Navigator } from 'react-router-dom'
 
 const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
-  const [itemTotal, setItemTotal] = useState(0)
   const [priceTotal, setPriceTotal] = useState(0)
-  const [currentItems, setCurrentItems] = useState([])
 
   const dispatch = useAppDispatch()
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
@@ -25,41 +23,21 @@ const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
     }
   })
 
-  // resetOrderCartState: (state, action: PayloadAction<OrderItem[]>) => {
-  //   state.orderItems = []
-  // },
-  // addOrderItem: (state, action: PayloadAction<OrderItem>) => {
-  //   state.orderItems = [...state.orderItems, action.payload]
-  // },
-  // removeOrderItem: (state, action: PayloadAction<OrderItem>) => {
-
   const addOrder = (newItem) => {
     const temp: OrderItem = { orderItem: newItem }
     dispatch(addOrderItem(temp))
-    setItemTotal(itemTotal + 1)
     setPriceTotal(priceTotal + newItem.price)
   }
 
   const removeOrder = (newItem) => {
-    // console.log(orderItems.find((item) => item.orderItem.id == newItem.id))
     dispatch(removeOrderItem(orderItems.find((item) => item.orderItem.id == newItem.id)))
-    setItemTotal(itemTotal - 1)
     setPriceTotal(priceTotal - newItem.price)
   }
 
+  // reset the order cart upon loading the page
   useEffect(() => {
-    console.log('start')
-    console.log(orderItems.length)
-    console.log('OOOOOOOOOOOOOO')
-  }, [orderItems])
-
-  // useEffect(() => {
-  //   // console.log('clear the stuff?')
-  //   // console.log(orderItems)
-  //   // console.log('BREAK')
-  //   dispatch(resetOrderCartState())
-  //   // console.log(orderItems)
-  // }, [])
+    dispatch(resetOrderCartState())
+  }, [])
 
   return (
     <View style={home.container}>
@@ -84,11 +62,11 @@ const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
             <View style={item.outerContainer}>
               <View style={item.upperContainer}>
                 <Text style={item.priceText}>Total: {priceToText(priceTotal)} </Text>
-                <Text style={item.priceText}>Items: {itemTotal}</Text>
+                <Text style={item.priceText}>Items: {orderItems.length}</Text>
               </View>
               <Pressable
                 onPress={() => navigation.navigate('CheckoutScreen')}
-                style={[item.lowerContainer, { backgroundColor: itemTotal > 0 ? '#000' : '#bbb' }]}
+                style={[item.lowerContainer, { backgroundColor: orderItems.length > 0 ? '#000' : '#bbb' }]}
               >
                 <Text style={item.checkoutText}>Go to Checkout</Text>
               </Pressable>
@@ -99,11 +77,5 @@ const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
     </View>
   )
 }
-
-// return (
-//   <Provider store={store}>
-//     <TestingMenuItems/>
-//   </Provider>
-// )
 
 export default butteryScreen
