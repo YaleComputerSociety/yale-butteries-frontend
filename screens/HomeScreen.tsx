@@ -14,7 +14,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="11:00am"
           closeTime="10:59am"
           offsetY={0}
-          image={require('../assets/images/collegeIcons/berkeley.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Branford' })}
@@ -23,7 +22,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="6:00"
           closeTime="5:00"
           offsetY={78}
-          image={require('../assets/images/collegeIcons/branford.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Davenport' })}
@@ -32,7 +30,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="6:00"
           closeTime="5:00"
           offsetY={158}
-          image={require('../assets/images/collegeIcons/davenport.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Franklin' })}
@@ -41,7 +38,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="6:00"
           closeTime="5:00"
           offsetY={318}
-          image={require('../assets/images/collegeIcons/franklin.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Hopper' })}
@@ -50,7 +46,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="6:00pm"
           closeTime="1:00am"
           offsetY={400}
-          image={require('../assets/images/collegeIcons/hopper.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'JE' })}
@@ -59,7 +54,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="6:00"
           closeTime="5:00"
           offsetY={480}
-          image={require('../assets/images/collegeIcons/JE.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'morse' })}
@@ -68,7 +62,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="6:00"
           closeTime="5:00"
           offsetY={560}
-          image={require('../assets/images/collegeIcons/morse.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Murray' })}
@@ -77,7 +70,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="6:00"
           closeTime="5:00"
           offsetY={640}
-          image={require('../assets/images/collegeIcons/murray.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Pierson' })}
@@ -86,7 +78,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="6:00"
           closeTime="5:00"
           offsetY={720}
-          image={require('../assets/images/collegeIcons/pierson.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Saybrook' })}
@@ -95,7 +86,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="6:00"
           closeTime="5:00"
           offsetY={800}
-          image={require('../assets/images/collegeIcons/saybrook.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Silliman' })}
@@ -104,7 +94,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="6:00"
           closeTime="5:00"
           offsetY={880}
-          image={require('../assets/images/collegeIcons/silliman.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Stiles' })}
@@ -113,7 +102,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="6:00"
           closeTime="5:00"
           offsetY={238}
-          image={require('../assets/images/collegeIcons/ezrastiles.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'TD' })}
@@ -122,7 +110,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="6:00"
           closeTime="5:00"
           offsetY={960}
-          image={require('../assets/images/collegeIcons/TD.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Trumbull' })}
@@ -131,7 +118,6 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           openTime="6:00"
           closeTime="5:00"
           offsetY={1040}
-          image={require('../assets/images/collegeIcons/trumbull.png')}
         />
       </View>
     </ScrollView>

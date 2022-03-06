@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Image, Pressable } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { card } from '../styles/HomeStyles'
 import SpriteSheet from 'rn-sprite-sheet'
 
-export const Card = (props:any) => {
+export const Card = (props: any) => {
   const [isOpen, setIsOpen] = useState(true)
   const [openTimeHours, setOpenTimeHours] = useState(0)
   const [closeTimeHours, setCloseTimeHours] = useState(0)
@@ -101,9 +101,9 @@ export const Card = (props:any) => {
             columns={1}
             rows={14}
             width={100}
-            offsetY={props.offsetY}/>
+            offsetY={props.offsetY}
+          />
           {/*<Image style={card.butteryIcon} source={props.image} />*/}
-
         </View>
       </LinearGradient>
     </Pressable>
