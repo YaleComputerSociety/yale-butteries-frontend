@@ -20,7 +20,7 @@ const CheckoutScreen: React.FC<{ navigation: Navigator }> = ({ navigation }) => 
   const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
 
   function CheckoutItemList() {
-    console.log("HELLO")
+    console.log('HELLO')
   }
 
   return (

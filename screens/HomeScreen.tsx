@@ -13,6 +13,7 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           college="Berkeley"
           openTime="11:00am"
           closeTime="10:59am"
+          offsetY={0}
           image={require('../assets/images/collegeIcons/berkeley.png')}
         />
         <Card
@@ -21,6 +22,7 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           college="Branford"
           openTime="6:00"
           closeTime="5:00"
+          offsetY={78}
           image={require('../assets/images/collegeIcons/branford.png')}
         />
         <Card
@@ -29,6 +31,7 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           college="Davenport"
           openTime="6:00"
           closeTime="5:00"
+          offsetY={158}
           image={require('../assets/images/collegeIcons/davenport.png')}
         />
         <Card
@@ -37,22 +40,25 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           college="Franklin"
           openTime="6:00"
           closeTime="5:00"
+          offsetY={318}
           image={require('../assets/images/collegeIcons/franklin.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Hopper' })}
-          gradientColors={['#ffb400', '#f7ba72']}
+          gradientColors={['#ffb400', '#0a7bfc']}
           college="Hopper"
-          openTime="10:00pm"
+          openTime="6:00pm"
           closeTime="1:00am"
+          offsetY={400}
           image={require('../assets/images/collegeIcons/hopper.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'JE' })}
-          gradientColors={['#2adc01', '#fc96ef']}
+          gradientColors={['#29b800', '#eee']}
           college="JE"
           openTime="6:00"
           closeTime="5:00"
+          offsetY={480}
           image={require('../assets/images/collegeIcons/JE.png')}
         />
         <Card
@@ -61,62 +67,70 @@ const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
           college="Morse"
           openTime="6:00"
           closeTime="5:00"
+          offsetY={560}
           image={require('../assets/images/collegeIcons/morse.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Murray' })}
-          gradientColors={['#0a7bfc', '#47d08e']}
+          gradientColors={['#0a7bfc', '#fd103c']}
           college="Murray"
           openTime="6:00"
           closeTime="5:00"
+          offsetY={640}
           image={require('../assets/images/collegeIcons/murray.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Pierson' })}
-          gradientColors={['#ffb400', '#f7ba72']}
+          gradientColors={['#444', '#ffd400']}
           college="Pierson"
           openTime="6:00"
           closeTime="5:00"
+          offsetY={720}
           image={require('../assets/images/collegeIcons/pierson.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Saybrook' })}
-          gradientColors={['#fd103c', '#22bedd']}
+          gradientColors={['#0a7bfc', '#ffb400']}
           college="Saybrook"
           openTime="6:00"
           closeTime="5:00"
+          offsetY={800}
           image={require('../assets/images/collegeIcons/saybrook.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Silliman' })}
-          gradientColors={['#2adc01', '#fc96ef']}
+          gradientColors={['#29b800', '#ef0525']}
           college="Silliman"
           openTime="6:00"
           closeTime="5:00"
+          offsetY={880}
           image={require('../assets/images/collegeIcons/silliman.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Stiles' })}
-          gradientColors={['#ffb400', '#f7ba72']}
+          gradientColors={['#ffd400', '#444']}
           college="Stiles"
           openTime="6:00"
           closeTime="5:00"
+          offsetY={238}
           image={require('../assets/images/collegeIcons/ezrastiles.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'TD' })}
-          gradientColors={['#ed0025', '#dcb8fc']}
+          gradientColors={['#ed0025', '#eee']}
           college="TD"
           openTime="6:00"
           closeTime="5:00"
+          offsetY={960}
           image={require('../assets/images/collegeIcons/TD.png')}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Trumbull' })}
-          gradientColors={['#686868', '#a5a6b0']}
+          gradientColors={['#444', '#ddd']}
           college="Trumbull"
           openTime="6:00"
           closeTime="5:00"
+          offsetY={1040}
           image={require('../assets/images/collegeIcons/trumbull.png')}
         />
       </View>
