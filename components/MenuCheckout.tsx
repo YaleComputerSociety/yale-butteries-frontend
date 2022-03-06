@@ -1,7 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect, Component} from 'react';
-import { View, ImageBackground, Text, Image, Pressable} from 'react-native';
-import { item , checkout} from '../styles/MenuStyles';
+import React from 'react';
+import { View, Text, Pressable} from 'react-native';
+import { item } from '../styles/MenuStyles';
 
 function priceToText(num: number){
   const dollars = Math.floor(num);
@@ -13,7 +12,7 @@ function priceToText(num: number){
 
 export const MenuCheckout = (props:any, navigation:any) => {
   return (
-    <View style={item.outerContainer}> 
+    <View style={item.outerContainer}>
       <View style={item.upperContainer}>
         <Text style={item.priceText}>Total: $10.00 </Text>
         <Text style={item.priceText}>Item Count: 4</Text>
