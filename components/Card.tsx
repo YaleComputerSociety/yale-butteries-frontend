@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, Image, Pressable } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { card } from '../styles/HomeStyles'
+import SpriteSheet from 'rn-sprite-sheet'
 
 export const Card = (props:any) => {
   const [isOpen, setIsOpen] = useState(true)
@@ -95,7 +96,14 @@ export const Card = (props:any) => {
             <Text style={card.cardText1}>{props.college}</Text>
             <Text style={card.cardText2}>{cleanTime()}</Text>
           </View>
-          <Image style={card.butteryIcon} source={props.image} />
+          <SpriteSheet
+            source={require('../assets/college_icon_sprite_sheet.png')}
+            columns={1}
+            rows={14}
+            width={100}
+            offsetY={props.offsetY}/>
+          {/*<Image style={card.butteryIcon} source={props.image} />*/}
+
         </View>
       </LinearGradient>
     </Pressable>
@@ -105,6 +113,7 @@ export const Card = (props:any) => {
 Card.defaultProps = {
   college: 'Placeholder',
   image: require('../assets/images/butteryIconPlaceholder.jpg'),
+  offsetY: 0,
   gradientColors: ['#ed0025', '#dcb8fc'],
   locations: [0, 1],
   start: { x: 0.1, y: 0 },

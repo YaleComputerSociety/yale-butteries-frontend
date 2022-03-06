@@ -1,8 +1,6 @@
-import * as React from 'react';
-import { Text, View, ScrollView, Pressable, FlatList } from 'react-native';
-import { checkout } from '../styles/CheckoutStyles';
-import { orderCartSlice } from '../store/slices/OrderCart';
-import { useSelector } from 'react-redux';
+import * as React from 'react'
+import { Text, View, ScrollView, Pressable } from 'react-native'
+import { checkout } from '../styles/CheckoutStyles'
 
 function getPriceTotal(item:any){
   return item.count*(Math.floor(item.price * 100) / 100);
