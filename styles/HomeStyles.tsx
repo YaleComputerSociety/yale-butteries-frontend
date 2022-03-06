@@ -1,8 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
 export const home = StyleSheet.create({
   app: {
-    flex:1,
+    flex: 1,
     backgroundColor: '#eaeaea',
   },
 
@@ -28,15 +28,15 @@ export const home = StyleSheet.create({
     marginLeft: 10,
   },
 
-  menuView: { 
-    margin: 8
+  menuView: {
+    margin: 8,
   },
 
   footer: {
     width: '100%',
     height: '18%',
     backgroundColor: '#fff',
-  }
+  },
 })
 
 export const card = StyleSheet.create({
@@ -47,11 +47,11 @@ export const card = StyleSheet.create({
     color: '#fff',
     fontSize: 22,
     marginBottom: 25,
-    marginTop: 15, 
+    marginTop: 15,
   },
 
-  textContainer:{
-    flex:1,
+  textContainer: {
+    flex: 1,
   },
 
   cardText2: {
@@ -62,20 +62,20 @@ export const card = StyleSheet.create({
   card: {
     flex: 1,
     height: '100%',
-    elevation: 3, 
+    elevation: 3,
     backgroundColor: '#fff',
     borderRadius: 6,
     shadowRadius: 2,
     marginVertical: 8,
   },
-  
+
   cardContent: {
     flex: 1,
     flexDirection: 'row',
     marginLeft: 10,
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft:10,
+    paddingLeft: 10,
     opacity: 1,
   },
 

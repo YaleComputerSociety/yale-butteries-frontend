@@ -1,5 +1,22 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
+export const menu = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#eee',
+  },
+
+  upperContainer: {
+    flex: 13,
+  },
+
+  lowerContainer: {
+    width: '100%',
+    height: '18%',
+    backgroundColor: '#fff',
+  },
+})
 
 export const item = StyleSheet.create({
   card: {
@@ -9,7 +26,7 @@ export const item = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     height: 120,
-    elevation: 3, 
+    elevation: 3,
     backgroundColor: '#fff',
     borderRadius: 6,
     shadowRadius: 2,
@@ -47,22 +64,22 @@ export const item = StyleSheet.create({
 
   button: {
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 0},
+    shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.3,
     flexDirection: 'row',
     justifyContent: 'center',
     textAlign: 'center',
     borderRadius: 10,
     height: '38%',
-    alignItems:'center',
+    alignItems: 'center',
     width: '10%',
   },
 
   buttonText: {
     justifyContent: 'center',
     fontFamily: 'Roboto',
-    alignItems:'center',
-    fontSize: 25 ,
+    alignItems: 'center',
+    fontSize: 25,
     textAlignVertical: 'center',
   },
 
@@ -86,20 +103,20 @@ export const item = StyleSheet.create({
 
   outerContainer: {
     flex: 2,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
 
   upperContainer: {
-    flex: 0.75,
+    flex: 1,
     flexDirection: 'row',
     backgroundColor: '#eee',
     alignItems: 'center',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
   },
 
   lowerContainer: {
     flexDirection: 'row',
-    flex: 1.25,
+    flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -120,11 +137,11 @@ export const item = StyleSheet.create({
 
 export const checkout = StyleSheet.create({
   outerContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     flex: 1,
     flexDirection: 'column',
     height: 100,
     width: '100%',
     position: 'absolute',
-  }
+  },
 })

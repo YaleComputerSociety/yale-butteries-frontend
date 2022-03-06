@@ -1,26 +1,26 @@
 import React from 'react'
-import { View, ImageBackground, Text, Image, Pressable} from 'react-native'
+import { View, Text } from 'react-native'
+import { OrderItem } from '../store/slices/OrderCart'
 import { priceToText } from '../Functions'
 import { checkout } from '../styles/CheckoutStyles'
 
-export const CheckoutItem = ({item}:any, props:any) => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const CheckoutItem: any = ({ checkoutItem }: any) => {
+  const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0)
+
   return (
     <View style={checkout.item}>
       <View style={checkout.NAME}>
-        <Text style={checkout.itemNameText}>{item.name}</Text>
+        <Text style={checkout.itemNameText}>{checkoutItem.orderItem.item}</Text>
       </View>
-      <View style={checkout.COUNT}>
-        <Text style={checkout.text}>{item.count}</Text>
-      </View>
+      {/* <View style={checkout.COUNT}>
+        <Text style={checkout.text}>{checkoutItem.orderItem.count}</Text>
+      </View> */}
       <View style={checkout.PRICE}>
-        <Text style={checkout.text}>{priceToText(item.count * item.price)}</Text>
+        <Text style={checkout.text}>{priceToText(checkoutItem.orderItem.price)}</Text>
       </View>
     </View>
   )
 }
 
-CheckoutItem.defaultProps = {
-  Name: 'Chicken Sandwhich',
-  Price: '$2.00',
-  Count: '10',
-}
+export default CheckoutItem

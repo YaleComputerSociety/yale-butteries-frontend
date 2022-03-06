@@ -1,43 +1,61 @@
-import * as React from 'react';
-import { Text, View, ScrollView, Pressable, FlatList } from 'react-native';
-import { checkout } from '../styles/CheckoutStyles';
-import { orderCartSlice } from '../store/slices/OrderCart';
-import { useSelector } from 'react-redux';
+import * as React from 'react'
+import { Text, View, ScrollView, Pressable, ActivityIndicator } from 'react-native'
+import { checkout } from '../styles/CheckoutStyles'
+import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
+import { loading } from '../styles/GlobalStyles'
+import CheckoutItem from '../components/CheckoutItem'
 
-function getPriceTotal(item:any){
-  return item.count*(Math.floor(item.price * 100) / 100);
-}
-
-
-function CheckoutItemList(props:any) {
-  console.log("HELLO")
-}
 /*   const listItems = checkoutItemList.map((item:any) => 
     <CheckoutItem item={item} totalPrice={priceToText(getPriceTotal(item))} key={item.id}/>
-  );
+  )
   return (
     <View style={checkout.orderDetailsContainer}>
       {listItems}  
     </View>
-  ); */
+  ) */
 
+const CheckoutScreen: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
+  const dispatch = useAppDispatch()
+  const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
+  const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
 
-export default function CheckoutScreen( { navigation } : {navigation:any} ) {
+  function CheckoutItemList() {
+    console.log("HELLO")
+  }
+
   return (
     <View style={checkout.wrapper}>
-      <View style={{flex:1}}>
-        <View style={checkout.upperContainer}>
-        <View style={checkout.header}><Text style={checkout.totalText}>Order Summary:</Text></View>
-          <ScrollView>
-          </ScrollView>
-          <View style={checkout.footer}><Text style={checkout.totalText}>Total:  $0.00</Text></View>
+      {isLoadingOrderCart ? (
+        <View style={loading.container}>
+          <ActivityIndicator size="large" />
         </View>
-      </View>
-      <View style={checkout.lowerContainer}>
-        <Pressable onPress={CheckoutItemList} style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, checkout.checkoutButton]}>
-          <Text style={checkout.checkoutText}>Complete Order</Text>
-        </Pressable>
-      </View>
+      ) : (
+        <View style={{ flex: 1 }}>
+          <View style={checkout.upperContainer}>
+            <View style={checkout.header}>
+              <Text style={checkout.totalText}>Order Summary:</Text>
+            </View>
+            <ScrollView style={checkout.orderList}>
+              {orderItems.map((checkoutItem, index) => (
+                <CheckoutItem checkoutItem={checkoutItem} key={index} />
+              ))}
+            </ScrollView>
+            <View style={checkout.footer}>
+              <Text style={checkout.totalText}>Total: $0.00</Text>
+            </View>
+          </View>
+          <View style={checkout.lowerContainer}>
+            <Pressable
+              onPress={CheckoutItemList}
+              style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, checkout.checkoutButton]}
+            >
+              <Text style={checkout.checkoutText}>Complete Order</Text>
+            </Pressable>
+          </View>
+        </View>
+      )}
     </View>
-  ); 
+  )
 }
+
+export default CheckoutScreen

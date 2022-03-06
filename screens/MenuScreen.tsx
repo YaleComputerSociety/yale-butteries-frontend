@@ -5,10 +5,11 @@ import { asyncFetchMenuItems } from '../store/slices/MenuItems'
 import { addOrderItem, OrderItem, removeOrderItem, resetOrderCartState } from '../store/slices/OrderCart'
 import { MenuItem } from '../components/MenuItem'
 import { home } from '../styles/HomeStyles'
-import { item } from '../styles/MenuStyles'
+import { item, menu } from '../styles/MenuStyles'
 import { loading } from '../styles/GlobalStyles'
 import { priceToText } from '../Functions'
 import { Navigator } from 'react-router-dom'
+import { ManualGesture } from 'react-native-gesture-handler/lib/typescript/handlers/gestures/manualGesture'
 
 const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
   const [priceTotal, setPriceTotal] = useState(0)
@@ -46,8 +47,8 @@ const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
           <ActivityIndicator size="large" />
         </View>
       ) : (
-        <View style={{ flex: 1 }}>
-          <ScrollView style={home.app} showsVerticalScrollIndicator={false}>
+        <View style={menu.wrapper}>
+          <ScrollView style={menu.upperContainer} showsVerticalScrollIndicator={false}>
             <View style={home.menuView}>
               {menuItems
                 .filter((menuItem) => {
@@ -58,15 +59,18 @@ const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
                 ))}
             </View>
           </ScrollView>
-          <View style={home.footer}>
+          <View style={menu.lowerContainer}>
             <View style={item.outerContainer}>
               <View style={item.upperContainer}>
-                <Text style={item.priceText}>Total: {priceToText(priceTotal)} </Text>
                 <Text style={item.priceText}>Items: {orderItems.length}</Text>
+                <Text style={item.priceText}>Total: {priceToText(priceTotal)} </Text>
               </View>
               <Pressable
                 onPress={() => navigation.navigate('CheckoutScreen')}
-                style={[item.lowerContainer, { backgroundColor: orderItems.length > 0 ? '#000' : '#bbb' }]}
+                style={({ pressed }) => [
+                  item.lowerContainer,
+                  { backgroundColor: orderItems.length > 0 ? (pressed ? '#222' : '#333') : '#bbb' },
+                ]}
               >
                 <Text style={item.checkoutText}>Go to Checkout</Text>
               </Pressable>

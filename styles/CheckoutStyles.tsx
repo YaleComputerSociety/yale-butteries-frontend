@@ -7,8 +7,9 @@ export const checkout = StyleSheet.create({
   },
 
   upperContainer: {
-    flex: 1.75,
+    flex: 7,
     margin: 20,
+    padding: 10,
     backgroundColor: '#ddd',
     borderRadius: 6,
   },
@@ -32,11 +33,15 @@ export const checkout = StyleSheet.create({
     fontSize: 18,
   },
 
+  orderList: {
+    padding: 10,
+  },
+
   item: {
     flex: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 10,
+    marginVertical: 5,
   },
 
   header: {
@@ -66,22 +71,20 @@ export const checkout = StyleSheet.create({
   },
 
   lowerContainer: {
-    flex: 0.25,
-    margin: 20,
+    backgroundColor: 'green',
+    height: '12%',
   },
 
   checkoutButton: {
     flex: 1,
-    marginVertical: '8%',
-    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  
+
   checkoutText: {
     fontFamily: 'HindSiliguri-Bold',
     fontSize: 25,
-    color: '#fff'
+    color: '#fff',
   },
 
   NAME: {
@@ -97,15 +100,13 @@ export const checkout = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    //backgroundColor:'red'
   },
 
   PRICE: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    //backgroundColor:'green',
     paddingLeft: '10%',
-  }
+  },
 })
