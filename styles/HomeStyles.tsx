@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const home = StyleSheet.create({
   app: {
-    flex:1,
+    flex: 1,
     backgroundColor: '#eaeaea',
   },
 

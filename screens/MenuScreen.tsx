@@ -69,7 +69,7 @@ export default function butteryScreen( {navigation} : {navigation:any} ) {
             <Text style={item.priceText}>Total: {priceToText(getPriceTotal())} </Text>
             <Text style={item.priceText}>Items: {itemTotal}</Text>
           </View>
-          <Pressable onPress={() => navigation.navigate("CheckoutScreen",
+          <Pressable onPress={() => navigation.navigate('CheckoutScreen',
               {
                 item : getTotalItemData(), //get total items to display in checkout screen
                 totalPrice : priceToText(getPriceTotal())

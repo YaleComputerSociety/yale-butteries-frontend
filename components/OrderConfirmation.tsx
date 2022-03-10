@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Text, View, ScrollView, Pressable, FlatList } from 'react-native';
+import { Text, View, ScrollView, Pressable } from 'react-native';
 import { checkout } from '../styles/CheckoutStyles';
 import { CheckoutItem } from '../components/CheckoutItem';
 import { priceToText } from '../Functions';
+import {orderStatusScreenSty} from '../styles/OrderStatusStyles';
 
 function getPriceTotal(item:any){
   return item.count*(Math.floor(item.price * 100) / 100);
@@ -20,31 +21,20 @@ function CheckoutItemList(props:any) {
   );
 }
 
-
-export default function CheckoutScreen( { navigation } : {navigation:any} ) {
-	
+export const OrderConfirmation = ({navigation}:any) => {
   return (
     <View style={checkout.wrapper}>
       <View style={{flex:1}}>
         <View style={checkout.upperContainer}>
-        <View style={checkout.header}><Text style={checkout.totalText}>Order Summary:</Text></View>
+        <View style={orderStatusScreenSty.header}><Text style={checkout.totalText}>Order Summary:</Text></View>
           <ScrollView>
             <CheckoutItemList checkoutItemList={navigation.getParam('item')}/>
           </ScrollView>
-          <View style={checkout.footer}><Text style={checkout.totalText}>Total:  { navigation.getParam('totalPrice') }</Text></View>
+          <View><Text style={checkout.totalText}>Total:  { navigation.getParam('totalPrice') }</Text></View>
         </View>
       </View>
       <View style={checkout.lowerContainer}>
-			<Pressable onPress={() => navigation.navigate('OrderStatusScreen',
-              {
-                item: navigation.getParam('item'),
-								totalPrice: navigation.getParam('totalPrice')
-              })} 
-              style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333'}, checkout.checkoutButton]}>
-              
-							<Text style={checkout.checkoutText}>Complete Order</Text>
-      </Pressable>
       </View>
     </View>
-  ); 
+  );
 }
