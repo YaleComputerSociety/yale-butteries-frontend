@@ -9,7 +9,6 @@ import { item, menu } from '../styles/MenuStyles'
 import { loading } from '../styles/GlobalStyles'
 import { priceToText } from '../Functions'
 import { Navigator } from 'react-router-dom'
-import { ManualGesture } from 'react-native-gesture-handler/lib/typescript/handlers/gestures/manualGesture'
 
 const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
   const [priceTotal, setPriceTotal] = useState(0)
@@ -42,7 +41,7 @@ const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
 
   return (
     <View style={home.container}>
-      {isLoadingMenuItems || menuItems == null ? (
+      {isLoadingMenuItems || isLoadingOrderCart || menuItems == null ? (
         <View style={loading.container}>
           <ActivityIndicator size="large" />
         </View>
@@ -66,7 +65,7 @@ const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
                 <Text style={item.priceText}>Total: {priceToText(priceTotal)} </Text>
               </View>
               <Pressable
-                onPress={() => navigation.navigate('CheckoutScreen')}
+                onPress={() => navigation.navigate('CheckoutScreen', { priceTotal: priceTotal })}
                 style={({ pressed }) => [
                   item.lowerContainer,
                   { backgroundColor: orderItems.length > 0 ? (pressed ? '#222' : '#333') : '#bbb' },

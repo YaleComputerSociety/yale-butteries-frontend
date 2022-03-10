@@ -4,15 +4,7 @@ import { checkout } from '../styles/CheckoutStyles'
 import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
 import { loading } from '../styles/GlobalStyles'
 import CheckoutItem from '../components/CheckoutItem'
-
-/*   const listItems = checkoutItemList.map((item:any) => 
-    <CheckoutItem item={item} totalPrice={priceToText(getPriceTotal(item))} key={item.id}/>
-  )
-  return (
-    <View style={checkout.orderDetailsContainer}>
-      {listItems}  
-    </View>
-  ) */
+import { priceToText } from '../Functions'
 
 const CheckoutScreen: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
@@ -37,7 +29,7 @@ const CheckoutScreen: React.FC<{ navigation: Navigator }> = ({ navigation }) => 
               ))}
             </ScrollView>
             <View style={checkout.footer}>
-              <Text style={checkout.totalText}>Total: $0.00</Text>
+              <Text style={checkout.totalText}>Total: {priceToText(navigation.getParam('priceTotal'))}</Text>
             </View>
           </View>
           <View style={checkout.lowerContainer}>
