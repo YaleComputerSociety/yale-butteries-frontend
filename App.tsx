@@ -11,10 +11,11 @@ import AppLoading from 'expo-app-loading'
 import Navigator from './routes/homeStack'
 import * as Font from 'expo-font'
 
-export default function App() {
+const App: FC = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false)
 
-  const loadFonts = () => Font.loadAsync({
+  const loadFonts = () =>
+    Font.loadAsync({
       Roboto: require('./assets/fonts/Roboto-Black.ttf'),
       'HindSiliguri-Bold': require('./assets/fonts/HindSiliguri-SemiBold.ttf'),
       'HindSiliguri-Bolder': require('./assets/fonts/HindSiliguri-Bold.ttf'),
@@ -57,3 +58,5 @@ const TestingInner: FC = () => {
     </View>
   )
 }
+
+export default App

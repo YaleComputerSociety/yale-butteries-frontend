@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { item } from '../styles/MenuStyles'
 import { priceToText } from '../Functions'
+import { MenuItem } from '../store/slices/MenuItems'
 
-export const MenuItem = ({ menuItem, incUpdate, decUpdate }: any) => {
+interface Props {
+  menuItem: MenuItem
+  incUpdate: (menuItem: MenuItem) => void
+  decUpdate: (menuItem: MenuItem) => void
+}
+
+export const ItemCard: FC<Props> = ({ menuItem, incUpdate, decUpdate }: Props) => {
   const [count, setCount] = useState(0)
 
   const addItem = () => {

@@ -1,16 +1,16 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Text, View, Pressable, ScrollView, ActivityIndicator } from 'react-native'
+import { View, ScrollView, ActivityIndicator } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
-import { asyncFetchMenuItems } from '../store/slices/MenuItems'
+import { asyncFetchMenuItems, MenuItem } from '../store/slices/MenuItems'
 import { addOrderItem, OrderItem, removeOrderItem, resetOrderCartState } from '../store/slices/OrderCart'
-import { MenuItem } from '../components/MenuItem'
+import { ItemCard } from '../components/ItemCard'
 import { home } from '../styles/HomeStyles'
-import { item, menu } from '../styles/MenuStyles'
+import { menu } from '../styles/MenuStyles'
 import { loading } from '../styles/GlobalStyles'
 import { priceToText } from '../Functions'
-import { Navigator } from 'react-router-dom'
+import { MenuCheckoutButton } from '../components/MenuCheckoutButton'
 
-const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
+const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [priceTotal, setPriceTotal] = useState(0)
 
   const dispatch = useAppDispatch()
@@ -23,13 +23,13 @@ const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
     }
   })
 
-  const addOrder = (newItem) => {
+  const addOrder = (newItem: MenuItem) => {
     const temp: OrderItem = { orderItem: newItem }
     dispatch(addOrderItem(temp))
     setPriceTotal(priceTotal + newItem.price)
   }
 
-  const removeOrder = (newItem) => {
+  const removeOrder = (newItem: MenuItem) => {
     dispatch(removeOrderItem(orderItems.find((item) => item.orderItem.id == newItem.id)))
     setPriceTotal(priceTotal - newItem.price)
   }
@@ -54,27 +54,15 @@ const butteryScreen: FC<{ navigation: Navigator }> = ({ navigation }) => {
                   return menuItem.college === navigation.getParam('college_Name') && menuItem.isActive === true
                 })
                 .map((menuItem) => (
-                  <MenuItem decUpdate={removeOrder} incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} />
+                  <ItemCard decUpdate={removeOrder} incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} />
                 ))}
             </View>
           </ScrollView>
-          <View style={menu.lowerContainer}>
-            <View style={item.outerContainer}>
-              <View style={item.upperContainer}>
-                <Text style={item.priceText}>Items: {orderItems.length}</Text>
-                <Text style={item.priceText}>Total: {priceToText(priceTotal)} </Text>
-              </View>
-              <Pressable
-                onPress={() => navigation.navigate('CheckoutScreen', { priceTotal: priceTotal })}
-                style={({ pressed }) => [
-                  item.lowerContainer,
-                  { backgroundColor: orderItems.length > 0 ? (pressed ? '#222' : '#333') : '#bbb' },
-                ]}
-              >
-                <Text style={item.checkoutText}>Go to Checkout</Text>
-              </Pressable>
-            </View>
-          </View>
+          <MenuCheckoutButton
+            totalPrice={priceToText(priceTotal)}
+            itemCount={orderItems.length}
+            checkoutPress={() => navigation.navigate('CheckoutScreen', { priceTotal: priceTotal })}
+          />
         </View>
       )}
     </View>

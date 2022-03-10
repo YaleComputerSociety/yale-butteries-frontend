@@ -1,15 +1,13 @@
 import * as React from 'react'
 import { Text, View, ScrollView, Pressable, ActivityIndicator } from 'react-native'
 import { checkout } from '../styles/CheckoutStyles'
-import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
+import { useAppSelector } from '../store/TypedHooks'
 import { loading } from '../styles/GlobalStyles'
 import CheckoutItem from '../components/CheckoutItem'
 import { priceToText } from '../Functions'
 
-const CheckoutScreen: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
-  const dispatch = useAppDispatch()
+const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
-
 
   return (
     <View style={checkout.wrapper}>

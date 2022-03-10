@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FC } from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { card } from '../styles/HomeStyles'
 import SpriteSheet from 'rn-sprite-sheet'
 
-export const Card = (props: any) => {
+interface butteryProps {
+  gradientColors: string[]
+  college: string
+  openTime: string
+  closeTime: string
+  offsetY: number
+  onPress: () => void
+}
+
+export const Card: FC<butteryProps> = (props: butteryProps) => {
   const [isOpen, setIsOpen] = useState(true)
   const [openTimeHours, setOpenTimeHours] = useState(0)
   const [closeTimeHours, setCloseTimeHours] = useState(0)
@@ -86,9 +95,9 @@ export const Card = (props: any) => {
       <LinearGradient
         // Button Linear Gradient
         colors={props.gradientColors}
-        locations={props.locations}
-        start={props.start}
-        end={props.end}
+        locations={[0, 1]}
+        start={{ x: 0.1, y: 0 }}
+        end={{ x: 1, y: 0 }}
         style={[card.card, { opacity: isOpen ? 1 : 0.5 }]}
       >
         <View style={card.cardContent}>
@@ -112,10 +121,7 @@ export const Card = (props: any) => {
 
 Card.defaultProps = {
   college: 'Placeholder',
-  image: require('../assets/images/butteryIconPlaceholder.jpg'),
+  //image: require('../assets/images/butteryIconPlaceholder.jpg'),
   offsetY: 0,
   gradientColors: ['#ed0025', '#dcb8fc'],
-  locations: [0, 1],
-  start: { x: 0.1, y: 0 },
-  end: { x: 1, y: 0 },
 }

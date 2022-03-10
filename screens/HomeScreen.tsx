@@ -3,7 +3,7 @@ import { View, ScrollView } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'
 
-const Home: React.FC<{ navigation: Navigator }> = ({ navigation }) => {
+const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false}>
       <View style={home.outerContainer}>

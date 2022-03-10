@@ -1,13 +1,10 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import { OrderItem } from '../store/slices/OrderCart'
 import { priceToText } from '../Functions'
 import { checkout } from '../styles/CheckoutStyles'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const CheckoutItem: any = ({ checkoutItem }: any) => {
-  const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0)
-
   return (
     <View style={checkout.item}>
       <View style={checkout.NAME}>
