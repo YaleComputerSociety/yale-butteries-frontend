@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "tuckermoses <john.tucker.moses@gmail.com>",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "license": "MIT",
   "scripts": {
     "build-frontend": "cd src/frontend && yarn run build",

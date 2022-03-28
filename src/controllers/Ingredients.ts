@@ -20,7 +20,7 @@ export async function getIngredient(req: Request, res: Response): Promise<void> 
   try {
     const ingredient = await prisma.ingredient.findUnique({
       where: {
-        id: req.params.ingredientId,
+        id: parseInt(req.params.ingredientId),
       },
       include: {
         college: true,
@@ -34,18 +34,22 @@ export async function getIngredient(req: Request, res: Response): Promise<void> 
 
 export async function createIngredient(req: Request, res: Response): Promise<void> {
   try {
-    const { ingredient, price, available, college } = req.body
-    const associatedCollege = await prisma.college.findUnique({
-      where: {
-        college: college,
-      },
-    })
+    const {
+      ingredient,
+      price,
+      available,
+      college_id,
+    }: { ingredient: string; price: number; available: boolean; college_id: number } = req.body
     const newIngredient = await prisma.ingredient.create({
       data: {
         ingredient: ingredient,
         price: price,
         available: available,
-        college: associatedCollege,
+        college: {
+          connect: {
+            id: college_id,
+          },
+        },
       },
     })
     res.send(JSON.stringify(newIngredient))

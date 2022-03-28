@@ -1,4 +1,4 @@
-import { Ingredient, PrismaClient } from '@prisma/client'
+import { MenuItemToIngredients, PrismaClient } from '@prisma/client'
 import { Request, Response } from 'express'
 
 const prisma = new PrismaClient()
@@ -38,14 +38,16 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
       item,
       price,
       limited_time,
+      is_active,
       college_id,
       ingredients,
     }: {
       item: string
       price: number
       limited_time: boolean
+      is_active: boolean
       college_id: number
-      ingredients: { optional: boolean; ingredientId: number }
+      ingredients: MenuItemToIngredients[]
     } = req.body
 
     const newMenuItem = await prisma.menuItem.create({
@@ -53,6 +55,7 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
         item: item,
         price: price,
         limited_time: limited_time,
+        is_active: is_active,
         ingredients: {
           createMany: {
             data: ingredients,
@@ -73,7 +76,7 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
 
 export async function updateMenuItem(req: Request, res: Response): Promise<void> {
   try {
-    const targetMenuItem = prisma.menuItem.update({
+    const targetMenuItem = await prisma.menuItem.update({
       where: {
         id: req.body.id,
       },
@@ -88,11 +91,6 @@ export async function updateMenuItem(req: Request, res: Response): Promise<void>
   }
 }
 
-// export async function deleteMenuItem(req: Request, res: Response): Promise<void> {
-//   try {
-//     const deletedMenuItem = await getRepository(MenuItem).delete(req.params.menuItemId)
-//     res.send(JSON.stringify({ message: 'Success', stat: deletedMenuItem }))
-//   } catch (e) {
-//     res.status(400).send(e)
-//   }
-// }
+// Everything in the db needs to be seeded
+// STUDENT STAFF Buttery Staff
+// Get requests, insert update

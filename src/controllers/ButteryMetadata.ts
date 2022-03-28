@@ -17,7 +17,7 @@ export async function getButteryData(req: Request, res: Response): Promise<void>
     const targetButteryData = await prisma.butteryMetaData.findUnique({
       ...includeProperty,
       where: {
-        id: req.params.butteryId,
+        id: parseInt(req.params.butteryId),
       },
     })
     res.send(JSON.stringify(targetButteryData))
