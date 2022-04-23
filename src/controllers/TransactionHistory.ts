@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { stripePayment } from '../services/stripe'
+import { checkPrices, stripePayment } from '../services/stripe'
 
 import { Request, Response } from 'express'
 import { create } from 'domain'
@@ -51,12 +51,13 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
       const newItem = {
         item_name: transactionItem.item_name,
         item_cost: transactionItem.item_cost,
-        // check here for cost discrepancies?
-        // need: college_id, item_name, item_cost
-        // what to do if they don't match, send back error or correct?
       }
       transactionItems.push(newItem)
     }
+    // call the service to check cost stuff and potentially throw error (use a .map call or maybe a lame for each loop)
+    checkPrices(transactionItems, total_price, college_id)
+    // put the payment in stripe
+    stripePayment(200, 1)
     // store the transaction in the database
     const newTransaction = await prisma.transactionHistory.create({
       data: {
@@ -83,8 +84,6 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
         },
       },
     })
-    // I'll put the stripe function here for now
-    stripePayment()
     res.send(JSON.stringify(newTransaction))
     // error handling
   } catch (e) {
