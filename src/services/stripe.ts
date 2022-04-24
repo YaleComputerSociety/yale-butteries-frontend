@@ -24,8 +24,11 @@ export async function checkPrices(
   items: Array<TransactionItem>,
   total_cost: number,
   college_id: number
-): Promise<void> {
-  items.map((x) => prisma.menuItem.findFirst({ where: { collegeId: college_id, item: x.name } }))
+): Promise<number> {
+  items.map((x) => {
+    prisma.menuItem.findFirst({ where: { collegeId: college_id, item: x.name } })
+  })
+  return items.reduce((partialSum, a) => partialSum + a, 0)
 }
 
 export async function stripePayment(amount = 11, user: number): Promise<void> {

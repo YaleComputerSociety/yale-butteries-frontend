@@ -55,7 +55,7 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
       transactionItems.push(newItem)
     }
     // call the service to check cost stuff and potentially throw error (use a .map call or maybe a lame for each loop)
-    checkPrices(transactionItems, total_price, college_id)
+    const charge = checkPrices(transactionItems, total_price, college_id)
     // put the payment in stripe
     stripePayment(200, 1)
     // store the transaction in the database
