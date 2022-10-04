@@ -41,6 +41,7 @@ import Stripe from 'stripe'
 // make transaction history
 // get menu item
 // get user
+// put user in backend
 
 
 const prisma = new PrismaClient()
