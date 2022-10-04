@@ -1,8 +1,47 @@
-// two tasks: create user->store credit card info in stripe
-// create transaction history-> double check cost with prisma and then send payment to stripe
-
 import { PrismaClient } from '@prisma/client'
 import Stripe from 'stripe'
+
+
+// questions for Tucker
+// transaction history—writing into the database
+// what will change once there is a real database
+// (later) how do we call the order function from the backend while in the app
+// can we change maketransactionhistory name to makeorder
+// how do we handle errors
+// security
+// should we store all their info in the stripe user, or since we get it from netid, not bother
+
+// look into paymentIntent
+
+
+// 4-5 steps
+// customer order
+// manager side
+// refund
+// integration with backend/frontend integration
+// ?? update user card
+
+
+// funcitons we need:
+// Order
+// - check that the request is valid
+// - check the prices of the payment
+// - get the user
+//   - if the user doesn't exist, make a new user
+// - make the request
+// also create a transaction history
+
+// stripe endpoints
+// - make transaction
+// - get user
+// - make user
+// - search for specific user
+
+// our backend
+// make transaction history
+// get menu item
+// get user
+
 
 const prisma = new PrismaClient()
 
@@ -21,7 +60,7 @@ const stripe = new Stripe(
 // }
 
 
-// sum up the prices and make sure that the database values match with the 
+// sum up the prices and make sure that the database values match with the order values
 export async function checkPrices(
   items: Array<TransactionItem>,
   total_cost: number,
@@ -43,15 +82,3 @@ export async function stripePayment(amount = 11, user: number): Promise<void> {
   })
 }
 
-// funcitons we need:
-// Order
-// - check that the request is valid
-// - check the prices of the payment
-// - get the user
-//   - if the user doesn't exist, make a new user
-// - make the request
-
-// test dummy account api calls again
-// can you get refunds without fees in stripe ??? :O
-// can you cache a payment for an hour or so?
-// mid-order cancellations: ignore for now

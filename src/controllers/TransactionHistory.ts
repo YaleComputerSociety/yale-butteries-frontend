@@ -54,6 +54,16 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
       }
       transactionItems.push(newItem)
     }
+
+    // funcitons we need:
+    // Order
+    // - check that the request is valid
+    // - check the prices of the payment
+    // - get the user
+    //   - if the user doesn't exist, make a new user
+    // - make the request
+    // also create a transaction history
+
     // call the service to check cost stuff and potentially throw error (use a .map call or maybe a lame for each loop)
     const charge = checkPrices(transactionItems, total_price, college_id)
     // put the payment in stripe
