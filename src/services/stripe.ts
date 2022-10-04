@@ -20,6 +20,8 @@ const stripe = new Stripe(
 //   const a = prisma.menuItem.findFirst({ where: { buttery: college_id, item: transactionItem.name } })
 // }
 
+
+// sum up the prices and make sure that the database values match with the 
 export async function checkPrices(
   items: Array<TransactionItem>,
   total_cost: number,
@@ -28,7 +30,7 @@ export async function checkPrices(
   items.map((x) => {
     prisma.menuItem.findFirst({ where: { collegeId: college_id, item: x.name } })
   })
-  return items.reduce((partialSum, a) => partialSum + a, 0)
+  return items.reduce((partialSum, a) => partialSum + a.cost, 0)
 }
 
 export async function stripePayment(amount = 11, user: number): Promise<void> {
@@ -40,3 +42,16 @@ export async function stripePayment(amount = 11, user: number): Promise<void> {
     description: 'Test charge',
   })
 }
+
+// funcitons we need:
+// Order
+// - check that the request is valid
+// - check the prices of the payment
+// - get the user
+//   - if the user doesn't exist, make a new user
+// - make the request
+
+// test dummy account api calls again
+// can you get refunds without fees in stripe ??? :O
+// can you cache a payment for an hour or so?
+// mid-order cancellations: ignore for now
