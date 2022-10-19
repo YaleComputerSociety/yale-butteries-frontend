@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client'
+import { checkPrices, stripePayment } from '../services/stripe'
 
 import { Request, Response } from 'express'
+import { create } from 'domain'
 
 const prisma = new PrismaClient()
 
@@ -29,6 +31,9 @@ export async function getTransactionHistory(req: Request, res: Response): Promis
 
 export async function createTransactionHistory(req: Request, res: Response): Promise<void> {
   try {
+    // destructure transaction history properties
+    // ones to use for stripe stuff: *in_progress, !total_price, *transaction_items, *college_id, user_id
+    // note: user_id is the id number, not the netid
     const {
       order_placed,
       order_complete,
@@ -40,6 +45,7 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
       college_id,
       user_id,
     } = req.body
+    // make array of transaction items
     const transactionItems = []
     for (const transactionItem of transaction_items) {
       const newItem = {
@@ -48,6 +54,21 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
       }
       transactionItems.push(newItem)
     }
+
+    // funcitons we need:
+    // Order
+    // - check that the request is valid
+    // - check the prices of the payment
+    // - get the user
+    //   - if the user doesn't exist, make a new user
+    // - make the request
+    // also create a transaction history
+
+    // call the service to check cost stuff and potentially throw error (use a .map call or maybe a lame for each loop)
+    const charge = checkPrices(transactionItems, total_price, college_id)
+    // put the payment in stripe
+    stripePayment(200, 1)
+    // store the transaction in the database
     const newTransaction = await prisma.transactionHistory.create({
       data: {
         order_complete: order_complete,
@@ -74,6 +95,7 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
       },
     })
     res.send(JSON.stringify(newTransaction))
+    // error handling
   } catch (e) {
     res.status(400).send(e)
   }
