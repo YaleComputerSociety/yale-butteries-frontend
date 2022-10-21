@@ -76,5 +76,3 @@ export async function stripePayment(amount = 11, user: number): Promise<void> {
     description: 'Test charge',
   })
 }
-
-stripePayment(11, 1)
