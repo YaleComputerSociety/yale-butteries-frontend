@@ -51,9 +51,9 @@ app.use('/api/users', userRouter)
 
 app.use(express.static(static_root))
 
-app.get('*', (_, res) => {
-  res.sendFile('index.html', { root: static_root })
-})
+// app.get('*', (_, res) => {
+//   res.sendFile('index.html', { root: static_root })
+// })
 
 app.listen(port, () => {
   console.log(`Deployed on port ${port}.`)

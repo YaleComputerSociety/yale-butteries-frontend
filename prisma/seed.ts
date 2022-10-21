@@ -3,6 +3,35 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 const main = async () => {
+  await prisma.college.upsert({
+    where: {
+      id: 1,
+    },
+    update: {},
+    create: {
+      college: 'Morse',
+      image_url: 'Aidan Sucks',
+      buttery_activated: true,
+    },
+  })
+  await prisma.position.upsert({
+    where: {
+      id: 1,
+    },
+    update: {},
+    create: {
+      position: 'manager',
+    },
+  })
+  await prisma.position.upsert({
+    where: {
+      id: 2,
+    },
+    update: {},
+    create: {
+      position: 'customer',
+    },
+  })
   await prisma.user.upsert({
     where: {
       id: 1,
@@ -32,7 +61,7 @@ const main = async () => {
       credit_card_hash: 'yalecampushub',
       name: 'Testing McTester II',
       position: {
-        connect: { id: 1 },
+        connect: { id: 2 },
       },
       college: {
         connect: { id: 1 },
