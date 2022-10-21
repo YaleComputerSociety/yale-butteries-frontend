@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import Stripe from 'stripe'
 
-
 // questions for Tucker
 // transaction history—writing into the database
 // what will change once there is a real database
@@ -9,10 +8,8 @@ import Stripe from 'stripe'
 // can we change maketransactionhistory name to makeorder
 // how do we handle errors
 // security
-// should we store all their info in the stripe user, or since we get it from netid, not bother
 
 // look into paymentIntent
-
 
 // 4-5 steps
 // customer order
@@ -20,7 +17,6 @@ import Stripe from 'stripe'
 // refund
 // integration with backend/frontend integration
 // ?? update user card
-
 
 // funcitons we need:
 // Order
@@ -43,7 +39,6 @@ import Stripe from 'stripe'
 // get user
 // put user in backend
 
-
 const prisma = new PrismaClient()
 
 interface TransactionItem {
@@ -59,7 +54,6 @@ const stripe = new Stripe(
 // async function checkPricesMapFunc(college_id: number, transactionItem: TransactionItem): Promise<TransactionItem> {
 //   const a = prisma.menuItem.findFirst({ where: { buttery: college_id, item: transactionItem.name } })
 // }
-
 
 // sum up the prices and make sure that the database values match with the order values
 export async function checkPrices(
@@ -83,3 +77,4 @@ export async function stripePayment(amount = 11, user: number): Promise<void> {
   })
 }
 
+stripePayment(11, 1)
