@@ -45,7 +45,7 @@ model ButteryMetaData {
   max_queue_size Int
   reserved_queue_spots Int
   college College @relation(fields: [collegeId], references: [id])
-  collegeId Int
+  collegeId Int @unique
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
@@ -110,7 +110,7 @@ model TransactionItem {
   transaction_history TransactionHistory @relation(fields: [transactionHistoryId], references: [id])
   transactionHistoryId Int
   menu_item MenuItem @relation(fields: [menuItemId], references: [id])
-  menuItemId Int
+  menuItemId Int @unique
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
