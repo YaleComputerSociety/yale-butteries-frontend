@@ -1,47 +1,66 @@
-import { StatusBar } from 'expo-status-bar'
 import React, { FC, useEffect } from 'react'
-import { Provider } from 'react-redux'
-import { StyleSheet, Text, View } from 'react-native'
-import store from './store/ReduxStore'
+import { StatusBar } from 'expo-status-bar'
 import { useAppSelector, useAppDispatch } from './store/TypedHooks'
 import { asyncFetchCurrentUser } from './store/slices/CurrentUser'
+import { useState } from 'react';
+import { Provider } from 'react-redux'
+import { Text, View } from 'react-native'
+import store from './store/ReduxStore'
+import AppLoading from 'expo-app-loading';
+import ManagerNavigator from './routes/managerStack'
+import { NavigationContainer } from '@react-navigation/native';
+
+import * as Font from 'expo-font';
 
 export default function App() {
-  return (
-    <Provider store={store}>
-      <TestingInner />
-    </Provider>
-  )
+  // const [fontsLoaded, setFontsLoaded] = useState(false)
+
+  // const loadFonts = () => Font.loadAsync({
+  //   'Roboto' : require('./assets/fonts/Roboto-Black.ttf'),
+  //   'HindSiliguri-Bold' : require('./assets/fonts/HindSiliguri-SemiBold.ttf'),
+  //   'HindSiliguri-Bolder' : require('./assets/fonts/HindSiliguri-Bold.ttf'),
+  //   'HindSiliguri' : require('./assets/fonts/HindSiliguri-Regular.ttf'),
+  //   'Roboto-Light' : require('./assets/fonts/HindSiliguri-Light.ttf'),
+  //   'Roboto-Italic' : require('./assets/fonts/Roboto-LightItalic.ttf'),
+  // })
+
+  // if (fontsLoaded) {
+    return (
+      <Provider store={store}>
+        <TestingInner/>
+      </Provider>
+    );
+  // } else {
+  //   return (
+  //     <AppLoading
+  //       startAsync={loadFonts}
+  //       onFinish={() => setFontsLoaded(true)}
+  //       onError={console.warn}
+  //     />
+  //   )
+  // }
 }
 
 const TestingInner: FC = () => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
-
   useEffect(() => {
     if (currentUser == null) {
       dispatch(asyncFetchCurrentUser())
     }
-  })
+  }, [currentUser])
 
   return (
-    <View style={styles.container}>
-      {/* <Text>Open up App.tsx to start working on your app!</Text> */}
+    <View> 
       {isLoadingCurrentUser || currentUser == null ? (
         <Text>{'Loading...'}</Text>
       ) : (
-        <Text>{`User ${currentUser.name} loaded.`}</Text>
+        <NavigationContainer>
+          <ManagerNavigator/>
+        </NavigationContainer>
+        //<Navigator/>//login page ?? --> to buttery navigator
       )}
       <StatusBar style="auto" />
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
