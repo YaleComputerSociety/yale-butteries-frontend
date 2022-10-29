@@ -54,7 +54,7 @@ export default function OrdersScreen() {
         <ScrollView style={{ ...styles.scrollView}}
         contentContainerStyle={{alignItems: 'stretch', justifyContent: 'stretch'}}>
           <Text style={{...styles.title}}>
-            Orders</Text>
+            Live Orders</Text>
           {
             currentOrders.map((element, index) => {
               //HEY orderNum = index make mess up the key system 
@@ -75,7 +75,7 @@ export default function OrdersScreen() {
               )
             })
           }
-          <Text style={{...styles.title}}>
+          <Text style={{...styles.title2}}>
             Completed Today</Text>
           {
             pastOrders.map((element, index) => {
@@ -110,9 +110,18 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: TEXTS.adjust(30),
-    marginBottom: LAYOUTS.getWidth(5),
+    marginBottom: LAYOUTS.getWidth(8),
     color: COLORS.black,
-    fontFamily: 'HindSiliguri',
+    fontWeight: '500'
+    //fontFamily: 'HindSiliguri',
+  },
+  title2: {
+    fontSize: TEXTS.adjust(30),
+    marginBottom: LAYOUTS.getWidth(8),
+    marginTop: LAYOUTS.getWidth(8),
+    color: COLORS.black,
+    fontWeight: '500'
+    //fontFamily: 'HindSiliguri',
   },
   scrollView : {
     paddingTop: LAYOUTS.getWidth(10),

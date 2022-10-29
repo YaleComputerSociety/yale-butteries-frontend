@@ -158,6 +158,8 @@ const styles = StyleSheet.create({
     borderRightWidth: 2,
     alignItems: 'center',
     justifyContent: 'space-around',
+    paddingBottom: LAYOUTS.getWidth(10),
+    paddingTop: LAYOUTS.getWidth(4)
     //borderWidth: 2
   },
   itemContainer: {
@@ -173,19 +175,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   boldText: {
-    fontSize: TEXTS.adjust(17),
+    fontSize: TEXTS.adjust(15),
     color: COLORS.black,
-    fontFamily: 'HindSiliguri-Bold'
+    //fontFamily: 'ri-Bold'
   },
   regularText: {
     fontSize: TEXTS.adjust(17),
     color: COLORS.black,
-    fontFamily: 'HindSiliguri'
+    //fontFamily: 'HindSiliguri'
   },
   nameText: {
     fontSize: TEXTS.adjust(12),
     color: COLORS.black,
-    fontFamily: 'HindSiliguri'
+    //fontFamily: 'HindSiliguri'
   },
 });
 

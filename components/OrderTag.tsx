@@ -207,17 +207,17 @@ const styles = StyleSheet.create({
   boldText: {
     fontSize: TEXTS.adjust(17),
     color: COLORS.black,
-    fontFamily: 'HindSiliguri-Bold'
+    //fontFamily: 'HindSiliguri-Bold'
   },
   regularText: {
     fontSize: TEXTS.adjust(17),
     color: COLORS.black,
-    fontFamily: 'HindSiliguri'
+    //fontFamily: 'HindSiliguri'
   },
   nameText: {
     fontSize: TEXTS.adjust(12),
     color: COLORS.black,
-    fontFamily: 'HindSiliguri'
+    //fontFamily: 'HindSiliguri'
   },
   imageStyle: {
     height: LAYOUTS.getWidth(20),

@@ -10,6 +10,8 @@ import AppLoading from 'expo-app-loading';
 import ManagerNavigator from './routes/managerStack'
 import { NavigationContainer } from '@react-navigation/native';
 
+import { StyleSheet } from 'react-native';
+
 import * as Font from 'expo-font';
 
 export default function App() {
@@ -51,7 +53,7 @@ const TestingInner: FC = () => {
   }, [currentUser])
 
   return (
-    <View> 
+    <View style={styles.container}> 
       {isLoadingCurrentUser || currentUser == null ? (
         <Text>{'Loading...'}</Text>
       ) : (
@@ -64,3 +66,13 @@ const TestingInner: FC = () => {
     </View>
   )
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  },
+})
