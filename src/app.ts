@@ -1,4 +1,4 @@
-import express, { Application } from 'express'
+import express, { Application, Request, Response } from 'express'
 import cors from 'cors'
 import path from 'path'
 // import db from './models'
@@ -18,6 +18,7 @@ import menuItemRouter from './routes/MenuItemApi'
 import ratingRouter from './routes/RatingApi'
 import transactionRouter from './routes/TransactionHistoryApi'
 import userRouter from './routes/UserApi'
+import { SimpleConsoleLogger } from 'typeorm'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Stripe = require('stripe')
@@ -56,15 +57,21 @@ app.use('/api/users', userRouter)
 
 app.use(express.static(static_root))
 
-app.post('/pay', async (req, res) => {
+export interface TypedRequestBody<T> extends Request {
+  body: T
+}
+
+app.post('/pay', async (req: TypedRequestBody<{ id: string; price: number }>, res: Response) => {
   try {
-    const { name } = req.body
+    const name: string = req.body.id
+    const price: number = req.body.price * 100
+    console.log(name, price)
     if (!name) return res.status(400).json({ message: 'Please enter a name' })
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(100),
+      amount: price,
       currency: 'USD',
       payment_method_types: ['card'],
-      metadata: { name },
+      metadata: { name, price },
     })
     const clientSecret = paymentIntent.client_secret
     res.json({ message: 'Payment initiated', clientSecret })
