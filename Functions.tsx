@@ -1,3 +1,5 @@
+
+
 export function priceToText(num: number): string {
   const dollars = Math.floor(num)
   const cents = Math.floor(num * 100 - dollars * 100)
@@ -10,4 +12,3 @@ export function priceToText(num: number): string {
 //     sum += items[i].count * (Math.floor(items[i].price * 100) / 100)
 //   }
 //   return sum
-// }
