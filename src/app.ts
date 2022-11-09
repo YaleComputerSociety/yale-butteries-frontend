@@ -19,12 +19,17 @@ import ratingRouter from './routes/RatingApi'
 import transactionRouter from './routes/TransactionHistoryApi'
 import userRouter from './routes/UserApi'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Stripe = require('stripe')
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
+
 const app: Application = express()
 
 const port = process.env.APP_PORT || 3000
 
 // const { PositionEventType } = db
 
+app.use('/stripe', express.raw({ type: '*/*' }))
 app.use(express.json())
 app.use(
   express.urlencoded({
@@ -50,6 +55,24 @@ app.use('/api/transactions', transactionRouter)
 app.use('/api/users', userRouter)
 
 app.use(express.static(static_root))
+
+app.post('/pay', async (req, res) => {
+  try {
+    const { name } = req.body
+    if (!name) return res.status(400).json({ message: 'Please enter a name' })
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(100),
+      currency: 'USD',
+      payment_method_types: ['card'],
+      metadata: { name },
+    })
+    const clientSecret = paymentIntent.client_secret
+    res.json({ message: 'Payment initiated', clientSecret })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ message: 'Internal server error' })
+  }
+})
 
 // app.get('*', (_, res) => {
 //   res.sendFile('index.html', { root: static_root })
