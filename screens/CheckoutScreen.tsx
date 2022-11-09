@@ -16,7 +16,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     try {
       // sending request
       const obj = { id: name, price: amount }
-      const response = await fetch('http://localhost:3000/pay', {
+      const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
         method: 'POST',
         body: JSON.stringify(obj),
         headers: {
