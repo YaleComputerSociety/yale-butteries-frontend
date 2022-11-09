@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { View, ScrollView, ActivityIndicator } from 'react-native'
+import { View, ScrollView, ActivityIndicator, Text } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { asyncFetchMenuItems, MenuItem } from '../store/slices/MenuItems'
 import { addOrderItem, OrderItem, removeOrderItem, resetOrderCartState } from '../store/slices/OrderCart'

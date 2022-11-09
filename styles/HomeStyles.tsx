@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 export const home = StyleSheet.create({
   app: {
     flex: 1,
-    backgroundColor: '#eaeaea',
+    backgroundColor: '#000',
   },
 
   container: {
@@ -19,7 +19,7 @@ export const home = StyleSheet.create({
     padding: 0,
     marginTop: 5,
     marginBottom: 10,
-    marginHorizontal: 12,
+    marginHorizontal: 8,
   },
 
   textContent: {
@@ -47,26 +47,21 @@ export const card = StyleSheet.create({
     color: '#fff',
     fontSize: 22,
     marginBottom: 25,
-    marginTop: 15,
-  },
-
-  textContainer: {
-    flex: 1,
+    marginTop: 10,
   },
 
   cardText2: {
     fontFamily: 'Roboto-Italic',
-    marginBottom: 15,
+    marginBottom: 10,
   },
 
   card: {
     flex: 1,
-    height: '100%',
-    elevation: 3,
+    elevation: 10,
     backgroundColor: '#fff',
-    borderRadius: 6,
+    borderRadius: 2,
     shadowRadius: 2,
-    marginVertical: 8,
+    marginVertical: 5,
   },
 
   cardContent: {
@@ -77,12 +72,5 @@ export const card = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 10,
     opacity: 1,
-  },
-
-  butteryIcon: {
-    width: 75,
-    height: 75,
-    marginVertical: 12,
-    marginRight: 10,
   },
 })

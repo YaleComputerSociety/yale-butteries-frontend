@@ -9,7 +9,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
       <View style={home.outerContainer}>
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'berkeley' })}
-          gradientColors={['#ed0025', '#dddddd']}
+          gradientColors={['#cd0025', '#770025']}
           college="Berkeley"
           openTime="11:00am"
           closeTime="10:59am"
@@ -17,7 +17,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Branford' })}
-          gradientColors={['#0a5bcc', '#47d08e']}
+          gradientColors={['#0a5baa', '#05284A']}
           college="Branford"
           openTime="6:00"
           closeTime="5:00"
@@ -25,7 +25,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Davenport' })}
-          gradientColors={['#444', '#ddd']}
+          gradientColors={['#444', '#222']}
           college="Davenport"
           openTime="6:00"
           closeTime="5:00"
