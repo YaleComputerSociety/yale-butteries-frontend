@@ -12,13 +12,13 @@ import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
   const stripe = useStripe()
-
-  const makePayment = async (name: string) => {
+  const makePayment = async (name: string, amount: number) => {
     try {
       // sending request
+      const obj = { id: name, price: amount }
       const response = await fetch('http://localhost:3000/pay', {
         method: 'POST',
-        body: JSON.stringify({ name }),
+        body: JSON.stringify(obj),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -65,7 +65,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             <View style={checkout.lowerContainer}>
               <Pressable
                 style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, checkout.checkoutButton]}
-                onPress={() => makePayment('bony')}
+                onPress={() => makePayment('bony', navigation.getParam('priceTotal'))}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>
               </Pressable>
