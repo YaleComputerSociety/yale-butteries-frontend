@@ -15,7 +15,7 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
     const price: number = req.body.price * 100
     console.log(name, price)
     if (!name) {
-      res.status(400).send({ message: 'Please enter a name' })
+      res.status(400).json({ message: 'Please enter a name' })
     }
     const paymentIntent = await stripe.paymentIntents.create({
       amount: price,

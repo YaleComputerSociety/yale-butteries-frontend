@@ -18,11 +18,9 @@ import menuItemRouter from './routes/MenuItemApi'
 import ratingRouter from './routes/RatingApi'
 import transactionRouter from './routes/TransactionHistoryApi'
 import userRouter from './routes/UserApi'
-import { SimpleConsoleLogger } from 'typeorm'
+import paymentRouter from './routes/PaymentApi'
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Stripe = require('stripe')
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
+
 
 const app: Application = express()
 
@@ -54,32 +52,11 @@ app.use('/api/menu_items', menuItemRouter)
 app.use('/api/ratings', ratingRouter)
 app.use('/api/transactions', transactionRouter)
 app.use('/api/users', userRouter)
+app.use('/api/payments', paymentRouter)
 
 app.use(express.static(static_root))
 
-export interface TypedRequestBody<T> extends Request {
-  body: T
-}
 
-app.post('/pay', async (req: TypedRequestBody<{ id: string; price: number }>, res: Response) => {
-  try {
-    const name: string = req.body.id
-    const price: number = req.body.price * 100
-    console.log(name, price)
-    if (!name) return res.status(400).json({ message: 'Please enter a name' })
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: price,
-      currency: 'USD',
-      payment_method_types: ['card'],
-      metadata: { name, price },
-    })
-    const clientSecret = paymentIntent.client_secret
-    res.json({ message: 'Payment initiated', clientSecret })
-  } catch (err) {
-    console.error(err)
-    res.status(500).json({ message: 'Internal server error' })
-  }
-})
 
 // app.get('*', (_, res) => {
 //   res.sendFile('index.html', { root: static_root })
