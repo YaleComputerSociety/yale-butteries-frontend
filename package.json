@@ -97,6 +97,7 @@
       ]
     },
     "settings": {
+      "import/ignore": ["react-native"],
       "import/extensions": [
         ".js",
         ".ts"
