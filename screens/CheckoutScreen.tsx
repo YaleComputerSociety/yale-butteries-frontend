@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import * as React from 'react'
 import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
 import { checkout } from '../styles/CheckoutStyles'
@@ -5,6 +6,7 @@ import { useAppSelector } from '../store/TypedHooks'
 import { loading } from '../styles/GlobalStyles'
 import CheckoutItem from '../components/CheckoutItem'
 import { priceToText } from '../Functions'
+import { STRIPE_PK } from '@env'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
@@ -14,7 +16,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const makePayment = async (name: string) => {
     try {
       // sending request
-      console.log(name)
       const response = await fetch('http://localhost:3000/pay', {
         method: 'POST',
         body: JSON.stringify({ name }),
@@ -46,7 +47,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           <ActivityIndicator size="large" />
         </View>
       ) : (
-        <StripeProvider publishableKey={process.env.STRIPE_PUB_KEY}>
+        <StripeProvider publishableKey={STRIPE_PK}>
           <View style={{ flex: 1 }}>
             <View style={checkout.upperContainer}>
               <View style={checkout.header}>
