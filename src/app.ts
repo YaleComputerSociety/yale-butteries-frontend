@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from 'express'
+import express, { Application } from 'express'
 import cors from 'cors'
 import path from 'path'
 // import db from './models'
@@ -19,8 +19,6 @@ import ratingRouter from './routes/RatingApi'
 import transactionRouter from './routes/TransactionHistoryApi'
 import userRouter from './routes/UserApi'
 import paymentRouter from './routes/PaymentApi'
-
-
 
 const app: Application = express()
 
@@ -55,8 +53,6 @@ app.use('/api/users', userRouter)
 app.use('/api/payments', paymentRouter)
 
 app.use(express.static(static_root))
-
-
 
 // app.get('*', (_, res) => {
 //   res.sendFile('index.html', { root: static_root })
