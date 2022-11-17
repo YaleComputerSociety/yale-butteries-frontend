@@ -10,6 +10,7 @@ import store from './store/ReduxStore'
 import AppLoading from 'expo-app-loading'
 import Navigator from './routes/homeStack'
 import * as Font from 'expo-font'
+import 'react-native-gesture-handler'
 
 const App: FC = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false)
