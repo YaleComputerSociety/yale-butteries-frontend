@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, ScrollView } from 'react-native'
+import { View, ScrollView, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'
 
@@ -7,6 +7,12 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false}>
       <View style={home.outerContainer}>
+      <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')}>
+        <Image 
+          source={require('../assets/images/SettingsIcon.png')}
+          style={styles.button}
+        />
+      </TouchableOpacity>
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'berkeley' })}
           gradientColors={['#ed0025', '#dddddd']}
@@ -123,5 +129,16 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
     </ScrollView>
   )
 }
+
+
+const styles = StyleSheet.create({
+  button: {
+    width: 35,
+    height: 35,
+    left: '90%',
+    //bottom: '100%',
+  },
+});
+
 
 export default Home
