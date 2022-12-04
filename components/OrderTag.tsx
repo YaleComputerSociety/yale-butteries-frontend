@@ -22,7 +22,7 @@ const OrderTag = (props) => {
   const orderLastName = "Palmer"
   const interactable = props.children[3]
   const orderNum = props.children[0].id + "-";
-  const slideIndex = [0, 1, 2, 3]
+  const slideIndex = [0, 1, 2, 3, 4]
   const[orderStatus, setOrderStatus] = useState(props.children[0].orderStatus)
   //console.log(props.children)
   //console.log(transactionIndex)
@@ -32,7 +32,7 @@ const OrderTag = (props) => {
   const[isStarted, setIsStarted] = useState(false);
   //console.log(isStarted)
   //let orderStatus = props.children[0].orderStatus
-  //'cancelled' | 'queued' | 'in_progress' | 'complete' | 'pending'
+  //'cancelled' | 'queued' | 'in_progress' | 'complete' | 'pending' | 'picked_up'
   //Here we need to find based on the orderstatus where to start the slide index
   let startingIndex = 0;
   switch(orderStatus) {
@@ -47,6 +47,9 @@ const OrderTag = (props) => {
       break
     case 'complete':
       startingIndex = 3
+      break
+    case 'picked_up':
+      startingIndex = 4
       break
     case 'pending':
       startingIndex = 0
@@ -81,6 +84,10 @@ const OrderTag = (props) => {
           break;
         case 3: 
           tempStatus = "complete"
+          setOrderStatus(tempStatus)
+          break;
+        case 4: 
+          tempStatus = "picked_up"
           setOrderStatus(tempStatus)
           break;
       }

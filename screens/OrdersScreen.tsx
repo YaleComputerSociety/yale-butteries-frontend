@@ -34,8 +34,8 @@ export default function OrdersScreen() {
     console.log("transactionItems Updated")
     //console.log(transactionItems)
     if (transactionItems != null) {
-      setCurrentOrders(transactionItems.filter(element => element.orderStatus != "complete" && element.orderStatus != "cancelled"))
-      setPastOrders(transactionItems.filter(element => element.orderStatus == "complete" || element.orderStatus == "cancelled"))
+      setCurrentOrders(transactionItems.filter(element => element.orderStatus != "picked_up" && element.orderStatus != "cancelled"))
+      setPastOrders(transactionItems.filter(element => element.orderStatus == "picked_up" || element.orderStatus == "cancelled"))
     }
     //console.log(currentOrders)
 
@@ -45,14 +45,16 @@ export default function OrdersScreen() {
     <SafeAreaView style={{...styles.container}}>
       {isLoadingTransactionItems || transactionItems == null ? (
         <ScrollView style={{ ...styles.scrollView}}
-        contentContainerStyle={{alignItems: 'flex-start', justifyContent: 'stretch'}}>
+        //contentContainerStyle={{alignItems: 'flex-start', justifyContent: 'stretch'}}>
+        >
           <Text style={{...styles.title}}>
           Orders</Text>
           <ActivityIndicator style={styles.loader} size="large"/>
         </ScrollView>
       ) : (
         <ScrollView style={{ ...styles.scrollView}}
-        contentContainerStyle={{alignItems: 'stretch', justifyContent: 'stretch'}}>
+        //contentContainerStyle={{alignItems: 'stretch', justifyContent: 'stretch'}}>
+        >
           <Text style={{...styles.title}}>
             Live Orders</Text>
           {

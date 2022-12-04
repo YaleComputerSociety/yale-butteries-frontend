@@ -7,6 +7,31 @@ import { LAYOUTS } from '../constants/Layouts';
 
 const OrderTagPage = (props) => {
   switch(props.status) {
+    case 4:
+      return (
+        <View 
+          style={{...styles.container, backgroundColor: "#D989B9"}}>
+          <View style={{...styles.timeContainer}}>
+              <Text style={{...styles.boldText, lineHeight: 30}}>
+                10:57 PM</Text>
+              <Text style={{...styles.nameText, lineHeight: 14}}>
+                Picked Up
+              </Text>
+          </View>
+          <View style={styles.itemContainer}>
+            <Text style={{...styles.regularText}}>
+              {props.orderItem}
+            </Text>
+          </View>
+          <View style={styles.nameContainer}>
+            <Text style={{...styles.nameText}}>
+              Aidan</Text>
+            <Text style={{...styles.nameText}}>
+              Palmer</Text>
+          </View>
+        </View>
+      );
+    break;
     case 3:
       return (
         <View 
