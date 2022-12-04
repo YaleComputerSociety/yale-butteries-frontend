@@ -2,7 +2,7 @@
 //import { createAppContainer } from "react-navigation";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import OrdersScreen from '../screens/OrdersScreen';
-
+import React from 'react';
 
 // const Tab = createBottomTabNavigator();
 
