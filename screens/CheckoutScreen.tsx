@@ -15,7 +15,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const makePayment = async (name: string, amount: number) => {
     try {
       // sending request
-      const obj = { id: name, price: amount }
+      const obj = { netid: name, price: amount }
       const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
         method: 'POST',
         body: JSON.stringify(obj),
@@ -65,7 +65,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             <View style={checkout.lowerContainer}>
               <Pressable
                 style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, checkout.checkoutButton]}
-                onPress={() => makePayment('bony', navigation.getParam('priceTotal'))}
+                onPress={() => makePayment('khy6', navigation.getParam('priceTotal'))}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>
               </Pressable>
