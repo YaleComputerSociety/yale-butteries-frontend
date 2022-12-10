@@ -11,21 +11,26 @@ export interface TypedRequestBody<T> extends Request {
 
 export async function createPaymentIntent(req: Request, res: Response): Promise<void> {
   try {
+    const newman = await stripe.customers.create({
+      email: 'somedummy@yale.edu',
+      metadata: { netid: 'xxx3' },
+    })
+
     if (!req.body.price) {
       res.status(400).json({ message: 'Please enter a price' })
       return
     }
     if (!req.body.netid) {
-      res.status(400).json({ message: 'Please enter a netid' })
+      res.status(400).json({ message: "You aren't logged in. Missing NetID" })
       return
     }
 
     const customerQuery = await stripe.customers.search({
       query: "metadata['netid']:'" + req.body.netid + "'",
     })
-    console.log(customerQuery.data[0].id)
+    console.log(customerQuery.data[0]?.id)
 
-    if (!customerQuery.data[0].id) {
+    if (!customerQuery.data[0]?.id) {
       res.status(403).json({
         message:
           'Invalid netid: either the netid is incorrect, or this netid has never been set up with Yale Butteries ',
