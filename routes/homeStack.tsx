@@ -7,52 +7,26 @@ import SettingsScreen from '../screens/Settings'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Button } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 
 const screens = {
   Home: {
     screen: Home,
     navigationOptions: {
       title: 'Butteries',
-      headerRight: () => (
-        <Button
-          title="NN"
-          color="#fff"
-          onPress={() => {
-            console.log('Dark')
-          }}
-        />
-      ),
-      headerRightContainerStyle: { paddingRight: 10 },
-      headerLeft: () => {
-        return (
-          <Button
-            title="NN"
-            color="#fff"
-            onPress={() => {
-              console.log('TO SETTINGS')
-            }}
-          />
-        )
-      },
-      headerLeftContainerStyle: { paddingLeft: 10 },
     },
   },
-
   ButteryScreen: {
     screen: ButteryScreen,
     navigationOptions: {
       title: 'Menu',
     },
   },
-
   CheckoutScreen: {
     screen: CheckoutScreen,
     navigationOptions: {
       title: 'Checkout',
     },
   },
-
   SettingsScreen: {
     screen: SettingsScreen,
     navigationOptions: {

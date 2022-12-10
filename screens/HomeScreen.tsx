@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, ScrollView, Text } from 'react-native'
+import { View, ScrollView, Text, Button } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'
 
@@ -122,6 +122,21 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
       </View>
     </ScrollView>
   )
+}
+
+Home.navigationOptions = (navData) => {
+  return {
+    headerTitle: 'Butteries',
+    headerRight: () => (
+      <Button
+        title="Help"
+        onPress={() => {
+          navData.navigation.navigate('SettingsScreen')
+          console.log('Hello World')
+        }}
+      />
+    ),
+  }
 }
 
 export default Home
