@@ -45,7 +45,7 @@ export const asyncFetchCurrentUser = () => {
 }
 
 async function dummyUser(): Promise<User> {
-  await new Promise((r) => setTimeout(r, 2000))
+  await new Promise((r) => setTimeout(r, 200))
   return {
     id: 5,
     netid: 'testmctester123',

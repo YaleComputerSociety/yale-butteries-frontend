@@ -59,7 +59,7 @@ export const asyncFetchTransactionHistory = () => {
 }
 
 async function dummyTransactionHistory(): Promise<TransactionHistoryEntry[]> {
-  await new Promise((r) => setTimeout(r, 2000))
+  await new Promise((r) => setTimeout(r, 200))
   return [
     {
       id: 1,
@@ -92,7 +92,7 @@ export const asyncUpdateTransactionHistoryEntry = (transactionHistoryEntry: Tran
       // See: https://stackoverflow.com/questions/60697214/how-to-fix-index-signature-is-missing-in-type-error
       // const updatedUser = await putJSON('/api/users', { ...user })
       // dispatch(updateUser(updatedUser.jsonBody))
-      await new Promise((r) => setTimeout(r, 1500))
+      await new Promise((r) => setTimeout(r, 200))
       dispatch(updateTransactionHistory(transactionHistoryEntry))
     } catch (e) {
       console.log(e)

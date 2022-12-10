@@ -66,7 +66,7 @@ export const asyncUpdateUser = (user: User) => {
       // See: https://stackoverflow.com/questions/60697214/how-to-fix-index-signature-is-missing-in-type-error
       // const updatedUser = await putJSON('/api/users', { ...user })
       // dispatch(updateUser(updatedUser.jsonBody))
-      await new Promise((r) => setTimeout(r, 1500))
+      await new Promise((r) => setTimeout(r, 200))
       dispatch(updateUser(user))
     } catch (e) {
       console.log(e)
@@ -79,7 +79,7 @@ export const asyncInsertUser = (user: User) => {
     try {
       // const newUser = await postJSON('/api/users', { ...user })
       // dispatch(insertUser(newUser.jsonBody))
-      await new Promise((r) => setTimeout(r, 1500))
+      await new Promise((r) => setTimeout(r, 200))
       dispatch(insertUser(user))
     } catch (e) {
       console.log(e)
@@ -88,7 +88,7 @@ export const asyncInsertUser = (user: User) => {
 }
 
 async function dummyUsers(): Promise<User[]> {
-  await new Promise((r) => setTimeout(r, 2000))
+  await new Promise((r) => setTimeout(r, 200))
   return [
     {
       id: 3,
