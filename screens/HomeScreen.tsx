@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, ScrollView, StyleSheet, TouchableOpacity, Image} from 'react-native'
+import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Button} from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'
 
@@ -130,7 +130,6 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   )
 }
 
-
 const styles = StyleSheet.create({
   button: {
     width: 35,
@@ -138,7 +137,21 @@ const styles = StyleSheet.create({
     left: '90%',
     //bottom: '100%',
   },
-});
+})
 
+Home.navigationOptions = (navData) => {
+  return {
+    headerTitle: 'Butteries',
+    headerRight: () => (
+      <Button
+        title="Help"
+        onPress={() => {
+          navData.navigation.navigate('SettingsScreen')
+          console.log('Hello World')
+        }}
+      />
+    ),
+  }
+}
 
 export default Home
