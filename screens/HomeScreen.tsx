@@ -1,18 +1,16 @@
 import * as React from 'react'
-import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Button} from 'react-native'
+import { View, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'
+import Ionicon from 'react-native-ionicons'
 
 const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false}>
       <View style={home.outerContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')}>
-        <Image 
-          source={require('../assets/images/SettingsIcon.png')}
-          style={styles.button}
-        />
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')}>
+          <Image source={require('../assets/images/SettingsIcon.png')} style={styles.button} />
+        </TouchableOpacity>
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'berkeley' })}
           gradientColors={['#ed0025', '#dddddd']}
@@ -141,14 +139,16 @@ const styles = StyleSheet.create({
 
 Home.navigationOptions = (navData) => {
   return {
-    headerTitle: 'Butteries',
     headerRight: () => (
-      <Button
-        title="Help"
+      <Ionicon
+        name="settings-sharp"
+        size={18}
+        color="#fff"
         onPress={() => {
           navData.navigation.navigate('SettingsScreen')
           console.log('Hello World')
         }}
+        style={{ paddingRight: 15 }}
       />
     ),
   }
