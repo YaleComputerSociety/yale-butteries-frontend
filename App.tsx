@@ -9,6 +9,7 @@ import { ActivityIndicator, View } from 'react-native'
 import store from './store/ReduxStore'
 import AppLoading from 'expo-app-loading'
 import Navigator from './routes/homeStack'
+
 import * as Font from 'expo-font'
 
 const App: FC = () => {

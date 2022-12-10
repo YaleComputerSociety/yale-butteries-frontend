@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { View, ScrollView, Text, Button } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 
 const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
@@ -126,14 +127,16 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
 
 Home.navigationOptions = (navData) => {
   return {
-    headerTitle: 'Butteries',
     headerRight: () => (
-      <Button
-        title="Help"
+      <Ionicon
+        name="settings-sharp"
+        size={20}
+        color="#fff"
         onPress={() => {
           navData.navigation.navigate('SettingsScreen')
           console.log('Hello World')
         }}
+        style={{ paddingRight: 20 }}
       />
     ),
   }

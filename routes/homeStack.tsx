@@ -6,7 +6,6 @@ import CheckoutScreen from '../screens/CheckoutScreen'
 import SettingsScreen from '../screens/Settings'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Button } from 'react-native'
 
 const screens = {
   Home: {

@@ -1,12 +1,11 @@
 /* eslint-disable import/no-unresolved */
 import * as React from 'react'
-import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
+import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert, Button } from 'react-native'
 import { checkout } from '../styles/CheckoutStyles'
 import { useAppSelector } from '../store/TypedHooks'
 import { loading } from '../styles/GlobalStyles'
 import CheckoutItem from '../components/CheckoutItem'
 import { priceToText } from '../Functions'
-import { STRIPE_PK } from '@env'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
@@ -15,7 +14,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const makePayment = async (name: string, amount: number) => {
     try {
       // sending request
-      const obj = { id: name, price: amount }
       const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
         method: 'POST',
         body: JSON.stringify(obj),
@@ -75,6 +73,20 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       )}
     </View>
   )
+}
+
+CheckoutScreen.navigationOptions = (navData) => {
+  return {
+    headerRight: () => (
+      <Button
+        title="Settings"
+        onPress={() => {
+          navData.navigation.navigate('SettingsScreen')
+          console.log('Hello World')
+        }}
+      />
+    ),
+  }
 }
 
 export default CheckoutScreen
