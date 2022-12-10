@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, ScrollView } from 'react-native'
+import { View, ScrollView, Text } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'
 
@@ -17,7 +17,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Branford' })}
-          gradientColors={['#0a5baa', '#05284A']}
+          gradientColors={['#0a5baa', '#30167e']}
           college="Branford"
           openTime="6:00"
           closeTime="5:00"
@@ -33,7 +33,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Franklin' })}
-          gradientColors={['#22bedd', '#fd103c']}
+          gradientColors={['#ad234e', '#770025']}
           college="Franklin"
           openTime="6:00"
           closeTime="5:00"
@@ -41,15 +41,15 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Hopper' })}
-          gradientColors={['#ffb400', '#0a7bfc']}
+          gradientColors={['#eacf32', '#ff7f00']}
           college="Hopper"
-          openTime="6:00pm"
-          closeTime="1:00am"
+          openTime="6:00"
+          closeTime="5:00"
           offsetY={400}
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'JE' })}
-          gradientColors={['#29b800', '#eee']}
+          gradientColors={['#47b23d', '#116409']}
           college="JE"
           openTime="6:00"
           closeTime="5:00"
@@ -57,7 +57,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
         />
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'morse' })}
-          gradientColors={['#ed0025', '#dcb8fc']}
+          gradientColors={['#ff1076', '#ed0025']}
           college="Morse"
           openTime="6:00"
           closeTime="5:00"

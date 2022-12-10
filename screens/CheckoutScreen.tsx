@@ -47,7 +47,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           <ActivityIndicator size="large" />
         </View>
       ) : (
-        <StripeProvider publishableKey={STRIPE_PK}>
+        <StripeProvider publishableKey="pk_test_51KktoIEL7XDhq084xLTTSGjXxq0QvtgZjrO2KEsvCljPzyxLQBHtglGAztvY58WNDOeSxNconUi9svfk6Eyqdnig00pEpQCANG">
           <View style={{ flex: 1 }}>
             <View style={checkout.upperContainer}>
               <View style={checkout.header}>

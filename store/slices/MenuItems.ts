@@ -57,6 +57,15 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
   return [
     {
       id: 1,
+      item: 'Flavor Blasted Goldfish',
+      college: 'murray',
+      price: 0.5,
+      description: 'cheesy aquamarine inhabitants encrusted with a carbohydrate compote',
+      limitedTime: false,
+      isActive: true,
+    },
+    {
+      id: 1,
       item: 'Americano',
       college: 'morse',
       price: 1.5,

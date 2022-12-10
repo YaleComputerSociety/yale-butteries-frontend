@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FC } from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { card } from '../styles/HomeStyles'
+import { card, home } from '../styles/HomeStyles'
 import SpriteSheet from 'rn-sprite-sheet'
 
 interface butteryProps {
@@ -101,7 +101,7 @@ export const Card: FC<butteryProps> = (props: butteryProps) => {
         style={[card.card, { opacity: isOpen ? 1 : 0.5 }]}
       >
         <View style={card.cardContent}>
-          <View style={card.textContainer}>
+          <View style={home.textContent}>
             <Text style={card.cardText1}>{props.college}</Text>
             <Text style={card.cardText2}>{cleanTime()}</Text>
           </View>

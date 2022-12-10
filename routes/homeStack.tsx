@@ -3,14 +3,39 @@ import { createAppContainer } from 'react-navigation'
 import Home from '../screens/HomeScreen'
 import ButteryScreen from '../screens/MenuScreen'
 import CheckoutScreen from '../screens/CheckoutScreen'
+import SettingsScreen from '../screens/Settings'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
+import { Button } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 const screens = {
   Home: {
     screen: Home,
     navigationOptions: {
       title: 'Butteries',
+      headerRight: () => (
+        <Button
+          title="NN"
+          color="#fff"
+          onPress={() => {
+            console.log('Dark')
+          }}
+        />
+      ),
+      headerRightContainerStyle: { paddingRight: 10 },
+      headerLeft: () => {
+        return (
+          <Button
+            title="NN"
+            color="#fff"
+            onPress={() => {
+              console.log('TO SETTINGS')
+            }}
+          />
+        )
+      },
+      headerLeftContainerStyle: { paddingLeft: 10 },
     },
   },
 
@@ -27,6 +52,13 @@ const screens = {
       title: 'Checkout',
     },
   },
+
+  SettingsScreen: {
+    screen: SettingsScreen,
+    navigationOptions: {
+      title: 'Settings',
+    },
+  },
 }
 
 const HomeStack = createStackNavigator(screens, {
@@ -34,10 +66,9 @@ const HomeStack = createStackNavigator(screens, {
     headerBackground: (
       <LinearGradient colors={['#a13388', '#10356c']} style={{ flex: 1 }} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} />
     ),
-    //headerStyle: { backgroundColor: '#00b2db' },
-    headerTitleStyle: { fontFamily: 'HindSiliguri-Bolder', fontSize: 20, marginBottom: 10 },
+    headerTitleStyle: { fontFamily: 'HindSiliguri-Bolder', fontSize: 20 },
     headerTintColor: '#FFF',
-    headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bolder', color: '#FFF', fontSize: 20 },
+    headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bold', color: '#FFF', fontSize: 18 },
   },
 })
 
