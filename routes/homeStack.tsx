@@ -6,7 +6,7 @@ import ButteryScreen from '../screens/MenuScreen'
 import CheckoutScreen from '../screens/CheckoutScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import * as React from 'react'
-import { View, ScrollView, StyleSheet, TouchableOpacity, Image} from 'react-native'
+import { View, ScrollView, StyleSheet, TouchableOpacity, Image } from 'react-native'
 
 const screens = {
   Home: {
@@ -14,7 +14,6 @@ const screens = {
     navigationOptions: {
       title: 'Home',
     },
-
   },
 
   SettingsScreen: {
@@ -22,7 +21,6 @@ const screens = {
     navigationOptions: {
       title: 'Settings',
     },
-
   },
 
   ButteryScreen: {
@@ -40,20 +38,29 @@ const screens = {
   },
 }
 
+// const HomeStack = createStackNavigator(screens, {
+//   defaultNavigationOptions: {
+//     headerStyle: { backgroundColor: '#00b2db' },
+//     headerTitleStyle: { fontFamily: 'HindSiliguri-Bolder', fontSize: 20 },
+//     headerTintColor: '#FFF',
+//     headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bolder', color: '#FFF', fontSize: 20 },
+//     headerRight: () => (
+//       <TouchableOpacity onPress={() => console.log("to Settings Screen")}> 
+//           <Image
+//             source={require('../assets/images/SettingsIcon.png')}
+//             style={styles.button}
+//           />
+//       </TouchableOpacity>
+//     )
+//   },
+// })
+
 const HomeStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerStyle: { backgroundColor: '#00b2db' },
     headerTitleStyle: { fontFamily: 'HindSiliguri-Bolder', fontSize: 20 },
     headerTintColor: '#FFF',
-    headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bolder', color: '#FFF', fontSize: 20 },
-    headerRight: () => (
-      <TouchableOpacity onPress={() => console.log("to Settings Screen")}> 
-          <Image
-            source={require('../assets/images/SettingsIcon.png')}
-            style={styles.button}
-          />
-      </TouchableOpacity>
-    )
+    headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bold', color: '#FFF', fontSize: 18 },
   },
 })
 
@@ -69,3 +76,5 @@ const styles = StyleSheet.create({
 });
 
 export default createAppContainer(HomeStack)
+
+
