@@ -148,19 +148,33 @@ const styles = StyleSheet.create({
 
 Home.navigationOptions = (navData) => {
   return {
+    headerTitle: 'Butteries',
     headerRight: () => (
-      <Ionicon
-        name="settings-sharp"
-        size={18}
-        color="#fff"
+      <Button
+        title="Help"
         onPress={() => {
           navData.navigation.navigate('SettingsScreen')
           console.log('Hello World')
         }}
-        style={{ paddingRight: 15 }}
       />
     ),
   }
 }
+// Home.navigationOptions = (navData) => {
+//   return {
+//     headerRight: () => (
+//       <Ionicon
+//         name="settings-sharp"
+//         size={18}
+//         color="#fff"
+//         onPress={() => {
+//           navData.navigation.navigate('SettingsScreen')
+//           console.log('Hello World')
+//         }}
+//         style={{ paddingRight: 15 }}
+//       />
+//     ),
+//   }
+// }
 
 export default Home
