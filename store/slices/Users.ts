@@ -8,8 +8,8 @@ export interface User {
   name: string
   position: string
   college: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
 }
 
 export interface UsersState {
@@ -88,6 +88,7 @@ export const asyncInsertUser = (user: User) => {
 }
 
 async function dummyUsers(): Promise<User[]> {
+  const d = new Date()
   await new Promise((r) => setTimeout(r, 200))
   return [
     {
@@ -96,8 +97,8 @@ async function dummyUsers(): Promise<User[]> {
       name: 'Testing McTester',
       position: 'customer',
       college: 'Morse',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: d.toString(),
+      updatedAt: d.toString(),
     },
     {
       id: 4,
@@ -105,8 +106,8 @@ async function dummyUsers(): Promise<User[]> {
       name: 'Testing McTester II',
       position: 'customer',
       college: 'Morse',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: d.toString(),
+      updatedAt: d.toString(),
     },
     {
       id: 5,
@@ -114,8 +115,8 @@ async function dummyUsers(): Promise<User[]> {
       name: 'Testing McTester III',
       position: 'customer',
       college: 'Morse',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: d.toString(),
+      updatedAt: d.toString(),
     },
     {
       id: 6,
@@ -123,8 +124,8 @@ async function dummyUsers(): Promise<User[]> {
       name: 'Staffon McStaffrey',
       position: 'staff',
       college: 'Morse',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: d.toString(),
+      updatedAt: d.toString(),
     },
   ]
 }

@@ -1,18 +1,24 @@
 import * as React from 'react'
-import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Button} from 'react-native'
+import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Button } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'
+import { useEffect } from 'react'
+import { asyncFetchUsers } from '../store/slices/Users'
+import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 
 const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(asyncFetchUsers())
+  }, [])
+
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false}>
       <View style={home.outerContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')}>
-        <Image 
-          source={require('../assets/images/SettingsIcon.png')}
-          style={styles.button}
-        />
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')}>
+          <Image source={require('../assets/images/SettingsIcon.png')} style={styles.button} />
+        </TouchableOpacity>
         <Card
           onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'berkeley' })}
           gradientColors={['#ed0025', '#dddddd']}
