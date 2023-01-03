@@ -5,6 +5,7 @@ import { Card } from '../components/Card'
 import { useEffect } from 'react'
 import { asyncFetchUsers } from '../store/slices/Users'
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
+import Ionicon from 'react-native-ionicons'
 
 const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
@@ -147,14 +148,16 @@ const styles = StyleSheet.create({
 
 Home.navigationOptions = (navData) => {
   return {
-    headerTitle: 'Butteries',
     headerRight: () => (
-      <Button
-        title="Help"
+      <Ionicon
+        name="settings-sharp"
+        size={18}
+        color="#fff"
         onPress={() => {
           navData.navigation.navigate('SettingsScreen')
           console.log('Hello World')
         }}
+        style={{ paddingRight: 15 }}
       />
     ),
   }
