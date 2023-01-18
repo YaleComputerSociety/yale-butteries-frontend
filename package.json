@@ -98,12 +98,13 @@
       ]
     },
     "settings": {
-      "import/ignore": ["react-native"],
+      "import/ignore": [
+        "react-native"
+      ],
       "import/extensions": [
         ".js",
         ".ts"
-      ],
-      "import/ignore": ["react-native"]
+      ]
     }
   },
   "prettier": {
