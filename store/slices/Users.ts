@@ -8,8 +8,8 @@ export interface User {
   name: string
   position: string
   college: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
 }
 
 export interface UsersState {
