@@ -25,14 +25,17 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       })
       const data = await response.json()
       if (!response.ok) return Alert.alert(data.message)
-      const clientSecret = data.clientSecret
+      const clientSecret = data.paymentIntent.client_secret
       const initSheet = await stripe.initPaymentSheet({
         paymentIntentClientSecret: clientSecret,
-        merchantDisplayName: 'BonY',
+        merchantDisplayName: 'Yale Butteries',
       })
       if (initSheet.error) return Alert.alert(initSheet.error.message)
       const presentSheet = await stripe.presentPaymentSheet()
       if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+
+      // make transaction history and send to backend HERE
+
       Alert.alert('Payment complete, thank you!')
     } catch (err) {
       console.error(err)
