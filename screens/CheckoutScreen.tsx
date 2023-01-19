@@ -5,6 +5,7 @@ import { checkout } from '../styles/CheckoutStyles'
 import { useAppSelector } from '../store/TypedHooks'
 import { loading } from '../styles/GlobalStyles'
 import CheckoutItem from '../components/CheckoutItem'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 import { priceToText } from '../Functions'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 
@@ -78,12 +79,14 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 CheckoutScreen.navigationOptions = (navData) => {
   return {
     headerRight: () => (
-      <Button
-        title="Settings"
+      <Ionicon
+        name="settings-sharp"
+        size={20}
+        color="#fff"
         onPress={() => {
           navData.navigation.navigate('SettingsScreen')
-          console.log('Hello World')
         }}
+        style={{ paddingRight: 20 }}
       />
     ),
   }

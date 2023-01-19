@@ -1,8 +1,9 @@
 import React, { FC, useEffect, useState } from 'react'
-import { View, ScrollView, ActivityIndicator, Button } from 'react-native'
+import { View, ScrollView, ActivityIndicator } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { asyncFetchMenuItems, MenuItem } from '../store/slices/MenuItems'
 import { addOrderItem, OrderItem, removeOrderItem, resetOrderCartState } from '../store/slices/OrderCart'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 import { ItemCard } from '../components/ItemCard'
 import { home } from '../styles/HomeStyles'
 import { menu } from '../styles/MenuStyles'
@@ -72,12 +73,14 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
 butteryScreen.navigationOptions = (navData) => {
   return {
     headerRight: () => (
-      <Button
-        title="Settings"
+      <Ionicon
+        name="settings-sharp"
+        size={20}
+        color="#fff"
         onPress={() => {
           navData.navigation.navigate('SettingsScreen')
-          console.log('Hello World')
         }}
+        style={{ paddingRight: 20 }}
       />
     ),
   }
