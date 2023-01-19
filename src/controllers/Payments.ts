@@ -9,6 +9,27 @@ export interface TypedRequestBody<T> extends Request {
   body: T
 }
 
+export async function testSI(req: Request, res: Response): Promise<void> {
+  try {
+    const paymentMethods = await stripe.customers.listPaymentMethods('cus_Mo7aF7zb4UnOTO', { type: 'card' })
+    console.log(paymentMethods)
+    console.log(paymentMethods.data[0].id)
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: req.body.amount,
+      currency: 'usd',
+      customer: 'cus_Mo7aF7zb4UnOTO',
+      payment_method: paymentMethods.data[0].id,
+      off_session: true,
+      confirm: true,
+    })
+  } catch (err) {
+    // Error code will be authentication_required if authentication is needed
+    console.log('Error code is: ', err.code)
+    const paymentIntentRetrieved = await stripe.paymentIntents.retrieve(err.raw.payment_intent.id)
+    console.log('PI retrieved: ', paymentIntentRetrieved.id)
+  }
+}
+
 export async function createPaymentIntent(req: Request, res: Response): Promise<void> {
   try {
     // testing
@@ -40,7 +61,6 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
       })
       return
     }
-
 
     const customer = await stripe.customers.retrieve(customerQuery.data[0].id)
     // const price: number = req.body.price * 100
