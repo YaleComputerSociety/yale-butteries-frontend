@@ -50,7 +50,6 @@ const screens = {
 
 const HomeStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
-    gestureEnabled: false,
     headerBackground: (
       <LinearGradient colors={['#a13388', '#10356c']} style={{ flex: 1 }} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} />
     ),

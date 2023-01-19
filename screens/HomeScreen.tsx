@@ -127,6 +127,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
 
 Home.navigationOptions = (navData) => {
   return {
+    gestureEnabled: false,
     headerLeft: () => <></>,
     headerRight: () => (
       <Ionicon
