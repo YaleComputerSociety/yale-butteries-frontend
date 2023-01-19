@@ -8,72 +8,42 @@ import CheckoutItem from '../components/CheckoutItem'
 import { priceToText } from '../Functions'
 import { STRIPE_PK } from '@env'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
-import { useEffect, useState } from 'react'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [loading, setLoading] = useState(false)
 
   const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
   const stripe = useStripe()
-  const initializePayment = async (name: string) => {
-    // try {
-    // sending request
-    const obj = { netid: name }
-    const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
-      method: 'POST',
-      body: JSON.stringify(obj),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    // const data = await response.json()
-    // const clientSecret = data.clientSecret
-    const { message, setupIntent, ephemeralKey, customer } = await response.json()
-    if (!response.ok) return Alert.alert(message)
+  const makePayment = async (name: string, amount: number) => {
+    try {
+      // sending request
+      const obj = { netid: name, price: amount }
+      const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
+        method: 'POST',
+        body: JSON.stringify(obj),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await response.json()
+      if (!response.ok) return Alert.alert(data.message)
+      const clientSecret = data.paymentIntent.client_secret
+      const initSheet = await stripe.initPaymentSheet({
+        paymentIntentClientSecret: clientSecret,
+        merchantDisplayName: 'Yale Butteries',
+      })
+      if (initSheet.error) return Alert.alert(initSheet.error.message)
+      const presentSheet = await stripe.presentPaymentSheet()
+      if (presentSheet.error) return Alert.alert(presentSheet.error.message)
 
-    const ips = await stripe.initPaymentSheet({
-      merchantDisplayName: 'Buttery App',
-      customerId: customer,
-      customerEphemeralKeySecret: ephemeralKey,
-      setupIntentClientSecret: setupIntent,
-    })
-    // console.log(ips)
-    if (!ips.error) {
-      setLoading(true)
-    }
+      // make transaction history and send to backend HERE
 
-    // const initSheet = await stripe.initPaymentSheet({
-    //   paymentIntentClientSecret: clientSecret,
-    //   merchantDisplayName: 'BonY',
-    // })
-    // if (initSheet.error) return Alert.alert(initSheet.error.message)
-
-    // const presentSheet = await stripe.presentPaymentSheet()
-    //   if (presentSheet.error) return Alert.alert(presentSheet.error.message)
-    //   Alert.alert('Payment complete, thank you!')
-    // } catch (err) {
-    //   console.error(err)
-    //   Alert.alert('Something went wrong, try again later')
-    // }
-  }
-
-  // name pass is temporary
-  const openPaymentSheet = async (name: string, amount: number) => {
-    const ps = await stripe.presentPaymentSheet()
-    if (ps.error) {
-      Alert.alert(`Error code: ${ps.error.code}`, ps.error.message)
-    } else {
-      // send to the backend
-      console.log(amount, name)
-      // console.log(ps.paymentOption.label)
-      // console.log(ps)
-      Alert.alert('Success', 'Your payment method is successfully set up for future payments!')
+      Alert.alert('Payment complete, thank you!')
+    } catch (err) {
+      console.error(err)
+      Alert.alert('Something went wrong, try again later!')
     }
   }
-
-  useEffect(() => {
-    initializePayment('khy6')
-  }, [])
 
   return (
     <View style={checkout.wrapper}>
@@ -100,7 +70,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             <View style={checkout.lowerContainer}>
               <Pressable
                 style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, checkout.checkoutButton]}
-                onPress={() => openPaymentSheet('khy6', navigation.getParam('priceTotal'))}
+                onPress={() => makePayment('khy6', navigation.getParam('priceTotal'))}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>
               </Pressable>
