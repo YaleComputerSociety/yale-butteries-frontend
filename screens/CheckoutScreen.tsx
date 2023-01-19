@@ -31,13 +31,14 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const { message, setupIntent, ephemeralKey, customer } = await response.json()
     if (!response.ok) return Alert.alert(message)
 
-    const { error } = await stripe.initPaymentSheet({
+    const ips = await stripe.initPaymentSheet({
       merchantDisplayName: 'Buttery App',
       customerId: customer,
       customerEphemeralKeySecret: ephemeralKey,
       setupIntentClientSecret: setupIntent,
     })
-    if (!error) {
+    // console.log(ips)
+    if (!ips.error) {
       setLoading(true)
     }
 
@@ -58,12 +59,14 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   // name pass is temporary
   const openPaymentSheet = async (name: string, amount: number) => {
-    const { error } = await stripe.presentPaymentSheet()
-    if (error) {
-      Alert.alert(`Error code: ${error.code}`, error.message)
+    const ps = await stripe.presentPaymentSheet()
+    if (ps.error) {
+      Alert.alert(`Error code: ${ps.error.code}`, ps.error.message)
     } else {
       // send to the backend
       console.log(amount, name)
+      // console.log(ps.paymentOption.label)
+      // console.log(ps)
       Alert.alert('Success', 'Your payment method is successfully set up for future payments!')
     }
   }
