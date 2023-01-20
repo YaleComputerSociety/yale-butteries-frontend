@@ -7,7 +7,7 @@ export interface TransactionHistoryEntry {
   college: string
   inProgress: 'false' | 'true' | 'cancelled'
   price: number
-  userId: number
+  netId: string
   paymentIntentId: string
   transactionItems: TransactionItem[]
 }
@@ -60,62 +60,50 @@ export const asyncFetchTransactionHistory = () => {
   }
 }
 
-async function dummyTransactionHistory(): Promise<TransactionHistoryEntry[]> {
-  await new Promise((r) => setTimeout(r, 2000))
-  return [
-    {
-      id: 1,
-      college: 'Morse',
-      inProgress: 'cancelled',
-      paymentIntentId: 'e',
-      price: 3.0,
-      userId: 3,
-    },
-    {
-      id: 2,
-      college: 'Morse',
-      inProgress: 'false',
-      paymentIntentId: 'f',
-      price: 2.5,
-      userId: 4,
-    },
-    {
-      id: 3,
-      college: 'Morse',
-      inProgress: 'true',
-      paymentIntentId: 'g',
-      price: 4.5,
-      userId: 5,
-    },
-  ]
-}
+// async function dummyTransactionHistory(): Promise<TransactionHistoryEntry[]> {
+//   await new Promise((r) => setTimeout(r, 2000))
+//   return [
+//     {
+//       id: 1,
+//       college: 'Morse',
+//       inProgress: 'cancelled',
+//       paymentIntentId: 'e',
+//       price: 3.0,
+//       userId: 3,
+//     },
+//     {
+//       id: 2,
+//       college: 'Morse',
+//       inProgress: 'false',
+//       paymentIntentId: 'f',
+//       price: 2.5,
+//       userId: 4,
+//     },
+//     {
+//       id: 3,
+//       college: 'Morse',
+//       inProgress: 'true',
+//       paymentIntentId: 'g',
+//       price: 4.5,
+//       userId: 5,
+//     },
+//   ]
+// }
 
 // no need to store result in redux store, user doesn't need this information
 export const asyncInsertTransactionHistoryEntry = (transactionHistoryEntry: TransactionHistoryEntry) => {
   return async (dispatch): Promise<void> => {
     try {
-      // order_placed,            supposed to be a new date()?
-      // order_complete,          skipped
-      // queue_size_on_placement, skipped
-      // queue_size_on_complete,  skipped
-      // in_progress,
-      // total_price,
-      // transaction_items,
-      // college,                 using college name right now...
-      // user_id,
-      // payment_intent_id,
       const newTransactionHistoryEntry = await postJSON('/api/transactions', {
-        order_placed: new Date(),
-        in_progress: transactionHistoryEntry.inProgress,
-        total_price: transactionHistoryEntry.price,
-        transaction_items: transactionHistoryEntry.transactionItems,
+        inProgress: transactionHistoryEntry.inProgress,
+        price: transactionHistoryEntry.price,
+        transactionItems: transactionHistoryEntry.transactionItems,
         college: transactionHistoryEntry.college,
-        user_id: transactionHistoryEntry.userId,
-        paymentPintent_id: transactionHistoryEntry.paymentIntentId,
+        netId: transactionHistoryEntry.netId,
+        paymentIntentId: transactionHistoryEntry.paymentIntentId,
       })
       console.log(newTransactionHistoryEntry)
       // dispatch(insertUser(newTransactionHistoryEntry.jsonBody))
-      // await new Promise((r) => setTimeout(r, 1500))
       // dispatch(addTransactionHistoryEntry(transactionHistoryEntry))
     } catch (e) {
       console.log(e)

@@ -36,7 +36,24 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       const presentSheet = await stripe.presentPaymentSheet()
       if (presentSheet.error) return Alert.alert(presentSheet.error.message)
 
-      // make transaction history and send to backend HERE
+      // inProgress: transactionHistoryEntry.inProgress,
+      // price: transactionHistoryEntry.price,
+      // transactionItems: transactionHistoryEntry.transactionItems,
+      // college: transactionHistoryEntry.college,
+      // netId: transactionHistoryEntry.netId,
+      // paymentIntentId: transactionHistoryEntry.paymentIntentId,
+      const insertTransaction = await fetch('http://localhost:3000/api/transactions', {
+        method: 'POST',
+        body: JSON.stringify({
+          inProgress: 'false',
+          price: obj.price,
+          netId: obj.netid,
+          college: 'Morse',
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
 
       Alert.alert('Payment complete, thank you!')
     } catch (err) {
