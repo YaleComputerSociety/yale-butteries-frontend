@@ -1,26 +1,10 @@
+import { LinearGradient } from 'expo-linear-gradient'
 import { StyleSheet } from 'react-native'
 
 export const home = StyleSheet.create({
   app: {
     flex: 1,
-    backgroundColor: '#f3f6f4',
-  },
-
-  name: {
-    fontSize: 30,
-    fontFamily: 'HindSiliguri-Bold',
-    fontWeight: 'bold',
-    height: '3%',
-    paddingLeft: 10,
-    backgroundColor: '#eee',
-    shadowColor: '#ddd',
-    shadowOpacity: 2,
-    shadowRadius: 10,
-    shadowOffset: {
-      width: 10,
-      height: 20,
-    },
-    position: 'relative',
+    backgroundColor: '#2C3E50',
   },
 
   nameText: {
@@ -31,18 +15,16 @@ export const home = StyleSheet.create({
 
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'stretch',
+    //alignItems: 'stretch',
     justifyContent: 'center',
   },
 
   outerContainer: {
     flex: 1,
+    backgroundColor: 'transparent',
     flexDirection: 'column',
-    padding: 0,
-    marginTop: 2,
+    alignContent: 'center',
     marginBottom: 10,
-    marginHorizontal: 6,
   },
 
   textContent: {
@@ -52,7 +34,7 @@ export const home = StyleSheet.create({
   },
 
   menuView: {
-    margin: 8,
+    margin: 0,
   },
 
   footer: {
@@ -76,27 +58,26 @@ export const card = StyleSheet.create({
   cardText2: {
     fontFamily: 'Roboto-Italic',
     marginBottom: 0,
+    color: '#fff',
   },
 
   card: {
     flex: 1,
     elevation: 10,
-    backgroundColor: '#fff',
-    borderColor: '#eee',
-    borderWidth: 0.75,
-    borderRadius: 8,
-    shadowRadius: 5,
-    shadowOpacity: 1,
+    backgroundColor: '#343a40',
     marginVertical: 3.5,
   },
 
   cardContent: {
     flex: 1,
+    borderColor: '#6c757a',
+    borderBottomWidth: 0.25,
+    borderRadius: 0,
     flexDirection: 'row',
-    marginLeft: 10,
+    marginLeft: 0,
+    paddingLeft: 5,
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft: 0,
     opacity: 1,
   },
 })

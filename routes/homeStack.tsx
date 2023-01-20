@@ -3,9 +3,7 @@ import { createAppContainer } from 'react-navigation'
 import Home from '../screens/HomeScreen'
 import ButteryScreen from '../screens/MenuScreen'
 import CheckoutScreen from '../screens/CheckoutScreen'
-import SettingsScreen from '../screens/Settings'
-import React from 'react'
-import { LinearGradient } from 'expo-linear-gradient'
+import SettingsScreen from '../screens/SettingsScreen'
 import StartScreen from '../screens/StartScreen'
 import NavigationScreen from '../screens/NavigationScreen'
 
@@ -50,10 +48,13 @@ const screens = {
 
 const HomeStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
-    headerBackground: (
-      <LinearGradient colors={['#a13388', '#10356c']} style={{ flex: 1 }} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} />
-    ),
-    headerTitleStyle: { fontFamily: 'HindSiliguri-Bolder', fontSize: 20 },
+    headerStyle: {
+      backgroundColor: '#2C3E50',
+      borderWidth: 0,
+    },
+    //cardOverlayEnabled: true,
+    //cardOverlay: () => <LinearGradient colors={['#2C3E50', '#000']} locations={[0, 1]}></LinearGradient>,
+    headerTitleStyle: { fontFamily: 'HindSiliguri-Bolder', fontSize: 20, paddingBottom: 10 },
     headerTintColor: '#FFF',
     headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bold', color: '#FFF', fontSize: 18 },
   },
