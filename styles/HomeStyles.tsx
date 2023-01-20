@@ -49,39 +49,29 @@ export const card = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     fontSize: 20,
-    marginBottom: 0,
-    alignSelf: 'center',
-    paddingVertical: 18,
-  },
-
-  closedText: {
-    marginTop: 5,
-    marginBottom: 10,
-    color: 'red',
+    marginVertical: 18,
+    alignContent: 'center',
+    //backgroundColor: 'black',
   },
 
   cardText2: {
     fontFamily: 'Roboto-Italic',
-    marginBottom: 0,
+    //backgroundColor: 'black',
     color: '#fff',
     fontSize: 15,
   },
 
   card: {
     flex: 1,
-    elevation: 10,
     backgroundColor: '#343a40',
-    marginVertical: 3.5,
   },
 
   cardContent: {
     flex: 1,
     borderColor: '#fff',
     borderBottomWidth: 0.25,
-    borderRadius: 0,
     flexDirection: 'row',
-    marginLeft: 0,
-    paddingLeft: 5,
+    paddingLeft: 8,
     justifyContent: 'space-between',
     alignItems: 'center',
     opacity: 1,

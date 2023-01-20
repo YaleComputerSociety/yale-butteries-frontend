@@ -89,7 +89,11 @@ export const Card: FC<butteryProps> = (props: butteryProps) => {
   }
 
   return (
-    <Pressable onPress={props.onPress} disabled={!isOpen} style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}>
+    <Pressable
+      onPress={props.onPress}
+      disabled={!isOpen}
+      style={({ pressed }) => [{ opacity: pressed || !isOpen ? 0.7 : 1 }]}
+    >
       <View style={card.cardContent}>
         <View style={home.textContent}>
           <View
@@ -101,7 +105,7 @@ export const Card: FC<butteryProps> = (props: butteryProps) => {
             <Text style={card.cardText1}>{props.college}</Text>
             <Text
               style={{
-                opacity: isOpen ? 0 : 100,
+                opacity: isOpen ? 0 : 1,
                 alignSelf: 'center',
                 color: 'white',
                 paddingHorizontal: 8,
