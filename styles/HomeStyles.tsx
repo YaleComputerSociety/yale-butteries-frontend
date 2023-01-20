@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native'
 export const home = StyleSheet.create({
   app: {
     flex: 1,
-    backgroundColor: '#667EEA',
+    backgroundColor: '#4E65FF',
   },
 
   nameText: {

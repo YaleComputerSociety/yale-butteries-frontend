@@ -49,12 +49,12 @@ const screens = {
 const HomeStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: '#667EEA',
+      backgroundColor: '#4E65FF',
       borderWidth: 0,
     },
     //cardOverlayEnabled: true,
     //cardOverlay: () => <LinearGradient colors={['#2C3E50', '#000']} locations={[0, 1]}></LinearGradient>,
-    headerTitleStyle: { fontFamily: 'HindSiliguri-Bolder', fontSize: 20, paddingBottom: 10 },
+    headerTitleStyle: { fontFamily: 'HindSiliguri-Bold', fontSize: 20, paddingBottom: 10 },
     headerTintColor: '#FFF',
     headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bold', color: '#FFF', fontSize: 18 },
   },

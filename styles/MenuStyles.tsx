@@ -31,7 +31,7 @@ export const item = StyleSheet.create({
     borderRadius: 6,
     shadowRadius: 2,
     margin: 4,
-    marginVertical: 8,
+    marginVertical: 4,
   },
 
   leftSide: {

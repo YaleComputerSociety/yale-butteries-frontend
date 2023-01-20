@@ -24,7 +24,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             }}
           >
             <View>
-              <Text style={{ fontSize: 25, color: '#fff', marginBottom: 15, fontFamily: 'HindSiliguri-Bolder' }}>
+              <Text style={{ fontSize: 30, color: '#fff', marginBottom: 15, fontFamily: 'HindSiliguri-Bolder' }}>
                 Yale<Text style={{ color: '#344a61' }}>Butteries</Text>
               </Text>
             </View>
@@ -46,11 +46,11 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                   paddingVertical: 8,
                   borderRadius: 10,
                   margin: 5,
-                  width: 160,
+                  width: 180,
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>Login with CAS</Text>
+                <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>Login with CAS</Text>
               </View>
             </Pressable>
             <Pressable style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}>
@@ -61,11 +61,11 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                   paddingVertical: 8,
                   borderRadius: 10,
                   margin: 5,
-                  width: 160,
+                  width: 180,
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>About</Text>
+                <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>About</Text>
               </View>
             </Pressable>
           </View>
