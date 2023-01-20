@@ -22,7 +22,7 @@ model User {
   position  Position @relation(fields: [positionId], references: [id])
   positionId Int
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @updatedAt @default(now())
 }
 
 model College {
@@ -37,7 +37,7 @@ model College {
   availabilities Availability[]
   ingredients Ingredient[]
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @updatedAt @default(now())
 }
 
 model ButteryMetaData {
@@ -47,7 +47,7 @@ model ButteryMetaData {
   college College @relation(fields: [collegeId], references: [id])
   collegeId Int @unique
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @updatedAt @default(now())
 }
 
 model Availability {
@@ -58,7 +58,7 @@ model Availability {
   college College @relation(fields: [collegeId], references: [id])
   menu_items MenuItem[]
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @updatedAt @default(now())
 }
 
 model Ingredient {
@@ -72,7 +72,7 @@ model Ingredient {
   menu_items MenuItemToIngredients[]
   transaction_items TransactionItem[]
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @updatedAt @default(now())
 }
 
 model MenuItem {
@@ -88,7 +88,7 @@ model MenuItem {
   ingredients MenuItemToIngredients[]
   transaction_item TransactionItem?
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @updatedAt @default(now())
 }
 
 model ItemRating {
@@ -99,7 +99,7 @@ model ItemRating {
   menu_item MenuItem @relation(fields: [menuItemId], references: [id])
   menuItemId Int
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @updatedAt @default(now())
 }
 
 model TransactionItem {
@@ -112,7 +112,7 @@ model TransactionItem {
   menu_item MenuItem @relation(fields: [menuItemId], references: [id])
   menuItemId Int @unique
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @updatedAt @default(now())
 }
 
 enum OrderStatus {
@@ -137,7 +137,7 @@ model TransactionHistory {
   transaction_items TransactionItem[]
   payment_intent_id String
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @updatedAt @default(now())
 }
 
 model Position {
@@ -146,7 +146,7 @@ model Position {
   users User[]
   permission_types PermissionType[]
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @updatedAt @default(now())
 }
 
 model PermissionType {
@@ -154,7 +154,7 @@ model PermissionType {
   type String
   positions Position[]
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @updatedAt @default(now())
 }
 
 model MenuItemToIngredients {
@@ -164,6 +164,6 @@ model MenuItemToIngredients {
   ingredient Ingredient @relation(fields: [ingredientId], references: [id])
   ingredientId Int
   created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  updated_at DateTime @updatedAt @default(now())
   @@id([menuItemId, ingredientId])
 }

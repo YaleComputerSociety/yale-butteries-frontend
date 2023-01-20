@@ -10,7 +10,6 @@ const main = async () => {
     update: {},
     create: {
       college: 'Morse',
-      image_url: 'Aidan Sucks',
       buttery_activated: true,
     },
   })
