@@ -1,8 +1,7 @@
 import { PrismaClient } from '@prisma/client'
-import { checkPrices, stripePayment } from '../services/stripe'
 
 import { Request, Response } from 'express'
-import { create } from 'domain'
+// import { create } from 'domain'
 
 const prisma = new PrismaClient()
 
@@ -39,10 +38,6 @@ export async function getTransactionHistory(req: Request, res: Response): Promis
 
 export async function createTransactionHistory(req: Request, res: Response): Promise<void> {
   try {
-    // paymentIntentId: transactionHistoryEntry.paymentIntentId,
-    console.log('a;sldkfja;slkdfj', req.body)
-    // destructure transaction history properties
-
     const order_placed = new Date()
     const in_progress = req.body.inProgress
     const total_price = parseInt(req.body.price)
@@ -71,8 +66,8 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
     // const queue_size_on_placement = getMetadata.reserved_queue_spots
     const queue_size_on_placement = 0 // change later, not super necessary
 
-    const transaction_items = req.body.transactionItems
     // make array of transaction items
+    const transaction_items = req.body.transactionItems
     const transactionItems = []
     transaction_items.forEach((item: TransactionItem) => {
       // empty array sends string with it so we need to ignore that
@@ -85,7 +80,7 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
       }
     })
 
-    console.log('ss', transactionItems)
+    console.log(transactionItems)
 
     // store the transaction in the database
     const newTransaction = await prisma.transactionHistory.create({
@@ -114,10 +109,8 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
         },
       },
     })
-    console.log('hey', newTransaction)
     res.send(JSON.stringify(newTransaction))
   } catch (e) {
-    console.log(e)
     res.status(400).send(e)
   }
 }
