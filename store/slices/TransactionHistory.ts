@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-// import { getJSON } from 'utils/fetch'
+import { TransactionItem } from './TransactionItems'
+import { postJSON } from '../../utils/fetch'
 
 export interface TransactionHistoryEntry {
   id: number
@@ -8,6 +8,8 @@ export interface TransactionHistoryEntry {
   inProgress: 'false' | 'true' | 'cancelled'
   price: number
   userId: number
+  paymentIntentId: string
+  transactionItems: TransactionItem[]
 }
 
 export interface TransactionHistoryState {
@@ -64,32 +66,66 @@ async function dummyTransactionHistory(): Promise<TransactionHistoryEntry[]> {
     {
       id: 1,
       college: 'Morse',
-      inProgress: 'true',
-      price: 3.00,
+      inProgress: 'cancelled',
+      paymentIntentId: 'e',
+      price: 3.0,
       userId: 3,
     },
     {
       id: 2,
       college: 'Morse',
-      inProgress: 'true',
-      price: 2.50,
+      inProgress: 'false',
+      paymentIntentId: 'f',
+      price: 2.5,
       userId: 4,
     },
     {
       id: 3,
       college: 'Morse',
       inProgress: 'true',
-      price: 4.50,
+      paymentIntentId: 'g',
+      price: 4.5,
       userId: 5,
     },
   ]
 }
 
+// no need to store result in redux store, user doesn't need this information
+export const asyncInsertTransactionHistoryEntry = (transactionHistoryEntry: TransactionHistoryEntry) => {
+  return async (dispatch): Promise<void> => {
+    try {
+      // order_placed,            supposed to be a new date()?
+      // order_complete,          skipped
+      // queue_size_on_placement, skipped
+      // queue_size_on_complete,  skipped
+      // in_progress,
+      // total_price,
+      // transaction_items,
+      // college,                 using college name right now...
+      // user_id,
+      // payment_intent_id,
+      const newTransactionHistoryEntry = await postJSON('/api/transactions', {
+        order_placed: new Date(),
+        in_progress: transactionHistoryEntry.inProgress,
+        total_price: transactionHistoryEntry.price,
+        transaction_items: transactionHistoryEntry.transactionItems,
+        college: transactionHistoryEntry.college,
+        user_id: transactionHistoryEntry.userId,
+        paymentPintent_id: transactionHistoryEntry.paymentIntentId,
+      })
+      console.log(newTransactionHistoryEntry)
+      // dispatch(insertUser(newTransactionHistoryEntry.jsonBody))
+      // await new Promise((r) => setTimeout(r, 1500))
+      // dispatch(addTransactionHistoryEntry(transactionHistoryEntry))
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
 export const asyncUpdateTransactionHistoryEntry = (transactionHistoryEntry: TransactionHistoryEntry) => {
   return async (dispatch): Promise<void> => {
     try {
-      // Spread operator is typescript hack.
-      // See: https://stackoverflow.com/questions/60697214/how-to-fix-index-signature-is-missing-in-type-error
       // const updatedUser = await putJSON('/api/users', { ...user })
       // dispatch(updateUser(updatedUser.jsonBody))
       await new Promise((r) => setTimeout(r, 1500))

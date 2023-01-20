@@ -40,7 +40,8 @@ export const transactionItemsSlice = createSlice({
   },
 })
 
-export const { setTransactionItemsState, addTransactionItem, updateTransactionItem, setIsLoading } = transactionItemsSlice.actions
+export const { setTransactionItemsState, addTransactionItem, updateTransactionItem, setIsLoading } =
+  transactionItemsSlice.actions
 
 export const asyncFetchTransactionItems = () => {
   return async (dispatch): Promise<void> => {

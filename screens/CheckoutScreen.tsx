@@ -10,7 +10,7 @@ import { STRIPE_PK } from '@env'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
 
   const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
   const stripe = useStripe()
