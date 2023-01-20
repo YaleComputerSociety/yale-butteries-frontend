@@ -49,7 +49,7 @@ const screens = {
 const HomeStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: '#2C3E50',
+      backgroundColor: '#667EEA',
       borderWidth: 0,
     },
     //cardOverlayEnabled: true,

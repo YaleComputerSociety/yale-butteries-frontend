@@ -93,6 +93,7 @@ export const Card: FC<butteryProps> = (props: butteryProps) => {
       <View style={card.cardContent}>
         <View style={home.textContent}>
           <Text style={card.cardText1}>{props.college}</Text>
+          <Text style={{ opacity: isOpen ? 0 : 100, marginTop: 5, marginBottom: 10, color: 'red' }}>CLOSED</Text>
           <Text style={card.cardText2}>{cleanTime()}</Text>
         </View>
         <SpriteSheet

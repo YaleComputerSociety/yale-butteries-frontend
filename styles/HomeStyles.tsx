@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native'
 export const home = StyleSheet.create({
   app: {
     flex: 1,
-    backgroundColor: '#2C3E50',
+    backgroundColor: '#667EEA',
   },
 
   nameText: {
@@ -51,8 +51,14 @@ export const card = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     fontSize: 20,
-    marginBottom: 25,
+    marginBottom: 0,
     marginTop: 10,
+  },
+
+  closedText: {
+    marginTop: 5,
+    marginBottom: 10,
+    color: 'red',
   },
 
   cardText2: {
@@ -70,7 +76,7 @@ export const card = StyleSheet.create({
 
   cardContent: {
     flex: 1,
-    borderColor: '#6c757a',
+    borderColor: '#fff',
     borderBottomWidth: 0.25,
     borderRadius: 0,
     flexDirection: 'row',

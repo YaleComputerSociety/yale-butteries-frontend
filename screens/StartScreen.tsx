@@ -8,7 +8,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
   const managerNetIds = ['app43']
   return (
-    <LinearGradient colors={['#7C98B3', '#637081']} locations={[0, 1]}>
+    <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
         <View style={home.outerContainer}>
           <View
