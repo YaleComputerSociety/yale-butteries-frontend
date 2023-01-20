@@ -6,6 +6,14 @@ import { create } from 'domain'
 
 const prisma = new PrismaClient()
 
+export interface TransactionItem {
+  id: number
+  itemCost: number
+  orderStatus: 'cancelled' | 'queued' | 'in_progress' | 'complete'
+  menuItemId: number
+  transactionHistoryId: number
+}
+
 export async function getAllTransactionHistories(_req: Request, res: Response): Promise<void> {
   try {
     const transactionHistories = await prisma.transactionHistory.findMany(includeProperty)
@@ -31,60 +39,72 @@ export async function getTransactionHistory(req: Request, res: Response): Promis
 
 export async function createTransactionHistory(req: Request, res: Response): Promise<void> {
   try {
+    // paymentIntentId: transactionHistoryEntry.paymentIntentId,
+    console.log('a;sldkfja;slkdfj', req.body)
     // destructure transaction history properties
-    // ones to use for stripe stuff: *in_progress, !total_price, *transaction_items, *college_id, user_id
-    // note: user_id is the id number, not the netid
-    const {
-      order_placed,
-      order_complete,
-      queue_size_on_placement,
-      queue_size_on_complete,
-      in_progress,
-      total_price,
-      transaction_items,
-      college_id,
-      user_id,
-    } = req.body
+
+    const order_placed = new Date()
+    const in_progress = req.body.inProgress
+    const total_price = parseInt(req.body.price)
+    const payment_intent_id = req.body.paymentIntentId
+
+    const getUser = await prisma.user.findUnique({
+      where: {
+        netid: req.body.netId,
+      },
+    })
+    const user_id = getUser.id
+
+    const getCollege = await prisma.college.findUnique({
+      where: {
+        college: req.body.college,
+      },
+    })
+    const college_id = getCollege.id
+
+    // const getMetadata = await prisma.butteryMetaData.findUnique({
+    //   where: {
+    //     collegeId: college_id,
+    //   },
+    // })
+    // console.log(getMetadata)
+    // const queue_size_on_placement = getMetadata.reserved_queue_spots
+    const queue_size_on_placement = 0 // change later, not super necessary
+
+    const transaction_items = req.body.transactionItems
     // make array of transaction items
     const transactionItems = []
-    for (const transactionItem of transaction_items) {
-      const newItem = {
-        item_name: transactionItem.item_name,
-        item_cost: transactionItem.item_cost,
+    transaction_items.forEach((item: TransactionItem) => {
+      // empty array sends string with it so we need to ignore that
+      if (item) {
+        const newItem = {
+          item_name: 'something', // will need to change
+          item_cost: item.itemCost,
+        }
+        transactionItems.push(newItem)
       }
-      transactionItems.push(newItem)
-    }
+    })
 
-    // funcitons we need:
-    // Order
-    // - check that the request is valid
-    // - check the prices of the payment
-    // - get the user
-    //   - if the user doesn't exist, make a new user
-    // - make the request
-    // also create a transaction history
+    console.log('ss', transactionItems)
 
-    // call the service to check cost stuff and potentially throw error (use a .map call or maybe a lame for each loop)
-    const charge = checkPrices(transactionItems, total_price, college_id)
-    // put the payment in stripe
-    stripePayment(200, 1)
     // store the transaction in the database
     const newTransaction = await prisma.transactionHistory.create({
       data: {
-        order_complete: order_complete,
+        order_complete: null,
         order_placed: order_placed,
-        queue_size_on_complete: queue_size_on_complete,
+        queue_size_on_complete: null,
         queue_size_on_placement: queue_size_on_placement,
         in_progress: in_progress,
         total_price: total_price,
+        payment_intent_id: payment_intent_id,
         college: {
           connect: {
-            id: parseInt(college_id),
+            id: college_id,
           },
         },
         user: {
           connect: {
-            id: parseInt(user_id),
+            id: user_id,
           },
         },
         transaction_items: {
@@ -94,9 +114,10 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
         },
       },
     })
+    console.log('hey', newTransaction)
     res.send(JSON.stringify(newTransaction))
-    // error handling
   } catch (e) {
+    console.log(e)
     res.status(400).send(e)
   }
 }

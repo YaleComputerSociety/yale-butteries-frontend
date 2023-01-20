@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id               Int      @id @default(autoincrement())
-  netid            String   
+  netid            String   @unique
   email            String
   name             String
   credit_card_hash String
@@ -27,8 +27,8 @@ model User {
 
 model College {
   id Int @id @default(autoincrement())
-  college String
-  image_url String
+  college String @unique
+  image_url String?
   buttery_activated Boolean
   users User[]
   transaction_histories TransactionHistory[]
@@ -125,16 +125,17 @@ enum OrderStatus {
 model TransactionHistory {
   id Int @id @default(autoincrement())
   order_placed DateTime
-  order_complete DateTime
+  order_complete DateTime?
   queue_size_on_placement Int
-  queue_size_on_complete Int
-  in_progress Boolean
+  queue_size_on_complete Int?
+  in_progress String
   total_price Decimal
   college College @relation(fields: [collegeId], references: [id])
   collegeId Int
   user User @relation(fields: [userId], references: [id])
   userId Int
   transaction_items TransactionItem[]
+  payment_intent_id String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
