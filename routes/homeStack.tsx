@@ -51,6 +51,8 @@ const HomeStack = createStackNavigator(screens, {
     headerStyle: {
       backgroundColor: '#4E65FF',
       borderWidth: 0,
+      shadowColor: '#111',
+      shadowRadius: 200,
     },
     //cardOverlayEnabled: true,
     //cardOverlay: () => <LinearGradient colors={['#2C3E50', '#000']} locations={[0, 1]}></LinearGradient>,

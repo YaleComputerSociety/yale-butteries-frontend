@@ -92,8 +92,27 @@ export const Card: FC<butteryProps> = (props: butteryProps) => {
     <Pressable onPress={props.onPress} disabled={!isOpen} style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}>
       <View style={card.cardContent}>
         <View style={home.textContent}>
-          <Text style={card.cardText1}>{props.college}</Text>
-          <Text style={{ opacity: isOpen ? 0 : 100, marginTop: 5, marginBottom: 10, color: 'red' }}>CLOSED</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              //backgroundColor: 'black',
+            }}
+          >
+            <Text style={card.cardText1}>{props.college}</Text>
+            <Text
+              style={{
+                opacity: isOpen ? 0 : 100,
+                alignSelf: 'center',
+                color: 'white',
+                paddingHorizontal: 8,
+                marginLeft: 10,
+                backgroundColor: '#f00000',
+                fontFamily: 'HindSiliguri-Bold',
+              }}
+            >
+              CLOSED
+            </Text>
+          </View>
           <Text style={card.cardText2}>{cleanTime()}</Text>
         </View>
         <SpriteSheet

@@ -1,4 +1,3 @@
-import { LinearGradient } from 'expo-linear-gradient'
 import { StyleSheet } from 'react-native'
 
 export const home = StyleSheet.create({
@@ -46,13 +45,13 @@ export const home = StyleSheet.create({
 
 export const card = StyleSheet.create({
   cardText1: {
-    textAlignVertical: 'bottom',
     fontFamily: 'HindSiliguri-Bold',
     fontWeight: 'bold',
     color: '#fff',
     fontSize: 20,
     marginBottom: 0,
-    marginTop: 10,
+    alignSelf: 'center',
+    paddingVertical: 18,
   },
 
   closedText: {
@@ -65,6 +64,7 @@ export const card = StyleSheet.create({
     fontFamily: 'Roboto-Italic',
     marginBottom: 0,
     color: '#fff',
+    fontSize: 15,
   },
 
   card: {
