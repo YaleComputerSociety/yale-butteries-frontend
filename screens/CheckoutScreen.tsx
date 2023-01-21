@@ -30,7 +30,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         },
       })
       const data = await response.json()
-      console.log(data)
       if (!response.ok) return Alert.alert(data.message)
       const clientSecret = data.paymentIntent.client_secret
       const initSheet = await stripe.initPaymentSheet({
@@ -40,7 +39,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       if (initSheet.error) return Alert.alert(initSheet.error.message)
       const presentSheet = await stripe.presentPaymentSheet()
       if (presentSheet.error) return Alert.alert(presentSheet.error.message)
-      console.log('aaaaa')
       const uploadTransaction = await fetch('http://localhost:3000/api/transactions', {
         method: 'POST',
         body: JSON.stringify({
