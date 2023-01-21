@@ -13,8 +13,11 @@ export const menu = StyleSheet.create({
 
   lowerContainer: {
     width: '100%',
-    height: '18%',
-    backgroundColor: '#fff',
+    height: '30%',
+    shadowColor: '#333',
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    borderRadius: 10,
   },
 })
 
@@ -97,13 +100,15 @@ export const item = StyleSheet.create({
 
   outerContainer: {
     flex: 2,
-    backgroundColor: '#fff',
+    backgroundColor: '#333',
+    borderRadius: 10,
   },
 
   upperContainer: {
     flex: 1,
+    borderRadius: 10,
     flexDirection: 'row',
-    backgroundColor: '#eee',
+    backgroundColor: '#444',
     alignItems: 'center',
     justifyContent: 'space-evenly',
   },

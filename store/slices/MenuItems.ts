@@ -56,6 +56,15 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
   await new Promise((r) => setTimeout(r, 200))
   return [
     {
+      id: 7,
+      item: 'Flavor Blasted Goldfish',
+      college: 'morse',
+      price: 12,
+      description: 'cheesy aquamarine inhabitants encrusted with a carbohydrate compote',
+      limitedTime: false,
+      isActive: true,
+    },
+    {
       id: 1,
       item: 'Flavor Blasted Goldfish',
       college: 'murray',
