@@ -4,7 +4,7 @@ export const menu = StyleSheet.create({
   wrapper: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#eee',
+    backgroundColor: '#fff',
   },
 
   upperContainer: {
@@ -21,29 +21,28 @@ export const menu = StyleSheet.create({
 export const item = StyleSheet.create({
   card: {
     flex: 1,
+    padding: 12,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
     height: 100,
-    elevation: 3,
     backgroundColor: '#fff',
-    borderRadius: 6,
+    borderBottomColor: '#eee',
+    borderBottomWidth: 0.5,
     shadowRadius: 2,
-    margin: 4,
-    marginVertical: 4,
   },
 
   leftSide: {
+    //backgroundColor: 'red',
     flex: 6,
+    marginRight: 8,
   },
 
   itemName: {
     fontFamily: 'HindSiliguri-Bold',
-    fontWeight: 'bold',
     color: '#222',
-    fontSize: 20,
-    marginBottom: 5,
+    fontSize: 18,
+    //backgroundColor: 'green',
   },
 
   itemDescription: {
@@ -55,24 +54,19 @@ export const item = StyleSheet.create({
   },
 
   itemPrice: {
-    fontFamily: 'HindSiliguri',
-    fontWeight: 'bold',
     color: '#222',
-    fontSize: 18,
+    fontSize: 15,
     //backgroundColor: 'blue'
   },
 
   button: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
     flexDirection: 'row',
     justifyContent: 'center',
     textAlign: 'center',
-    borderRadius: 10,
-    height: '38%',
+    borderRadius: 0,
+    height: 30,
     alignItems: 'center',
-    width: '10%',
+    width: 30,
   },
 
   buttonText: {

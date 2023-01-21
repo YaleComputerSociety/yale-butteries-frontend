@@ -49,9 +49,10 @@ export const card = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     fontSize: 20,
-    marginVertical: 18,
+    marginTop: 12,
+    marginBottom: 10,
     alignContent: 'center',
-    //backgroundColor: 'black',
+    justifyContent: 'flex-start',
   },
 
   cardText2: {
@@ -68,12 +69,13 @@ export const card = StyleSheet.create({
 
   cardContent: {
     flex: 1,
+    padding: 8,
     borderColor: '#fff',
     borderBottomWidth: 0.25,
     flexDirection: 'row',
-    paddingLeft: 8,
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    marginRight: -12,
     opacity: 1,
   },
 })
