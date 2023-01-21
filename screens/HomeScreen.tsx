@@ -2,13 +2,21 @@ import * as React from 'react'
 import { View, ScrollView } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'
+import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
+import { addOrderItem, OrderItem, removeOrderItem, resetOrderCartState, setCollege } from '../store/slices/OrderCart'
 
 const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const dispatch = useAppDispatch()
+  const toMenu = (college: string) => {
+    dispatch(setCollege(college))
+    navigation.navigate('ButteryScreen')
+  }
+
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false}>
       <View style={home.outerContainer}>
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'berkeley' })}
+          onPress={() => toMenu('berkeley')}
           gradientColors={['#ed0025', '#dddddd']}
           college="Berkeley"
           openTime="11:00am"
@@ -16,7 +24,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={0}
         />
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Branford' })}
+          onPress={() => toMenu('branford')}
           gradientColors={['#0a5bcc', '#47d08e']}
           college="Branford"
           openTime="6:00"
@@ -24,7 +32,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={78}
         />
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Davenport' })}
+          onPress={() => toMenu('davenport')}
           gradientColors={['#444', '#ddd']}
           college="Davenport"
           openTime="6:00"
@@ -32,7 +40,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={158}
         />
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Franklin' })}
+          onPress={() => toMenu('franklin')}
           gradientColors={['#22bedd', '#fd103c']}
           college="Franklin"
           openTime="6:00"
@@ -40,7 +48,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={318}
         />
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Hopper' })}
+          onPress={() => toMenu('hopper')}
           gradientColors={['#ffb400', '#0a7bfc']}
           college="Hopper"
           openTime="6:00pm"
@@ -48,7 +56,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={400}
         />
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'JE' })}
+          onPress={() => toMenu('JE')}
           gradientColors={['#29b800', '#eee']}
           college="JE"
           openTime="6:00"
@@ -56,7 +64,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={480}
         />
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'morse' })}
+          onPress={() => toMenu('morse')}
           gradientColors={['#ed0025', '#dcb8fc']}
           college="Morse"
           openTime="6:00"
@@ -64,7 +72,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={560}
         />
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Murray' })}
+          onPress={() => toMenu('murray')}
           gradientColors={['#0a7bfc', '#fd103c']}
           college="Murray"
           openTime="6:00"
@@ -72,7 +80,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={640}
         />
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Pierson' })}
+          onPress={() => toMenu('pierson')}
           gradientColors={['#444', '#ffd400']}
           college="Pierson"
           openTime="6:00"
@@ -80,7 +88,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={720}
         />
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Saybrook' })}
+          onPress={() => toMenu('saybrook')}
           gradientColors={['#0a7bfc', '#ffb400']}
           college="Saybrook"
           openTime="6:00"
@@ -88,7 +96,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={800}
         />
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Silliman' })}
+          onPress={() => toMenu('silliman')}
           gradientColors={['#29b800', '#ef0525']}
           college="Silliman"
           openTime="6:00"
@@ -96,7 +104,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={880}
         />
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Stiles' })}
+          onPress={() => toMenu('stiles')}
           gradientColors={['#ffd400', '#444']}
           college="Stiles"
           openTime="6:00"
@@ -104,7 +112,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={238}
         />
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'TD' })}
+          onPress={() => toMenu('TD')}
           gradientColors={['#ed0025', '#eee']}
           college="TD"
           openTime="6:00"
@@ -112,7 +120,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={960}
         />
         <Card
-          onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Trumbull' })}
+          onPress={() => toMenu('trumbull')}
           gradientColors={['#444', '#ddd']}
           college="Trumbull"
           openTime="6:00"

@@ -45,15 +45,17 @@ export const asyncFetchCurrentUser = () => {
 }
 
 async function dummyUser(): Promise<User> {
-  await new Promise((r) => setTimeout(r, 2000))
+  await new Promise((r) => setTimeout(r, 200))
+  const d = new Date()
+  const sd = d.toString()
   return {
     id: 5,
     netid: 'testmctester123',
     name: 'Testing McTester III',
     position: 'customer',
     college: 'Morse',
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: sd,
+    updatedAt: sd,
   }
 }
 

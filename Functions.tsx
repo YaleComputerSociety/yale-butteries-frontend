@@ -10,4 +10,3 @@ export function priceToText(num: number): string {
 //     sum += items[i].count * (Math.floor(items[i].price * 100) / 100)
 //   }
 //   return sum
-// }

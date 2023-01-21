@@ -1,3 +1,4 @@
+/* eslint-disable import/namespace */
 import React from 'react'
 import { View, Text } from 'react-native'
 import { priceToText } from '../Functions'

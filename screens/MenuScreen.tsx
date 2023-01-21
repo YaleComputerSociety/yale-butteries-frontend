@@ -15,7 +15,11 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   const dispatch = useAppDispatch()
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
-  const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
+  const {
+    orderItems,
+    isLoading: isLoadingOrderCart,
+    college: collegeOrderCart,
+  } = useAppSelector((state) => state.orderCart)
 
   useEffect(() => {
     if (menuItems == null) {
@@ -51,7 +55,7 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
             <View style={home.menuView}>
               {menuItems
                 .filter((menuItem) => {
-                  return menuItem.college === navigation.getParam('college_Name') && menuItem.isActive === true
+                  return menuItem.college === collegeOrderCart && menuItem.isActive === true
                 })
                 .map((menuItem) => (
                   <ItemCard decUpdate={removeOrder} incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} />
