@@ -24,7 +24,7 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
     const customerQuery = await stripe.customers.search({
       query: "metadata['netid']:'" + req.body.netid + "'",
     })
-    console.log(customerQuery.data[0]?.id)
+    // console.log(customerQuery.data[0]?.id)
 
     if (!customerQuery.data[0]?.id) {
       res.status(403).json({

@@ -51,7 +51,6 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
 
     const user_id = getUser.id
 
-    console.log(req.body.college)
     const getCollege = await prisma.college.findUnique({
       where: {
         college: req.body.college,
@@ -81,7 +80,7 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
         transactionItems.push(newItem)
       }
     })
-    console.log(transactionItems)
+    // console.log(transactionItems)
 
     // store the transaction in the database
     const newTransaction = await prisma.transactionHistory.create({
