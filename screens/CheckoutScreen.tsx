@@ -12,7 +12,11 @@ import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   // const [loading, setLoading] = useState(false)
 
-  const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
+  const {
+    orderItems,
+    isLoading: isLoadingOrderCart,
+    college: collegeOrderCart,
+  } = useAppSelector((state) => state.orderCart)
   const stripe = useStripe()
   const makePayment = async (name: string, amount: number) => {
     try {
@@ -26,6 +30,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         },
       })
       const data = await response.json()
+      console.log(data)
       if (!response.ok) return Alert.alert(data.message)
       const clientSecret = data.paymentIntent.client_secret
       const initSheet = await stripe.initPaymentSheet({
@@ -35,25 +40,25 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       if (initSheet.error) return Alert.alert(initSheet.error.message)
       const presentSheet = await stripe.presentPaymentSheet()
       if (presentSheet.error) return Alert.alert(presentSheet.error.message)
-
-      // inProgress: transactionHistoryEntry.inProgress,
-      // price: transactionHistoryEntry.price,
-      // transactionItems: transactionHistoryEntry.transactionItems,
-      // college: transactionHistoryEntry.college,
-      // netId: transactionHistoryEntry.netId,
-      // paymentIntentId: transactionHistoryEntry.paymentIntentId,
-      const insertTransaction = await fetch('http://localhost:3000/api/transactions', {
+      console.log('aaaaa')
+      const uploadTransaction = await fetch('http://localhost:3000/api/transactions', {
         method: 'POST',
         body: JSON.stringify({
           inProgress: 'false',
           price: obj.price,
           netId: obj.netid,
-          college: 'Morse',
+          college: collegeOrderCart,
+          paymentIntentId: data.paymentIntent.id,
+          transactionItems: [],
         }),
         headers: {
           'Content-Type': 'application/json',
         },
       })
+      // HERE HERE HERE HERE HERE HERE
+      // HERE HERE HERE HERE HERE HERE
+      // HERE HERE HERE HERE HERE HERE
+      if (uploadTransaction.status == 400) throw 'Idk what the problem is but something went wrong'
 
       Alert.alert('Payment complete, thank you!')
     } catch (err) {
@@ -87,7 +92,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             <View style={checkout.lowerContainer}>
               <Pressable
                 style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, checkout.checkoutButton]}
-                onPress={() => makePayment('khy6', navigation.getParam('priceTotal'))}
+                onPress={() => makePayment('awg32', navigation.getParam('priceTotal'))}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>
               </Pressable>

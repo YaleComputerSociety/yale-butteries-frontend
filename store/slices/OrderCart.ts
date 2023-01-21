@@ -29,7 +29,7 @@ export const orderCartSlice = createSlice({
   name: 'OrderCart',
   initialState: orderCartInitialState,
   reducers: {
-    resetOrderCartState: (state, action: PayloadAction<OrderItem[]>) => {
+    resetOrderCartState: (state) => {
       state.orderItems = []
     },
     addOrderItem: (state, action: PayloadAction<OrderItem>) => {

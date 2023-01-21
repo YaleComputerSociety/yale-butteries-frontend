@@ -16,7 +16,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
     <ScrollView style={home.app} showsVerticalScrollIndicator={false}>
       <View style={home.outerContainer}>
         <Card
-          onPress={() => toMenu('Berkeley')}
+          onPress={() => toMenu('berkeley')}
           gradientColors={['#ed0025', '#dddddd']}
           college="Berkeley"
           openTime="11:00am"
@@ -24,7 +24,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={0}
         />
         <Card
-          onPress={() => toMenu('Branford')}
+          onPress={() => toMenu('branford')}
           gradientColors={['#0a5bcc', '#47d08e']}
           college="Branford"
           openTime="6:00"
@@ -32,7 +32,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={78}
         />
         <Card
-          onPress={() => toMenu('Davenport')}
+          onPress={() => toMenu('davenport')}
           gradientColors={['#444', '#ddd']}
           college="Davenport"
           openTime="6:00"
@@ -40,7 +40,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={158}
         />
         <Card
-          onPress={() => toMenu('Franklin')}
+          onPress={() => toMenu('franklin')}
           gradientColors={['#22bedd', '#fd103c']}
           college="Franklin"
           openTime="6:00"
@@ -48,7 +48,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={318}
         />
         <Card
-          onPress={() => toMenu('Hopper')}
+          onPress={() => toMenu('hopper')}
           gradientColors={['#ffb400', '#0a7bfc']}
           college="Hopper"
           openTime="6:00pm"
@@ -64,7 +64,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={480}
         />
         <Card
-          onPress={() => toMenu('Morse')}
+          onPress={() => toMenu('morse')}
           gradientColors={['#ed0025', '#dcb8fc']}
           college="Morse"
           openTime="6:00"
@@ -72,7 +72,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={560}
         />
         <Card
-          onPress={() => toMenu('Murray')}
+          onPress={() => toMenu('murray')}
           gradientColors={['#0a7bfc', '#fd103c']}
           college="Murray"
           openTime="6:00"
@@ -80,7 +80,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={640}
         />
         <Card
-          onPress={() => toMenu('Pierson')}
+          onPress={() => toMenu('pierson')}
           gradientColors={['#444', '#ffd400']}
           college="Pierson"
           openTime="6:00"
@@ -88,7 +88,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={720}
         />
         <Card
-          onPress={() => toMenu('Saybrook')}
+          onPress={() => toMenu('saybrook')}
           gradientColors={['#0a7bfc', '#ffb400']}
           college="Saybrook"
           openTime="6:00"
@@ -96,7 +96,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={800}
         />
         <Card
-          onPress={() => toMenu('Silliman')}
+          onPress={() => toMenu('silliman')}
           gradientColors={['#29b800', '#ef0525']}
           college="Silliman"
           openTime="6:00"
@@ -104,7 +104,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={880}
         />
         <Card
-          onPress={() => toMenu('Stiles')}
+          onPress={() => toMenu('stiles')}
           gradientColors={['#ffd400', '#444']}
           college="Stiles"
           openTime="6:00"
@@ -120,7 +120,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           offsetY={960}
         />
         <Card
-          onPress={() => toMenu('Trumbull')}
+          onPress={() => toMenu('trumbull')}
           gradientColors={['#444', '#ddd']}
           college="Trumbull"
           openTime="6:00"
