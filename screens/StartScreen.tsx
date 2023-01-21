@@ -7,7 +7,7 @@ import { WebView } from 'react-native-webview'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
-  const [modalVisible, setModalVisible] = React.useState(false)
+  const [modalVisible, setModalVisible] = React.useState(false)  
   const injectedJs = `
     document.querySelector('h1').style.backgroundColor = 'red'
   `
@@ -39,13 +39,13 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             <Pressable
               onPress={() => {
                 const netIdCheck = currentUser.netid
-                setModalVisible(true)
-                // console.log(modalVisible)
-                // if (managerNetIds.includes(netIdCheck)) {
-                //   navigation.navigate('NavigationScreen')
-                // } else {
-                //   navigation.navigate('Home')
-                // }
+                //setModalVisible(true)
+                //console.log(modalVisible)
+                if (managerNetIds.includes(netIdCheck)) {
+                  navigation.navigate('NavigationScreen')
+                } else {
+                  navigation.navigate('Home')
+                }
               }}
               style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
             >
