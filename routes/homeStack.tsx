@@ -3,6 +3,7 @@ import { createAppContainer } from 'react-navigation'
 import Home from '../screens/HomeScreen'
 import ButteryScreen from '../screens/MenuScreen'
 import CheckoutScreen from '../screens/CheckoutScreen'
+import OrderStatusScreen from '../screens/OrderStatusScreen'
 
 const screens = {
   Home: {
@@ -23,6 +24,13 @@ const screens = {
     screen: CheckoutScreen,
     navigationOptions: {
       title: 'Checkout',
+    },
+  },
+
+  OrderStatusScreen: {
+    screen: OrderStatusScreen,
+    navigationOptions: {
+      title: 'Order Status',
     },
   },
 }

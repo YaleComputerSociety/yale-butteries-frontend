@@ -17,12 +17,14 @@ export interface OrderCartState {
   orderItems: OrderItem[]
   isLoading: boolean | APIError
   college: string
+  price: number
 }
 
 const orderCartInitialState: OrderCartState = {
   orderItems: [],
   isLoading: false,
   college: null,
+  price: 0,
 }
 
 export const orderCartSlice = createSlice({
@@ -31,13 +33,16 @@ export const orderCartSlice = createSlice({
   reducers: {
     resetOrderCartState: (state) => {
       state.orderItems = []
+      state.price = 0
     },
     addOrderItem: (state, action: PayloadAction<OrderItem>) => {
       state.orderItems = [...state.orderItems, action.payload]
+      state.price += action.payload.orderItem.price
     },
     removeOrderItem: (state, action: PayloadAction<OrderItem>) => {
       const deleteIndex = state.orderItems.findIndex((item) => item.orderItem.id === action.payload.orderItem.id)
       state.orderItems = [...state.orderItems.slice(0, deleteIndex), ...state.orderItems.slice(deleteIndex + 1)]
+      state.price -= action.payload.orderItem.price
     },
     setIsLoading: (state, action: PayloadAction<boolean | APIError>) => {
       state.isLoading = action.payload

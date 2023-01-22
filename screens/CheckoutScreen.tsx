@@ -11,13 +11,15 @@ import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   // const [loading, setLoading] = useState(false)
-
   const {
     orderItems,
     isLoading: isLoadingOrderCart,
     college: collegeOrderCart,
+    price,
   } = useAppSelector((state) => state.orderCart)
+
   const stripe = useStripe()
+
   const makePayment = async (name: string, amount: number) => {
     try {
       // sending request
@@ -59,11 +61,15 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       if (uploadTransaction.status == 400) throw 'Idk what the problem is but something went wrong'
 
       Alert.alert('Payment complete, thank you!')
+
+      navigation.navigate('OrderStatusScreen')
     } catch (err) {
       console.error(err)
       Alert.alert('Something went wrong, try again later!')
     }
   }
+
+  // export default function CheckoutScreen( { navigation } : {navigation:any} ) {
 
   return (
     <View style={checkout.wrapper}>
@@ -84,7 +90,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 ))}
               </ScrollView>
               <View style={checkout.footer}>
-                <Text style={checkout.totalText}>Total: {priceToText(navigation.getParam('priceTotal'))}</Text>
+                <Text style={checkout.totalText}>Total: {priceToText(price)}</Text>
               </View>
             </View>
             <View style={checkout.lowerContainer}>
