@@ -8,8 +8,14 @@ import { ItemCard } from '../components/ItemCard'
 import { home } from '../styles/HomeStyles'
 import { menu } from '../styles/MenuStyles'
 import { loading } from '../styles/GlobalStyles'
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 
 const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
+  const options = {
+    enableVibrateFallback: true,
+    ignoreAndroidSystemSettings: false,
+  }
+
   const [priceTotal, setPriceTotal] = useState(0)
 
   const dispatch = useAppDispatch()
@@ -53,7 +59,10 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
                   <Ionicon name="pizza" size={30} color="#fff" />
                   <Text style={menu.text}>Food</Text>
                 </Pressable>
-                <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#7F7FD5' }, menu.icon]}>
+                <Pressable
+                  onPress={() => ReactNativeHapticFeedback.trigger('impactLight', options)}
+                  style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#7F7FD5' }, menu.icon]}
+                >
                   <Ionicon name="cafe" size={30} color="#fff" />
                   <Text style={menu.text}>Drink</Text>
                 </Pressable>
@@ -76,21 +85,20 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
           <View style={{ position: 'absolute', bottom: 0, alignSelf: 'flex-end' }}>
             <Pressable
               style={{
-                backgroundColor: '#71b280',
+                backgroundColor: '#32CD32',
                 width: 160,
-                height: 70,
+                height: 60,
                 bottom: 0,
                 borderRadius: 25,
                 shadowColor: '#000',
                 shadowOpacity: 0.3,
                 shadowRadius: 20,
-                padding: 20,
                 margin: 30,
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
               onPress={() => {
-                navigation.navigate('CheckoutScreen')
+                navigation.navigate('CheckoutScreen', priceTotal)
               }}
             >
               <Text style={{ color: 'white', fontSize: 20, fontFamily: 'HindSiliguri-Bold' }}>Go to Cart</Text>

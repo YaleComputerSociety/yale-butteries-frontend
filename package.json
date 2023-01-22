@@ -29,6 +29,7 @@
     "react-native": "0.64.3",
     "react-native-dotenv": "^3.4.2",
     "react-native-gesture-handler": "^2.3.0",
+    "react-native-haptic-feedback": "^1.14.0",
     "react-native-ionicons": "^4.6.5",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
