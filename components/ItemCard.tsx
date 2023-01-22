@@ -41,19 +41,10 @@ export const ItemCard: FC<Props> = ({ menuItem, incUpdate, decUpdate }: Props) =
       </View>
       <View style={item.spacer} />
       <Pressable
-        onPress={removeItem}
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button]}
-      >
-        <Text style={item.buttonText}>-</Text>
-      </Pressable>
-      <View style={item.buttonSpacer}>
-        <Text style={item.countText}>{count}</Text>
-      </View>
-      <Pressable
         onPress={addItem}
         style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button]}
       >
-        <Text style={item.buttonText}>+</Text>
+        <Text style={item.buttonText}>Add to Cart</Text>
       </Pressable>
     </View>
   )

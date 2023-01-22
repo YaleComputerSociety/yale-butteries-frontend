@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 export const home = StyleSheet.create({
   app: {
     flex: 1,
-    backgroundColor: '#4E65FF',
+    backgroundColor: '#d3959b',
   },
 
   nameText: {
@@ -34,6 +34,7 @@ export const home = StyleSheet.create({
 
   menuView: {
     margin: 0,
+    paddingBottom: 80,
   },
 
   footer: {

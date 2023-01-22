@@ -1,3 +1,4 @@
+import Ionicon from 'react-native-vector-icons/Ionicons'
 import * as React from 'react'
 import { View, Text, Pressable, Modal } from 'react-native'
 import { useAppSelector } from '../store/TypedHooks'
@@ -136,22 +137,14 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 width: 25,
                 marginRight: '4%',
                 borderRadius: 4,
+                alignItems: 'center',
+                justifyContent: 'center'
               }}
               onPress={() => {
                 setModalVisible(!modalVisible)
               }}
             >
-              <Text
-                style={{
-                  textAlignVertical: 'auto',
-                  alignSelf: 'center',
-                  fontFamily: 'HindSiliguri-Bolder',
-                  color: 'white',
-                  fontSize: 18,
-                }}
-              >
-                X
-              </Text>
+              <Ionicon name="close" size={20} color="#fff" />
             </Pressable>
           </Modal>
         </View>

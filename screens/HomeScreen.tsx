@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false} alwaysBounceVertical={false} bounces={true}>
-      <LinearGradient colors={['#4E65FF', '#0CBABA', '#8ca6db']} locations={[0, 0.5, 1]}>
+      <LinearGradient colors={['#d3959b', '#8ca6db']} locations={[0, 1]}>
         <View style={home.outerContainer}>
           <Card
             onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'berkeley' })}

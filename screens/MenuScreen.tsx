@@ -1,6 +1,6 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import React, { FC, useEffect, useState } from 'react'
-import { View, ScrollView, ActivityIndicator, Text } from 'react-native'
+import { View, ScrollView, ActivityIndicator, Text, Pressable } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { asyncFetchMenuItems, MenuItem } from '../store/slices/MenuItems'
 import { addOrderItem, OrderItem, removeOrderItem, resetOrderCartState } from '../store/slices/OrderCart'
@@ -8,8 +8,6 @@ import { ItemCard } from '../components/ItemCard'
 import { home } from '../styles/HomeStyles'
 import { menu } from '../styles/MenuStyles'
 import { loading } from '../styles/GlobalStyles'
-import { priceToText } from '../Functions'
-import { MenuCheckoutButton } from '../components/MenuCheckoutButton'
 
 const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [priceTotal, setPriceTotal] = useState(0)
@@ -49,6 +47,22 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
       ) : (
         <View style={menu.wrapper}>
           <ScrollView style={menu.upperContainer} showsVerticalScrollIndicator={false}>
+            <View style={menu.iconContainer}>
+              <ScrollView horizontal={true}>
+                <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? '#6DD5FF' : '#6DD5FA' }, menu.icon]}>
+                  <Ionicon name="pizza" size={30} color="#fff" />
+                  <Text style={menu.text}>Food</Text>
+                </Pressable>
+                <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#7F7FD5' }, menu.icon]}>
+                  <Ionicon name="cafe" size={30} color="#fff" />
+                  <Text style={menu.text}>Drink</Text>
+                </Pressable>
+                <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? '#ffc00a' : '#bfe6ba' }, menu.icon]}>
+                  <Ionicon name="ice-cream" size={30} color="#fff" />
+                  <Text style={menu.text}>Dessert</Text>
+                </Pressable>
+              </ScrollView>
+            </View>
             <View style={home.menuView}>
               {menuItems
                 .filter((menuItem) => {
@@ -59,11 +73,29 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
                 ))}
             </View>
           </ScrollView>
-          <MenuCheckoutButton
-            totalPrice={priceToText(priceTotal)}
-            itemCount={orderItems.length}
-            checkoutPress={() => navigation.navigate('CheckoutScreen', { priceTotal: priceTotal })}
-          />
+          <View style={{ position: 'absolute', bottom: 0, alignSelf: 'flex-end' }}>
+            <Pressable
+              style={{
+                backgroundColor: '#71b280',
+                width: 160,
+                height: 70,
+                bottom: 0,
+                borderRadius: 25,
+                shadowColor: '#000',
+                shadowOpacity: 0.3,
+                shadowRadius: 20,
+                padding: 20,
+                margin: 30,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onPress={() => {
+                navigation.navigate('CheckoutScreen')
+              }}
+            >
+              <Text style={{ color: 'white', fontSize: 20, fontFamily: 'HindSiliguri-Bold' }}>Go to Cart</Text>
+            </Pressable>
+          </View>
         </View>
       )}
     </View>
@@ -72,6 +104,12 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
 butteryScreen.navigationOptions = (navData) => {
   return {
+    headerStyle: {
+      backgroundColor: '#bbb',
+      borderWidth: 0,
+      shadowColor: '#111',
+      shadowRadius: 200,
+    },
     headerRight: () => (
       <Ionicon
         name="settings-sharp"

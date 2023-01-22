@@ -19,6 +19,36 @@ export const menu = StyleSheet.create({
     shadowRadius: 10,
     borderRadius: 10,
   },
+
+  iconContainer: {
+    width: '100%',
+    height: 120,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    borderBottomColor: '#eee',
+    borderBottomWidth: 1,
+  },
+
+  icon: {
+    marginVertical: 20,
+    marginHorizontal: 25,
+    width: 80,
+    height: 80,
+    ///backgroundColor: '#eee',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 15,
+  },
+
+  text: {
+    fontSize: 14,
+    fontFamily: 'HindSiliguri-Bold',
+    color: '#fff',
+  },
 })
 
 export const item = StyleSheet.create({
@@ -66,17 +96,17 @@ export const item = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     textAlign: 'center',
-    borderRadius: 0,
-    height: 30,
+    borderRadius: 8,
     alignItems: 'center',
-    width: 30,
   },
 
   buttonText: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    fontFamily: 'HindSiliguri-Bold',
     justifyContent: 'center',
-    fontFamily: 'Roboto',
     alignItems: 'center',
-    fontSize: 25,
+    fontSize: 15,
     textAlignVertical: 'center',
   },
 
