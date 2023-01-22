@@ -8,7 +8,6 @@ import { ItemCard } from '../components/ItemCard'
 import { home } from '../styles/HomeStyles'
 import { menu } from '../styles/MenuStyles'
 import { loading } from '../styles/GlobalStyles'
-import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 
 const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const options = {
@@ -59,10 +58,7 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
                   <Ionicon name="pizza" size={30} color="#fff" />
                   <Text style={menu.text}>Food</Text>
                 </Pressable>
-                <Pressable
-                  onPress={() => ReactNativeHapticFeedback.trigger('impactLight', options)}
-                  style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#7F7FD5' }, menu.icon]}
-                >
+                <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#7F7FD5' }, menu.icon]}>
                   <Ionicon name="cafe" size={30} color="#fff" />
                   <Text style={menu.text}>Drink</Text>
                 </Pressable>

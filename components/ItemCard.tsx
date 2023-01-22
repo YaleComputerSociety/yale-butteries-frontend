@@ -3,6 +3,7 @@ import { View, Text, Pressable } from 'react-native'
 import { item } from '../styles/MenuStyles'
 import { priceToText } from '../Functions'
 import { MenuItem } from '../store/slices/MenuItems'
+import * as Haptics from 'expo-haptics'
 
 interface Props {
   menuItem: MenuItem
@@ -15,6 +16,7 @@ export const ItemCard: FC<Props> = ({ menuItem, incUpdate, decUpdate }: Props) =
 
   const addItem = () => {
     if (count < 12) {
+      Haptics.selectionAsync('Heavy')
       setCount(count + 1)
       incUpdate(menuItem)
     }
