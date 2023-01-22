@@ -9,10 +9,141 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'Morse',
+      college: 'berkeley',
       buttery_activated: true,
     },
   })
+  await prisma.college.upsert({
+    where: {
+      id: 2,
+    },
+    update: {},
+    create: {
+      college: 'branford',
+      buttery_activated: true,
+    },
+  })
+  await prisma.college.upsert({
+    where: {
+      id: 3,
+    },
+    update: {},
+    create: {
+      college: 'davenport',
+      buttery_activated: true,
+    },
+  })
+  await prisma.college.upsert({
+    where: {
+      id: 4,
+    },
+    update: {},
+    create: {
+      college: 'franklin',
+      buttery_activated: true,
+    },
+  })
+  await prisma.college.upsert({
+    where: {
+      id: 5,
+    },
+    update: {},
+    create: {
+      college: 'hopper',
+      buttery_activated: true,
+    },
+  })
+  await prisma.college.upsert({
+    where: {
+      id: 6,
+    },
+    update: {},
+    create: {
+      college: 'JE',
+      buttery_activated: true,
+    },
+  })
+  await prisma.college.upsert({
+    where: {
+      id: 7,
+    },
+    update: {},
+    create: {
+      college: 'morse',
+      buttery_activated: true,
+    },
+  })
+  await prisma.college.upsert({
+    where: {
+      id: 8,
+    },
+    update: {},
+    create: {
+      college: 'murray',
+      buttery_activated: true,
+    },
+  })
+  await prisma.college.upsert({
+    where: {
+      id: 9,
+    },
+    update: {},
+    create: {
+      college: 'pierson',
+      buttery_activated: true,
+    },
+  })
+  await prisma.college.upsert({
+    where: {
+      id: 10,
+    },
+    update: {},
+    create: {
+      college: 'saybrook',
+      buttery_activated: true,
+    },
+  })
+  await prisma.college.upsert({
+    where: {
+      id: 11,
+    },
+    update: {},
+    create: {
+      college: 'silliman',
+      buttery_activated: true,
+    },
+  })
+  await prisma.college.upsert({
+    where: {
+      id: 12,
+    },
+    update: {},
+    create: {
+      college: 'stiles',
+      buttery_activated: true,
+    },
+  })
+  await prisma.college.upsert({
+    where: {
+      id: 13,
+    },
+    update: {},
+    create: {
+      college: 'TD',
+      buttery_activated: true,
+    },
+  })
+  await prisma.college.upsert({
+    where: {
+      id: 14,
+    },
+    update: {},
+    create: {
+      college: 'trumbull',
+      buttery_activated: true,
+    },
+  })
+
   await prisma.position.upsert({
     where: {
       id: 1,

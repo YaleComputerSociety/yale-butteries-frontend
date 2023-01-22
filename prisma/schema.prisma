@@ -81,6 +81,7 @@ model MenuItem {
   price Decimal
   limited_time Boolean
   is_active Boolean
+  item_type ItemType @default(FOOD)
   college College @relation(fields: [collegeId], references: [id])
   collegeId Int
   availibilities Availability[]
@@ -120,6 +121,12 @@ enum OrderStatus {
   CANCELLED
   IN_PROGRESS
   FINISHED
+}
+
+enum ItemType {
+  FOOD
+  DRINK
+  DESSERT
 }
 
 model TransactionHistory {
