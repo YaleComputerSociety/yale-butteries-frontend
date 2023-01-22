@@ -94,7 +94,7 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
                 justifyContent: 'center',
               }}
               onPress={() => {
-                navigation.navigate('CheckoutScreen', priceTotal)
+                navigation.navigate('CheckoutScreen', { priceTotal: priceTotal })
               }}
             >
               <Text style={{ color: 'white', fontSize: 20, fontFamily: 'HindSiliguri-Bold' }}>Go to Cart</Text>
