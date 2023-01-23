@@ -8,12 +8,15 @@ import { ItemCard } from '../components/ItemCard'
 import { home } from '../styles/HomeStyles'
 import { menu } from '../styles/MenuStyles'
 import { loading } from '../styles/GlobalStyles'
+import { getPriceFromOrderItems } from '../Functions'
 
 const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
-  const [priceTotal, setPriceTotal] = useState(0)
+  //make a function that gets the price from the items in the cart
   const dispatch = useAppDispatch()
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
   const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
+
+  const [priceTotal, setPriceTotal] = useState(getPriceFromOrderItems(orderItems))
 
   useEffect(() => {
     if (menuItems == null) {
@@ -42,7 +45,7 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
       ) : (
         <View style={menu.wrapper}>
           <ScrollView style={menu.upperContainer} showsVerticalScrollIndicator={false}>
-            <View style={menu.iconContainer}>
+            {/* <View style={menu.iconContainer}>
               <ScrollView horizontal={true}>
                 <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? '#6DD5FF' : '#6DD5FA' }, menu.icon]}>
                   <Ionicon name="pizza" size={30} color="#fff" />
@@ -57,7 +60,7 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
                   <Text style={menu.text}>Dessert</Text>
                 </Pressable>
               </ScrollView>
-            </View>
+            </View> */}
             <View style={home.menuView}>
               {menuItems
                 .filter((menuItem) => {
@@ -106,7 +109,7 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
                 justifyContent: 'center',
               }}
               onPress={() => {
-                navigation.navigate('CheckoutScreen', { priceTotal: priceTotal })
+                navigation.navigate('CheckoutScreen', priceTotal)
               }}
             >
               <Text style={{ color: 'white', fontSize: 20, fontFamily: 'HindSiliguri-Bold' }}>Go to Cart</Text>

@@ -1,12 +1,12 @@
 /* eslint-disable import/no-unresolved */
 import * as React from 'react'
-import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert, Button } from 'react-native'
+import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
 import { checkout } from '../styles/CheckoutStyles'
 import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
 import { loading } from '../styles/GlobalStyles'
 import CheckoutItem from '../components/CheckoutItem'
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import { priceToText } from '../Functions'
+import { getPriceFromOrderItems } from '../Functions'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 import { removeOrderItem, OrderItem } from '../store/slices/OrderCart'
 
@@ -40,12 +40,10 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
   }
 
-  const [priceTotal, setPriceTotal] = React.useState(navigation.getParam('priceTotal'))
   const dispatch = useAppDispatch()
 
   const removeOrder = (newItem: OrderItem) => {
     dispatch(removeOrderItem(orderItems.find((item) => item.orderItem.id == newItem.orderItem.id)))
-    setPriceTotal(priceTotal - newItem.orderItem.price)
   }
 
   return (
@@ -67,7 +65,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 ))}
               </ScrollView>
               <View style={checkout.footer}>
-                <Text style={checkout.totalText}>Total: {priceToText(priceTotal)}</Text>
+                <Text style={checkout.totalText}>Total: {getPriceFromOrderItems(orderItems)}</Text>
               </View>
             </View>
             <View style={checkout.lowerContainer}>
