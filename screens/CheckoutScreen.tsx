@@ -2,12 +2,13 @@
 import * as React from 'react'
 import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert, Button } from 'react-native'
 import { checkout } from '../styles/CheckoutStyles'
-import { useAppSelector } from '../store/TypedHooks'
+import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
 import { loading } from '../styles/GlobalStyles'
 import CheckoutItem from '../components/CheckoutItem'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { priceToText } from '../Functions'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
+import { removeOrderItem, OrderItem } from '../store/slices/OrderCart'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
@@ -39,6 +40,14 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
   }
 
+  const [priceTotal, setPriceTotal] = React.useState(navigation.getParam('priceTotal'))
+  const dispatch = useAppDispatch()
+
+  const removeOrder = (newItem: OrderItem) => {
+    dispatch(removeOrderItem(orderItems.find((item) => item.orderItem.id == newItem.orderItem.id)))
+    setPriceTotal(priceTotal - newItem.orderItem.price)
+  }
+
   return (
     <View style={checkout.wrapper}>
       {isLoadingOrderCart ? (
@@ -54,11 +63,11 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               </View>
               <ScrollView style={checkout.orderList}>
                 {orderItems.map((checkoutItem, index) => (
-                  <CheckoutItem checkoutItem={checkoutItem} key={index} />
+                  <CheckoutItem decUpdate={removeOrder} checkoutItem={checkoutItem} key={index} />
                 ))}
               </ScrollView>
               <View style={checkout.footer}>
-                <Text style={checkout.totalText}>Total: {priceToText(navigation.getParam('priceTotal'))}</Text>
+                <Text style={checkout.totalText}>Total: {priceToText(priceTotal)}</Text>
               </View>
             </View>
             <View style={checkout.lowerContainer}>

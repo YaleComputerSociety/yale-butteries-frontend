@@ -3,20 +3,14 @@ import React, { FC, useEffect, useState } from 'react'
 import { View, ScrollView, ActivityIndicator, Text, Pressable } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { asyncFetchMenuItems, MenuItem } from '../store/slices/MenuItems'
-import { addOrderItem, OrderItem, removeOrderItem, resetOrderCartState } from '../store/slices/OrderCart'
+import { addOrderItem, OrderItem, resetOrderCartState } from '../store/slices/OrderCart'
 import { ItemCard } from '../components/ItemCard'
 import { home } from '../styles/HomeStyles'
 import { menu } from '../styles/MenuStyles'
 import { loading } from '../styles/GlobalStyles'
 
 const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
-  const options = {
-    enableVibrateFallback: true,
-    ignoreAndroidSystemSettings: false,
-  }
-
   const [priceTotal, setPriceTotal] = useState(0)
-
   const dispatch = useAppDispatch()
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
   const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
@@ -33,13 +27,9 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
     setPriceTotal(priceTotal + newItem.price)
   }
 
-  const removeOrder = (newItem: MenuItem) => {
-    dispatch(removeOrderItem(orderItems.find((item) => item.orderItem.id == newItem.id)))
-    setPriceTotal(priceTotal - newItem.price)
-  }
-
   // reset the order cart upon loading the page
   useEffect(() => {
+    priceTotal
     dispatch(resetOrderCartState())
   }, [])
 
@@ -74,10 +64,32 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
                   return menuItem.college === navigation.getParam('college_Name') && menuItem.isActive === true
                 })
                 .map((menuItem) => (
-                  <ItemCard decUpdate={removeOrder} incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} />
+                  <ItemCard incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} />
                 ))}
             </View>
           </ScrollView>
+          <View style={{ position: 'absolute', bottom: 0, alignSelf: 'flex-start' }}>
+            <Pressable
+              style={{
+                backgroundColor: '#bbb',
+                width: 80,
+                height: 60,
+                bottom: 0,
+                borderRadius: 25,
+                shadowColor: '#000',
+                shadowOpacity: 0.3,
+                shadowRadius: 20,
+                margin: 30,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+                paddingHorizontal: 8,
+              }}
+            >
+              <Ionicon name="cart" size={25} color="#fff" />
+              <Text style={{ color: 'white', fontSize: 20, fontFamily: 'HindSiliguri-Bold' }}>{orderItems.length}</Text>
+            </Pressable>
+          </View>
           <View style={{ position: 'absolute', bottom: 0, alignSelf: 'flex-end' }}>
             <Pressable
               style={{

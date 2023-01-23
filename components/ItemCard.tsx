@@ -8,24 +8,16 @@ import * as Haptics from 'expo-haptics'
 interface Props {
   menuItem: MenuItem
   incUpdate: (menuItem: MenuItem) => void
-  decUpdate: (menuItem: MenuItem) => void
 }
 
-export const ItemCard: FC<Props> = ({ menuItem, incUpdate, decUpdate }: Props) => {
+export const ItemCard: FC<Props> = ({ menuItem, incUpdate }: Props) => {
   const [count, setCount] = useState(0)
 
   const addItem = () => {
-    if (count < 12) {
+    if (count < 5) {
       Haptics.selectionAsync('Heavy')
       setCount(count + 1)
       incUpdate(menuItem)
-    }
-  }
-
-  const removeItem = () => {
-    if (count > 0) {
-      setCount(count - 1)
-      decUpdate(menuItem)
     }
   }
 
