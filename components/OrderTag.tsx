@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, Image, ImageBackgroundBase, ImageStore, SegmentedControlIOSComponent} from 'react-native';
+import React, { useEffect, useState,} from 'react';
+import {Alert, View, Text, StyleSheet, Image, ImageBackgroundBase, ImageStore, SegmentedControlIOSComponent} from 'react-native';
 
 import { COLORS } from '../constants/Colors';
 import { TEXTS } from '../constants/Texts';
@@ -34,27 +34,30 @@ const OrderTag = (props) => {
   //let orderStatus = props.children[0].orderStatus
   //'cancelled' | 'queued' | 'in_progress' | 'complete' | 'pending' | 'picked_up'
   //Here we need to find based on the orderstatus where to start the slide index
-  let startingIndex = 0;
-  switch(orderStatus) {
-    case 'cancelled':
-      startingIndex = 0
-      break
-    case 'queued':
-      startingIndex = 1
-      break
-    case 'in_progress':
-      startingIndex = 2
-      break
-    case 'complete':
-      startingIndex = 3
-      break
-    case 'picked_up':
-      startingIndex = 4
-      break
-    case 'pending':
-      startingIndex = 0
-      break
-  }
+  const[startingIndex, setStartingIndex] = useState(0);
+  useEffect(() => {
+    switch(orderStatus) {
+      case 'cancelled':
+        setStartingIndex(0)
+        break
+      case 'queued':
+        setStartingIndex(1)
+        break
+      case 'in_progress':
+        setStartingIndex(2)
+        break
+      case 'complete':
+        setStartingIndex(3)
+        break
+      case 'picked_up':
+        setStartingIndex(4)
+        break
+      case 'pending':
+        setStartingIndex(0)
+        break
+    }
+  }, [])
+
 
   useEffect(() => {
     if(orderStatus != 'pending') {
@@ -70,30 +73,69 @@ const OrderTag = (props) => {
             tempStatus = "pending"
             setOrderStatus(tempStatus)
           } else {
+            Alert.alert("Notice", "Are you sure you want to cancel this order? This can not be undone", 
+            [{text: 'Yes',
+              onPress: () => {
+                tempStatus = "cancelled"  
+                setOrderStatus(tempStatus)
+                slideIndex.forEach((indx) => {console.log(orderNum + indx)})
+                dispatch(updateTransactionItem({...transactionItems.find(element => element.id == transactionIndex), orderStatus: tempStatus}))
+              }}, 
+              {text: 'No',
+                onPress: () => {
+                tempStatus = "queued"  
+                setOrderStatus(tempStatus)
+                slideIndex.forEach((indx) => {console.log(orderNum + indx)})
+                dispatch(updateTransactionItem({...transactionItems.find(element => element.id == transactionIndex), orderStatus: tempStatus}))
+                setStartingIndex(1)
+              }}])
             tempStatus = "cancelled"
             setOrderStatus(tempStatus)
           }
+          slideIndex.forEach((indx) => {console.log(orderNum + indx)})
+          dispatch(updateTransactionItem({...transactionItems.find(element => element.id == transactionIndex), orderStatus: tempStatus}))
           break;
         case 1:
           tempStatus = "queued"
           setOrderStatus(tempStatus)
+          slideIndex.forEach((indx) => {console.log(orderNum + indx)})
+          dispatch(updateTransactionItem({...transactionItems.find(element => element.id == transactionIndex), orderStatus: tempStatus}))
           break;
         case 2:
           tempStatus = "in_progress"
           setOrderStatus(tempStatus)
+          slideIndex.forEach((indx) => {console.log(orderNum + indx)})
+          dispatch(updateTransactionItem({...transactionItems.find(element => element.id == transactionIndex), orderStatus: tempStatus}))
           break;
         case 3: 
           tempStatus = "complete"
           setOrderStatus(tempStatus)
+          slideIndex.forEach((indx) => {console.log(orderNum + indx)})
+          dispatch(updateTransactionItem({...transactionItems.find(element => element.id == transactionIndex), orderStatus: tempStatus}))
           break;
         case 4: 
-          tempStatus = "picked_up"
-          setOrderStatus(tempStatus)
+         
+          Alert.alert("Notice", "Are you sure you this order has been picked up? This can not be undone", 
+            [{text: 'Yes',
+              onPress: () => {
+                tempStatus = "picked_up"  
+                setOrderStatus(tempStatus)
+                slideIndex.forEach((indx) => {console.log(orderNum + indx)})
+                dispatch(updateTransactionItem({...transactionItems.find(element => element.id == transactionIndex), orderStatus: tempStatus}))
+              }}, 
+              {text: 'No',
+                onPress: () => {
+                tempStatus = "complete"  
+                setOrderStatus(tempStatus)
+                slideIndex.forEach((indx) => {console.log(orderNum + indx)})
+                dispatch(updateTransactionItem({...transactionItems.find(element => element.id == transactionIndex), orderStatus: tempStatus}))
+                setStartingIndex(3)
+              }}])
+            
           break;
       }
       //console.log(newTransactionItems[transactionIndex])
-      slideIndex.forEach((indx) => {console.log(orderNum + indx)})
-      dispatch(updateTransactionItem({...transactionItems.find(element => element.id == transactionIndex), orderStatus: tempStatus}))
+
   }
   //console.log(orderNum)
 
