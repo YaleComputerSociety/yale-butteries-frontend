@@ -9,6 +9,7 @@ export interface MenuItem {
   price: number
   limitedTime: boolean
   isActive: boolean
+  foodType: string
 }
 
 export interface MenuItemsState {
@@ -61,6 +62,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       price: 1.50,
       limitedTime: false,
       isActive: true,
+      foodType: 'food',
     },
     {
       id: 2,
@@ -69,6 +71,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       price: 1.00,
       limitedTime: false,
       isActive: true,
+      foodType: 'food',
     },
     {
       id: 3,
@@ -77,6 +80,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       price: 1.00,
       limitedTime: false,
       isActive: true,
+      foodType: 'food',
     },
     {
       id: 4,
@@ -85,6 +89,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       price: 1.00,
       limitedTime: false,
       isActive: true,
+      foodType: 'food',
     },
     {
       id: 5,
@@ -93,6 +98,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       price: 3.00,
       limitedTime: false,
       isActive: true,
+      foodType: 'food',
     },
     {
       id: 6,
@@ -101,6 +107,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       price: 1.50,
       limitedTime: false,
       isActive: true,
+      foodType: 'food',
     },
   ]
 }
