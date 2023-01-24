@@ -12,7 +12,7 @@ interface Props {
   incUpdate: (menuItem: MenuItem) => void
 }
 
-export const ItemCard: FC<Props> = ({ menuItem, incUpdate, items }: Props) => {
+export const ItemCard: FC<Props> = ({ menuItem, items, incUpdate }: Props) => {
   function getNumberOfMenuItemInCart(items) {
     let count = 0
     for (let i = 0; i < items.length; i++) {
@@ -27,7 +27,8 @@ export const ItemCard: FC<Props> = ({ menuItem, incUpdate, items }: Props) => {
 
   const addItem = () => {
     if (count < 5) {
-      Haptics.selectionAsync('Heavy')
+      //Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
       setCount(count + 1)
       incUpdate(menuItem)
     }
@@ -48,7 +49,11 @@ export const ItemCard: FC<Props> = ({ menuItem, incUpdate, items }: Props) => {
       <View style={item.spacer} />
       <Pressable
         onPress={addItem}
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button]}
+        disabled={count >= 5 ? true : false}
+        style={({ pressed }) => [
+          { opacity: count >= 5 ? 0.5 : 1, backgroundColor: pressed ? '#bbb' : '#eee' },
+          item.button,
+        ]}
       >
         <Text style={item.buttonText}>Add to Cart</Text>
       </Pressable>

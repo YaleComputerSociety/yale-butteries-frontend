@@ -1,12 +1,11 @@
 /* eslint-disable import/namespace */
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import * as Haptics from 'expo-haptics'
 import { View, Text, Pressable } from 'react-native'
 import { priceToText } from '../Functions'
 import { checkout } from '../styles/CheckoutStyles'
 import { MenuItem } from '../store/slices/MenuItems'
-import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
-import { OrderItem, removeOrderItem } from '../store/slices/OrderCart'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 interface Props {
@@ -17,6 +16,7 @@ interface Props {
 
 const CheckoutItem: any = ({ decUpdate, checkoutItem }: Props) => {
   const removeItem = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     decUpdate(checkoutItem)
   }
 
