@@ -5,7 +5,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface TransactionItem {
   id: number
   itemCost: number
-  orderStatus: 'cancelled' | 'queued' | 'in_progress' | 'complete' | 'pending'
+  orderStatus: 'cancelled' | 'queued' | 'in_progress' | 'complete' | 'pending' | 'picked_up'
   menuItemId: number
   transactionHistoryId: number
 }
@@ -63,7 +63,7 @@ async function dummyTransactionItems(): Promise<TransactionItem[]> {
     {
       id: 1,
       itemCost: 1.50,
-      orderStatus: 'complete',
+      orderStatus: 'picked_up',
       menuItemId: 1,
       transactionHistoryId: 1,
     },

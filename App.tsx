@@ -9,6 +9,7 @@ import store from './store/ReduxStore'
 import AppLoading from 'expo-app-loading';
 import ManagerNavigator from './routes/managerStack'
 import { NavigationContainer } from '@react-navigation/native';
+import 'react-native-gesture-handler'
 
 import { StyleSheet } from 'react-native';
 
