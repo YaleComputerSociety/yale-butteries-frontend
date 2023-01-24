@@ -1,4 +1,4 @@
-import { MenuItemToIngredients, PrismaClient } from '@prisma/client'
+import { MenuItem, MenuItemToIngredients, PrismaClient } from '@prisma/client'
 import { Request, Response } from 'express'
 
 const prisma = new PrismaClient()
@@ -10,11 +10,53 @@ export async function getAllMenuItems(_: Request, res: Response): Promise<void> 
         college: true,
       },
     })
-    res.send(JSON.stringify(menuItems))
+
+    // need to translate to front end version of MenuItems
+    const frontMenuItems = []
+    for (const i of menuItems) {
+      const c = await prisma.college.findUnique({
+        where: {
+          id: i.collegeId,
+        },
+      })
+      const newItem = {
+        id: i.id,
+        item: i.item,
+        price: i.price,
+        college: c.college,
+        isActive: i.is_active,
+      }
+      frontMenuItems.push(newItem)
+    }
+    console.log(frontMenuItems)
+    res.send(JSON.stringify(frontMenuItems))
   } catch (e) {
     res.status(400).send(e)
   }
 }
+
+// export async function getCollegeMenuItems(req: Request, res: Response): Promise<void> {
+//   try {
+//     console.log('eep')
+//     const getCollege = await prisma.college.findUnique({
+//       where: {
+//         college: req.params.college,
+//       },
+//     })
+//     if (!getCollege) throw 'invalid college'
+
+//     const menuItems = await prisma.menuItem.findMany({
+//       where: {
+//         collegeId: getCollege.id,
+//       },
+//     })
+//     console.log(menuItems, getCollege.id)
+//     res.send(JSON.stringify(menuItems))
+//   } catch (e) {
+//     console.log(e)
+//     res.status(400).send(e)
+//   }
+// }
 
 export async function getMenuItem(req: Request, res: Response): Promise<void> {
   try {
