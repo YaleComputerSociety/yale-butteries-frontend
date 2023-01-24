@@ -23,7 +23,7 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   useEffect(() => {
     if (menuItems == null) {
-      dispatch(asyncFetchMenuItems())
+      dispatch(asyncFetchMenuItems('morse'))
     }
   })
 

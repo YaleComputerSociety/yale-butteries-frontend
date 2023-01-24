@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { getJSON } from '../../utils/fetch'
 
 // import { getJSON } from 'utils/fetch'
 
@@ -37,17 +38,22 @@ export const menuItemsSlice = createSlice({
 
 export const { setMenuItemsState, setIsLoading } = menuItemsSlice.actions
 
-export const asyncFetchMenuItems = () => {
+export const asyncFetchMenuItems = (college: string) => {
   return async (dispatch): Promise<void> => {
-    dispatch(setIsLoading(true))
+    // dispatch(setIsLoading(true))
     try {
+      console.log('eeeee')
+      // const menuItems = await getJSON<MenuItem[]>('/api/menu_items/college/morse')
+      // console.log('HHHHH', menuItems)
       // const currentUser = await getJSON<CurrentUser>('/api/users/me')
+      // dispatch(setMenuItemsState(menuItems))
       const menuItems = await dummyMenuItems()
       dispatch(setMenuItemsState(menuItems))
+      // console.log('asdoifajsdf', menuItems)
     } catch (e) {
-      console.log(e)
+      console.log('asdfasd', e)
     } finally {
-      dispatch(setIsLoading(false))
+      // dispatch(setIsLoading(false))
     }
   }
 }
