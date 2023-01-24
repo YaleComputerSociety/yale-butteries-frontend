@@ -34,12 +34,6 @@ export async function createUser(req: Request, res: Response): Promise<void> {
         netid: netid,
         email: email,
         name: name,
-        credit_card_hash: credit_card_hash,
-        position: {
-          connect: {
-            id: parseInt(position_id),
-          },
-        },
         college: {
           connect: {
             id: parseInt(college_id),
@@ -63,7 +57,6 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
         netid: req.body.netid || undefined,
         email: req.body.email || undefined,
         name: req.body.name || undefined,
-        credit_card_hash: req.body.credit_card_hash || undefined,
       },
     })
     res.send(JSON.stringify(user))

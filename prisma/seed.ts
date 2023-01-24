@@ -144,37 +144,15 @@ const main = async () => {
     },
   })
 
-  await prisma.position.upsert({
-    where: {
-      id: 1,
-    },
-    update: {},
-    create: {
-      position: 'manager',
-    },
-  })
-  await prisma.position.upsert({
-    where: {
-      id: 2,
-    },
-    update: {},
-    create: {
-      position: 'customer',
-    },
-  })
   await prisma.user.upsert({
     where: {
       id: 1,
     },
     update: {},
     create: {
-      netid: 'testmctester1',
-      email: 'testmctester1@yale.edu',
-      credit_card_hash: 'yalecampushub',
-      name: 'Testing McTester',
-      position: {
-        connect: { id: 1 },
-      },
+      netid: 'awg32',
+      email: 'addison.goolsbee@yale.edu',
+      name: 'Addison',
       college: {
         connect: { id: 1 },
       },
@@ -186,13 +164,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      netid: 'testmctester12',
-      email: 'testmctester12@yale.edu',
-      credit_card_hash: 'yalecampushub',
-      name: 'Testing McTester II',
-      position: {
-        connect: { id: 2 },
-      },
+      netid: 'khy6',
+      email: 'kelvin.yip@yale.edu',
+      name: 'Killvin',
       college: {
         connect: { id: 1 },
       },
@@ -205,7 +179,97 @@ const main = async () => {
     update: {},
     create: {
       item: 'Americano',
-      price: 1.5,
+      price: 156,
+      limited_time: false,
+      is_active: true,
+      college: {
+        connect: { id: 7 },
+      },
+    },
+  })
+  await prisma.menuItem.upsert({
+    where: {
+      id: 2,
+    },
+    update: {},
+    create: {
+      item: 'Bony Bony Burger',
+      price: 348,
+      limited_time: false,
+      is_active: true,
+      college: {
+        connect: { id: 1 },
+      },
+    },
+  })
+  await prisma.menuItem.upsert({
+    where: {
+      id: 3,
+    },
+    update: {},
+    create: {
+      item: 'Large Bean',
+      price: 555,
+      limited_time: false,
+      is_active: true,
+      college: {
+        connect: { id: 1 },
+      },
+    },
+  })
+  await prisma.menuItem.upsert({
+    where: {
+      id: 4,
+    },
+    update: {},
+    create: {
+      item: 'Burton',
+      price: 3,
+      limited_time: false,
+      is_active: true,
+      college: {
+        connect: { id: 1 },
+      },
+    },
+  })
+  await prisma.menuItem.upsert({
+    where: {
+      id: 5,
+    },
+    update: {},
+    create: {
+      item: 'The Yale Butteries App',
+      price: 40000,
+      limited_time: false,
+      is_active: true,
+      college: {
+        connect: { id: 1 },
+      },
+    },
+  })
+  await prisma.menuItem.upsert({
+    where: {
+      id: 6,
+    },
+    update: {},
+    create: {
+      item: 'Chicken Nuggets',
+      price: 150,
+      limited_time: false,
+      is_active: false,
+      college: {
+        connect: { id: 1 },
+      },
+    },
+  })
+  await prisma.menuItem.upsert({
+    where: {
+      id: 7,
+    },
+    update: {},
+    create: {
+      item: "Stephen Slade's Microwavable Lunch",
+      price: 100,
       limited_time: false,
       is_active: true,
       college: {

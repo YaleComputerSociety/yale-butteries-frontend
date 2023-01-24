@@ -15,12 +15,9 @@ model User {
   netid            String   @unique
   email            String
   name             String
-  credit_card_hash String
   college   College @relation(fields: [collegeId], references: [id])
   collegeId Int
   transaction_histories TransactionHistory[]
-  position  Position @relation(fields: [positionId], references: [id])
-  positionId Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
 }
@@ -64,7 +61,7 @@ model Availability {
 model Ingredient {
   id Int @id @default(autoincrement())
   ingredient String
-  price Decimal
+  price Int
   available Boolean
   collegeId Int
   college College @relation(fields: [collegeId], references: [id])
@@ -78,7 +75,7 @@ model Ingredient {
 model MenuItem {
   id Int @id @default(autoincrement())
   item String
-  price Decimal
+  price Int
   limited_time Boolean
   is_active Boolean
   item_type ItemType @default(FOOD)
@@ -105,7 +102,7 @@ model ItemRating {
 
 model TransactionItem {
   id Int @id @default(autoincrement())
-  item_cost Decimal
+  item_cost Int
   order_status OrderStatus @default(PENDING)
   ingredients Ingredient[]
   transaction_history TransactionHistory @relation(fields: [transactionHistoryId], references: [id])
@@ -136,30 +133,13 @@ model TransactionHistory {
   queue_size_on_placement Int
   queue_size_on_complete Int?
   in_progress String
-  total_price Decimal
+  total_price Int
   college College @relation(fields: [collegeId], references: [id])
   collegeId Int
   user User @relation(fields: [userId], references: [id])
   userId Int
   transaction_items TransactionItem[]
   payment_intent_id String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
-}
-
-model Position {
-  id Int @id @default(autoincrement())
-  position String
-  users User[]
-  permission_types PermissionType[]
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
-}
-
-model PermissionType {
-  id Int @id @default(autoincrement())
-  type String
-  positions Position[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
 }
