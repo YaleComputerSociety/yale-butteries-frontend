@@ -1,45 +1,31 @@
 //import * as React from 'react'
-import React, { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { TextInput } from 'react-native-gesture-handler'
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
-import { asyncFetchCurrentUser } from '../store/slices/CurrentUser'
-import { asyncUpdateUser, asyncFetchUsers } from '../store/slices/Users'
+import { asyncFetchCurrentUser, asyncUpdateCurrentUser } from '../store/slices/CurrentUser'
 
-const Settings: React.FC<{ navigation: any }> = ({ navigation }) => {
+const Settings: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
-  const { users, isLoading: isLoadingUsers } = useAppSelector((state) => state.users)
+  const [newName, setNewName] = useState('')
 
   const changeName = (name: string) => {
-    if (users == null) {
-      dispatch(asyncFetchUsers())
+    if (name.length >= 2) {
+      console.log(currentUser)
+      dispatch(asyncUpdateCurrentUser(name))
     }
-    console.log(users[0])
-    const d = new Date()
-    dispatch(
-      asyncUpdateUser({
-        id: 3,
-        netid: 'testmctester1',
-        name: name,
-        college: 'Berkeley',
-      })
-    )
-    console.log('Here')
-    console.log(users[0])
   }
-
-  let newName = ''
 
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false}>
       <View style={home.outerContainer}>
         <TextInput
-          placeholder={users[0].name}
+          placeholder={currentUser.name}
           style={styles.input_text}
           autoCorrect={false}
-          onChangeText={(t) => (newName = t)}
+          onChangeText={(t) => setNewName(t)}
         />
         <TouchableOpacity style={styles.button}>
           <Text style={styles.text}> Update Payment Info </Text>
