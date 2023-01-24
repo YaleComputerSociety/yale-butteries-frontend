@@ -9,10 +9,12 @@ import { COLORS } from '../constants/Colors';
 import { TEXTS } from '../constants/Texts';
 import { LAYOUTS } from '../constants/Layouts';
 
+
 export default function InventoryScreen() {
   const dispatch = useAppDispatch();
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
   const[localMenu, setLocalMenu] = useState([]);
+  
   if (isLoadingMenuItems) {
     console.log("loading")
   }
@@ -52,7 +54,9 @@ export default function InventoryScreen() {
         <ScrollView style={{ ...styles.scrollView}}>
           <Text style={{...styles.title}}>
             Menu</Text>
-          <ItemTag/>
+          <ItemTag
+            item = {menuItems[0]}
+          />
         </ScrollView>
       )}
     </View>

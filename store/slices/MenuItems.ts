@@ -32,10 +32,14 @@ export const menuItemsSlice = createSlice({
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload
     },
+    updateMenuItem: (state, action: PayloadAction<MenuItem>) => {
+      const updateIndex = state.menuItems.findIndex((item) => item.id == action.payload.id)
+      state.menuItems[updateIndex] = action.payload
+    }
   },
 })
 
-export const { setMenuItemsState, setIsLoading } = menuItemsSlice.actions
+export const { setMenuItemsState, setIsLoading, updateMenuItem } = menuItemsSlice.actions
 
 export const asyncFetchMenuItems = () => {
   return async (dispatch): Promise<void> => {
