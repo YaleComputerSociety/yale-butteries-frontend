@@ -9,6 +9,7 @@ export interface MenuItem {
   price: number
   limitedTime: boolean
   isActive: boolean
+  foodType: 'food' | 'drink' | 'dessert'
 }
 
 export interface MenuItemsState {
@@ -58,49 +59,55 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       id: 1,
       item: 'Americano',
       college: 'morse',
-      price: 1.50,
+      price: 1.5,
       limitedTime: false,
       isActive: true,
+      foodType: 'drink',
     },
     {
       id: 2,
       item: 'Coke',
       college: 'morse',
-      price: 1.00,
+      price: 1.0,
       limitedTime: false,
       isActive: true,
+      foodType: 'drink',
     },
     {
       id: 3,
       item: 'Sprite',
       college: 'morse',
-      price: 1.00,
+      price: 1.0,
       limitedTime: false,
       isActive: true,
+      foodType: 'drink',
     },
     {
       id: 4,
       item: 'Diet Coke',
       college: 'morse',
-      price: 1.00,
+      price: 1.0,
       limitedTime: false,
       isActive: true,
+      foodType: 'drink',
     },
     {
       id: 5,
       item: "David's Tux",
       college: 'morse',
-      price: 3.00,
+      price: 3.0,
       limitedTime: false,
       isActive: true,
+      foodType: 'food',
     },
     {
       id: 6,
       item: 'Quesadilla',
       college: 'morse',
-      price: 1.50,
+      price: 1.5,
       limitedTime: false,
       isActive: true,
+      foodType: 'food',
     },
   ]
 }
