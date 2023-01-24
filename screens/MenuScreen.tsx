@@ -68,7 +68,7 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
                   return menuItem.college === navigation.getParam('college_Name') && menuItem.isActive === true
                 })
                 .map((menuItem) => (
-                  <ItemCard incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} />
+                  <ItemCard incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} items={orderItems} />
                 ))}
             </View>
           </ScrollView>

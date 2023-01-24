@@ -60,7 +60,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               <View style={checkout.header}>
                 <Text style={checkout.totalText}>Order Summary:</Text>
               </View>
-              <ScrollView style={checkout.orderList}>
+              <ScrollView style={checkout.orderList} showsVerticalScrollIndicator={false}>
                 {orderItems.map((checkoutItem, index) => (
                   <CheckoutItem decUpdate={removeOrder} checkoutItem={checkoutItem} key={index} />
                 ))}

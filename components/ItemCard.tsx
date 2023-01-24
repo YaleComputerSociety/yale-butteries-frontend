@@ -4,13 +4,25 @@ import { item } from '../styles/MenuStyles'
 import { priceToText } from '../Functions'
 import { MenuItem } from '../store/slices/MenuItems'
 import * as Haptics from 'expo-haptics'
+import { OrderItem } from '../store/slices/OrderCart'
 
 interface Props {
   menuItem: MenuItem
+  items: OrderItem[]
   incUpdate: (menuItem: MenuItem) => void
 }
 
-export const ItemCard: FC<Props> = ({ menuItem, incUpdate }: Props) => {
+export const ItemCard: FC<Props> = ({ menuItem, incUpdate, items }: Props) => {
+  function getNumberOfMenuItemInCart(items) {
+    let count = 0
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].orderItem.id === menuItem.id) {
+        count++
+      }
+    }
+    return count
+  }
+
   const [count, setCount] = useState(0)
 
   const addItem = () => {
@@ -22,7 +34,7 @@ export const ItemCard: FC<Props> = ({ menuItem, incUpdate }: Props) => {
   }
 
   useEffect(() => {
-    count
+    setCount(getNumberOfMenuItemInCart(items))
   })
 
   return (
