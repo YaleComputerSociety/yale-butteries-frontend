@@ -8,10 +8,10 @@ import { LinearGradient } from 'expo-linear-gradient'
 const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false} alwaysBounceVertical={false} bounces={true}>
-      <LinearGradient colors={['#d3959b', '#8ca6db']} locations={[0, 1]}>
+      <LinearGradient colors={['#92aadb', '#8fc1c7']} locations={[0, 1]}>
         <View style={home.outerContainer}>
           <Card
-            onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'berkeley' })}
+            onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Berkeley' })}
             college="Berkeley"
             openTime="11:00am"
             closeTime="2:00pm"
@@ -53,7 +53,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
             offsetY={480}
           />
           <Card
-            onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'morse' })}
+            onPress={() => navigation.navigate('ButteryScreen', { college_Name: 'Morse' })}
             college="Morse"
             openTime="6:00"
             closeTime="5:00"
@@ -110,7 +110,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           />
         </View>
       </LinearGradient>
-      <View style={{ height: '20%', width: '100%', backgroundColor: '#8ca6db' }}></View>
+      <View style={{ height: '20%', width: '100%', backgroundColor: '#8fc1c7' }}></View>
     </ScrollView>
   )
 }

@@ -12,6 +12,9 @@ export const checkout = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: '#ddd',
     borderRadius: 6,
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
   },
 
   orderDetailsContainer: {
@@ -78,7 +81,7 @@ export const checkout = StyleSheet.create({
   },
 
   lowerContainer: {
-    backgroundColor: 'green',
+    backgroundColor: '#fff',
     height: '12%',
   },
 

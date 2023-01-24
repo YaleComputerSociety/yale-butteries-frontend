@@ -8,11 +8,12 @@ import { ItemCard } from '../components/ItemCard'
 import { home } from '../styles/HomeStyles'
 import { menu } from '../styles/MenuStyles'
 import { loading } from '../styles/GlobalStyles'
-import { getPriceFromOrderItems } from '../Functions'
+import { getPriceFromOrderItems, returnCollegeName } from '../Functions'
 
 const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
   //make a function that gets the price from the items in the cart
   const dispatch = useAppDispatch()
+  const collegeName = navigation.getParam('college_Name')
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
   const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
 
@@ -74,7 +75,7 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
           <View style={{ position: 'absolute', bottom: 0, alignSelf: 'flex-start' }}>
             <Pressable
               style={{
-                backgroundColor: '#bbb',
+                backgroundColor: returnCollegeName(collegeName)[1],
                 width: 80,
                 height: 60,
                 bottom: 0,
@@ -90,12 +91,14 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
               }}
             >
               <Ionicon name="cart" size={25} color="#fff" />
-              <Text style={{ color: 'white', fontSize: 20, fontFamily: 'HindSiliguri-Bold' }}>{orderItems.length}</Text>
+              <Text style={{ color: '#fff', fontSize: 20, fontFamily: 'HindSiliguri-Bold' }}>{orderItems.length}</Text>
             </Pressable>
           </View>
           <View style={{ position: 'absolute', bottom: 0, alignSelf: 'flex-end' }}>
             <Pressable
+              disabled={orderItems.length < 1 ? true : false}
               style={{
+                opacity: orderItems.length < 1 ? 0.7 : 1,
                 backgroundColor: '#32CD32',
                 width: 160,
                 height: 60,
@@ -122,13 +125,15 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
 }
 
 butteryScreen.navigationOptions = (navData) => {
+  const collegeName = navData.navigation.getParam('college_Name')
   return {
     headerStyle: {
-      backgroundColor: '#bbb',
+      backgroundColor: returnCollegeName(collegeName)[1],
       borderWidth: 0,
       shadowColor: '#111',
       shadowRadius: 200,
     },
+    headerTitle: returnCollegeName(collegeName)[0],
     headerRight: () => (
       <Ionicon
         name="settings-sharp"

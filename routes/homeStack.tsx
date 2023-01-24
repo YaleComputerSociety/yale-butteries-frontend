@@ -6,6 +6,7 @@ import CheckoutScreen from '../screens/CheckoutScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import StartScreen from '../screens/StartScreen'
 import NavigationScreen from '../screens/NavigationScreen'
+import OrderStatusScreen from '../screens/OrderStatusScreen'
 
 const screens = {
   StartScreen: {
@@ -49,7 +50,7 @@ const screens = {
 const HomeStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: '#d3959b',
+      backgroundColor: '#768bb5',
       borderWidth: 0,
       shadowColor: '#111',
       shadowRadius: 200,

@@ -12,33 +12,34 @@ import { removeOrderItem, OrderItem } from '../store/slices/OrderCart'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { orderItems, isLoading: isLoadingOrderCart } = useAppSelector((state) => state.orderCart)
-  const stripe = useStripe()
-  const makePayment = async (name: string, amount: number) => {
-    try {
-      // sending request
-      const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
-        method: 'POST',
-        body: JSON.stringify(obj),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      const data = await response.json()
-      if (!response.ok) return Alert.alert(data.message)
-      const clientSecret = data.clientSecret
-      const initSheet = await stripe.initPaymentSheet({
-        paymentIntentClientSecret: clientSecret,
-        merchantDisplayName: 'BonY',
-      })
-      if (initSheet.error) return Alert.alert(initSheet.error.message)
-      const presentSheet = await stripe.presentPaymentSheet()
-      if (presentSheet.error) return Alert.alert(presentSheet.error.message)
-      Alert.alert('Payment complete, thank you!')
-    } catch (err) {
-      console.error(err)
-      Alert.alert('Something went wrong, try again later!')
-    }
-  }
+  // const stripe = useStripe()
+  // const makePayment = async (name: string, amount: number) => {
+  //   try {
+  //     // sending request
+  //     const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
+  //       method: 'POST',
+  //       body: JSON.stringify(obj),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     })
+  //     const data = await response.json()
+  //     if (!response.ok) return Alert.alert(data.message)
+  //     const clientSecret = data.clientSecret
+  //     const initSheet = await stripe.initPaymentSheet({
+  //       paymentIntentClientSecret: clientSecret,
+  //       merchantDisplayName: 'BonY',
+  //     })
+  //     if (initSheet.error) return Alert.alert(initSheet.error.message)
+  //     const presentSheet = await stripe.presentPaymentSheet()
+  //     if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+  //     Alert.alert('Payment complete, thank you!')
+  //     navigation.navigate('OrderStatusScreen')
+  //   } catch (err) {
+  //     console.error(err)
+  //     Alert.alert('Something went wrong, try again later!')
+  //   }
+  // }
 
   const dispatch = useAppDispatch()
 
@@ -70,8 +71,11 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             </View>
             <View style={checkout.lowerContainer}>
               <Pressable
-                style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, checkout.checkoutButton]}
-                onPress={() => makePayment('bony', navigation.getParam('priceTotal'))}
+                disabled={orderItems.length < 1 ? true : false}
+                style={({ pressed }) => [
+                  { backgroundColor: pressed ? '#222' : '#333', opacity: orderItems.length < 1 ? 0.7 : 1 },
+                  checkout.checkoutButton,
+                ]}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>
               </Pressable>
