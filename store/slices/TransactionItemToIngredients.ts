@@ -52,7 +52,7 @@ export const asyncFetchtransactionItemToIngredients = () => {
 }
 
 async function dummytransactionItemToIngredients(): Promise<TransactionItemToIngredient[]> {
-  await new Promise((r) => setTimeout(r, 2000))
+  await new Promise((r) => setTimeout(r, 200))
   return []
 }
 

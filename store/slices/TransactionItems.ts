@@ -59,7 +59,7 @@ export const asyncFetchTransactionItems = () => {
 }
 
 async function dummyTransactionItems(): Promise<TransactionItem[]> {
-  await new Promise((r) => setTimeout(r, 2000))
+  await new Promise((r) => setTimeout(r, 200))
   return [
     {
       id: 1,

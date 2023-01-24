@@ -63,7 +63,7 @@ export const asyncUpdateUser = (user: User) => {
       // See: https://stackoverflow.com/questions/60697214/how-to-fix-index-signature-is-missing-in-type-error
       // const updatedUser = await putJSON('/api/users', { ...user })
       // dispatch(updateUser(updatedUser.jsonBody))
-      await new Promise((r) => setTimeout(r, 1500))
+      await new Promise((r) => setTimeout(r, 200))
       dispatch(updateUser(user))
     } catch (e) {
       console.log(e)
@@ -76,7 +76,7 @@ export const asyncInsertUser = (user: User) => {
     try {
       // const newUser = await postJSON('/api/users', { ...user })
       // dispatch(insertUser(newUser.jsonBody))
-      await new Promise((r) => setTimeout(r, 1500))
+      await new Promise((r) => setTimeout(r, 200))
       dispatch(insertUser(user))
     } catch (e) {
       console.log(e)
@@ -85,34 +85,26 @@ export const asyncInsertUser = (user: User) => {
 }
 
 async function dummyUsers(): Promise<User[]> {
-  await new Promise((r) => setTimeout(r, 2000))
+  const d = new Date()
+  await new Promise((r) => setTimeout(r, 200))
   return [
     {
       id: 3,
       netid: 'testmctester1',
       name: 'Testing McTester',
-      position: 'customer',
       college: 'Morse',
-      createdAt: new Date(),
-      updatedAt: new Date(),
     },
     {
       id: 4,
       netid: 'testmctester12',
       name: 'Testing McTester II',
-      position: 'customer',
       college: 'Morse',
-      createdAt: new Date(),
-      updatedAt: new Date(),
     },
     {
       id: 5,
       netid: 'testmctester123',
       name: 'Testing McTester III',
-      position: 'customer',
       college: 'Morse',
-      createdAt: new Date(),
-      updatedAt: new Date(),
     },
     {
       id: 6,

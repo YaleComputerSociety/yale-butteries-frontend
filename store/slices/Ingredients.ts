@@ -54,7 +54,7 @@ export const asyncFetchIngredients = () => {
 }
 
 async function dummyIngredients(): Promise<Ingredient[]> {
-  await new Promise((r) => setTimeout(r, 2000))
+  await new Promise((r) => setTimeout(r, 200))
   return [
     {
       id: 1,
@@ -114,7 +114,7 @@ export const asyncUpdateIngredient = (ingredient: Ingredient) => {
       // See: https://stackoverflow.com/questions/60697214/how-to-fix-index-signature-is-missing-in-type-error
       // const updatedUser = await putJSON('/api/users', { ...user })
       // dispatch(updateUser(updatedUser.jsonBody))
-      await new Promise((r) => setTimeout(r, 1500))
+      await new Promise((r) => setTimeout(r, 200))
       dispatch(updateIngredient(ingredient))
     } catch (e) {
       console.log(e)

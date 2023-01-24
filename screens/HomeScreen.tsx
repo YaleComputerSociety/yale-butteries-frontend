@@ -1,9 +1,11 @@
-import * as React from 'react'
-import { View, ScrollView } from 'react-native'
+import { useEffect } from 'react'
+import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Button } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'
-import { useAppDispatch } from '../store/TypedHooks'
+import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { setCollege } from '../store/slices/OrderCart'
+import Ionicon from 'react-native-ionicons'
+import { asyncFetchUsers } from '../store/slices/Users'
 
 const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
@@ -12,9 +14,16 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
     navigation.navigate('ButteryScreen')
   }
 
+  useEffect(() => {
+    dispatch(asyncFetchUsers())
+  }, [])
+
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false}>
       <View style={home.outerContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')}>
+          <Image source={require('../assets/images/SettingsIcon.png')} style={styles.button} />
+        </TouchableOpacity>
         <Card
           onPress={() => toMenu('berkeley')}
           gradientColors={['#ed0025', '#dddddd']}
@@ -131,5 +140,45 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
     </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  button: {
+    width: 35,
+    height: 35,
+    left: '90%',
+    //bottom: '100%',
+  },
+})
+
+Home.navigationOptions = (navData) => {
+  return {
+    headerTitle: 'Butteries',
+    headerRight: () => (
+      <Button
+        title="Help"
+        onPress={() => {
+          navData.navigation.navigate('SettingsScreen')
+          console.log('Hello World')
+        }}
+      />
+    ),
+  }
+}
+// Home.navigationOptions = (navData) => {
+//   return {
+//     headerRight: () => (
+//       <Ionicon
+//         name="settings-sharp"
+//         size={18}
+//         color="#fff"
+//         onPress={() => {
+//           navData.navigation.navigate('SettingsScreen')
+//           console.log('Hello World')
+//         }}
+//         style={{ paddingRight: 15 }}
+//       />
+//     ),
+//   }
+// }
 
 export default Home

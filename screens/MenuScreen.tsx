@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { View, ScrollView, ActivityIndicator } from 'react-native'
+import { View, ScrollView, ActivityIndicator, Button } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { asyncFetchMenuItems, MenuItem } from '../store/slices/MenuItems'
 import { addOrderItem, OrderItem, removeOrderItem, resetOrderCartState } from '../store/slices/OrderCart'
@@ -71,6 +71,21 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
       )}
     </View>
   )
+}
+
+butteryScreen.navigationOptions = (navData) => {
+  return {
+    headerTitle: 'Butteries',
+    headerRight: () => (
+      <Button
+        title="Help"
+        onPress={() => {
+          navData.navigation.navigate('SettingsScreen')
+          console.log('Hello World')
+        }}
+      />
+    ),
+  }
 }
 
 export default butteryScreen

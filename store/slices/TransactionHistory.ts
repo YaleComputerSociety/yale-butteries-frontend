@@ -50,8 +50,8 @@ export const asyncFetchTransactionHistory = () => {
     dispatch(setIsLoading(true))
     try {
       // const currentUser = await getJSON<CurrentUser>('/api/users/me')
-      const transactionHistory = await dummyTransactionHistory()
-      dispatch(setTransactionHistoryState(transactionHistory))
+      // const transactionHistory = await dummyTransactionHistory()
+      // dispatch(setTransactionHistoryState(transactionHistory))
     } catch (e) {
       console.log(e)
     } finally {
@@ -116,7 +116,7 @@ export const asyncUpdateTransactionHistoryEntry = (transactionHistoryEntry: Tran
     try {
       // const updatedUser = await putJSON('/api/users', { ...user })
       // dispatch(updateUser(updatedUser.jsonBody))
-      await new Promise((r) => setTimeout(r, 1500))
+      await new Promise((r) => setTimeout(r, 200))
       dispatch(updateTransactionHistory(transactionHistoryEntry))
     } catch (e) {
       console.log(e)
