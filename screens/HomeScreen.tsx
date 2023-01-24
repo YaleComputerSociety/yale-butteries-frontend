@@ -2,8 +2,8 @@ import * as React from 'react'
 import { View, ScrollView } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'
-import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
-import { addOrderItem, OrderItem, removeOrderItem, resetOrderCartState, setCollege } from '../store/slices/OrderCart'
+import { useAppDispatch } from '../store/TypedHooks'
+import { setCollege } from '../store/slices/OrderCart'
 
 const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()

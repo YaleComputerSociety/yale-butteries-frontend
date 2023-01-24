@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { TransactionItem } from './TransactionItems'
-import { getJSON, postJSON } from '../../utils/fetch'
-import { MenuItem } from './MenuItems'
+import { postJSON } from '../../utils/fetch'
 
 export interface TransactionHistoryEntry {
   id: number
@@ -95,17 +94,15 @@ export const asyncFetchTransactionHistory = () => {
 export const asyncInsertTransactionHistoryEntry = (transactionHistoryEntry: TransactionHistoryEntry) => {
   return async (dispatch): Promise<void> => {
     try {
-      console.log('aaaaaaa')
-      const menuItems = await getJSON<MenuItem[]>('/api/menu_items/college/morse')
-      // const newTransactionHistoryEntry = await postJSON('/api/transactions', {
-      //   inProgress: transactionHistoryEntry.inProgress,
-      //   price: transactionHistoryEntry.price,
-      //   transactionItems: transactionHistoryEntry.transactionItems,
-      //   college: transactionHistoryEntry.college,
-      //   netId: transactionHistoryEntry.netId,
-      //   paymentIntentId: transactionHistoryEntry.paymentIntentId,
-      // })
-      console.log(menuItems)
+      const newTransactionHistoryEntry = await postJSON('/api/transactions', {
+        inProgress: transactionHistoryEntry.inProgress,
+        price: transactionHistoryEntry.price,
+        transactionItems: transactionHistoryEntry.transactionItems,
+        college: transactionHistoryEntry.college,
+        netId: transactionHistoryEntry.netId,
+        paymentIntentId: transactionHistoryEntry.paymentIntentId,
+      })
+      console.log(newTransactionHistoryEntry)
       // dispatch(insertUser(newTransactionHistoryEntry.jsonBody))
       // dispatch(addTransactionHistoryEntry(transactionHistoryEntry))
     } catch (e) {

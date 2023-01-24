@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { getJSON } from '../../utils/fetch'
 
 // import { getJSON } from 'utils/fetch'
 
@@ -38,22 +37,35 @@ export const menuItemsSlice = createSlice({
 
 export const { setMenuItemsState, setIsLoading } = menuItemsSlice.actions
 
-export const asyncFetchMenuItems = (college: string) => {
+export const asyncFetchMenuItems = () => {
   return async (dispatch): Promise<void> => {
-    // dispatch(setIsLoading(true))
+    dispatch(setIsLoading(true))
     try {
-      console.log('eeeee')
-      // const menuItems = await getJSON<MenuItem[]>('/api/menu_items/college/morse')
-      // console.log('HHHHH', menuItems)
-      // const currentUser = await getJSON<CurrentUser>('/api/users/me')
-      // dispatch(setMenuItemsState(menuItems))
-      const menuItems = await dummyMenuItems()
-      dispatch(setMenuItemsState(menuItems))
-      // console.log('asdoifajsdf', menuItems)
+      const menuItems = await fetch('http://localhost:3000/api/menu_items', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await menuItems.json()
+      const newData: MenuItem[] = []
+      data.forEach((item) => {
+        const newItem: MenuItem = {
+          id: item.id,
+          item: item.item,
+          college: item.college,
+          price: parseInt(item.price),
+          isActive: item.isActive,
+          description: 'This is a test description',
+          limitedTime: false,
+        }
+        newData.push(newItem)
+      })
+      dispatch(setMenuItemsState(newData))
     } catch (e) {
-      console.log('asdfasd', e)
+      console.log(e)
     } finally {
-      // dispatch(setIsLoading(false))
+      dispatch(setIsLoading(false))
     }
   }
 }

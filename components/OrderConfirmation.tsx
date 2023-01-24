@@ -4,6 +4,7 @@ import { checkout } from '../styles/CheckoutStyles'
 import CheckoutItem from '../components/CheckoutItem'
 import { orderStatusScreenSty } from '../styles/OrderStatusStyles'
 import { useAppSelector } from '../store/TypedHooks'
+import { priceToText } from '../Functions'
 
 export const OrderConfirmation = ({ navigation }: any) => {
   const { orderItems, price } = useAppSelector((state) => state.orderCart)
@@ -21,7 +22,7 @@ export const OrderConfirmation = ({ navigation }: any) => {
             ))}
           </ScrollView>
           <View>
-            <Text style={checkout.totalText}>Total: {price}</Text>
+            <Text style={checkout.totalText}>Total: {priceToText(price)}</Text>
           </View>
         </View>
       </View>

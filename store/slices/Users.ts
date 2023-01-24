@@ -6,10 +6,7 @@ export interface User {
   id: number
   netid: string
   name: string
-  position: string
   college: string
-  createdAt: string
-  updatedAt: string
 }
 
 export interface UsersState {
@@ -121,10 +118,7 @@ async function dummyUsers(): Promise<User[]> {
       id: 6,
       netid: 'staffman123',
       name: 'Staffon McStaffrey',
-      position: 'staff',
       college: 'Morse',
-      createdAt: new Date(),
-      updatedAt: new Date(),
     },
   ]
 }

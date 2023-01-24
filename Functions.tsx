@@ -1,6 +1,6 @@
 export function priceToText(num: number): string {
-  const dollars = Math.floor(num)
-  const cents = Math.floor(num * 100 - dollars * 100)
+  const cents = num % 100
+  const dollars = (num - cents) / 100
   return '$' + dollars + '.' + (cents < 10 ? '0' + cents : cents)
 }
 
