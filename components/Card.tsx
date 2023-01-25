@@ -8,6 +8,7 @@ interface butteryProps {
   openTime: string
   closeTime: string
   offsetY: number
+  active: boolean
   onPress: () => void
 }
 
@@ -17,6 +18,7 @@ export const Card: FC<butteryProps> = (props: butteryProps) => {
   const [closeTimeHours, setCloseTimeHours] = useState(0)
   const [openTimeMinutes, setOpenTimeMinutes] = useState(0)
   const [closeTimeMinutes, setCloseTimeMinutes] = useState(0)
+  const activeText = props.active ? 'CLOSED' : 'INACTIVE'
 
   // determines whether the buttery is currently open
   function currentlyOpen() {
@@ -91,8 +93,8 @@ export const Card: FC<butteryProps> = (props: butteryProps) => {
   return (
     <Pressable
       onPress={props.onPress}
-      disabled={!isOpen}
-      style={({ pressed }) => [{ opacity: pressed || !isOpen ? 0.7 : 1 }]}
+      disabled={!props.active}
+      style={({ pressed }) => [{ opacity: pressed || !props.active ? 0.7 : 1 }]}
     >
       <View style={card.cardContent}>
         <View style={home.textContent}>
@@ -105,16 +107,16 @@ export const Card: FC<butteryProps> = (props: butteryProps) => {
             <Text style={card.cardText1}>{props.college}</Text>
             <Text
               style={{
-                opacity: isOpen ? 0 : 1,
+                opacity: props.active ? 0 : 1,
                 alignSelf: 'center',
                 color: 'white',
                 paddingHorizontal: 8,
                 marginLeft: 10,
-                backgroundColor: '#f00000',
+                backgroundColor: '#ff9600',
                 fontFamily: 'HindSiliguri-Bold',
               }}
             >
-              CLOSED
+              {activeText}
             </Text>
           </View>
           <Text style={card.cardText2}>{cleanTime()}</Text>

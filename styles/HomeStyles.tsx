@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 export const home = StyleSheet.create({
   app: {
     flex: 1,
-    backgroundColor: '#92aadb',
+    backgroundColor: '#2ebf91',
   },
 
   nameText: {
@@ -71,6 +71,7 @@ export const card = StyleSheet.create({
   cardContent: {
     flex: 1,
     padding: 8,
+    color: '#fff',
     borderColor: '#fff',
     borderBottomWidth: 0.25,
     flexDirection: 'row',
