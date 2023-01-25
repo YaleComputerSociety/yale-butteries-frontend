@@ -35,7 +35,7 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
     }
 
     const customer = await stripe.customers.retrieve(customerQuery.data[0].id)
-    const price: number = req.body.price * 100
+    const price: number = req.body.price
 
     // card saving; will use later
     // const paymentMethods = await stripe.customers.listPaymentMethods(customer.id, { type: 'card' })

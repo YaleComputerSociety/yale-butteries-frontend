@@ -84,7 +84,7 @@ model MenuItem {
   availibilities Availability[]
   item_ratings ItemRating[]
   ingredients MenuItemToIngredients[]
-  transaction_item TransactionItem?
+  transaction_item TransactionItem[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
 }
@@ -108,7 +108,7 @@ model TransactionItem {
   transaction_history TransactionHistory @relation(fields: [transactionHistoryId], references: [id])
   transactionHistoryId Int
   menu_item MenuItem @relation(fields: [menuItemId], references: [id])
-  menuItemId Int @unique
+  menuItemId Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
 }

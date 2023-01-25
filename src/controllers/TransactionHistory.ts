@@ -1,17 +1,14 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, TransactionItem } from '@prisma/client'
 
 import { Request, Response } from 'express'
-// import { create } from 'domain'
+
+interface FrontTransactionItem {
+  itemCost: number
+  orderStatus: string
+  menuItemId: number
+}
 
 const prisma = new PrismaClient()
-
-export interface TransactionItem {
-  id: number
-  itemCost: number
-  orderStatus: 'cancelled' | 'queued' | 'in_progress' | 'complete'
-  menuItemId: number
-  transactionHistoryId: number
-}
 
 export async function getAllTransactionHistories(_req: Request, res: Response): Promise<void> {
   try {
@@ -68,19 +65,18 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
     const queue_size_on_placement = 0 // change later, not super necessary
 
     // make array of transaction items
-    const transaction_items = req.body.transactionItems
+    const transaction_items: FrontTransactionItem[] = req.body.transactionItems
     const transactionItems = []
-    transaction_items.forEach((item: TransactionItem) => {
-      // empty array sends string with it so we need to ignore that
+    for (const item of transaction_items) {
       if (item) {
         const newItem = {
-          item_name: 'something', // will need to change
           item_cost: item.itemCost,
+          order_status: item.orderStatus,
+          menuItemId: item.menuItemId,
         }
         transactionItems.push(newItem)
       }
-    })
-    // console.log(transactionItems)
+    }
 
     // store the transaction in the database
     const newTransaction = await prisma.transactionHistory.create({
@@ -109,7 +105,23 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
         },
       },
     })
-    res.send(JSON.stringify(newTransaction))
+    //   id: number
+    // college: string
+    // inProgress: 'false' | 'true' | 'cancelled'
+    // price: number
+    // netId: string
+    // paymentIntentId: string
+    // transactionItems: TransactionItem[]
+
+    const sendTransaction = {
+      id: newTransaction.id,
+      college: req.body.college,
+      inProgress: req.body.inProgress,
+      price: req.body.price,
+      netId: req.body.netId,
+      transactionItems: transactionItems,
+    }
+    res.send(JSON.stringify(sendTransaction))
   } catch (e) {
     console.log(e)
     res.status(400).send(e)

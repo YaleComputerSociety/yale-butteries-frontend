@@ -1,4 +1,4 @@
-import { MenuItem, MenuItemToIngredients, PrismaClient } from '@prisma/client'
+import { MenuItemToIngredients, PrismaClient } from '@prisma/client'
 import { Request, Response } from 'express'
 
 const prisma = new PrismaClient()
@@ -28,7 +28,6 @@ export async function getAllMenuItems(_: Request, res: Response): Promise<void> 
       }
       frontMenuItems.push(newItem)
     }
-    console.log(frontMenuItems)
     res.send(JSON.stringify(frontMenuItems))
   } catch (e) {
     res.status(400).send(e)
