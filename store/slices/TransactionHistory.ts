@@ -1,13 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { TransactionItem } from './TransactionItems'
+import { Alert } from 'react-native'
 
-// import { getJSON } from 'utils/fetch'
+// WILL NEED TO CHANGE FOR MULTIPLE HISTORIES
 
 export interface TransactionHistoryEntry {
   id: number
   college: string
   inProgress: 'false' | 'true' | 'cancelled'
   price: number
-  userId: number
+  netId: string
+  paymentIntentId: string
+  transactionItems: TransactionItem[]
 }
 
 export interface TransactionHistoryState {
@@ -48,8 +52,8 @@ export const asyncFetchTransactionHistory = () => {
     dispatch(setIsLoading(true))
     try {
       // const currentUser = await getJSON<CurrentUser>('/api/users/me')
-      const transactionHistory = await dummyTransactionHistory()
-      dispatch(setTransactionHistoryState(transactionHistory))
+      // const transactionHistory = await dummyTransactionHistory()
+      // dispatch(setTransactionHistoryState(transactionHistory))
     } catch (e) {
       console.log(e)
     } finally {
@@ -58,41 +62,56 @@ export const asyncFetchTransactionHistory = () => {
   }
 }
 
-async function dummyTransactionHistory(): Promise<TransactionHistoryEntry[]> {
-  await new Promise((r) => setTimeout(r, 2000))
-  return [
-    {
-      id: 1,
-      college: 'Morse',
-      inProgress: 'true',
-      price: 3.00,
-      userId: 3,
-    },
-    {
-      id: 2,
-      college: 'Morse',
-      inProgress: 'true',
-      price: 2.50,
-      userId: 4,
-    },
-    {
-      id: 3,
-      college: 'Morse',
-      inProgress: 'true',
-      price: 4.50,
-      userId: 5,
-    },
-  ]
+// async function dummyTransactionHistory(): Promise<TransactionHistoryEntry[]> {
+//   await new Promise((r) => setTimeout(r, 2000))
+//   return [
+//     {
+//       id: 1,
+//       college: 'Morse',
+//       inProgress: 'cancelled',
+//       paymentIntentId: 'e',
+//       price: 3.0,
+//       userId: 3,
+//     },
+//     {
+//       id: 2,
+//       college: 'Morse',
+//       inProgress: 'false',
+//       paymentIntentId: 'f',
+//       price: 2.5,
+//       userId: 4,
+//     },
+//     {
+//       id: 3,
+//       college: 'Morse',
+//       inProgress: 'true',
+//       paymentIntentId: 'g',
+//       price: 4.5,
+//       userId: 5,
+//     },
+//   ]
+// }
+
+export const asyncAddTransactionHistory = (transaction_hisotry: TransactionHistoryEntry) => {
+  return async (dispatch): Promise<void> => {
+    dispatch(setIsLoading(true))
+    try {
+      console.log('hhh')
+    } catch (e) {
+      console.log(e)
+      Alert.alert(e)
+    } finally {
+      dispatch(setIsLoading(false))
+    }
+  }
 }
 
 export const asyncUpdateTransactionHistoryEntry = (transactionHistoryEntry: TransactionHistoryEntry) => {
   return async (dispatch): Promise<void> => {
     try {
-      // Spread operator is typescript hack.
-      // See: https://stackoverflow.com/questions/60697214/how-to-fix-index-signature-is-missing-in-type-error
       // const updatedUser = await putJSON('/api/users', { ...user })
       // dispatch(updateUser(updatedUser.jsonBody))
-      await new Promise((r) => setTimeout(r, 1500))
+      await new Promise((r) => setTimeout(r, 200))
       dispatch(updateTransactionHistory(transactionHistoryEntry))
     } catch (e) {
       console.log(e)

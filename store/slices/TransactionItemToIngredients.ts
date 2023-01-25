@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-// import { getJSON } from 'utils/fetch'
-
 export interface TransactionItemToIngredient {
   transactionItemId: number
   ingredientId: number
@@ -52,7 +50,7 @@ export const asyncFetchtransactionItemToIngredients = () => {
 }
 
 async function dummytransactionItemToIngredients(): Promise<TransactionItemToIngredient[]> {
-  await new Promise((r) => setTimeout(r, 2000))
+  await new Promise((r) => setTimeout(r, 200))
   return []
 }
 

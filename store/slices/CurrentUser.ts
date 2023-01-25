@@ -44,16 +44,28 @@ export const asyncFetchCurrentUser = () => {
   }
 }
 
+export const asyncUpdateCurrentUser = (name: string) => {
+  return async (dispatch): Promise<void> => {
+    dispatch(setIsLoading(true))
+    try {
+      // send stuff to backend and update it there
+      const currentUser = await dummyUser()
+      dispatch(setCurrentUserState({ ...currentUser, name }))
+    } catch (e) {
+      console.log(e)
+    } finally {
+      dispatch(setIsLoading(false))
+    }
+  }
+}
+
 async function dummyUser(): Promise<User> {
-  await new Promise((r) => setTimeout(r, 2000))
+  await new Promise((r) => setTimeout(r, 200))
   return {
     id: 5,
-    netid: 'testmctester123',
-    name: 'Testing McTester III',
-    position: 'customer',
-    college: 'Morse',
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    netid: 'awg32',
+    name: 'Saddison',
+    college: 'murray',
   }
 }
 

@@ -5,8 +5,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface MenuItem {
   id: number
   item: string
-  college: 'morse'
+  college: string
   price: number
+  description: string
   limitedTime: boolean
   isActive: boolean
 }
@@ -40,9 +41,27 @@ export const asyncFetchMenuItems = () => {
   return async (dispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
-      // const currentUser = await getJSON<CurrentUser>('/api/users/me')
-      const menuItems = await dummyMenuItems()
-      dispatch(setMenuItemsState(menuItems))
+      const menuItems = await fetch('http://localhost:3000/api/menu_items', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await menuItems.json()
+      const newData: MenuItem[] = []
+      data.forEach((item) => {
+        const newItem: MenuItem = {
+          id: item.id,
+          item: item.item,
+          college: item.college,
+          price: parseInt(item.price),
+          isActive: item.isActive,
+          description: 'This is a test description',
+          limitedTime: false,
+        }
+        newData.push(newItem)
+      })
+      dispatch(setMenuItemsState(newData))
     } catch (e) {
       console.log(e)
     } finally {
@@ -52,13 +71,14 @@ export const asyncFetchMenuItems = () => {
 }
 
 async function dummyMenuItems(): Promise<MenuItem[]> {
-  await new Promise((r) => setTimeout(r, 2000))
+  await new Promise((r) => setTimeout(r, 200))
   return [
     {
       id: 1,
       item: 'Americano',
       college: 'morse',
-      price: 1.50,
+      price: 1.5,
+      description: 'Espresso and water',
       limitedTime: false,
       isActive: true,
     },
@@ -66,7 +86,8 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       id: 2,
       item: 'Coke',
       college: 'morse',
-      price: 1.00,
+      price: 1.0,
+      description: 'Polar bear',
       limitedTime: false,
       isActive: true,
     },
@@ -74,7 +95,8 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       id: 3,
       item: 'Sprite',
       college: 'morse',
-      price: 1.00,
+      price: 1.0,
+      description: 'Lemon lime yum yum',
       limitedTime: false,
       isActive: true,
     },
@@ -82,7 +104,17 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       id: 4,
       item: 'Diet Coke',
       college: 'morse',
-      price: 1.00,
+      price: 1.0,
+      description: 'Coke but culty',
+      limitedTime: false,
+      isActive: true,
+    },
+    {
+      id: 4,
+      item: 'Berkeley Yum Coke',
+      college: 'berkeley',
+      price: 1.0,
+      description: 'Coke but make it ~berkeley~',
       limitedTime: false,
       isActive: true,
     },
@@ -90,7 +122,8 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       id: 5,
       item: "David's Tux",
       college: 'morse',
-      price: 3.00,
+      price: 3.0,
+      description: 'Quesadilla with chicken nuggets',
       limitedTime: false,
       isActive: true,
     },
@@ -98,7 +131,8 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       id: 6,
       item: 'Quesadilla',
       college: 'morse',
-      price: 1.50,
+      price: 1.5,
+      description: 'Cheesy goodness with tortilla',
       limitedTime: false,
       isActive: true,
     },

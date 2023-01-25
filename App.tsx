@@ -1,17 +1,39 @@
+import React, { FC, useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import React, { FC, useEffect } from 'react'
-import { Provider } from 'react-redux'
-import { StyleSheet, Text, View } from 'react-native'
-import store from './store/ReduxStore'
 import { useAppSelector, useAppDispatch } from './store/TypedHooks'
 import { asyncFetchCurrentUser } from './store/slices/CurrentUser'
+import { Provider } from 'react-redux'
+import { home } from './styles/HomeStyles'
+import { loading } from './styles/GlobalStyles'
+import { ActivityIndicator, View } from 'react-native'
+import store from './store/ReduxStore'
+import AppLoading from 'expo-app-loading'
+import Navigator from './routes/homeStack'
+import * as Font from 'expo-font'
+import 'react-native-gesture-handler'
 
-export default function App() {
-  return (
-    <Provider store={store}>
-      <TestingInner />
-    </Provider>
-  )
+const App: FC = () => {
+  const [fontsLoaded, setFontsLoaded] = useState(false)
+
+  const loadFonts = () =>
+    Font.loadAsync({
+      Roboto: require('./assets/fonts/Roboto-Black.ttf'),
+      'HindSiliguri-Bold': require('./assets/fonts/HindSiliguri-SemiBold.ttf'),
+      'HindSiliguri-Bolder': require('./assets/fonts/HindSiliguri-Bold.ttf'),
+      HindSiliguri: require('./assets/fonts/HindSiliguri-Regular.ttf'),
+      'Roboto-Light': require('./assets/fonts/HindSiliguri-Light.ttf'),
+      'Roboto-Italic': require('./assets/fonts/Roboto-LightItalic.ttf'),
+    })
+
+  if (fontsLoaded) {
+    return (
+      <Provider store={store}>
+        <TestingInner />
+      </Provider>
+    )
+  } else {
+    return <AppLoading startAsync={loadFonts} onFinish={() => setFontsLoaded(true)} onError={console.warn} />
+  }
 }
 
 const TestingInner: FC = () => {
@@ -25,23 +47,17 @@ const TestingInner: FC = () => {
   })
 
   return (
-    <View style={styles.container}>
-      {/* <Text>Open up App.tsx to start working on your app!</Text> */}
+    <View style={home.container}>
       {isLoadingCurrentUser || currentUser == null ? (
-        <Text>{'Loading...'}</Text>
+        <View style={loading.container}>
+          <ActivityIndicator size="large" />
+        </View>
       ) : (
-        <Text>{`User ${currentUser.name} loaded.`}</Text>
+        <Navigator /> //login page ?? --> to buttery navigator
       )}
       <StatusBar style="auto" />
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-})
+export default App

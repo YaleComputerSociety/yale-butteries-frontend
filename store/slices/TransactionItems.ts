@@ -3,11 +3,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import { getJSON } from 'utils/fetch'
 
 export interface TransactionItem {
-  id: number
   itemCost: number
-  orderStatus: 'cancelled' | 'queued' | 'in_progress' | 'complete'
+  orderStatus: 'PENDING' | 'CANCELLED' | 'IN_PROGRESS' | 'FINISHED'
   menuItemId: number
-  transactionHistoryId: number
 }
 
 export interface TransactionItemsState {
@@ -40,7 +38,8 @@ export const transactionItemsSlice = createSlice({
   },
 })
 
-export const { setTransactionItemsState, addTransactionItem, updateTransactionItem, setIsLoading } = transactionItemsSlice.actions
+export const { setTransactionItemsState, addTransactionItem, updateTransactionItem, setIsLoading } =
+  transactionItemsSlice.actions
 
 export const asyncFetchTransactionItems = () => {
   return async (dispatch): Promise<void> => {
@@ -58,46 +57,46 @@ export const asyncFetchTransactionItems = () => {
 }
 
 async function dummyTransactionItems(): Promise<TransactionItem[]> {
-  await new Promise((r) => setTimeout(r, 2000))
+  await new Promise((r) => setTimeout(r, 200))
   return [
     {
       id: 1,
-      itemCost: 1.50,
+      itemCost: 1,
       orderStatus: 'complete',
       menuItemId: 1,
       transactionHistoryId: 1,
     },
     {
       id: 2,
-      itemCost: 1.50,
+      itemCost: 15,
       orderStatus: 'queued',
       menuItemId: 6,
       transactionHistoryId: 1,
     },
     {
       id: 3,
-      itemCost: 1.00,
+      itemCost: 10,
       orderStatus: 'complete',
       menuItemId: 2,
       transactionHistoryId: 2,
     },
     {
       id: 4,
-      itemCost: 1.50,
-      orderStatus: 'in_progress',
+      itemCost: 15,
+      orderStatus: 'PENDING',
       menuItemId: 6,
       transactionHistoryId: 2,
     },
     {
       id: 4,
-      itemCost: 3.00,
+      itemCost: 30,
       orderStatus: 'queued',
       menuItemId: 5,
       transactionHistoryId: 3,
     },
     {
       id: 5,
-      itemCost: 3.00,
+      itemCost: 30,
       orderStatus: 'complete',
       menuItemId: 1,
       transactionHistoryId: 3,
