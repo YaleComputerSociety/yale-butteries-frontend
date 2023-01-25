@@ -1,7 +1,6 @@
 import { College, PrismaClient, User, TransactionItem, TransactionHistory } from '@prisma/client'
 
 import { Request, Response } from 'express'
-import { parse } from 'path'
 
 interface FrontTransactionItem {
   itemCost: number
@@ -29,10 +28,28 @@ const getCollegeFromId = async (id: number): Promise<College> => {
   return college
 }
 
+const getCollegeFromName = async (name: string): Promise<College> => {
+  const college = await prisma.college.findUnique({
+    where: {
+      college: name,
+    },
+  })
+  return college
+}
+
 const getUserFromId = async (id: number): Promise<User> => {
   const user = await prisma.user.findUnique({
     where: {
       id: id,
+    },
+  })
+  return user
+}
+
+const getUserFromNetId = async (netId: string): Promise<User> => {
+  const user = await prisma.user.findUnique({
+    where: {
+      netid: netId,
     },
   })
   return user
@@ -98,22 +115,13 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
     const in_progress = req.body.inProgress
     const total_price = parseInt(req.body.price)
     const payment_intent_id = req.body.paymentIntentId
-    const getUser = await prisma.user.findUnique({
-      where: {
-        netid: req.body.netId,
-      },
-    })
-    if (!getUser) throw "Couldn't find user, try restarting the app and logging in again"
 
-    const user_id = getUser.id
-
-    const getCollege = await prisma.college.findUnique({
-      where: {
-        college: req.body.college,
-      },
-    })
-    if (!getCollege) throw "Sorry, that college doesn't work"
-    const college_id = getCollege.id
+    const user = await getUserFromNetId(req.body.netId)
+    if (!user) throw "Couldn't find user, try restarting the app and logging in again"
+    const user_id = user.id
+    const college = await getCollegeFromName(req.body.college)
+    if (!college) throw "Sorry, that college doesn't work"
+    const college_id = college.id
     // const getMetadata = await prisma.butteryMetaData.findUnique({
     //   where: {
     //     collegeId: college_id,
@@ -164,13 +172,6 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
         },
       },
     })
-    //   id: number
-    // college: string
-    // inProgress: 'false' | 'true' | 'cancelled'
-    // price: number
-    // netId: string
-    // paymentIntentId: string
-    // transactionItems: TransactionItem[]
 
     const sendTransaction = {
       id: newTransaction.id,
