@@ -7,8 +7,8 @@ import collegeRouter from './routes/CollegeApi'
 import ingredientRouter from './routes/IngredientApi'
 import menuItemRouter from './routes/MenuItemApi'
 import ratingRouter from './routes/RatingApi'
-import transactionRouter from './routes/TransactionHistoryApi'
 import userRouter from './routes/UserApi'
+import transactionRouter from './routes/TransactionHistoryApi'
 import paymentRouter from './routes/PaymentApi'
 
 const app: Application = express()
