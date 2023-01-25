@@ -1,6 +1,7 @@
-import { PrismaClient, TransactionItem } from '@prisma/client'
+import { College, PrismaClient, User, TransactionItem, TransactionHistory } from '@prisma/client'
 
 import { Request, Response } from 'express'
+import { parse } from 'path'
 
 interface FrontTransactionItem {
   itemCost: number
@@ -19,16 +20,74 @@ export async function getAllTransactionHistories(_req: Request, res: Response): 
   }
 }
 
+const getCollegeFromId = async (id: number): Promise<College> => {
+  const college = await prisma.college.findUnique({
+    where: {
+      id: id,
+    },
+  })
+  return college
+}
+
+const getUserFromId = async (id: number): Promise<User> => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: id,
+    },
+  })
+  return user
+}
+
+const getTransactionHistoryFromId = async (
+  id: number
+): Promise<TransactionHistory & { transaction_items: TransactionItem[] }> => {
+  const res = await prisma.transactionHistory.findUnique({
+    include: {
+      transaction_items: true,
+    },
+    where: {
+      id: id,
+    },
+  })
+  return res
+}
+
+const backToFrontTransactionItems = (
+  transactionHistory: TransactionHistory & { transaction_items: TransactionItem[] }
+): FrontTransactionItem[] => {
+  const transactionItems = []
+  for (const item of transactionHistory.transaction_items) {
+    if (item) {
+      const newItem = {
+        item_cost: item.item_cost,
+        order_status: item.order_status,
+        menuItemId: item.menuItemId,
+      }
+      transactionItems.push(newItem)
+    }
+  }
+  return transactionItems
+}
+
 export async function getTransactionHistory(req: Request, res: Response): Promise<void> {
   try {
-    const transactionHistory = await prisma.transactionHistory.findUnique({
-      ...includeProperty,
-      where: {
-        id: parseInt(req.params.transactionId),
-      },
-    })
-    res.send(JSON.stringify(transactionHistory))
+    const transactionHistory = await getTransactionHistoryFromId(parseInt(req.params.transactionId))
+    const college = await getCollegeFromId(transactionHistory.collegeId)
+    const user = await getUserFromId(transactionHistory.userId)
+    const transactionItems = backToFrontTransactionItems(transactionHistory)
+
+    const ret = {
+      id: transactionHistory.id,
+      college: college.college,
+      inProgress: transactionHistory.in_progress,
+      price: transactionHistory.total_price,
+      netId: user.netid,
+      transactionItems: transactionItems,
+    }
+
+    res.send(JSON.stringify(ret))
   } catch (e) {
+    console.log(e)
     res.status(400).send(e)
   }
 }
