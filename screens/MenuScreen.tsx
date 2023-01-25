@@ -9,6 +9,7 @@ import { home } from '../styles/HomeStyles'
 import { menu } from '../styles/MenuStyles'
 import { loading } from '../styles/GlobalStyles'
 import { getPriceFromOrderItems, returnCollegeName } from '../Functions'
+import * as Haptics from 'expo-haptics'
 
 const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
   //make a function that gets the price from the items in the cart
@@ -113,6 +114,7 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
               }}
               onPress={() => {
                 navigation.navigate('CheckoutScreen', priceTotal)
+                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
               }}
             >
               <Text style={{ color: 'white', fontSize: 20, fontFamily: 'HindSiliguri-Bold' }}>Go to Cart</Text>
