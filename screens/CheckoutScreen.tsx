@@ -5,7 +5,6 @@ import { checkout } from '../styles/CheckoutStyles'
 import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
 import { loading } from '../styles/GlobalStyles'
 import CheckoutItem from '../components/CheckoutItem'
-import Ionicon from 'react-native-vector-icons/Ionicons'
 import { getPriceFromOrderItems } from '../Functions'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 import { removeOrderItem, OrderItem } from '../store/slices/OrderCart'
@@ -76,6 +75,9 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                   { backgroundColor: pressed ? '#222' : '#333', opacity: orderItems.length < 1 ? 0.7 : 1 },
                   checkout.checkoutButton,
                 ]}
+                onPress={() => {
+                  navigation.navigate('OrderStatusScreen')
+                }}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>
               </Pressable>
@@ -89,17 +91,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
 CheckoutScreen.navigationOptions = (navData) => {
   return {
-    headerRight: () => (
-      <Ionicon
-        name="settings-sharp"
-        size={20}
-        color="#fff"
-        onPress={() => {
-          navData.navigation.navigate('SettingsScreen')
-        }}
-        style={{ paddingRight: 20 }}
-      />
-    ),
+   
   }
 }
 

@@ -114,7 +114,7 @@ const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
               }}
               onPress={() => {
                 navigation.navigate('CheckoutScreen', priceTotal)
-                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
               }}
             >
               <Text style={{ color: 'white', fontSize: 20, fontFamily: 'HindSiliguri-Bold' }}>Go to Cart</Text>
