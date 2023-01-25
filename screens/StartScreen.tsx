@@ -117,6 +117,9 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 alignSelf: 'center',
                 position: 'absolute',
                 marginTop: '40%',
+                shadowColor: '#000',
+                shadowOpacity: 0.3,
+                shadowRadius: 20,
               }}
             >
               <WebView

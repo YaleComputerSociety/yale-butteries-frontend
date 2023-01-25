@@ -1,6 +1,7 @@
 /* eslint-disable import/namespace */
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import * as Haptics from 'expo-haptics'
 import { View, Text, Pressable } from 'react-native'
 import { priceToText } from '../Functions'
 import { checkout } from '../styles/CheckoutStyles'
@@ -15,6 +16,7 @@ interface Props {
 
 const CheckoutItem: any = ({ decUpdate, checkoutItem }: Props) => {
   const removeItem = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     decUpdate(checkoutItem)
   }
 

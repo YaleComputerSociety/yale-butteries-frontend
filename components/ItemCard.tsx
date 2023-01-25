@@ -4,25 +4,38 @@ import { item } from '../styles/MenuStyles'
 import { priceToText } from '../Functions'
 import { MenuItem } from '../store/slices/MenuItems'
 import * as Haptics from 'expo-haptics'
+import { OrderItem } from '../store/slices/OrderCart'
 
 interface Props {
   menuItem: MenuItem
+  items: OrderItem[]
   incUpdate: (menuItem: MenuItem) => void
 }
 
-export const ItemCard: FC<Props> = ({ menuItem, incUpdate }: Props) => {
+export const ItemCard: FC<Props> = ({ menuItem, items, incUpdate }: Props) => {
+  function getNumberOfMenuItemInCart(items) {
+    let count = 0
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].orderItem.id === menuItem.id) {
+        count++
+      }
+    }
+    return count
+  }
+
   const [count, setCount] = useState(0)
 
   const addItem = () => {
     if (count < 5) {
-      Haptics.selectionAsync('Heavy')
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+      //Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
       setCount(count + 1)
       incUpdate(menuItem)
     }
   }
 
   useEffect(() => {
-    count
+    setCount(getNumberOfMenuItemInCart(items))
   })
 
   return (
@@ -36,7 +49,11 @@ export const ItemCard: FC<Props> = ({ menuItem, incUpdate }: Props) => {
       <View style={item.spacer} />
       <Pressable
         onPress={addItem}
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button]}
+        disabled={count >= 5 ? true : false}
+        style={({ pressed }) => [
+          { opacity: count >= 5 ? 0.5 : 1, backgroundColor: pressed ? '#bbb' : '#eee' },
+          item.button,
+        ]}
       >
         <Text style={item.buttonText}>Add to Cart</Text>
       </Pressable>

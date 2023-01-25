@@ -6,6 +6,8 @@ import CheckoutScreen from '../screens/CheckoutScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import StartScreen from '../screens/StartScreen'
 import NavigationScreen from '../screens/NavigationScreen'
+import OrderStatusScreen from '../screens/OrderStatusScreen'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 
 const screens = {
   StartScreen: {
@@ -44,12 +46,21 @@ const screens = {
       title: 'Settings',
     },
   },
+  OrderStatusScreen: {
+    screen: OrderStatusScreen,
+    navigationOptions: {
+      headerShown: false,
+      gestureEnabled: false,
+      title: 'StatusScreen',
+      headerLeft: () => <></>,
+    },
+  },
 }
 
 const HomeStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: '#d3959b',
+      backgroundColor: '#768bb5',
       borderWidth: 0,
       shadowColor: '#111',
       shadowRadius: 200,
