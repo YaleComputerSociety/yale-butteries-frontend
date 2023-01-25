@@ -1,6 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import usersReducer from './slices/Users'
+<<<<<<< HEAD
+=======
+import currentUserReducer from './slices/CurrentUser'
+>>>>>>> prisma
 import eventsReducer from './slices/Events'
 import eventOccurrencesReducer from './slices/EventOccurrences'
 import usersEventOccurrencesReducer from './slices/UsersEventOccurrences'
@@ -11,6 +15,10 @@ import roomsReducer from './slices/Rooms'
 const store = configureStore({
   reducer: {
     users: usersReducer,
+<<<<<<< HEAD
+=======
+    currentUser: currentUserReducer,
+>>>>>>> prisma
     events: eventsReducer,
     eventOccurrences: eventOccurrencesReducer,
     usersEventOccurrences: usersEventOccurrencesReducer,

@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-import Default from 'layouts/Default'
+import Default from '../../layouts/Default'
 
 const Inner: FC = () => {
   return <div>{'Dashboard logic'}</div>
@@ -14,4 +14,4 @@ const Dashboard: FC = () => {
   )
 }
 
-export default Dashboard 
+export default Dashboard

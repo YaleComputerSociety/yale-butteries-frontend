@@ -1,0 +1,203 @@
+.scoreboard {
+  padding: 0 10%;
+  margin: 5vh auto;
+  width: 100%;
+}
+
+.scoreDisplay {
+  border-radius: 0.6rem 0.6rem 0 0;
+  border: 1px solid #dee2e6;
+  background-color: white;
+  cursor: pointer;
+  width: 100%;
+  outline: none;
+  box-shadow: 0 3px 10px rgba(0 0 0 / 0.2);
+}
+
+.scoreDisplayNoBox {
+  border-radius: 0.6rem 0.6rem 0 0;
+  border: 1px solid #dee2e6;
+  background-color: white;
+  cursor: pointer;
+  width: 100%;
+  outline: none;
+}
+
+.scoreIntroduction {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.6rem 0.9rem 0;
+}
+
+.scoreResult {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.logo {
+  max-width: 50%;
+}
+
+.teamAndIcon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 35%;
+}
+
+.scoreTable {
+  // --bs-table-bg: transparent;
+  // --bs-table-accent-bg: transparent;
+  // --bs-table-striped-color: #212529;
+  // --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
+  // --bs-table-active-color: #212529;
+  // --bs-table-active-bg: rgba(0, 0, 0, 0.1);
+  // --bs-table-hover-color: #212529;
+  // --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
+  width: 100%;
+  // margin-bottom: 1rem;
+  color: #212529;
+  vertical-align: top;
+  border: 0px solid white;
+  background-color: white;
+  caption-side: bottom;
+  border-collapse: collapse;
+  display: table;
+  text-align: center;
+  // text-indent: initial;
+  border-radius: 5px;
+  border-spacing: 2px;
+  overflow-x: scroll;
+  border: 1px #dee2e6 solid;
+  border-bottom-right-radius: 10px;
+  border-top: 0
+}
+
+.headerRow {
+  text-align: center;
+}
+
+.headerRow:hover {
+  background-color: lightgray;
+}
+
+tbody, td, tfoot, th, thead, tr {
+  border-color: inherit;
+  border-style: solid;
+  border-width: 0;
+  border-bottom: 1px #dee2e6 solid;
+}
+
+thead {
+  display: table-header-group;
+}
+
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+
+.score-table>thead {
+  vertical-align: bottom;
+}
+
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  // border-bottom: solid 1px black;
+}
+
+th {
+  display: table-cell;
+  vertical-align: inherit;
+  font-weight: bold;
+  // border-bottom: solid 1px black;
+}
+
+td {
+  padding: 1vh 0;
+}
+
+.score-table>:not(:last-child)>:last-child>* {
+  border-bottom-color: currentColor;
+}
+
+.score-table>:not(caption)>*>* {
+  padding: .5rem .5rem;
+  background-color: var(--bs-table-bg);
+  border-bottom-width: 1px;
+  box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
+
+.collapsible {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+
+.collapseContent {
+  transition: ease-in-out 0.2s;
+}
+
+.collapseContent.collapsed {
+	display: none;
+	transition: max-height 0.5s ease-out;
+	opacity: 0;
+}
+
+.collapsedContent.expanded {
+	display: block;
+	opacity: 100;
+	transition: max-height 0.5s ease-out;
+}
+
+.tabMenu {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.tabButton {
+  cursor: pointer;
+  padding: 8px 16px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  transition: ease-in-out 0.3s;
+  width: 100%;
+  border: 1px #dee2e6 solid;
+  &.home {
+    border-right: 0;
+  }
+  &.away {
+    border-left: 0;
+  }
+  &:focus, &:hover {
+    border-bottom: 2px solid #007bef;
+  }
+}
+
+.test {
+  transition: ease-in-out 0.2s;
+}
+
+.test.open {
+  transform: scaleY(-1);
+}
+
+.scoreColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  flex: 30%;
+  padding: 10px 0;
+}
+
+.scoreSize {
+  font-size: 2.25em;
+}

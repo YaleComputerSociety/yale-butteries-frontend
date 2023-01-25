@@ -6,6 +6,8 @@ import Dashboard from 'pages/Dashboard'
 import Events from 'pages/Events'
 import Intramurals from 'pages/Intramurals'
 import Testing from 'pages/Testing'
+import Signup from 'pages/Signup'
+import Login from 'pages/Login/'
 
 export const MainRouter: FC = () => {
   return (
@@ -21,7 +23,10 @@ export const MainRouter: FC = () => {
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/events" component={Events} />
         <Route path="/intramurals" component={Intramurals} />
+        <Route path="/sign_up" component={Signup} />
+        <Route path="/login" component={Login} />
         <Route path="/testing" component={Testing} />
+        <Route path="/login" component={Login} />
         <Route path="/" component={Root} />
       </Switch>
     </Router>

@@ -1,0 +1,156 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int      @id @default(autoincrement())
+  netid            String   @unique
+  email            String
+  name             String
+  college   College @relation(fields: [collegeId], references: [id])
+  collegeId Int
+  transaction_histories TransactionHistory[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+}
+
+model College {
+  id Int @id @default(autoincrement())
+  college String @unique
+  image_url String?
+  buttery_activated Boolean
+  users User[]
+  transaction_histories TransactionHistory[]
+  buttery_meta_data ButteryMetaData?
+  menu_items MenuItem[]
+  availabilities Availability[]
+  ingredients Ingredient[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+}
+
+model ButteryMetaData {
+  id Int @id @default(autoincrement())
+  max_queue_size Int
+  reserved_queue_spots Int
+  college College @relation(fields: [collegeId], references: [id])
+  collegeId Int @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+}
+
+model Availability {
+  id Int @id @default(autoincrement())
+  start_time DateTime
+  end_time DateTime
+  collegeId Int
+  college College @relation(fields: [collegeId], references: [id])
+  menu_items MenuItem[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+}
+
+model Ingredient {
+  id Int @id @default(autoincrement())
+  ingredient String
+  price Int
+  available Boolean
+  collegeId Int
+  college College @relation(fields: [collegeId], references: [id])
+  item_ratings ItemRating[]
+  menu_items MenuItemToIngredients[]
+  transaction_items TransactionItem[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+}
+
+model MenuItem {
+  id Int @id @default(autoincrement())
+  item String
+  price Int
+  limited_time Boolean
+  is_active Boolean
+  item_type ItemType @default(FOOD)
+  college College @relation(fields: [collegeId], references: [id])
+  collegeId Int
+  availibilities Availability[]
+  item_ratings ItemRating[]
+  ingredients MenuItemToIngredients[]
+  transaction_item TransactionItem[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+}
+
+model ItemRating {
+  id Int @id @default(autoincrement())
+  rating Int
+  order_complete DateTime
+  ingredients Ingredient[] 
+  menu_item MenuItem @relation(fields: [menuItemId], references: [id])
+  menuItemId Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+}
+
+model TransactionItem {
+  id Int @id @default(autoincrement())
+  item_cost Int
+  order_status OrderStatus @default(PENDING)
+  ingredients Ingredient[]
+  transaction_history TransactionHistory @relation(fields: [transactionHistoryId], references: [id])
+  transactionHistoryId Int
+  menu_item MenuItem @relation(fields: [menuItemId], references: [id])
+  menuItemId Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+}
+
+enum OrderStatus {
+  PENDING
+  CANCELLED
+  IN_PROGRESS
+  FINISHED
+}
+
+enum ItemType {
+  FOOD
+  DRINK
+  DESSERT
+}
+
+model TransactionHistory {
+  id Int @id @default(autoincrement())
+  order_placed DateTime
+  order_complete DateTime?
+  queue_size_on_placement Int
+  queue_size_on_complete Int?
+  in_progress String
+  total_price Int
+  college College @relation(fields: [collegeId], references: [id])
+  collegeId Int
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  transaction_items TransactionItem[]
+  payment_intent_id String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+}
+
+model MenuItemToIngredients {
+  optional Boolean
+  menu_item MenuItem @relation(fields: [menuItemId], references: [id])
+  menuItemId Int
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt @default(now())
+  @@id([menuItemId, ingredientId])
+}
