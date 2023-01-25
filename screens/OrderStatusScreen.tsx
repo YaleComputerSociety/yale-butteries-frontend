@@ -3,21 +3,43 @@ import React, { FC, useEffect, useState } from 'react'
 import { View, ScrollView, ActivityIndicator, Text, Pressable } from 'react-native'
 import * as Haptics from 'expo-haptics'
 import StatusItem from '../components/StatusCard'
+import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
+import { updateTransactionHistory } from '../store/slices/TransactionHistory'
+import { json } from 'stream/consumers'
 
 const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
-  // const OrderStatusScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  //   //transactionHistory remains unlinked
-  //   //for now: 0 is queued, 1 is in progress, 2 is done
-  //   const dispatch = useAppDispatch()
-  //   const { transactionHistory, isLoading: isLoadingTransactionHistory } = useAppSelector(
-  //     (state) => state.transactionHistory
-  //   )
+  const dispatch = useAppDispatch()
+  const { isLoading: isLoadingTransactionHistory, currentTransactionHistory } = useAppSelector(
+    (state) => state.transactionHistory
+  )
 
-  //   useEffect(() => {
-  //     if (transactionHistory == null) {
-  //       dispatch(asyncFetchTransactionHistory())
-  //     }
-  //   })
+  const fetchTransaction = async () => {
+    try {
+      const currentTransaction = await fetch('http://localhost:3000/api/transactions/' + currentTransactionHistory.id, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const response = await currentTransaction.json()
+      console.log(response)
+      if (response.status == 400) throw response
+      dispatch(updateTransactionHistory(response))
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchTransaction().catch(console.log)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  //   return () => clearInterval(interval)
+  // }, [])
 
   //   const orderStatus = 1
   //   const orderStatusText = ['Your order is in the queue', 'Your order is being prepared', 'Your order is ready!']
@@ -55,7 +77,10 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
           }}
         >
           Order Status:
-          <Text style={{ color: status == 'In Queue' ? 'yellow' : 'white', fontFamily: 'HindSiliguri-Bold' }}>
+          <Text
+            onPress={() => fetchTransaction()}
+            style={{ color: status == 'In Queue' ? 'yellow' : 'white', fontFamily: 'HindSiliguri-Bold' }}
+          >
             {' '}
             {status}{' '}
           </Text>

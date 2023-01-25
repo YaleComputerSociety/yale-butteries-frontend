@@ -10,11 +10,14 @@ import { menu } from '../styles/MenuStyles'
 import { loading } from '../styles/GlobalStyles'
 import { getPriceFromOrderItems, returnCollegeName } from '../Functions'
 import * as Haptics from 'expo-haptics'
+import { NavigationStackProp } from 'react-navigation-stack'
+import { NavigationParams } from 'react-navigation'
 
-const butteryScreen: FC<{ navigation: any }> = ({ navigation }) => {
+const butteryScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
+  navigation,
+}) => {
   //make a function that gets the price from the items in the cart
   const dispatch = useAppDispatch()
-  const collegeName = navigation.getParam('college_Name')
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
   const {
     orderItems,

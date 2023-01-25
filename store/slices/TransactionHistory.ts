@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { TransactionItem } from './TransactionItems'
 import { Alert } from 'react-native'
-
-// WILL NEED TO CHANGE FOR MULTIPLE HISTORIES
+import { assert } from 'console'
 
 export interface TransactionHistoryEntry {
   id: number
@@ -15,12 +14,14 @@ export interface TransactionHistoryEntry {
 }
 
 export interface TransactionHistoryState {
-  transactionHistory: TransactionHistoryEntry[] | null
+  transactionHistory: TransactionHistoryEntry[]
+  currentTransactionHistory: TransactionHistoryEntry
   isLoading: boolean
 }
 
 const transactionHistoryInitialState: TransactionHistoryState = {
-  transactionHistory: null,
+  transactionHistory: [],
+  currentTransactionHistory: null,
   isLoading: false,
 }
 
@@ -28,15 +29,18 @@ export const transactionHistorySlice = createSlice({
   name: 'TransactionHistory',
   initialState: transactionHistoryInitialState,
   reducers: {
-    setTransactionHistoryState: (state, action: PayloadAction<TransactionHistoryEntry[]>) => {
-      state.transactionHistory = action.payload
+    setTransactionHistoryState: (state, action: PayloadAction<TransactionHistoryEntry>) => {
+      state.transactionHistory = [action.payload]
+      state.currentTransactionHistory = action.payload
     },
     addTransactionHistoryEntry: (state, action: PayloadAction<TransactionHistoryEntry>) => {
       state.transactionHistory = [...state.transactionHistory, action.payload]
+      state.currentTransactionHistory = action.payload
     },
     updateTransactionHistory: (state, action: PayloadAction<TransactionHistoryEntry>) => {
       const transactionHistoryIndex = state.transactionHistory.findIndex((element) => element.id == action.payload.id)
       state.transactionHistory[transactionHistoryIndex] = action.payload
+      state.currentTransactionHistory = state.transactionHistory[state.transactionHistory.length - 1]
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload
