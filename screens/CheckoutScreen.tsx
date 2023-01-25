@@ -2,12 +2,13 @@
 import * as React from 'react'
 import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
 import { checkout } from '../styles/CheckoutStyles'
-import { useAppSelector } from '../store/TypedHooks'
+import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { loading } from '../styles/GlobalStyles'
 import CheckoutItem from '../components/CheckoutItem'
 import { priceToText } from '../Functions'
 import { STRIPE_PK } from '@env'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
+import { setTransactionHistoryState } from '../store/slices/TransactionHistory'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   // const [loading, setLoading] = useState(false)
@@ -17,6 +18,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     college: collegeOrderCart,
     price,
   } = useAppSelector((state) => state.orderCart)
+  const dispatch = useAppDispatch()
 
   const stripe = useStripe()
 
@@ -24,41 +26,51 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     try {
       // sending request
       const obj = { netid: name, price: amount }
-      const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
-        method: 'POST',
-        body: JSON.stringify(obj),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      // const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
+      //   method: 'POST',
+      //   body: JSON.stringify(obj),
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // })
+      // const data = await response.json()
+      // if (!response.ok) return Alert.alert(data.message)
+      // const clientSecret = data.paymentIntent.client_secret
+      // const initSheet = await stripe.initPaymentSheet({
+      //   paymentIntentClientSecret: clientSecret,
+      //   merchantDisplayName: 'Yale Butteries',
+      // })
+      // if (initSheet.error) return Alert.alert(initSheet.error.message)
+      // const presentSheet = await stripe.presentPaymentSheet()
+      // if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+
+      const transaction_items = []
+      orderItems.forEach((item) => {
+        const newItem = {
+          itemCost: item.orderItem.price,
+          orderStatus: 'PENDING',
+          menuItemId: item.orderItem.id,
+        }
+        transaction_items.push(newItem)
       })
-      const data = await response.json()
-      if (!response.ok) return Alert.alert(data.message)
-      const clientSecret = data.paymentIntent.client_secret
-      const initSheet = await stripe.initPaymentSheet({
-        paymentIntentClientSecret: clientSecret,
-        merchantDisplayName: 'Yale Butteries',
-      })
-      if (initSheet.error) return Alert.alert(initSheet.error.message)
-      const presentSheet = await stripe.presentPaymentSheet()
-      if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+
       const uploadTransaction = await fetch('http://localhost:3000/api/transactions', {
         method: 'POST',
         body: JSON.stringify({
           inProgress: 'false',
-          price: obj.price,
-          netId: obj.netid,
+          price: price,
+          netId: name,
           college: collegeOrderCart,
-          paymentIntentId: data.paymentIntent.id,
-          transactionItems: [],
+          paymentIntentId: 'a', //data.paymentIntent.id,
+          transactionItems: transaction_items,
         }),
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      // HERE HERE HERE HERE HERE HERE
-      // HERE HERE HERE HERE HERE HERE
-      // HERE HERE HERE HERE HERE HERE
-      if (uploadTransaction.status == 400) throw 'Idk what the problem is but something went wrong'
+      const uploadTransactionResponse = await uploadTransaction.json()
+      if (uploadTransaction.status == 400) throw uploadTransactionResponse
+      dispatch(setTransactionHistoryState(uploadTransactionResponse))
 
       Alert.alert('Payment complete, thank you!')
 

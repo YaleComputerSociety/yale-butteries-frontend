@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-// import { getJSON } from 'utils/fetch'
-
 export interface TransactionItemToIngredient {
   transactionItemId: number
   ingredientId: number

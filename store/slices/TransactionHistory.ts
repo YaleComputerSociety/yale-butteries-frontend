@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { TransactionItem } from './TransactionItems'
-import { postJSON } from '../../utils/fetch'
+import { Alert } from 'react-native'
+
+// WILL NEED TO CHANGE FOR MULTIPLE HISTORIES
 
 export interface TransactionHistoryEntry {
   id: number
@@ -90,23 +92,16 @@ export const asyncFetchTransactionHistory = () => {
 //   ]
 // }
 
-// no need to store result in redux store, user doesn't need this information
-export const asyncInsertTransactionHistoryEntry = (transactionHistoryEntry: TransactionHistoryEntry) => {
+export const asyncAddTransactionHistory = (transaction_hisotry: TransactionHistoryEntry) => {
   return async (dispatch): Promise<void> => {
+    dispatch(setIsLoading(true))
     try {
-      const newTransactionHistoryEntry = await postJSON('/api/transactions', {
-        inProgress: transactionHistoryEntry.inProgress,
-        price: transactionHistoryEntry.price,
-        transactionItems: transactionHistoryEntry.transactionItems,
-        college: transactionHistoryEntry.college,
-        netId: transactionHistoryEntry.netId,
-        paymentIntentId: transactionHistoryEntry.paymentIntentId,
-      })
-      console.log(newTransactionHistoryEntry)
-      // dispatch(insertUser(newTransactionHistoryEntry.jsonBody))
-      // dispatch(addTransactionHistoryEntry(transactionHistoryEntry))
+      console.log('hhh')
     } catch (e) {
       console.log(e)
+      Alert.alert(e)
+    } finally {
+      dispatch(setIsLoading(false))
     }
   }
 }

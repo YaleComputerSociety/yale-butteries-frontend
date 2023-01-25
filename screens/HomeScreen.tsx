@@ -21,9 +21,9 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false}>
       <View style={home.outerContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')}>
           <Image source={require('../assets/images/SettingsIcon.png')} style={styles.button} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Card
           onPress={() => toMenu('berkeley')}
           gradientColors={['#ed0025', '#dddddd']}
@@ -158,7 +158,6 @@ Home.navigationOptions = (navData) => {
         title="Help"
         onPress={() => {
           navData.navigation.navigate('SettingsScreen')
-          console.log('Hello World')
         }}
       />
     ),
