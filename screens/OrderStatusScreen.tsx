@@ -1,56 +1,72 @@
-import React, { useState, useEffect } from 'react'
-import { Text, View, Pressable, ScrollView } from 'react-native'
-import { OrderStatusBar } from '../components/OrderStatusBar'
-import { OrderConfirmation } from '../components/OrderConfirmation'
-import { orderStatusScreenSty, orderStatusBarSty } from '../styles/OrderStatusStyles'
-import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
-import { asyncFetchTransactionHistory } from '../store/slices/TransactionHistory'
+import Ionicon from 'react-native-vector-icons/Ionicons'
+import React, { FC, useEffect, useState } from 'react'
+import { View, ScrollView, ActivityIndicator, Text, Pressable } from 'react-native'
+import * as Haptics from 'expo-haptics'
+import StatusItem from '../components/StatusCard'
 
-const OrderStatusScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  //transactionHistory remains unlinked
-  //for now: 0 is queued, 1 is in progress, 2 is done
-  const dispatch = useAppDispatch()
-  const { transactionHistory, isLoading: isLoadingTransactionHistory } = useAppSelector(
-    (state) => state.transactionHistory
-  )
+const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
+  // const OrderStatusScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+  //   //transactionHistory remains unlinked
+  //   //for now: 0 is queued, 1 is in progress, 2 is done
+  //   const dispatch = useAppDispatch()
+  //   const { transactionHistory, isLoading: isLoadingTransactionHistory } = useAppSelector(
+  //     (state) => state.transactionHistory
+  //   )
 
-  useEffect(() => {
-    if (transactionHistory == null) {
-      dispatch(asyncFetchTransactionHistory())
-    }
-  })
+  //   useEffect(() => {
+  //     if (transactionHistory == null) {
+  //       dispatch(asyncFetchTransactionHistory())
+  //     }
+  //   })
 
-  const orderStatus = 1
-  const orderStatusText = ['Your order is in the queue', 'Your order is being prepared', 'Your order is ready!']
+  //   const orderStatus = 1
+  //   const orderStatusText = ['Your order is in the queue', 'Your order is being prepared', 'Your order is ready!']
 
-  //Order status: 0 = Order is in the queue; 1 = Order is being prepared; 2 = Order is ready
+  const status = 'In Queue'
   return (
-    <View style={orderStatusScreenSty.pageWrapper}>
-      <View style={orderStatusScreenSty.headerWrapper}>
-        <View style={orderStatusScreenSty.headerTextWrapper}>
-          <Text style={orderStatusScreenSty.headerText}>Your Order is Complete! </Text>
-        </View>
-        <OrderStatusBar orderStatus={orderStatus} />
-        <View style={orderStatusScreenSty.stepsWrapper}>
-          <Text style={orderStatusScreenSty.stepsText}>{orderStatusText[orderStatus]}</Text>
-        </View>
+    <View
+      style={{
+        backgroundColor: '#222',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        width: '100%',
+      }}
+    >
+      <View
+        style={{
+          backgroundColor: '#333',
+          width: '90%',
+          height: '6%',
+          borderRadius: 18,
+          marginBottom: 25,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 21,
+            color: 'white',
+            fontFamily: 'HindSiliguri',
+            alignSelf: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          Order Status:
+          <Text style={{ color: status == 'In Queue' ? 'yellow' : 'white', fontFamily: 'HindSiliguri-Bold' }}>
+            {' '}
+            {status}{' '}
+          </Text>
+        </Text>
       </View>
-      <View style={orderStatusScreenSty.footerWrapper}>
-        <OrderConfirmation navigation={navigation} />
+      <View style={{ backgroundColor: '#333', width: '90%', height: '60%', borderRadius: 18, marginBottom: 25 }}>
+        {/* <StatusItem transactionItem={}> */}
       </View>
+      <View style={{ backgroundColor: '#32CD32', width: '90%', height: '1.75%', borderRadius: 18 }}></View>
     </View>
   )
 }
 
 export default OrderStatusScreen
-
-/*<View style={{flex: 1}}>
-			<View  style={orderStatusScreenSty.headerWrapper}> 
-				<Text style={orderStatusScreenSty.headerText}>Your Order is Complete! </Text>
-			</View>
-			<OrderStatusBar orderStatus={orderStatus} />   
-			<View  style={orderStatusScreenSty.stepsWrapper}> 
-				<Text style={orderStatusScreenSty.stepsText}>{orderStatusText[orderStatus]}</Text>
-			</View>
-			<OrderConfirmation navigation={navigation} />
-		</View>*/

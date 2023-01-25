@@ -4,7 +4,7 @@ export const menu = StyleSheet.create({
   wrapper: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#eee',
+    backgroundColor: '#fff',
   },
 
   upperContainer: {
@@ -13,37 +13,69 @@ export const menu = StyleSheet.create({
 
   lowerContainer: {
     width: '100%',
-    height: '18%',
-    backgroundColor: '#fff',
+    height: '30%',
+    shadowColor: '#333',
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    borderRadius: 10,
+  },
+
+  iconContainer: {
+    width: '100%',
+    height: 120,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    borderBottomColor: '#eee',
+    borderBottomWidth: 1,
+  },
+
+  icon: {
+    marginVertical: 20,
+    marginHorizontal: 25,
+    width: 80,
+    height: 80,
+    ///backgroundColor: '#eee',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 15,
+  },
+
+  text: {
+    fontSize: 14,
+    fontFamily: 'HindSiliguri-Bold',
+    color: '#fff',
   },
 })
 
 export const item = StyleSheet.create({
   card: {
     flex: 1,
+    padding: 12,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
-    height: 120,
-    elevation: 3,
+    height: 100,
     backgroundColor: '#fff',
-    borderRadius: 6,
+    borderBottomColor: '#eee',
+    borderBottomWidth: 0.5,
     shadowRadius: 2,
-    margin: 4,
-    marginVertical: 8,
   },
 
   leftSide: {
+    //backgroundColor: 'red',
     flex: 6,
+    marginRight: 8,
   },
 
   itemName: {
     fontFamily: 'HindSiliguri-Bold',
-    fontWeight: 'bold',
     color: '#222',
-    fontSize: 20,
-    marginBottom: 5,
+    fontSize: 18,
+    //backgroundColor: 'green',
   },
 
   itemDescription: {
@@ -55,31 +87,26 @@ export const item = StyleSheet.create({
   },
 
   itemPrice: {
-    fontFamily: 'HindSiliguri',
-    fontWeight: 'bold',
     color: '#222',
-    fontSize: 18,
+    fontSize: 15,
     //backgroundColor: 'blue'
   },
 
   button: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
     flexDirection: 'row',
     justifyContent: 'center',
     textAlign: 'center',
-    borderRadius: 10,
-    height: '38%',
+    borderRadius: 8,
     alignItems: 'center',
-    width: '10%',
   },
 
   buttonText: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    fontFamily: 'HindSiliguri-Bold',
     justifyContent: 'center',
-    fontFamily: 'Roboto',
     alignItems: 'center',
-    fontSize: 25,
+    fontSize: 15,
     textAlignVertical: 'center',
   },
 
@@ -103,13 +130,15 @@ export const item = StyleSheet.create({
 
   outerContainer: {
     flex: 2,
-    backgroundColor: '#fff',
+    backgroundColor: '#333',
+    borderRadius: 10,
   },
 
   upperContainer: {
     flex: 1,
+    borderRadius: 10,
     flexDirection: 'row',
-    backgroundColor: '#eee',
+    backgroundColor: '#444',
     alignItems: 'center',
     justifyContent: 'space-evenly',
   },

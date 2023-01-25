@@ -74,9 +74,27 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
   await new Promise((r) => setTimeout(r, 200))
   return [
     {
+      id: 7,
+      item: 'Flavor Blasted Goldfish',
+      college: 'Morse',
+      price: 12,
+      description: 'cheesy aquamarine inhabitants encrusted with a carbohydrate compote',
+      limitedTime: false,
+      isActive: true,
+    },
+    {
+      id: 1,
+      item: 'Flavor Blasted Goldfish',
+      college: 'Murray',
+      price: 0.5,
+      description: 'cheesy aquamarine inhabitants encrusted with a carbohydrate compote',
+      limitedTime: false,
+      isActive: true,
+    },
+    {
       id: 1,
       item: 'Americano',
-      college: 'morse',
+      college: 'Morse',
       price: 1.5,
       description: 'Espresso and water',
       limitedTime: false,
@@ -85,7 +103,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
     {
       id: 2,
       item: 'Coke',
-      college: 'morse',
+      college: 'Morse',
       price: 1.0,
       description: 'Polar bear',
       limitedTime: false,
@@ -94,7 +112,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
     {
       id: 3,
       item: 'Sprite',
-      college: 'morse',
+      college: 'Morse',
       price: 1.0,
       description: 'Lemon lime yum yum',
       limitedTime: false,
@@ -103,7 +121,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
     {
       id: 4,
       item: 'Diet Coke',
-      college: 'morse',
+      college: 'Morse',
       price: 1.0,
       description: 'Coke but culty',
       limitedTime: false,
@@ -112,7 +130,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
     {
       id: 4,
       item: 'Berkeley Yum Coke',
-      college: 'berkeley',
+      college: 'Berkeley',
       price: 1.0,
       description: 'Coke but make it ~berkeley~',
       limitedTime: false,
@@ -121,7 +139,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
     {
       id: 5,
       item: "David's Tux",
-      college: 'morse',
+      college: 'Morse',
       price: 3.0,
       description: 'Quesadilla with chicken nuggets',
       limitedTime: false,
@@ -130,7 +148,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
     {
       id: 6,
       item: 'Quesadilla',
-      college: 'morse',
+      college: 'Morse',
       price: 1.5,
       description: 'Cheesy goodness with tortilla',
       limitedTime: false,

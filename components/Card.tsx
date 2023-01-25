@@ -1,11 +1,9 @@
 import React, { useState, useEffect, FC } from 'react'
 import { View, Text, Pressable } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
-import { card } from '../styles/HomeStyles'
+import { card, home } from '../styles/HomeStyles'
 import SpriteSheet from 'rn-sprite-sheet'
 
 interface butteryProps {
-  gradientColors: string[]
   college: string
   openTime: string
   closeTime: string
@@ -91,30 +89,45 @@ export const Card: FC<butteryProps> = (props: butteryProps) => {
   }
 
   return (
-    <Pressable onPress={props.onPress} disabled={!isOpen} style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}>
-      <LinearGradient
-        // Button Linear Gradient
-        colors={props.gradientColors}
-        locations={[0, 1]}
-        start={{ x: 0.1, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={[card.card, { opacity: isOpen ? 1 : 0.5 }]}
-      >
-        <View style={card.cardContent}>
-          <View style={card.textContainer}>
+    <Pressable
+      onPress={props.onPress}
+      disabled={!isOpen}
+      style={({ pressed }) => [{ opacity: pressed || !isOpen ? 0.7 : 1 }]}
+    >
+      <View style={card.cardContent}>
+        <View style={home.textContent}>
+          <View
+            style={{
+              flexDirection: 'row',
+              //backgroundColor: 'black',
+            }}
+          >
             <Text style={card.cardText1}>{props.college}</Text>
-            <Text style={card.cardText2}>{cleanTime()}</Text>
+            <Text
+              style={{
+                opacity: isOpen ? 0 : 1,
+                alignSelf: 'center',
+                color: 'white',
+                paddingHorizontal: 8,
+                marginLeft: 10,
+                backgroundColor: '#f00000',
+                fontFamily: 'HindSiliguri-Bold',
+              }}
+            >
+              CLOSED
+            </Text>
           </View>
-          <SpriteSheet
-            source={require('../assets/college_icon_sprite_sheet.png')}
-            columns={1}
-            rows={14}
-            width={100}
-            offsetY={props.offsetY}
-          />
-          {/*<Image style={card.butteryIcon} source={props.image} />*/}
+          <Text style={card.cardText2}>{cleanTime()}</Text>
         </View>
-      </LinearGradient>
+        <SpriteSheet
+          source={require('../assets/college_icon_sprite_sheet.png')}
+          columns={1}
+          rows={14}
+          width={100}
+          offsetY={props.offsetY}
+        />
+        {/*<Image style={card.butteryIcon} source={props.image} />*/}
+      </View>
     </Pressable>
   )
 }
@@ -123,5 +136,4 @@ Card.defaultProps = {
   college: 'Placeholder',
   //image: require('../assets/images/butteryIconPlaceholder.jpg'),
   offsetY: 0,
-  gradientColors: ['#ed0025', '#dcb8fc'],
 }

@@ -3,23 +3,27 @@ import { StyleSheet } from 'react-native'
 export const home = StyleSheet.create({
   app: {
     flex: 1,
-    backgroundColor: '#eaeaea',
+    backgroundColor: '#92aadb',
+  },
+
+  nameText: {
+    fontSize: 25,
+    fontFamily: 'HindSiliguri-Bold',
+    fontWeight: 'bold',
   },
 
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'stretch',
+    //alignItems: 'stretch',
     justifyContent: 'center',
   },
 
   outerContainer: {
     flex: 1,
+    backgroundColor: 'transparent',
     flexDirection: 'column',
-    padding: 0,
-    marginTop: 5,
+    alignContent: 'center',
     marginBottom: 10,
-    marginHorizontal: 12,
   },
 
   textContent: {
@@ -29,7 +33,8 @@ export const home = StyleSheet.create({
   },
 
   menuView: {
-    margin: 8,
+    margin: 0,
+    paddingBottom: 80,
   },
 
   footer: {
@@ -41,48 +46,37 @@ export const home = StyleSheet.create({
 
 export const card = StyleSheet.create({
   cardText1: {
-    textAlignVertical: 'bottom',
     fontFamily: 'HindSiliguri-Bold',
     fontWeight: 'bold',
     color: '#fff',
-    fontSize: 22,
-    marginBottom: 25,
-    marginTop: 15,
-  },
-
-  textContainer: {
-    flex: 1,
+    fontSize: 20,
+    marginTop: 12,
+    marginBottom: 10,
+    alignContent: 'center',
+    justifyContent: 'flex-start',
   },
 
   cardText2: {
     fontFamily: 'Roboto-Italic',
-    marginBottom: 15,
+    //backgroundColor: 'black',
+    color: '#fff',
+    fontSize: 15,
   },
 
   card: {
     flex: 1,
-    height: '100%',
-    elevation: 3,
-    backgroundColor: '#fff',
-    borderRadius: 6,
-    shadowRadius: 2,
-    marginVertical: 8,
+    backgroundColor: '#343a40',
   },
 
   cardContent: {
     flex: 1,
+    padding: 8,
+    borderColor: '#fff',
+    borderBottomWidth: 0.25,
     flexDirection: 'row',
-    marginLeft: 10,
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingLeft: 10,
+    justifyContent: 'space-between',
+    marginRight: -12,
     opacity: 1,
-  },
-
-  butteryIcon: {
-    width: 75,
-    height: 75,
-    marginVertical: 12,
-    marginRight: 10,
   },
 })

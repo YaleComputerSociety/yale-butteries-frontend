@@ -8,9 +8,13 @@ export const checkout = StyleSheet.create({
   upperContainer: {
     flex: 7,
     margin: 20,
-    padding: 10,
+    padding: 0,
+    paddingHorizontal: 10,
     backgroundColor: '#ddd',
     borderRadius: 6,
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 10,
   },
 
   orderDetailsContainer: {
@@ -18,8 +22,8 @@ export const checkout = StyleSheet.create({
   },
 
   itemNameText: {
-    fontFamily: 'Roboto',
-    fontSize: 18,
+    fontFamily: 'HindSiliguri-Bold',
+    fontSize: 16,
   },
 
   totalText: {
@@ -36,11 +40,18 @@ export const checkout = StyleSheet.create({
     padding: 10,
   },
 
+  icon: {
+    justifyContent: 'center',
+  },
+
   item: {
     flex: 4,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 5,
+    paddingVertical: 10,
+    //backgroundColor: 'blue',
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
   },
 
   header: {
@@ -70,7 +81,7 @@ export const checkout = StyleSheet.create({
   },
 
   lowerContainer: {
-    backgroundColor: 'green',
+    backgroundColor: '#fff',
     height: '12%',
   },
 
@@ -88,10 +99,12 @@ export const checkout = StyleSheet.create({
 
   NAME: {
     flex: 2,
+    alignContent: 'flex-start',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    //justifyContent: 'center',
     alignItems: 'center',
-    //backgroundColor:'yellow'
+    paddingHorizontal: 10,
+    //backgroundColor: 'yellow',
   },
 
   COUNT: {
@@ -102,7 +115,8 @@ export const checkout = StyleSheet.create({
   },
 
   PRICE: {
-    flex: 1,
+    //backgroundColor: 'white',
+    flex: 0.5,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',

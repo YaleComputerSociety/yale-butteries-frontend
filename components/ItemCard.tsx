@@ -3,32 +3,39 @@ import { View, Text, Pressable } from 'react-native'
 import { item } from '../styles/MenuStyles'
 import { priceToText } from '../Functions'
 import { MenuItem } from '../store/slices/MenuItems'
+import * as Haptics from 'expo-haptics'
+import { OrderItem } from '../store/slices/OrderCart'
 
 interface Props {
   menuItem: MenuItem
+  items: OrderItem[]
   incUpdate: (menuItem: MenuItem) => void
-  decUpdate: (menuItem: MenuItem) => void
 }
 
-export const ItemCard: FC<Props> = ({ menuItem, incUpdate, decUpdate }: Props) => {
+export const ItemCard: FC<Props> = ({ menuItem, items, incUpdate }: Props) => {
+  function getNumberOfMenuItemInCart(items) {
+    let count = 0
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].orderItem.id === menuItem.id) {
+        count++
+      }
+    }
+    return count
+  }
+
   const [count, setCount] = useState(0)
 
   const addItem = () => {
-    if (count < 12) {
+    if (count < 5) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+      //Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
       setCount(count + 1)
       incUpdate(menuItem)
     }
   }
 
-  const removeItem = () => {
-    if (count > 0) {
-      setCount(count - 1)
-      decUpdate(menuItem)
-    }
-  }
-
   useEffect(() => {
-    count
+    setCount(getNumberOfMenuItemInCart(items))
   })
 
   return (
@@ -41,19 +48,14 @@ export const ItemCard: FC<Props> = ({ menuItem, incUpdate, decUpdate }: Props) =
       </View>
       <View style={item.spacer} />
       <Pressable
-        onPress={removeItem}
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button]}
-      >
-        <Text style={item.buttonText}>-</Text>
-      </Pressable>
-      <View style={item.buttonSpacer}>
-        <Text style={item.countText}>{count}</Text>
-      </View>
-      <Pressable
         onPress={addItem}
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#eee' }, item.button]}
+        disabled={count >= 5 ? true : false}
+        style={({ pressed }) => [
+          { opacity: count >= 5 ? 0.5 : 1, backgroundColor: pressed ? '#bbb' : '#eee' },
+          item.button,
+        ]}
       >
-        <Text style={item.buttonText}>+</Text>
+        <Text style={item.buttonText}>Add to Cart</Text>
       </Pressable>
     </View>
   )

@@ -9,6 +9,8 @@ import { priceToText } from '../Functions'
 import { STRIPE_PK } from '@env'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 import { setTransactionHistoryState } from '../store/slices/TransactionHistory'
+import { removeOrderItem, OrderItem } from '../store/slices/OrderCart'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   // const [loading, setLoading] = useState(false)
@@ -26,23 +28,23 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     try {
       // sending request
       const obj = { netid: name, price: amount }
-      // const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
-      //   method: 'POST',
-      //   body: JSON.stringify(obj),
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // })
-      // const data = await response.json()
-      // if (!response.ok) return Alert.alert(data.message)
-      // const clientSecret = data.paymentIntent.client_secret
-      // const initSheet = await stripe.initPaymentSheet({
-      //   paymentIntentClientSecret: clientSecret,
-      //   merchantDisplayName: 'Yale Butteries',
-      // })
-      // if (initSheet.error) return Alert.alert(initSheet.error.message)
-      // const presentSheet = await stripe.presentPaymentSheet()
-      // if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+      const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
+        method: 'POST',
+        body: JSON.stringify(obj),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await response.json()
+      if (!response.ok) return Alert.alert(data.message)
+      const clientSecret = data.paymentIntent.client_secret
+      const initSheet = await stripe.initPaymentSheet({
+        paymentIntentClientSecret: clientSecret,
+        merchantDisplayName: 'Yale Butteries',
+      })
+      if (initSheet.error) return Alert.alert(initSheet.error.message)
+      const presentSheet = await stripe.presentPaymentSheet()
+      if (presentSheet.error) return Alert.alert(presentSheet.error.message)
 
       const transaction_items = []
       orderItems.forEach((item) => {
@@ -81,6 +83,10 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
   }
 
+  const removeOrder = (newItem: OrderItem) => {
+    dispatch(removeOrderItem(orderItems.find((item) => item.orderItem.id == newItem.orderItem.id)))
+  }
+
   // export default function CheckoutScreen( { navigation } : {navigation:any} ) {
 
   return (
@@ -96,9 +102,9 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               <View style={checkout.header}>
                 <Text style={checkout.totalText}>Order Summary:</Text>
               </View>
-              <ScrollView style={checkout.orderList}>
+              <ScrollView style={checkout.orderList} showsVerticalScrollIndicator={false}>
                 {orderItems.map((checkoutItem, index) => (
-                  <CheckoutItem checkoutItem={checkoutItem} key={index} />
+                  <CheckoutItem decUpdate={removeOrder} checkoutItem={checkoutItem} key={index} />
                 ))}
               </ScrollView>
               <View style={checkout.footer}>
@@ -107,8 +113,14 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             </View>
             <View style={checkout.lowerContainer}>
               <Pressable
-                style={({ pressed }) => [{ backgroundColor: pressed ? '#222' : '#333' }, checkout.checkoutButton]}
-                onPress={() => makePayment('awg32', navigation.getParam('priceTotal'))}
+                disabled={orderItems.length < 1 ? true : false}
+                style={({ pressed }) => [
+                  { backgroundColor: pressed ? '#222' : '#333', opacity: orderItems.length < 1 ? 0.7 : 1 },
+                  checkout.checkoutButton,
+                ]}
+                onPress={() => {
+                  makePayment('awg32', price)
+                }}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>
               </Pressable>
@@ -118,6 +130,22 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       )}
     </View>
   )
+}
+
+CheckoutScreen.navigationOptions = (navData) => {
+  return {
+    headerRight: () => (
+      <Ionicon
+        name="settings-sharp"
+        size={20}
+        color="#fff"
+        onPress={() => {
+          navData.navigation.navigate('SettingsScreen')
+        }}
+        style={{ paddingRight: 20 }}
+      />
+    ),
+  }
 }
 
 export default CheckoutScreen

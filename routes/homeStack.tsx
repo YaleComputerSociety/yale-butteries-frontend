@@ -3,14 +3,29 @@ import { createAppContainer } from 'react-navigation'
 import Home from '../screens/HomeScreen'
 import ButteryScreen from '../screens/MenuScreen'
 import CheckoutScreen from '../screens/CheckoutScreen'
-import OrderStatusScreen from '../screens/OrderStatusScreen'
 import SettingsScreen from '../screens/SettingsScreen'
+import StartScreen from '../screens/StartScreen'
+import NavigationScreen from '../screens/NavigationScreen'
+import OrderStatusScreen from '../screens/OrderStatusScreen'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 
 const screens = {
+  StartScreen: {
+    screen: StartScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  NavigationScreen: {
+    screen: NavigationScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
   Home: {
     screen: Home,
     navigationOptions: {
-      title: 'Home',
+      title: 'Butteries',
     },
   },
 
@@ -27,18 +42,19 @@ const screens = {
       title: 'Menu',
     },
   },
-
   CheckoutScreen: {
     screen: CheckoutScreen,
     navigationOptions: {
       title: 'Checkout',
     },
   },
-
   OrderStatusScreen: {
     screen: OrderStatusScreen,
     navigationOptions: {
-      title: 'Order Status',
+      headerShown: false,
+      gestureEnabled: false,
+      title: 'StatusScreen',
+      headerLeft: () => <></>,
     },
   },
 }
@@ -62,8 +78,15 @@ const screens = {
 
 const HomeStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
-    headerStyle: { backgroundColor: '#00b2db' },
-    headerTitleStyle: { fontFamily: 'HindSiliguri-Bolder', fontSize: 20 },
+    headerStyle: {
+      backgroundColor: '#768bb5',
+      borderWidth: 0,
+      shadowColor: '#111',
+      shadowRadius: 200,
+    },
+    //cardOverlayEnabled: true,
+    //cardOverlay: () => <LinearGradient colors={['#2C3E50', '#000']} locations={[0, 1]}></LinearGradient>,
+    headerTitleStyle: { fontFamily: 'HindSiliguri-Bold', fontSize: 20, paddingBottom: 10 },
     headerTintColor: '#FFF',
     headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bold', color: '#FFF', fontSize: 18 },
   },

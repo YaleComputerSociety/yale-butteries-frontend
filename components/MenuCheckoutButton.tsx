@@ -22,6 +22,7 @@ export const MenuCheckoutButton: FC<Props> = (props: Props) => {
           disabled={props.itemCount <= 0}
           style={({ pressed }) => [
             item.lowerContainer,
+            { marginHorizontal: 50, marginVertical: 25, borderRadius: 40 },
             { backgroundColor: props.itemCount > 0 ? (pressed ? '#222' : '#333') : '#bbb' },
           ]}
         >
