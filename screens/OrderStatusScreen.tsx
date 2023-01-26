@@ -5,7 +5,6 @@ import * as Haptics from 'expo-haptics'
 import StatusItem from '../components/StatusCard'
 import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
 import { updateTransactionHistory } from '../store/slices/TransactionHistory'
-import { json } from 'stream/consumers'
 
 const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
@@ -44,7 +43,9 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   //   const orderStatus = 1
   //   const orderStatusText = ['Your order is in the queue', 'Your order is being prepared', 'Your order is ready!']
 
-  const status = 'In Queue'
+  const status = currentTransactionHistory.inProgress
+  console.log(currentTransactionHistory.transactionItems)
+  //need to check if the items are loadinggg before render
   return (
     <View
       style={{
@@ -79,7 +80,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
           Order Status:
           <Text
             onPress={() => fetchTransaction()}
-            style={{ color: status == 'In Queue' ? 'yellow' : 'white', fontFamily: 'HindSiliguri-Bold' }}
+            style={{ color: status == 'true' ? 'yellow' : 'white', fontFamily: 'HindSiliguri-Bold' }}
           >
             {' '}
             {status}{' '}
@@ -87,7 +88,9 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
         </Text>
       </View>
       <View style={{ backgroundColor: '#333', width: '90%', height: '60%', borderRadius: 18, marginBottom: 25 }}>
-        {/* <StatusItem transactionItem={}> */}
+        {currentTransactionHistory.transactionItems.map((transactionItem) => (
+          <StatusItem name={transactionItem.menuItemId} status={transactionItem.orderStatus} />
+        ))}
       </View>
       <View style={{ backgroundColor: '#32CD32', width: '90%', height: '1.75%', borderRadius: 18 }}></View>
     </View>

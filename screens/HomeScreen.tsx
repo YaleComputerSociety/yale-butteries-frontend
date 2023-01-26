@@ -77,7 +77,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
             openTime="6:00"
             closeTime="5:00"
             offsetY={560}
-            active={false}
+            active={true}
           />
           <Card
             onPress={() => toMenu('murray')}
