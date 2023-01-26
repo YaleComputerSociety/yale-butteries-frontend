@@ -72,12 +72,12 @@ const getTransactionHistoryFromId = async (
 const backToFrontTransactionItems = (
   transactionHistory: TransactionHistory & { transaction_items: TransactionItem[] }
 ): FrontTransactionItem[] => {
-  const transactionItems = []
+  const transactionItems: FrontTransactionItem[] = []
   for (const item of transactionHistory.transaction_items) {
     if (item) {
       const newItem = {
-        item_cost: item.item_cost,
-        order_status: item.order_status,
+        itemCost: item.item_cost,
+        orderStatus: item.order_status,
         menuItemId: item.menuItemId,
       }
       transactionItems.push(newItem)
