@@ -1,4 +1,6 @@
+import { TransactionItem } from './store/slices/TransactionItems'
 import { OrderItem } from './store/slices/OrderCart'
+import { useAppSelector } from './store/TypedHooks'
 
 export function priceToText(num: number): string {
   const cents = num % 100
@@ -12,6 +14,11 @@ export function getPriceFromOrderItems(orderItems: OrderItem[]): string {
     sum = sum + orderItems[i].orderItem.price
   }
   return priceToText(sum)
+}
+
+export function getNameFromTransactionId(transactionItem: TransactionItem): string {
+  const { menuItems } = useAppSelector((state) => state.menuItems)
+  return menuItems.find((element) => element.id == transactionItem.menuItemId).item
 }
 
 export function returnCollegeName(collegeName: string): string[] {

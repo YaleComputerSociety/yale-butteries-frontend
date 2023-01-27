@@ -1,16 +1,32 @@
-import Ionicon from 'react-native-vector-icons/Ionicons'
-import React, { FC, useEffect, useState } from 'react'
-import { View, ScrollView, ActivityIndicator, Text, Pressable } from 'react-native'
-import * as Haptics from 'expo-haptics'
+import React, { FC, useEffect, useRef, useState } from 'react'
+import { View, ScrollView, Text, Pressable, Animated } from 'react-native'
 import StatusItem from '../components/StatusCard'
 import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
 import { updateTransactionHistory } from '../store/slices/TransactionHistory'
+import { getNameFromTransactionId } from '../Functions'
+import ProgressBar from 'react-native-progress/Bar'
 
 const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const { isLoading: isLoadingTransactionHistory, currentTransactionHistory } = useAppSelector(
     (state) => state.transactionHistory
   )
+
+  function getPercentageCompleted(transactionHistory) {
+    const items = transactionHistory.transactionItems
+    const denom = items.length
+    let numerator = 0
+    for (let i = 0; i < denom; i++) {
+      const item_status = items[i].orderStatus
+      if (item_status === 'FINISHED') {
+        numerator += 1
+      } else if (item_status === 'CANCELLED') {
+        numerator += 1
+      }
+    }
+    console.log(numerator / denom)
+    return numerator / denom
+  }
 
   const fetchTransaction = async () => {
     try {
@@ -33,7 +49,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
     const interval = setInterval(() => {
       fetchTransaction().catch(console.log)
     }, 5000)
-
+    //updateTransactionProgress(transactionProgress + getPercentageCompleted(currentTransactionHistory))
     return () => clearInterval(interval)
   }, [])
 
@@ -43,8 +59,17 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   //   const orderStatus = 1
   //   const orderStatusText = ['Your order is in the queue', 'Your order is being prepared', 'Your order is ready!']
 
-  const status = currentTransactionHistory.inProgress
-  console.log(currentTransactionHistory.transactionItems)
+  const status = () => {
+    const progress = currentTransactionHistory.inProgress
+    if (progress == 'true') {
+      return 'In Progress'
+    } else if (progress == 'false') {
+      return 'Queued'
+    } else {
+      //cancelled
+      return 'Cancelled'
+    }
+  }
   //need to check if the items are loadinggg before render
   return (
     <View
@@ -62,7 +87,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
           backgroundColor: '#333',
           width: '90%',
           height: '6%',
-          borderRadius: 18,
+          borderRadius: 8,
           marginBottom: 25,
           justifyContent: 'center',
           alignItems: 'center',
@@ -78,21 +103,35 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
           }}
         >
           Order Status:
-          <Text
-            onPress={() => fetchTransaction()}
-            style={{ color: status == 'true' ? 'yellow' : 'white', fontFamily: 'HindSiliguri-Bold' }}
-          >
-            {' '}
-            {status}{' '}
-          </Text>
+          <Text style={{ fontFamily: 'HindSiliguri-Bold' }}> {status()} </Text>
         </Text>
       </View>
-      <View style={{ backgroundColor: '#333', width: '90%', height: '60%', borderRadius: 18, marginBottom: 25 }}>
-        {currentTransactionHistory.transactionItems.map((transactionItem) => (
-          <StatusItem name={transactionItem.menuItemId} status={transactionItem.orderStatus} />
-        ))}
+      <View
+        style={{
+          backgroundColor: '#333',
+          width: '90%',
+          height: '60%',
+          borderRadius: 8,
+          marginBottom: 25,
+          padding: 10,
+        }}
+      >
+        <ScrollView>
+          {currentTransactionHistory.transactionItems.map((transactionItem) => (
+            <StatusItem name={getNameFromTransactionId(transactionItem)} status={transactionItem.orderStatus} />
+          ))}
+        </ScrollView>
       </View>
-      <View style={{ backgroundColor: '#32CD32', width: '90%', height: '1.75%', borderRadius: 18 }}></View>
+      <View style={{ width: '90%' }}>
+        <ProgressBar
+          animated={true}
+          progress={getPercentageCompleted(currentTransactionHistory)}
+          width={null}
+          height={20}
+          borderRadius={8}
+          unfilledColor={'#333'}
+        />
+      </View>
     </View>
   )
 }
