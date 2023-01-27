@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
-import { View, ScrollView, Text, Pressable, Animated } from 'react-native'
+import React, { FC, useEffect } from 'react'
+import { View, ScrollView, Text } from 'react-native'
 import StatusItem from '../components/StatusCard'
 import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
 import { updateTransactionHistory } from '../store/slices/TransactionHistory'
@@ -24,7 +24,6 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
         numerator += 1
       }
     }
-    console.log(numerator / denom)
     return numerator / denom
   }
 
