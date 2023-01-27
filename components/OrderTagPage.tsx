@@ -1,169 +1,119 @@
-import React, { useState } from 'react';
-import {View, Text, StyleSheet, Image, ImageBackgroundBase, ImageStore} from 'react-native';
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, Image, ImageBackgroundBase, ImageStore } from 'react-native'
 
-import { COLORS } from '../constants/Colors';
-import { TEXTS } from '../constants/Texts';
-import { LAYOUTS } from '../constants/Layouts';
+import { COLORS } from '../constants/Colors'
+import { TEXTS } from '../constants/Texts'
+import { LAYOUTS } from '../constants/Layouts'
 
 const OrderTagPage = (props) => {
-  switch(props.status) {
+  switch (props.status) {
     case 4:
       return (
-        <View 
-          style={{...styles.container, backgroundColor: "#D989B9"}}>
-          <View style={{...styles.timeContainer}}>
-              <Text style={{...styles.boldText, lineHeight: 30}}>
-                10:57 PM</Text>
-              <Text style={{...styles.nameText, lineHeight: 14}}>
-                Picked Up
-              </Text>
+        <View style={{ ...styles.container, backgroundColor: '#D989B9' }}>
+          <View style={{ ...styles.timeContainer }}>
+            <Text style={{ ...styles.boldText, lineHeight: 30 }}>10:57 PM</Text>
+            <Text style={{ ...styles.nameText, lineHeight: 14 }}>Picked Up</Text>
           </View>
           <View style={styles.itemContainer}>
-            <Text style={{...styles.regularText}}>
-              {props.orderItem}
-            </Text>
+            <Text style={{ ...styles.regularText }}>{props.orderItem}</Text>
           </View>
           <View style={styles.nameContainer}>
-            <Text style={{...styles.nameText}}>
-              Aidan</Text>
-            <Text style={{...styles.nameText}}>
-              Palmer</Text>
+            <Text style={{ ...styles.nameText }}>Aidan</Text>
+            <Text style={{ ...styles.nameText }}>Palmer</Text>
           </View>
         </View>
-      );
-    break;
+      )
+      break
     case 3:
       return (
-        <View 
-          style={{...styles.container, backgroundColor: "#D4EFDF"}}>
-          <View style={{...styles.timeContainer}}>
-              <Text style={{...styles.boldText, lineHeight: 30}}>
-                10:57 PM</Text>
-              <Text style={{...styles.nameText, lineHeight: 14}}>
-                Pickup ready
-              </Text>
+        <View style={{ ...styles.container, backgroundColor: '#D4EFDF' }}>
+          <View style={{ ...styles.timeContainer }}>
+            <Text style={{ ...styles.boldText, lineHeight: 30 }}>10:57 PM</Text>
+            <Text style={{ ...styles.nameText, lineHeight: 14 }}>Pickup ready</Text>
           </View>
           <View style={styles.itemContainer}>
-            <Text style={{...styles.regularText}}>
-              {props.orderItem}
-            </Text>
+            <Text style={{ ...styles.regularText }}>{props.orderItem}</Text>
           </View>
           <View style={styles.nameContainer}>
-            <Text style={{...styles.nameText}}>
-              Aidan</Text>
-            <Text style={{...styles.nameText}}>
-              Palmer</Text>
+            <Text style={{ ...styles.nameText }}>Aidan</Text>
+            <Text style={{ ...styles.nameText }}>Palmer</Text>
           </View>
         </View>
-      );
-    break;
+      )
+      break
     case 2:
       return (
-        <View 
-          style={{...styles.container, backgroundColor: "#FCF3CF"}}>
-          <View style={{...styles.timeContainer}}>
-              <Text style={{...styles.boldText, lineHeight: 30}}>
-              10:57 PM</Text>
-              <Text style={{...styles.nameText, lineHeight: 14}}>
-                In progress
-              </Text>
+        <View style={{ ...styles.container, backgroundColor: '#FCF3CF' }}>
+          <View style={{ ...styles.timeContainer }}>
+            <Text style={{ ...styles.boldText, lineHeight: 30 }}>10:57 PM</Text>
+            <Text style={{ ...styles.nameText, lineHeight: 14 }}>In progress</Text>
           </View>
           <View style={styles.itemContainer}>
-            <Text style={{...styles.regularText}}>
-              {props.orderItem}
-            </Text>
+            <Text style={{ ...styles.regularText }}>{props.orderItem}</Text>
           </View>
           <View style={styles.nameContainer}>
-            <Text style={{...styles.nameText}}>
-              Aidan</Text>
-            <Text style={{...styles.nameText}}>
-              Palmer</Text>
+            <Text style={{ ...styles.nameText }}>Aidan</Text>
+            <Text style={{ ...styles.nameText }}>Palmer</Text>
           </View>
         </View>
-      );
-    break;
+      )
+      break
     case 1:
       return (
-        <View 
-          style={{...styles.container, backgroundColor: "#FAE5D3"}}>
-          <View style={{...styles.timeContainer}}>
-              <Text style={{...styles.boldText, lineHeight: 30}}>
-                10:57 PM</Text>
-              <Text style={{...styles.nameText, lineHeight: 14}}>
-                In queue
-              </Text>
+        <View style={{ ...styles.container, backgroundColor: '#FAE5D3' }}>
+          <View style={{ ...styles.timeContainer }}>
+            <Text style={{ ...styles.boldText, lineHeight: 30 }}>10:57 PM</Text>
+            <Text style={{ ...styles.nameText, lineHeight: 14 }}>In queue</Text>
           </View>
           <View style={styles.itemContainer}>
-            <Text style={{...styles.regularText}}>
-              {props.orderItem}
-            </Text>
+            <Text style={{ ...styles.regularText }}>{props.orderItem}</Text>
           </View>
           <View style={styles.nameContainer}>
-            <Text style={{...styles.nameText}}>
-              Aidan</Text>
-            <Text style={{...styles.nameText}}>
-              Palmer</Text>
+            <Text style={{ ...styles.nameText }}>Aidan</Text>
+            <Text style={{ ...styles.nameText }}>Palmer</Text>
           </View>
         </View>
-      );
-    break;
+      )
+      break
     case 0:
-      if(props.started) {
+      if (props.started) {
         return (
-          <View 
-            style={{...styles.container, backgroundColor: "#F5B7B1"}}>
-            <View style={{...styles.timeContainer}}>
-               <Text style={{...styles.boldText, lineHeight: 30}}>
-                10:57 PM</Text>
-              <Text style={{...styles.nameText, lineHeight: 14}}>
-                Cancelled
-              </Text>
+          <View style={{ ...styles.container, backgroundColor: '#F5B7B1' }}>
+            <View style={{ ...styles.timeContainer }}>
+              <Text style={{ ...styles.boldText, lineHeight: 30 }}>10:57 PM</Text>
+              <Text style={{ ...styles.nameText, lineHeight: 14 }}>Cancelled</Text>
             </View>
             <View style={styles.itemContainer}>
-              <Text style={{...styles.regularText}}>
-                {props.orderItem}
-              </Text>
+              <Text style={{ ...styles.regularText }}>{props.orderItem}</Text>
             </View>
             <View style={styles.nameContainer}>
-              <Text style={{...styles.nameText}}>
-                Aidan</Text>
-              <Text style={{...styles.nameText}}>
-                Palmer</Text>
+              <Text style={{ ...styles.nameText }}>Aidan</Text>
+              <Text style={{ ...styles.nameText }}>Palmer</Text>
             </View>
           </View>
-        );
+        )
       } else {
         return (
-          <View 
-            style={{...styles.container, borderWidth: 2, borderColor: "red"}}>
-            <View style={{...styles.timeContainer}}>
-              <Text style={{...styles.boldText, lineHeight: 30}}>
-                10:57 PM</Text>
-              <Text style={{...styles.nameText, lineHeight: 14}}>
-                NEW
-              </Text>
+          <View style={{ ...styles.container, borderWidth: 2, borderColor: 'red' }}>
+            <View style={{ ...styles.timeContainer }}>
+              <Text style={{ ...styles.boldText, lineHeight: 30 }}>10:57 PM</Text>
+              <Text style={{ ...styles.nameText, lineHeight: 14 }}>NEW</Text>
             </View>
             <View style={styles.itemContainer}>
-              <Text style={{...styles.regularText}}>
-                {props.orderItem}
-              </Text>
+              <Text style={{ ...styles.regularText }}>{props.orderItem}</Text>
             </View>
             <View style={styles.nameContainer}>
-              <Text style={{...styles.nameText}}>
-                Aidan</Text>
-              <Text style={{...styles.nameText}}>
-                Palmer</Text>
+              <Text style={{ ...styles.nameText }}>Aidan</Text>
+              <Text style={{ ...styles.nameText }}>Palmer</Text>
             </View>
           </View>
-        );
+        )
       }
-    break;
+      break
     default:
-      return (
-        <Text>Something went wrong...</Text>
-      );
-  };
-};
+      return <Text>Something went wrong...</Text>
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -184,7 +134,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     paddingBottom: LAYOUTS.getWidth(10),
-    paddingTop: LAYOUTS.getWidth(4)
+    paddingTop: LAYOUTS.getWidth(4),
     //borderWidth: 2
   },
   itemContainer: {
@@ -214,6 +164,6 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     //fontFamily: 'HindSiliguri'
   },
-});
+})
 
-export default OrderTagPage;
+export default OrderTagPage
