@@ -10,6 +10,7 @@ export interface MenuItem {
   description: string
   limitedTime: boolean
   isActive: boolean
+  foodType: 'food' | 'drink' | 'dessert'
 }
 
 export interface MenuItemsState {
@@ -81,6 +82,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       description: 'cheesy aquamarine inhabitants encrusted with a carbohydrate compote',
       limitedTime: false,
       isActive: true,
+      foodType: 'food',
     },
     {
       id: 1,
@@ -90,6 +92,8 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       description: 'cheesy aquamarine inhabitants encrusted with a carbohydrate compote',
       limitedTime: false,
       isActive: true,
+      foodType: 'food',
+
     },
     {
       id: 1,
@@ -99,6 +103,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       description: 'Espresso and water',
       limitedTime: false,
       isActive: true,
+      foodType: 'drink',
     },
     {
       id: 2,
@@ -108,6 +113,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       description: 'Polar bear',
       limitedTime: false,
       isActive: true,
+      foodType: 'drink',
     },
     {
       id: 3,
@@ -117,6 +123,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       description: 'Lemon lime yum yum',
       limitedTime: false,
       isActive: true,
+      foodType: 'drink',
     },
     {
       id: 4,
@@ -126,6 +133,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       description: 'Coke but culty',
       limitedTime: false,
       isActive: true,
+      foodType: 'drink',
     },
     {
       id: 4,
@@ -135,6 +143,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       description: 'Coke but make it ~berkeley~',
       limitedTime: false,
       isActive: true,
+      foodType: 'drink',
     },
     {
       id: 5,
@@ -144,6 +153,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       description: 'Quesadilla with chicken nuggets',
       limitedTime: false,
       isActive: true,
+      foodType: 'food',
     },
     {
       id: 6,
@@ -153,6 +163,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       description: 'Cheesy goodness with tortilla',
       limitedTime: false,
       isActive: true,
+      foodType: 'food',
     },
   ]
 }

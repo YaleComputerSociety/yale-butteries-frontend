@@ -38,14 +38,13 @@ const App: FC = () => {
 }
 
 const TestingInner: FC = () => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
-
   useEffect(() => {
     if (currentUser == null) {
       dispatch(asyncFetchCurrentUser())
     }
-  })
+  }, [currentUser])
 
   return (
     <View style={home.container}>

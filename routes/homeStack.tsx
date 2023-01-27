@@ -7,7 +7,6 @@ import SettingsScreen from '../screens/SettingsScreen'
 import StartScreen from '../screens/StartScreen'
 import NavigationScreen from '../screens/NavigationScreen'
 import OrderStatusScreen from '../screens/OrderStatusScreen'
-import Ionicon from 'react-native-vector-icons/Ionicons'
 
 const screens = {
   StartScreen: {

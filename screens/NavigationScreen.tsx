@@ -2,6 +2,7 @@ import * as React from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
+import ManagerNavigator from '../routes/managerStack'
 
 const NavigationScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (

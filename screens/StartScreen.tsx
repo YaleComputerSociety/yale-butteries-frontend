@@ -36,7 +36,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   //TO-DO: Add event listener onto the react-native-webview
   //responding to some CAS event?
   //Depending on the result, either keep on page or redirect to nav page
-  const managerNetIds = ['app43']
+  const managerNetIds = ['app43', 'testingMctester123']
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
