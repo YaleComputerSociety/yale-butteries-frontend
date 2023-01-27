@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 import { View, Text, ActivityIndicator } from 'react-native'
-import { checkout } from '../styles/CheckoutStyles'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
 interface Props {

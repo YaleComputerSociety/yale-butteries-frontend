@@ -129,6 +129,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
           width={null}
           height={20}
           borderRadius={8}
+          borderWidth={0}
           unfilledColor={'#333'}
         />
       </View>
