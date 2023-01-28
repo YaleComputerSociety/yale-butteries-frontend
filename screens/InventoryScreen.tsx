@@ -14,7 +14,8 @@ export default function InventoryScreen() {
   const dispatch = useAppDispatch();
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
   const[localMenu, setLocalMenu] = useState([]);
-  
+  const[itemTypes, setItemTypes] = useState([]);
+
   if (isLoadingMenuItems) {
     console.log("loading")
   }
@@ -40,24 +41,57 @@ export default function InventoryScreen() {
     // }
     // //console.log(currentOrders)
   }, [menuItems])
+
+  useEffect(() => {
+    for (let i = 0; i < localMenu.length; i++) {
+      if (!itemTypes.includes(localMenu[i].foodType)){
+        itemTypes.push(localMenu[i].foodType);
+      }
+    }
+    console.log(itemTypes)
+  }, [localMenu])
   return (
     <View style={{...styles.container}}>
-      {isLoadingMenuItems || menuItems == null ? (
+      {isLoadingMenuItems || itemTypes == null ? (
         <ScrollView style={{ ...styles.scrollView}}
         //contentContainerStyle={{alignItems: 'flex-start', justifyContent: 'stretch'}}>
         >
           <Text style={{...styles.title}}>
-          Menu</Text>
+          Loading menu</Text>
           <ActivityIndicator style={styles.loader} size="large"/>
         </ScrollView>
       ) : (
         <ScrollView style={{ ...styles.scrollView}}>
-          <Text style={{...styles.title}}>
-            Menu</Text>
-          <ItemTag
-            item = {menuItems[0]}
-          />
+          {
+            itemTypes.map((el, index) => {
+              return(
+                <>
+                  <Text style={{...styles.title}}>
+                    {el}
+                  </Text>
+                  {
+                    localMenu.map((item, index) => {
+                      if (item.foodType == el) {
+                        return(
+                          <ItemTag
+                            item = {item}
+                          />
+                        )
+                      }
+                    })
+                  }
+                </>
+              )
+            })
+          }
         </ScrollView>
+        // <ScrollView style={{ ...styles.scrollView}}>
+        //   <Text style={{...styles.title}}>
+        //     Menu</Text>
+        //   <ItemTag
+        //     item = {localMenu[0]}
+        //   />
+        // </ScrollView>
       )}
     </View>
   );

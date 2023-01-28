@@ -66,7 +66,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       price: 1.50,
       limitedTime: false,
       isActive: true,
-      foodType: 'food',
+      foodType: 'Food',
     },
     {
       id: 2,
@@ -75,7 +75,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       price: 1.00,
       limitedTime: false,
       isActive: true,
-      foodType: 'food',
+      foodType: 'Food',
     },
     {
       id: 3,
@@ -84,7 +84,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       price: 1.00,
       limitedTime: false,
       isActive: true,
-      foodType: 'food',
+      foodType: 'Food',
     },
     {
       id: 4,
@@ -93,7 +93,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       price: 1.00,
       limitedTime: false,
       isActive: true,
-      foodType: 'food',
+      foodType: 'Food',
     },
     {
       id: 5,
@@ -102,7 +102,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       price: 3.00,
       limitedTime: false,
       isActive: true,
-      foodType: 'food',
+      foodType: 'Limited',
     },
     {
       id: 6,
@@ -111,7 +111,7 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       price: 1.50,
       limitedTime: false,
       isActive: true,
-      foodType: 'food',
+      foodType: 'Drinks',
     },
   ]
 }

@@ -17,20 +17,39 @@ const ItemTag = (props) => {
     dispatch(updateMenuItem(item))
   }
   return (
-    <TouchableOpacity style={{...styles.container, backgroundColor: "white"}}>
-      <View style={{...styles.nameContainer}}>
-        <Text style={{color: "black", fontSize: 15, fontWeight: "500"}}>
-          Quesadilla</Text>
-      </View>
-      <View style={{...styles.priceContainer}}>
-        <Text style={{color: "black", fontSize: 15, fontWeight: "400", marginRight: LAYOUTS.getWidth(10)}}>
-          $1.23</Text>
-        <Switch
-          value={!item.isActive}
-          onValueChange={handleSwitch}
-        />
-      </View>
-    </TouchableOpacity>
+    <>
+    {item.isActive ?
+      <TouchableOpacity style={{...styles.container, backgroundColor: "white"}}>
+        <View style={{...styles.nameContainer}}>
+          <Text style={{color: "black", fontSize: 15, fontWeight: "500"}}>
+            {item.item}</Text>
+        </View>
+        <View style={{...styles.priceContainer}}>
+          <Text style={{color: "black", fontSize: 15, fontWeight: "400", marginRight: LAYOUTS.getWidth(10)}}>
+            ${item.price}</Text>
+          <Switch
+            value={!item.isActive}
+            onValueChange={handleSwitch}
+          />
+        </View>
+      </TouchableOpacity> 
+      :
+      <TouchableOpacity style={{...styles.container, backgroundColor: "white"}}>
+        <View style={{...styles.nameContainer}}>
+          <Text style={{color: "gray", fontSize: 15, fontWeight: "500"}}>
+            {item.item}</Text>
+        </View>
+        <View style={{...styles.priceContainer}}>
+          <Text style={{color: "gray", fontSize: 15, fontWeight: "400", marginRight: LAYOUTS.getWidth(10)}}>
+            ${item.price}</Text>
+          <Switch
+            value={!item.isActive}
+            onValueChange={handleSwitch}
+          />
+        </View>
+      </TouchableOpacity>}
+
+    </>
   );
 };
 
@@ -52,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center'
-  }
+  },
 });
 
 export default ItemTag;
