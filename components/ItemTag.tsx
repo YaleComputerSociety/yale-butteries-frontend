@@ -6,12 +6,13 @@ import { COLORS } from '../constants/Colors';
 import { TEXTS } from '../constants/Texts';
 import { LAYOUTS } from '../constants/Layouts';
 import { updateMenuItem } from '../store/slices/MenuItems';
-
+import { useNavigation } from '@react-navigation/native';
 
 
 const ItemTag = (props) => {
   const[item, setItem]= useState(props.item)
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
   const handleSwitch = () => {
     setItem({...item, isActive: !item.isActive})
     dispatch(updateMenuItem(item))
@@ -19,7 +20,9 @@ const ItemTag = (props) => {
   return (
     <>
     {item.isActive ?
-      <TouchableOpacity style={{...styles.container, backgroundColor: "white"}}>
+      <TouchableOpacity style={{...styles.container, backgroundColor: "white"}}
+        onPress={() => {navigation.push('EditItem', {data: props.item})}}    
+      >
         <View style={{...styles.nameContainer}}>
           <Text style={{color: "black", fontSize: 15, fontWeight: "500"}}>
             {item.item}</Text>
@@ -34,7 +37,9 @@ const ItemTag = (props) => {
         </View>
       </TouchableOpacity> 
       :
-      <TouchableOpacity style={{...styles.container, backgroundColor: "white"}}>
+      <TouchableOpacity style={{...styles.container, backgroundColor: "white"}}
+        onPress={() => {navigation.push('EditProductScreen', {data: props.data, imageLink})}}    
+      >
         <View style={{...styles.nameContainer}}>
           <Text style={{color: "gray", fontSize: 15, fontWeight: "500"}}>
             {item.item}</Text>
