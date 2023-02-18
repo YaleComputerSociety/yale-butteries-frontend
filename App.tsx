@@ -5,14 +5,18 @@ import { asyncFetchCurrentUser } from './store/slices/CurrentUser'
 import { Provider } from 'react-redux'
 import { home } from './styles/HomeStyles'
 import { loading } from './styles/GlobalStyles'
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, View, Platform } from 'react-native'
 import store from './store/ReduxStore'
 import AppLoading from 'expo-app-loading'
 import Navigator from './routes/homeStack'
+import { IOS_DEV_URL, ANDROID_DEV_URL } from '@env'
 // import * as SplashScreen from 'expo-splash-screen'
 
 import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
+
+export const baseUrl = Platform.OS == 'ios' ? IOS_DEV_URL : ANDROID_DEV_URL
+console.log(baseUrl)
 
 const App: FC = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false)

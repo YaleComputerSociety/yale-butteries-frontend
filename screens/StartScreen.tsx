@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { WebView } from 'react-native-webview'
 import passport from 'passport'
 import { Strategy as CasStrategy } from 'passport-cas'
+import { baseUrl } from '../App'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
@@ -22,7 +23,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   //   )
   // )
   // //This is the `verify` callback
-  // const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
+  // const response = await fetch(baseUrl + 'payments/paymentIntent', {
   //       method: 'POST',
   //       body: JSON.stringify(obj),
   //       headers: {
@@ -37,6 +38,14 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   //responding to some CAS event?
   //Depending on the result, either keep on page or redirect to nav page
   const managerNetIds = ['app43']
+
+  const fetchTest = async () => {
+    console.log(baseUrl)
+    const result = await fetch(baseUrl + 'api/users')
+    const res = await result.json()
+    console.log(res)
+  }
+
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
@@ -85,7 +94,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>Login with CAS</Text>
               </View>
             </Pressable>
-            <Pressable style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}>
+            <Pressable onPress={fetchTest} style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}>
               <View
                 style={{
                   backgroundColor: '#344a61',

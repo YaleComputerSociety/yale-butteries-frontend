@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { baseUrl } from '../../App'
 
 // import { getJSON } from 'utils/fetch'
 
@@ -41,7 +42,7 @@ export const asyncFetchMenuItems = () => {
   return async (dispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
-      const menuItems = await fetch('http://localhost:3000/api/menu_items', {
+      const menuItems = await fetch(baseUrl + 'api/menu_items', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

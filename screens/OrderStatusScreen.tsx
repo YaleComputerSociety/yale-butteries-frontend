@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
 import { updateTransactionHistory } from '../store/slices/TransactionHistory'
 import { getNameFromTransactionId } from '../Functions'
 import ProgressBar from 'react-native-progress/Bar'
+import { baseUrl } from '../App'
 
 const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
@@ -29,7 +30,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   const fetchTransaction = async () => {
     try {
-      const currentTransaction = await fetch('http://localhost:3000/api/transactions/' + currentTransactionHistory.id, {
+      const currentTransaction = await fetch(baseUrl + 'api/transactions/' + currentTransactionHistory.id, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
