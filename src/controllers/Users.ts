@@ -8,6 +8,7 @@ export async function getAllUsers(_req: Request, res: Response): Promise<void> {
     const users = await prisma.user.findMany(includeProperty)
     res.send(JSON.stringify(users))
   } catch (e) {
+    console.log(e)
     res.status(400).send(e)
   }
 }
@@ -67,11 +68,6 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
 
 const includeProperty = {
   include: {
-    position: {
-      include: {
-        permission_types: true,
-      },
-    },
     college: true,
   },
 }
