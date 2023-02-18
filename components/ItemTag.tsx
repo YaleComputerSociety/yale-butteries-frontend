@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {Switch, View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 
+import { FUNCTIONS } from '../constants/Functions';
 import { COLORS } from '../constants/Colors';
 import { TEXTS } from '../constants/Texts';
 import { LAYOUTS } from '../constants/Layouts';
@@ -13,6 +14,7 @@ const ItemTag = (props) => {
   const[item, setItem]= useState(props.item)
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  //console.log(props)
   const handleSwitch = () => {
     setItem({...item, isActive: !item.isActive})
     dispatch(updateMenuItem(item))
@@ -29,16 +31,16 @@ const ItemTag = (props) => {
         </View>
         <View style={{...styles.priceContainer}}>
           <Text style={{color: "black", fontSize: 15, fontWeight: "400", marginRight: LAYOUTS.getWidth(10)}}>
-            ${item.price}</Text>
+            {FUNCTIONS.priceFormat(item.price)}</Text>
           <Switch
-            value={!item.isActive}
+            value={item.isActive}
             onValueChange={handleSwitch}
           />
         </View>
       </TouchableOpacity> 
       :
       <TouchableOpacity style={{...styles.container, backgroundColor: "white"}}
-        onPress={() => {navigation.push('EditProductScreen', {data: props.data, imageLink})}}    
+        onPress={() => {navigation.push('EditItem', {data: props.item})}}    
       >
         <View style={{...styles.nameContainer}}>
           <Text style={{color: "gray", fontSize: 15, fontWeight: "500"}}>
@@ -48,7 +50,7 @@ const ItemTag = (props) => {
           <Text style={{color: "gray", fontSize: 15, fontWeight: "400", marginRight: LAYOUTS.getWidth(10)}}>
             ${item.price}</Text>
           <Switch
-            value={!item.isActive}
+            value={item.isActive}
             onValueChange={handleSwitch}
           />
         </View>

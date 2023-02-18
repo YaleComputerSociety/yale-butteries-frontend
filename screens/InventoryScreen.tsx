@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { asyncFetchMenuItems } from '../store/slices/MenuItems'; 
 import ItemTag from '../components/ItemTag';
+import { useNavigation } from '@react-navigation/native';
+
 
 import { COLORS } from '../constants/Colors';
 import { TEXTS } from '../constants/Texts';
@@ -15,11 +17,11 @@ export default function InventoryScreen() {
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
   const[localMenu, setLocalMenu] = useState([]);
   const[itemTypes, setItemTypes] = useState([]);
+  const navigation = useNavigation();
 
   if (isLoadingMenuItems) {
     console.log("loading")
   }
-
   useEffect(() => {
     console.log("loading")
     if (isLoadingMenuItems || menuItems == null) {
@@ -29,6 +31,7 @@ export default function InventoryScreen() {
   }, [isLoadingMenuItems])
 
   useEffect(() => {
+    console.log(menuItems)
     console.log("menutems Updated")
     if (menuItems != null) {
       setLocalMenu(menuItems.filter(element => element.college == "morse"))
@@ -43,11 +46,14 @@ export default function InventoryScreen() {
   }, [menuItems])
 
   useEffect(() => {
+    let buffer = []
     for (let i = 0; i < localMenu.length; i++) {
-      if (!itemTypes.includes(localMenu[i].foodType)){
-        itemTypes.push(localMenu[i].foodType);
+      if (!buffer.includes(localMenu[i].foodType)){
+        buffer.push(localMenu[i].foodType);
       }
     }
+    setItemTypes(buffer)
+    buffer.sort()
     console.log(itemTypes)
   }, [localMenu])
   return (
@@ -65,7 +71,8 @@ export default function InventoryScreen() {
           {
             itemTypes.map((el, index) => {
               return(
-                <>
+                <View
+                  key = {el}>
                   <Text style={{...styles.title}}>
                     {el}
                   </Text>
@@ -74,16 +81,26 @@ export default function InventoryScreen() {
                       if (item.foodType == el) {
                         return(
                           <ItemTag
+                            key = {JSON.stringify(item)}
                             item = {item}
                           />
                         )
                       }
                     })
                   }
-                </>
+                </View>
               )
             })
           }
+          <View style={styles.buttonHolder}>
+              <TouchableOpacity
+                  style={{...styles.button, marginBottom: LAYOUTS.getWidth(30)}}
+                  onPress={() => {navigation.push('CreateItem')}}>
+                  <Text style={{...styles.buttonText}}>
+                      Add new item
+                  </Text>
+              </TouchableOpacity>
+          </View>
         </ScrollView>
         // <ScrollView style={{ ...styles.scrollView}}>
         //   <Text style={{...styles.title}}>
@@ -104,6 +121,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'flex-start',
+    
   },
   title: {
     fontSize: TEXTS.adjust(30),
@@ -135,5 +153,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-  }
+  },
+  buttonHolder: {
+    alignItems: 'center'
+  },
+  button: {
+    width: LAYOUTS.getWidth(150),
+    height: LAYOUTS.getWidth(20),
+    borderRadius: 5,
+    justifyContent: 'center',
+    marginBottom: LAYOUTS.getWidth(10),
+    marginTop: LAYOUTS.getWidth(5)
+  },
+    buttonText: {
+    fontSize: TEXTS.adjust(15),
+    fontWeight: '400',
+    color: "blue",
+    textAlign: 'center'
+  },
 });

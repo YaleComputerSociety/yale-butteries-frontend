@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Alert, ActivityIndicator, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
-import { asyncFetchMenuItems, deleteMenuItem, updateMenuItem } from '../store/slices/MenuItems'; 
+import { addMenuItem, asyncFetchMenuItems, deleteMenuItem, updateMenuItem } from '../store/slices/MenuItems'; 
 import ItemTag from '../components/ItemTag';
 import EditButton from '../components/EditButton';
 import { useNavigation } from '@react-navigation/native';
@@ -12,52 +12,50 @@ import { COLORS } from '../constants/Colors';
 import { TEXTS } from '../constants/Texts';
 import { LAYOUTS } from '../constants/Layouts';
 
-export default function EditItemScreen(props) {
+export default function CreateItemScreen() {
     const navigation = useNavigation();
-    props = props.route.params.data
-    console.log(props)
     const dispatch = useAppDispatch();
 
 
-    const [item, setItem] = useState(props.item)
+    const [item, setItem] = useState("Enter name")
     const [doEditItem, setDoEditItem] = useState(false)
 
-    const [price, setPrice] = useState(props.price)
+    const [price, setPrice] = useState(0)
     const [doEditPrice, setDoEditPrice] = useState(false)
 
-    const [foodType, setFoodType] = useState(props.foodType)
+    const [foodType, setFoodType] = useState("Enter category")
     const [doEditFoodType, setDoEditFoodType] = useState(false)
 
-    const handleEditItem = async (text) => {
+    const handleEditItem = (text) => {
         setItem(text);
         setDoEditItem(false);
-        dispatch(updateMenuItem({...props, item: text}))
     }
 
-    const handleEditPrice = async (text) => {
+    const handleEditPrice = (text) => {
         const parsed_text = Number(text.replace(/[^0-9]/g, '')) 
         setPrice(parsed_text);
         setDoEditPrice(false);
-        dispatch(updateMenuItem({...props, price: parsed_text}))
     }
 
-    const handleEditFoodType = async (text) => {
+    const handleEditFoodType = (text) => {
         setFoodType(text);
         setDoEditFoodType(false);
-        dispatch(updateMenuItem({...props, foodType: text}))
     }
 
-
-  const handleDelete = () => {   
-        Alert.alert("Warning", "Are you sure you want to delete this product? This can not be undone", 
-        [{text: 'Delete',
-        onPress: () => {
-            dispatch(deleteMenuItem(props))
+    const handleCreate = async () => {
+        if (item != "Enter name" && foodType != "Enter category") {
+            const buffer = {
+                item: item,
+                college: 'morse',
+                price: price,
+                isActive: true,
+                foodType: foodType,
+            }
+            dispatch(addMenuItem(buffer))
             navigation.goBack()
+        } else {
+            Alert.alert("Please fill in the item's information.")
         }
-        }, 
-        {text: 'Cancel',
-        onPress: () => {console.log("Delete canceled")}}])
     }
 
     
@@ -160,9 +158,9 @@ export default function EditItemScreen(props) {
                 <View style={styles.buttonHolder}>
                     <TouchableOpacity
                         style={{...styles.button, marginBottom: LAYOUTS.getWidth(30)}}
-                        onPress={handleDelete}>
+                        onPress={handleCreate}>
                         <Text style={{...styles.buttonText}}>
-                            Delete item
+                            Submit item
                         </Text>
                     </TouchableOpacity>
                 </View>

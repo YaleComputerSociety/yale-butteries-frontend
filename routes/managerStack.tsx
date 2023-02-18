@@ -8,6 +8,7 @@ import OrdersScreen from '../screens/OrdersScreen';
 import InventoryScreen from '../screens/InventoryScreen';
 import StripeScreen from '../screens/StripeScreen';
 import EditItemScreen from '../screens/EditItemScreen';
+import CreateItemScreen from '../screens/CreateItemScreen';
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -76,6 +77,10 @@ function InventoryNavigator() {
       <InventoryStack.Screen
         name="EditItem"
         component={EditItemScreen}
+      />
+      <InventoryStack.Screen
+        name="CreateItem"
+        component={CreateItemScreen}
       />
     </InventoryStack.Navigator>
   );

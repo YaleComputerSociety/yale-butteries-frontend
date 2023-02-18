@@ -3,11 +3,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import { getJSON } from 'utils/fetch'
 
 export interface MenuItem {
-  id: number
   item: string
   college: 'morse'
   price: number
-  limitedTime: boolean
   isActive: boolean
   foodType: string
 }
@@ -33,13 +31,20 @@ export const menuItemsSlice = createSlice({
       state.isLoading = action.payload
     },
     updateMenuItem: (state, action: PayloadAction<MenuItem>) => {
-      const updateIndex = state.menuItems.findIndex((item) => item.id == action.payload.id)
+      const updateIndex = state.menuItems.findIndex((item) => item.item == action.payload.item)
       state.menuItems[updateIndex] = action.payload
-    }
+    },
+    deleteMenuItem: (state, action: PayloadAction<MenuItem>) => {
+      const updateIndex = state.menuItems.findIndex((item) => item.item == action.payload.item)
+      state.menuItems.splice(updateIndex, 1)
+    },
+    addMenuItem: (state, action: PayloadAction<MenuItem>) => {
+      state.menuItems = [...state.menuItems, action.payload]
+    },
   },
 })
 
-export const { setMenuItemsState, setIsLoading, updateMenuItem } = menuItemsSlice.actions
+export const { setMenuItemsState, setIsLoading, updateMenuItem, deleteMenuItem, addMenuItem } = menuItemsSlice.actions
 
 export const asyncFetchMenuItems = () => {
   return async (dispatch): Promise<void> => {
@@ -60,56 +65,44 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
   await new Promise((r) => setTimeout(r, 2000))
   return [
     {
-      id: 1,
       item: 'Americano',
       college: 'morse',
       price: 1.50,
-      limitedTime: false,
       isActive: true,
       foodType: 'Food',
     },
     {
-      id: 2,
       item: 'Coke',
       college: 'morse',
       price: 1.00,
-      limitedTime: false,
       isActive: true,
       foodType: 'Food',
     },
     {
-      id: 3,
       item: 'Sprite',
       college: 'morse',
       price: 1.00,
-      limitedTime: false,
       isActive: true,
       foodType: 'Food',
     },
     {
-      id: 4,
       item: 'Diet Coke',
       college: 'morse',
       price: 1.00,
-      limitedTime: false,
       isActive: true,
       foodType: 'Food',
     },
     {
-      id: 5,
       item: "David's Tux",
       college: 'morse',
       price: 3.00,
-      limitedTime: false,
       isActive: true,
       foodType: 'Limited',
     },
     {
-      id: 6,
       item: 'Quesadilla',
       college: 'morse',
       price: 1.50,
-      limitedTime: false,
       isActive: true,
       foodType: 'Drinks',
     },
