@@ -7,6 +7,7 @@ import SettingsScreen from '../screens/SettingsScreen'
 import StartScreen from '../screens/StartScreen'
 import NavigationScreen from '../screens/NavigationScreen'
 import OrderStatusScreen from '../screens/OrderStatusScreen'
+import ManagerRenderScreen from '../screens/ManagerRenderScreen'
 
 const screens = {
   StartScreen: {
@@ -27,14 +28,12 @@ const screens = {
       title: 'Butteries',
     },
   },
-
   SettingsScreen: {
     screen: SettingsScreen,
     navigationOptions: {
       title: 'Settings',
     },
   },
-
   ButteryScreen: {
     screen: ButteryScreen,
     navigationOptions: {
@@ -56,24 +55,16 @@ const screens = {
       headerLeft: () => <></>,
     },
   },
+  ManagerRenderScreen: {
+    screen: ManagerRenderScreen,
+    navigationOptions: {
+      headerShown: false,
+      gestureEnabled: false,
+      title: 'ManagerScreen',
+      headerLeft: () => <></>,
+    },
+  },
 }
-
-// const HomeStack = createStackNavigator(screens, {
-//   defaultNavigationOptions: {
-//     headerStyle: { backgroundColor: '#00b2db' },
-//     headerTitleStyle: { fontFamily: 'HindSiliguri-Bolder', fontSize: 20 },
-//     headerTintColor: '#FFF',
-//     headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bolder', color: '#FFF', fontSize: 20 },
-//     headerRight: () => (
-//       <TouchableOpacity onPress={() => console.log("to Settings Screen")}>
-//           <Image
-//             source={require('../assets/images/SettingsIcon.png')}
-//             style={styles.button}
-//           />
-//       </TouchableOpacity>
-//     )
-//   },
-// })
 
 const HomeStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
@@ -91,4 +82,10 @@ const HomeStack = createStackNavigator(screens, {
   },
 })
 
-export default createAppContainer(HomeStack)
+const AppContainer = createAppContainer(HomeStack)
+
+export default AppContainer
+
+//ok basically what I need to do is just combine both stacks into the app container, and then when
+//you click one of the buttons on the navigation screen, you get redirected (using the containers
+//nav functions) to one of the screens

@@ -2,7 +2,6 @@ import * as React from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
-import ManagerNavigator from '../routes/managerStack'
 
 const NavigationScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
@@ -41,7 +40,12 @@ const NavigationScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 <Text style={{ color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>Customer</Text>
               </View>
             </Pressable>
-            <Pressable style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('ManagerRenderScreen')
+              }}
+              style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
+            >
               <View
                 style={{
                   backgroundColor: '#344a61',

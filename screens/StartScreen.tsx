@@ -5,30 +5,10 @@ import { useAppSelector } from '../store/TypedHooks'
 import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
 import { WebView } from 'react-native-webview'
-import passport from 'passport'
-import { Strategy as CasStrategy } from 'passport-cas'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
-  // const CasStrategy = require('passport')
-  // passport.use(
-  //   new CasStrategy(
-  //     {
-  //       casURL: 'https://secure.its.yale.edu/cas/login',
-  //     },
-  //     function (username, profile, done) {
-  //       console.log(done)
-  //     }
-  //   )
-  // )
-  // //This is the `verify` callback
-  // const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
-  //       method: 'POST',
-  //       body: JSON.stringify(obj),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     })
+
   const [modalVisible, setModalVisible] = React.useState(false)
   const injectedJs = `
     document.querySelector('h1').style.backgroundColor = 'red'
@@ -36,7 +16,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   //TO-DO: Add event listener onto the react-native-webview
   //responding to some CAS event?
   //Depending on the result, either keep on page or redirect to nav page
-  const managerNetIds = ['app43', 'testingMctester123']
+  const managerNetIds = ['awg32', 'testingMctester123']
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>

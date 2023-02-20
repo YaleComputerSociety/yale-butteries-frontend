@@ -8,10 +8,11 @@ import { loading } from './styles/GlobalStyles'
 import { ActivityIndicator, View } from 'react-native'
 import store from './store/ReduxStore'
 import AppLoading from 'expo-app-loading'
-import Navigator from './routes/homeStack'
+import AppContainer from './routes/homeStack'
 
 import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
+import { NavigationContainer } from '@react-navigation/native'
 
 const App: FC = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false)
@@ -38,7 +39,7 @@ const App: FC = () => {
 }
 
 const TestingInner: FC = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
   const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
   useEffect(() => {
     if (currentUser == null) {
@@ -53,7 +54,10 @@ const TestingInner: FC = () => {
           <ActivityIndicator size="large" />
         </View>
       ) : (
-        <Navigator /> //login page ?? --> to buttery navigator
+        <NavigationContainer>
+          <AppContainer />
+          {/* <ManagerStack /> */}
+        </NavigationContainer>
       )}
       <StatusBar style="auto" />
     </View>
