@@ -116,8 +116,12 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
         }}
       >
         <ScrollView>
-          {currentTransactionHistory.transactionItems.map((transactionItem) => (
-            <StatusItem name={getNameFromTransactionId(transactionItem)} status={transactionItem.orderStatus} />
+          {currentTransactionHistory.transactionItems.map((transactionItem, index) => (
+            <StatusItem
+              name={getNameFromTransactionId(transactionItem)}
+              status={transactionItem.orderStatus}
+              key={index}
+            />
           ))}
         </ScrollView>
       </View>
