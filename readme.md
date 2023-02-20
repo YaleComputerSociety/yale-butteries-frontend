@@ -6,6 +6,16 @@
 
 Once you are inside the Docker container, you can use Prisma to edit the database, and you can open the database to query it directly. type ```exit``` to quit
 
+### ts-node not found
+This means you'll need to run prisma migrations:
+
+```docker-copmose run app bash```
+
+```yarn prisma migrate dev``` 
+
+If you get "command prisma not found, run ```yarn add prisma``` followed by the previous command
+
+Then, exit the docker container with ```exit``` 
 
 ### Prisma
 
