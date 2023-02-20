@@ -2,7 +2,8 @@ version: '3.8'
 services:
   app:
     build: .
-    command: bash -c "yarn run start-dev"
+    command: bash -c "yarn run start"
+    # yarn run start-dev <- frontend
     container_name: yale_college_hub
     depends_on:
       - db

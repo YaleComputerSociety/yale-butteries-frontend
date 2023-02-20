@@ -1,0 +1,14 @@
+  await prisma.ingredient.upsert({
+    where: {
+      id: 1,
+    },
+    update: {},
+    create: {
+      ingredient: 'Coke',
+      available: true,
+      price: 1.0,
+      college: {
+        connect: { id: 1 },
+      },
+    },
+  })

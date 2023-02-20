@@ -1,106 +1,73 @@
-import db from '../models'
-import express from 'express'
-import { User } from './ControllerInterfaces'
+import { Request, Response } from 'express'
+import { PrismaClient } from '@prisma/client'
 
-const { Position, College, EventType, PositionEventType, User } = db
+const prisma = new PrismaClient()
 
-export async function getAllUsers(_req: express.Request, res: express.Response): Promise<void> {
+export async function getAllUsers(_req: Request, res: Response): Promise<void> {
   try {
-    const userCollection = await User.findAll(enumInclude)
-    const modifiedObjects = await Promise.all(userCollection.map((user) => getUserProperties(user, 'normal')))
-    res.send(JSON.stringify(modifiedObjects))
+    const users = await prisma.user.findMany(includeProperty)
+    res.send(JSON.stringify(users))
   } catch (e) {
+    console.log(e)
     res.status(400).send(e)
   }
 }
 
-export async function getUser(req: express.Request, res: express.Response): Promise<void> {
+export async function getUser(req: Request, res: Response): Promise<void> {
   try {
-    const id = req.params.userId
-    const targetUser = await User.findByPk(id, enumInclude)
-    const modifiedObject = await getUserProperties(targetUser, 'normal')
-    res.send(JSON.stringify(modifiedObject))
-  } catch (e) {
-    res.status(400).send(e)
-  }
-}
-
-export async function getMe(req: express.Request, res: express.Response): Promise<void> {
-  try {
-    const targetUser = await User.findOne({ where: { name: 'Tom Cruise' }, ...enumInclude })
-    const modifiedObject = await getUserProperties(targetUser, 'me')
-    res.send(JSON.stringify(modifiedObject))
-  } catch (e) {
-    res.status(400).send(e)
-  }
-}
-
-export async function updateUser(req: express.Request, res: express.Response): Promise<void> {
-  try {
-    // const id = req.params.userId
-    const targetUser = await User.findByPk(req.body.id)
-    if ('name' in req.body) {
-      targetUser.name = req.body.name
-    }
-    const promise = await targetUser.save()
-    res.send(JSON.stringify(promise))
-  } catch (e) {
-    res.status(400).send(e)
-  }
-}
-
-export async function deleteUser(req: express.Request, res: express.Response): Promise<void> {
-  try {
-    const id = req.params.userId
-    const targetUser = await User.findByPk(id)
-    const deletedUser = await targetUser.destroy()
-    res.status(200).send(JSON.stringify({ mesesage: 'Success', user: deletedUser }))
-  } catch (e) {
-    res.status(400).send(e)
-  }
-}
-
-const enumInclude = {
-  include: [
-    { model: Position, as: 'position' },
-    { model: College, as: 'college' },
-  ],
-}
-
-async function getEventType(event_type: number) {
-  const eventTypeString = await EventType.findByPk(event_type)
-  const eventTypeProperty = eventTypeString.type
-  return eventTypeProperty
-}
-
-async function getUserProperties(user: any, type: string) {
-  let eventTypes
-  if (type === 'me') {
-    const eventTypeArray = await PositionEventType.findAll({
+    const user = await prisma.user.findUnique({
+      ...includeProperty,
       where: {
-        position_id: user.position_id,
+        id: parseInt(req.params.userId),
       },
-      attributes: ['event_type_id'],
     })
-    eventTypes = await Promise.all(eventTypeArray.map((e) => getEventType(e.event_type_id)))
+    res.send(JSON.stringify(user))
+  } catch (e) {
+    res.status(400).send(e)
   }
-  const positionProperty = user.position.position
-  const collegeProperty = user.college.college
-  const userValues = user.dataValues
+}
 
-  const { position_id, college_id, ...rest } = userValues
-  const modifiedObject: User =
-    type === 'me'
-      ? {
-          ...rest,
-          position: positionProperty,
-          college: collegeProperty,
-          eventTypes: eventTypes,
-        }
-      : {
-          ...rest,
-          position: positionProperty,
-          college: collegeProperty,
-        }
-  return modifiedObject
+export async function createUser(req: Request, res: Response): Promise<void> {
+  try {
+    const { netid, email, name, credit_card_hash, position_id, college_id } = req.body
+    const newUser = await prisma.user.create({
+      data: {
+        netid: netid,
+        email: email,
+        name: name,
+        college: {
+          connect: {
+            id: parseInt(college_id),
+          },
+        },
+      },
+    })
+    res.send(JSON.stringify(newUser))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
+export async function updateUser(req: Request, res: Response): Promise<void> {
+  try {
+    const user = await prisma.user.update({
+      where: {
+        id: req.body.id,
+      },
+      data: {
+        netid: req.body.netid || undefined,
+        email: req.body.email || undefined,
+        name: req.body.name || undefined,
+      },
+    })
+    res.send(JSON.stringify(user))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
+const includeProperty = {
+  include: {
+    college: true,
+  },
 }
