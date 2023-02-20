@@ -37,7 +37,6 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
         },
       })
       const response = await currentTransaction.json()
-      console.log(response)
       if (response.status == 400) throw response
       dispatch(updateTransactionHistory(response))
     } catch (e) {

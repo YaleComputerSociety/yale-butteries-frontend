@@ -13,7 +13,6 @@ const Settings: FC<{ navigation: any }> = ({ navigation }) => {
 
   const changeName = (name: string) => {
     if (name.length >= 2) {
-      // console.log(currentUser)
       dispatch(asyncUpdateCurrentUser(name))
     }
   }

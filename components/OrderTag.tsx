@@ -20,12 +20,9 @@ const OrderTag = (props) => {
   const orderNum = props.children[0].id + '-'
   const slideIndex = [0, 1, 2, 3, 4]
   const [orderStatus, setOrderStatus] = useState(props.children[0].orderStatus)
-  //console.log(props.children)
-  //console.log(transactionIndex)
 
   const [tagActive, setTagActive] = useState(0)
   const [isStarted, setIsStarted] = useState(false)
-  //console.log(isStarted)
   //let orderStatus = props.children[0].orderStatus
   //'cancelled' | 'queued' | 'in_progress' | 'complete' | 'pending' | 'picked_up'
   //Here we need to find based on the orderstatus where to start the slide index
@@ -86,10 +83,6 @@ const OrderTag = (props) => {
         setOrderStatus(tempStatus)
         break
     }
-    //console.log(newTransactionItems[transactionIndex])
-    slideIndex.forEach((indx) => {
-      console.log(orderNum + indx)
-    })
     dispatch(
       updateTransactionItem({
         ...transactionItems.find((element) => element.id == transactionIndex),
@@ -97,20 +90,15 @@ const OrderTag = (props) => {
       })
     )
   }
-  //console.log(orderNum)
 
   const onchange = (nativeEvent) => {
     if (nativeEvent) {
-      //console.log(nativeEvent)
       const slide = Math.round(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width)
       if (slide != tagActive) {
         setTagActive(slide)
         handleStatus(slide)
         setIsStarted(true)
-        //console.log("Stage ")
-        //console.log(slide)
       }
-      //console.log(tagActive)
     }
   }
 
@@ -129,7 +117,6 @@ const OrderTag = (props) => {
           contentOffset={{ x: startingIndex * LAYOUTS.getWidth(355), y: 0 }}
         >
           {slideIndex.map((index) => {
-            //console.log(orderNum+index)
             return (
               <OrderTagPage
                 status={index}

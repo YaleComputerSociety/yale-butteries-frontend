@@ -40,7 +40,6 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const managerNetIds = ['awg32']
 
   const fetchTest = async () => {
-    console.log(baseUrl)
     const result = await fetch(baseUrl + 'api/users')
     const res = await result.json()
     console.log(res)

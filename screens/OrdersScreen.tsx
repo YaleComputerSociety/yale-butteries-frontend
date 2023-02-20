@@ -16,21 +16,15 @@ export default function OrdersScreen() {
   const [pastOrders, setPastOrders] = useState([])
   //const transcationHistoryWithItems = useAppSelector(getTransactionHistoryWithItems)
   const { transactionItems, isLoading: isLoadingTransactionItems } = useAppSelector((state) => state.transactionItems)
-  if (isLoadingTransactionItems) {
-    console.log('loading')
-  }
 
   useEffect(() => {
-    console.log('loading')
     if (isLoadingTransactionItems || transactionItems == null) {
       dispatch(asyncFetchTransactionItems())
-      console.log('fetching')
     }
   }, [isLoadingTransactionItems])
 
   useEffect(() => {
     console.log('transactionItems Updated')
-    //console.log(transactionItems)
     if (transactionItems != null) {
       setCurrentOrders(
         transactionItems.filter((element) => element.orderStatus != 'picked_up' && element.orderStatus != 'cancelled')
@@ -39,7 +33,6 @@ export default function OrdersScreen() {
         transactionItems.filter((element) => element.orderStatus == 'picked_up' || element.orderStatus == 'cancelled')
       )
     }
-    //console.log(currentOrders)
   }, [transactionItems])
 
   return (
@@ -59,13 +52,8 @@ export default function OrdersScreen() {
         >
           <Text style={{ ...styles.title }}>Live Orders</Text>
           {currentOrders.map((element, index) => {
-            //HEY orderNum = index make mess up the key system
-            //when we add/delete orders. Look here first if error happens.
-            //console.log(transactionItems)
-            //currentOrders.forEach(test => console.log(index + 'a'))
-            //console.log(currentOrders)
             return (
-              <View key={String(element.id) + 'av'} style={styles.tag}>
+              <View key={index} style={styles.tag}>
                 <OrderTag>
                   {element}
                   {transactionItems}
@@ -78,12 +66,8 @@ export default function OrdersScreen() {
           })}
           <Text style={{ ...styles.title2 }}>Completed Today</Text>
           {pastOrders.map((element, index) => {
-            //HEY orderNum = index make mess up the key system
-            //when we add/delete orders. Look here first if error happens.
-            //console.log(transactionItems)
-            //pastOrders.forEach(test => console.log(index + 'b'))
             return (
-              <View key={String(element.id) + 'bv'}>
+              <View key={index + 'a'}>
                 <OrderTag>
                   {element}
                   {transactionItems}
