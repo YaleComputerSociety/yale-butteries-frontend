@@ -31,7 +31,7 @@ const butteryScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string 
     if (menuItems == null) {
       dispatch(asyncFetchMenuItems())
     }
-  })
+  }, [])
 
   const addOrder = (newItem: MenuItem) => {
     const temp: OrderItem = { orderItem: newItem }

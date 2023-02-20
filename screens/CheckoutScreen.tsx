@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import * as React from 'react'
 import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
 import { checkout } from '../styles/CheckoutStyles'
@@ -11,6 +10,7 @@ import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 import { setTransactionHistoryState } from '../store/slices/TransactionHistory'
 import { removeOrderItem, OrderItem } from '../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
+import { baseUrl } from '../App'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   // const [loading, setLoading] = useState(false)
@@ -28,7 +28,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     try {
       // stripe stuff
       // const obj = { netid: name, price: amount }
-      // const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
+      // const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
       //   method: 'POST',
       //   body: JSON.stringify(obj),
       //   headers: {
@@ -56,7 +56,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         transaction_items.push(newItem)
       })
 
-      const uploadTransaction = await fetch('http://localhost:3000/api/transactions', {
+      const uploadTransaction = await fetch(baseUrl + 'api/transactions', {
         method: 'POST',
         body: JSON.stringify({
           inProgress: 'true',
