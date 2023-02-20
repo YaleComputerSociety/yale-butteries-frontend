@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
 import { updateTransactionHistory } from '../store/slices/TransactionHistory'
 import { getNameFromTransactionId } from '../Functions'
 import ProgressBar from 'react-native-progress/Bar'
-import { baseUrl } from '../App'
+import { baseUrl } from '../utils/utils'
 
 const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()

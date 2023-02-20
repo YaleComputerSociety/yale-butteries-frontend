@@ -7,7 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { WebView } from 'react-native-webview'
 import passport from 'passport'
 import { Strategy as CasStrategy } from 'passport-cas'
-import { baseUrl } from '../App'
+import { baseUrl } from '../utils/utils'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
@@ -91,7 +91,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>Login with CAS</Text>
+                <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>Login</Text>
               </View>
             </Pressable>
             <Pressable onPress={fetchTest} style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}>

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { baseUrl } from '../../App'
+import { baseUrl } from '../../utils/utils'
 
 // import { getJSON } from 'utils/fetch'
 
