@@ -49,7 +49,7 @@ export const asyncFetchMenuItemToIngredients = () => {
 }
 
 async function dummyMenuItemToIngredients(): Promise<MenuItemToIngredient[]> {
-  await new Promise((r) => setTimeout(r, 2000))
+  await new Promise((r) => setTimeout(r, 200))
   return [
     {
       menuItemId: 1,

@@ -1,18 +1,15 @@
-//import { createStackNavigator } from "react-navigation-stack";
-//import { createAppContainer } from "react-navigation";
-//test
+import { AntDesign, AntDesign } from '@expo/vector-icons'
+import { createBottomTabNavigator, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import OrdersScreen from '../screens/OrdersScreen'
+import InventoryScreen from '../screens/InventoryScreen'
+import StripeScreen from '../screens/StripeScreen'
+import React from 'react'
 
-import { AntDesign } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import OrdersScreen from '../screens/OrdersScreen';
-import InventoryScreen from '../screens/InventoryScreen';
-import StripeScreen from '../screens/StripeScreen';
-import EditItemScreen from '../screens/EditItemScreen';
-import CreateItemScreen from '../screens/CreateItemScreen';
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import EditItemScreen from '../screens/EditItemScreen'
+import CreateItemScreen from '../screens/CreateItemScreen'
+import { createStackNavigator } from '@react-navigation/stack'
 
-import { InventoryParamList } from '../types';
+import { InventoryParamList } from '../types'
 
 // const Tab = createBottomTabNavigator();
 
@@ -25,25 +22,37 @@ import { InventoryParamList } from '../types';
 //   );
 // }Khi/y7epyMIpKL35of2e956ocZC6o7v70Y2+s0A7nzc
 
-const Tab = createBottomTabNavigator();
-const InventoryStack = createStackNavigator<InventoryParamList>();
+const Tab = createBottomTabNavigator()
+const InventoryStack = createStackNavigator<InventoryParamList>()
 
 function AntDesignBarIcon(props: { name: React.ComponentProps<typeof AntDesign>['name']; color: string }) {
-  return <AntDesign size={28} style={{ marginBottom: -3 }} {...props} />;
+  return <AntDesign size={28} style={{ marginBottom: -3 }} {...props} />
 }
 
 function ManagerStack() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Orders" component={OrdersScreen} 
+      <Tab.Screen
+        name="Orders"
+        component={OrdersScreen}
         options={{
-          tabBarIcon: ({ color }) => <AntDesignBarIcon name="shoppingcart" color={color} />}}/>
-      <Tab.Screen name="Inventory" component={InventoryNavigator}
+          tabBarIcon: ({ color }) => <AntDesignBarIcon name="shoppingcart" color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Inventory"
+        component={InventoryNavigator}
         options={{
-          tabBarIcon: ({ color }) => <AntDesignBarIcon name="table" color={color} />}}/>
-      <Tab.Screen name="Stripe" component={StripeScreen}
+          tabBarIcon: ({ color }) => <AntDesignBarIcon name="table" color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Stripe"
+        component={StripeScreen}
         options={{
-          tabBarIcon: ({ color }) => <AntDesignBarIcon name="wallet" color={color} />}}/>
+          tabBarIcon: ({ color }) => <AntDesignBarIcon name="wallet" color={color} />,
+        }}
+      />
     </Tab.Navigator>
   )
 }
@@ -69,21 +78,11 @@ function ManagerStack() {
 function InventoryNavigator() {
   return (
     <InventoryStack.Navigator>
-      <InventoryStack.Screen
-        name="InventoryScreen"
-        component={InventoryScreen}
-        options={{ headerShown: false }}
-      />
-      <InventoryStack.Screen
-        name="EditItem"
-        component={EditItemScreen}
-      />
-      <InventoryStack.Screen
-        name="CreateItem"
-        component={CreateItemScreen}
-      />
+      <InventoryStack.Screen name="InventoryScreen" component={InventoryScreen} options={{ headerShown: false }} />
+      <InventoryStack.Screen name="EditItem" component={EditItemScreen} />
+      <InventoryStack.Screen name="CreateItem" component={CreateItemScreen} />
     </InventoryStack.Navigator>
-  );
+  )
 }
 
-export default ManagerStack;
+export default ManagerStack

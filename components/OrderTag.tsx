@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Alert,
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ImageBackgroundBase,
-  ImageStore,
-  SegmentedControlIOSComponent,
-} from 'react-native'
+import { Alert, View, Text, StyleSheet } from 'react-native'
 
 import { COLORS } from '../constants/Colors'
 import { TEXTS } from '../constants/Texts'
 import { LAYOUTS } from '../constants/Layouts'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
 
 import OrderTagPage from './OrderTagPage'
@@ -21,7 +11,7 @@ import OrderTagPage from './OrderTagPage'
 import { useAppDispatch } from '../store/TypedHooks'
 import { updateTransactionItem } from '../store/slices/TransactionItems'
 
-const OrderTag = (props) => {
+const OrderTag: React.FC = (props) => {
   const dispatch = useAppDispatch()
   const orderTime = '10:37 PM'
   const orderItem = props.children[0].menuItemId
@@ -33,8 +23,6 @@ const OrderTag = (props) => {
   const orderNum = props.children[0].id + '-'
   const slideIndex = [0, 1, 2, 3, 4]
   const [orderStatus, setOrderStatus] = useState(props.children[0].orderStatus)
-  //console.log(props.children)
-  //console.log(transactionIndex)
 
   const [tagActive, setTagActive] = useState(0)
   const [isStarted, setIsStarted] = useState(false)
@@ -218,10 +206,7 @@ const OrderTag = (props) => {
         setTagActive(slide)
         handleStatus(slide)
         setIsStarted(true)
-        //console.log("Stage ")
-        //console.log(slide)
       }
-      //console.log(tagActive)
     }
   }
 
@@ -240,7 +225,6 @@ const OrderTag = (props) => {
           contentOffset={{ x: startingIndex * LAYOUTS.getWidth(355), y: 0 }}
         >
           {slideIndex.map((index) => {
-            //console.log(orderNum+index)
             return (
               <OrderTagPage
                 status={index}

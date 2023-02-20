@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-// import { getJSON } from 'utils/fetch'
+import { AppDispatch } from '../../store/ReduxStore'
+import { baseUrl } from '../../utils/utils'
 
 export interface MenuItem {
+  id: number
   item: string
-  college: 'morse'
+  college: string
   price: number
+  description: string
+  limitedTime: boolean
   isActive: boolean
   foodType: 'food' | 'drink' | 'dessert'
 }
@@ -47,66 +50,37 @@ export const menuItemsSlice = createSlice({
 export const { setMenuItemsState, setIsLoading, updateMenuItem, deleteMenuItem, addMenuItem } = menuItemsSlice.actions
 
 export const asyncFetchMenuItems = () => {
-  return async (dispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
-      // const currentUser = await getJSON<CurrentUser>('/api/users/me')
-      const menuItems = await dummyMenuItems()
-      dispatch(setMenuItemsState(menuItems))
+      const menuItems = await fetch(baseUrl + 'api/menu_items', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await menuItems.json()
+      const newData: MenuItem[] = []
+      data.forEach((item) => {
+        const newItem: MenuItem = {
+          id: item.id,
+          item: item.item,
+          college: item.college,
+          price: parseInt(item.price),
+          isActive: item.isActive,
+          description: 'This is a test description',
+          limitedTime: false,
+          foodType: 'food',
+        }
+        newData.push(newItem)
+      })
+      dispatch(setMenuItemsState(newData))
     } catch (e) {
       console.log(e)
     } finally {
       dispatch(setIsLoading(false))
     }
   }
-}
-
-async function dummyMenuItems(): Promise<MenuItem[]> {
-  await new Promise((r) => setTimeout(r, 2000))
-  return [
-    {
-      item: 'Americano',
-      college: 'morse',
-      price: 1.5,
-      isActive: true,
-      foodType: 'drink',
-    },
-    {
-      item: 'Coke',
-      college: 'morse',
-      price: 1.0,
-      isActive: true,
-      foodType: 'drink',
-    },
-    {
-      item: 'Sprite',
-      college: 'morse',
-      price: 1.0,
-      isActive: true,
-      foodType: 'drink',
-    },
-    {
-      item: 'Diet Coke',
-      college: 'morse',
-      price: 1.0,
-      isActive: true,
-      foodType: 'drink',
-    },
-    {
-      item: "David's Tux",
-      college: 'morse',
-      price: 3.0,
-      isActive: true,
-      foodType: 'food',
-    },
-    {
-      item: 'Quesadilla',
-      college: 'morse',
-      price: 1.5,
-      isActive: true,
-      foodType: 'food',
-    },
-  ]
 }
 
 export default menuItemsSlice.reducer
