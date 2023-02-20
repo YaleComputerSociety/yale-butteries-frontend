@@ -4,6 +4,7 @@ import { getAllUsers, getUser, updateUser, createUser } from '../controllers/Use
 const router = express.Router()
 
 router.get('/', getAllUsers)
+router.get('/me', getMe)
 router.get('/:userId', getUser)
 router.post('/', createUser)
 router.put('/', updateUser)
