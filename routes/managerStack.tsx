@@ -1,5 +1,5 @@
-import { AntDesign, AntDesign } from '@expo/vector-icons'
-import { createBottomTabNavigator, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { AntDesign } from '@expo/vector-icons'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import OrdersScreen from '../screens/OrdersScreen'
 import InventoryScreen from '../screens/InventoryScreen'
 import StripeScreen from '../screens/StripeScreen'
