@@ -70,14 +70,14 @@ async function dummyTransactionItems(): Promise<TransactionItem[]> {
       id: 2,
       itemCost: 15,
       orderStatus: 'queued',
-      menuItemId: 6,
+      menuItemId: 2,
       transactionHistoryId: 1,
     },
     {
       id: 3,
       itemCost: 10,
       orderStatus: 'complete',
-      menuItemId: 2,
+      menuItemId: 3,
       transactionHistoryId: 2,
     },
     {
@@ -98,7 +98,7 @@ async function dummyTransactionItems(): Promise<TransactionItem[]> {
       id: 5,
       itemCost: 30,
       orderStatus: 'complete',
-      menuItemId: 1,
+      menuItemId: 6,
       transactionHistoryId: 3,
     },
   ]
