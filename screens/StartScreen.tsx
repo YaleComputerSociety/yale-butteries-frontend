@@ -37,7 +37,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   //TO-DO: Add event listener onto the react-native-webview
   //responding to some CAS event?
   //Depending on the result, either keep on page or redirect to nav page
-  const managerNetIds = ['app43']
+  const managerNetIds = ['awg32']
 
   const fetchTest = async () => {
     console.log(baseUrl)

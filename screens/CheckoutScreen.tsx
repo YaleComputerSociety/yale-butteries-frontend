@@ -46,9 +46,15 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       const presentSheet = await stripe.presentPaymentSheet()
       if (presentSheet.error) return Alert.alert(presentSheet.error.message)
 
-      const transaction_items = []
+      interface tempItem {
+        itemCost: number
+        orderStatus: string
+        menuItemId: number
+      }
+
+      const transaction_items: tempItem[] = []
       orderItems.forEach((item) => {
-        const newItem = {
+        const newItem: tempItem = {
           itemCost: item.orderItem.price,
           orderStatus: 'PENDING',
           menuItemId: item.orderItem.id,
@@ -136,7 +142,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 //   title: 'collegeName',
 // })
 
-CheckoutScreen.navigationOptions = (navData) => {
+CheckoutScreen['navigationOptions'] = (navData) => {
   return {
     headerRight: () => (
       <Ionicon
