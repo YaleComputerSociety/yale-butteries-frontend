@@ -5,13 +5,14 @@ import { asyncFetchCurrentUser } from './store/slices/CurrentUser'
 import { Provider } from 'react-redux'
 import { home } from './styles/HomeStyles'
 import { loading } from './styles/GlobalStyles'
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, View, LogBox } from 'react-native'
 import store from './store/ReduxStore'
 import Navigator from './routes/homeStack'
 import * as SplashScreen from 'expo-splash-screen'
-
 import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
+
+LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
 
 const TestingInner: FC = () => {
   const dispatch = useAppDispatch()
