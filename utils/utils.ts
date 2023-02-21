@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import { IOS_DEV_URL, ANDROID_DEV_URL } from '@env'
 import { Platform } from 'react-native'
 

@@ -5,6 +5,7 @@ import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { loading } from '../styles/GlobalStyles'
 import CheckoutItem from '../components/CheckoutItem'
 import { priceToText } from '../Functions'
+// eslint-disable-next-line import/no-unresolved
 import { STRIPE_PK } from '@env'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 import { setTransactionHistoryState } from '../store/slices/TransactionHistory'
