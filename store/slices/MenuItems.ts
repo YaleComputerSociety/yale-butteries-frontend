@@ -74,6 +74,7 @@ export const asyncFetchMenuItems = () => {
         }
         newData.push(newItem)
       })
+      console.debug(newData)
       dispatch(setMenuItemsState(newData))
     } catch (e) {
       console.log(e)

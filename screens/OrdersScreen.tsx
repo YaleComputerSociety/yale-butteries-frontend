@@ -29,9 +29,10 @@ const OrdersScreen: React.FC = () => {
       // turn the transactionHistories into transactionItems
       const ti: TransactionItem[] = []
       store.getState().transactionHistory.transactionHistory.forEach((th) => {
-        ti.push(...th.transactionItems)
+        th.transactionItems.forEach((item) => {
+          ti.push({ ...item, creationTime: th.creationTime })
+        })
       })
-      console.log(ti)
 
       // update transactionItems
       dispatch(setTransactionItemsState(ti))

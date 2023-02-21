@@ -9,6 +9,7 @@ export interface TransactionItem {
   menuItemId: number
   name: string
   user: string
+  creationTime: string
 }
 
 export interface TransactionItemsState {

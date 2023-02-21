@@ -20,18 +20,16 @@ interface Props {
 const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Props) => {
   const dispatch = useAppDispatch()
 
-  const orderItem = item.name
-  const customerName = item.user
   const transactionIndex = item.id
   const orderNum = item.id
   const slideIndex = [0, 1, 2, 3, 4]
-  const [orderStatus, setOrderStatus] = useState(item.orderStatus)
+  const orderDate = new Date(item.creationTime)
+  const orderTime = (orderDate.getHours() % 12) + ':' + orderDate.getMinutes()
 
+  const [orderStatus, setOrderStatus] = useState(item.orderStatus)
   const [tagActive, setTagActive] = useState(0)
   const [isStarted, setIsStarted] = useState(false)
-  //console.log(isStarted)
-  //let orderStatus = props.children[0].orderStatus
-  //'cancelled' | 'queued' | 'in_progress' | 'complete' | 'pending' | 'picked_up'
+
   //Here we need to find based on the orderstatus where to start the slide index
   const [startingIndex, setStartingIndex] = useState(0)
   useEffect(() => {
@@ -225,39 +223,13 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
           contentOffset={{ x: startingIndex * LAYOUTS.getWidth(355), y: 0 }}
         >
           {slideIndex.map((index) => {
-            return (
-              <OrderTagPage
-                status={index}
-                orderItem={orderItem}
-                key={orderNum + index}
-                key2={orderNum + index}
-                started={isStarted}
-              />
-            )
+            return <OrderTagPage status={index} orderItem={item} key={index} started={isStarted} time={orderTime} />
           })}
         </ScrollView>
       ) : (
-        <OrderTagPage status={startingIndex} orderItem={orderItem} key={orderNum} key2={orderNum} started={isStarted} />
+        <OrderTagPage status={startingIndex} orderItem={item} started={isStarted} time={orderTime} />
       )}
     </View>
-    //</SafeAreaView>
-
-    //   <View style={{...styles.timeContainer}}>
-    //       <Text style={{...styles.boldText}}>
-    //       10:37 PM</Text>
-    //   </View>
-    //   <View style={styles.itemContainer}>
-    //     <Text style={{...styles.regularText}}>
-    //       Chicken Nuggets
-    //     </Text>
-    //   </View>
-    //   <View style={styles.nameContainer}>
-    //     <Text style={{...styles.nameText}}>
-    //       Aidan</Text>
-    //     <Text style={{...styles.nameText}}>
-    //       Palmer</Text>
-    //   </View>
-    // </View>
   )
 }
 

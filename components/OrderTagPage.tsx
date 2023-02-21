@@ -4,9 +4,66 @@ import { View, Text, StyleSheet } from 'react-native'
 import { COLORS } from '../constants/Colors'
 import { TEXTS } from '../constants/Texts'
 import { LAYOUTS } from '../constants/Layouts'
+import { TransactionItem } from '../store/slices/TransactionItems'
 
-const OrderTagPage: React.FC = (props: any) => {
-  switch (props.status) {
+interface Props {
+  status: number
+  time?: string
+  orderItem: TransactionItem
+  started?: boolean
+}
+
+const OrderTagPage: React.FC<Props> = ({ status, orderItem, started, time }: Props) => {
+  const getColor = (status: number): string => {
+    switch (status) {
+      case 0:
+        return '#F5B7B1'
+      case 1:
+        return '#FAE5D3'
+      case 2:
+        return '#FCF3CF'
+      case 3:
+        return '#D4EFDF'
+      case 4:
+        return '#D989B9'
+      default:
+        return 'red'
+    }
+  }
+
+  const getStatus = (status: number): string => {
+    switch (status) {
+      case 0:
+        return 'Cancelled'
+      case 1:
+        return 'In Queue'
+      case 2:
+        return 'In Progress'
+      case 3:
+        return 'Pickup Ready'
+      case 4:
+        return 'Picked Up'
+      default:
+        return 'Something went wrong'
+    }
+  }
+
+  return (
+    <View style={{ ...styles.container, backgroundColor: getColor(status) }}>
+      <View style={{ ...styles.timeContainer }}>
+        <Text style={{ ...styles.boldText, lineHeight: 30 }}>{time}</Text>
+        <Text style={{ ...styles.nameText, lineHeight: 14 }}>{getStatus(status)}</Text>
+      </View>
+      <View style={styles.itemContainer}>
+        <Text style={{ ...styles.regularText }}>{orderItem.name}</Text>
+      </View>
+      <View style={styles.nameContainer}>
+        <Text style={{ ...styles.nameText }}>{orderItem.user}</Text>
+      </View>
+    </View>
+  )
+
+  switch (status) {
     case 4:
       return (
         <View style={{ ...styles.container, backgroundColor: '#D989B9' }}>
@@ -15,11 +72,10 @@ const OrderTagPage: React.FC = (props: any) => {
             <Text style={{ ...styles.nameText, lineHeight: 14 }}>Picked Up</Text>
           </View>
           <View style={styles.itemContainer}>
-            <Text style={{ ...styles.regularText }}>{props.orderItem}</Text>
+            <Text style={{ ...styles.regularText }}>{orderItem}</Text>
           </View>
           <View style={styles.nameContainer}>
-            <Text style={{ ...styles.nameText }}>Aidan</Text>
-            <Text style={{ ...styles.nameText }}>Palmer</Text>
+            <Text style={{ ...styles.nameText }}>name</Text>
           </View>
         </View>
       )
@@ -76,7 +132,7 @@ const OrderTagPage: React.FC = (props: any) => {
       )
       break
     case 0:
-      if (props.started) {
+      if (started) {
         return (
           <View style={{ ...styles.container, backgroundColor: '#F5B7B1' }}>
             <View style={{ ...styles.timeContainer }}>

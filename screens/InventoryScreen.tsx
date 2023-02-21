@@ -3,35 +3,32 @@ import { ActivityIndicator, StyleSheet, Text, View, ScrollView, TouchableOpacity
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { asyncFetchMenuItems } from '../store/slices/MenuItems'
 import ItemTag from '../components/ItemTag'
-import { useNavigation } from '@react-navigation/native'
-
 import { COLORS } from '../constants/Colors'
 import { TEXTS } from '../constants/Texts'
 import { LAYOUTS } from '../constants/Layouts'
+import { NavigationStackProp } from 'react-navigation-stack'
+import { NavigationParams } from 'react-navigation'
 
-export default function InventoryScreen() {
+const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
+  navigation,
+}) => {
   const dispatch = useAppDispatch()
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
+  const { currentUser } = useAppSelector((state) => state.currentUser)
+
   const [localMenu, setLocalMenu] = useState([])
   const [itemTypes, setItemTypes] = useState([])
-  const navigation = useNavigation()
 
-  if (isLoadingMenuItems) {
-    console.log('loading')
-  }
   useEffect(() => {
-    console.log('loading')
     if (isLoadingMenuItems || menuItems == null) {
       dispatch(asyncFetchMenuItems())
-      console.log('fetching')
     }
   }, [isLoadingMenuItems])
 
   useEffect(() => {
     console.log(menuItems)
-    console.log('menutems Updated')
     if (menuItems != null) {
-      setLocalMenu(menuItems.filter((element) => element.college == 'morse'))
+      setLocalMenu(menuItems.filter((element) => element.college == currentUser.college))
     }
     console.log(localMenu)
     // //console.log(transactionItems)
@@ -92,6 +89,8 @@ export default function InventoryScreen() {
     </View>
   )
 }
+
+export default InventoryScreen
 
 const styles = StyleSheet.create({
   container: {
