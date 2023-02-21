@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { View, ScrollView } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'

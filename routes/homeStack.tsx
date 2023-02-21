@@ -7,6 +7,7 @@ import SettingsScreen from '../screens/SettingsScreen'
 import StartScreen from '../screens/StartScreen'
 import NavigationScreen from '../screens/NavigationScreen'
 import OrderStatusScreen from '../screens/OrderStatusScreen'
+import StaffLoginScreen from '../screens/StaffLoginScreen'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
 const screens = {
@@ -20,6 +21,12 @@ const screens = {
     screen: NavigationScreen,
     navigationOptions: {
       headerShown: false,
+    },
+  },
+  StaffLogin: {
+    screen: StaffLoginScreen,
+    navigationOptions: {
+      title: 'StaffLogin',
     },
   },
   Home: {
@@ -57,6 +64,7 @@ const screens = {
       headerLeft: () => <></>,
     },
   },
+  
 }
 
 // const HomeStack = createStackNavigator(screens, {
