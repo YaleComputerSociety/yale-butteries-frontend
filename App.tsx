@@ -13,6 +13,7 @@ import AppContainer from './routes/homeStack'
 import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
+import ManagerStack from './routes/managerStack'
 
 LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
 

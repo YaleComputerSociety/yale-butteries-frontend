@@ -1,39 +1,63 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
-import { asyncFetchTransactionItems } from '../store/slices/TransactionItems'
 
 import { COLORS } from '../constants/Colors'
 import { TEXTS } from '../constants/Texts'
 import { LAYOUTS } from '../constants/Layouts'
 
 import OrderTag from '../components/OrderTag'
+import { asyncFetchTransactionHistories } from '../store/slices/TransactionHistory'
+import { setTransactionItemsState, TransactionItem } from '../store/slices/TransactionItems'
+import store from '../store/ReduxStore'
 
-//switch to arrow function
-export default function OrdersScreen() {
+const OrdersScreen: React.FC = () => {
   const dispatch = useAppDispatch()
   const [currentOrders, setCurrentOrders] = useState([])
   const [pastOrders, setPastOrders] = useState([])
-  //const transcationHistoryWithItems = useAppSelector(getTransactionHistoryWithItems)
   const { transactionItems, isLoading: isLoadingTransactionItems } = useAppSelector((state) => state.transactionItems)
+  const { transactionHistory, isLoading: isLoadingTransactionHistory } = useAppSelector(
+    (state) => state.transactionHistory
+  )
+  const { currentUser } = useAppSelector((state) => state.currentUser)
 
+  // Every x seconds, fetch THs by college and time created and then TIs and Users from backend, then sort by time
   useEffect(() => {
-    if (isLoadingTransactionItems || transactionItems == null) {
-      dispatch(asyncFetchTransactionItems())
-    }
-  }, [isLoadingTransactionItems])
+    const temp = async () => {
+      await dispatch(asyncFetchTransactionHistories(currentUser.college))
 
-  useEffect(() => {
-    console.log('transactionItems Updated')
-    if (transactionItems != null) {
-      setCurrentOrders(
-        transactionItems.filter((element) => element.orderStatus != 'picked_up' && element.orderStatus != 'cancelled')
-      )
-      setPastOrders(
-        transactionItems.filter((element) => element.orderStatus == 'picked_up' || element.orderStatus == 'cancelled')
-      )
+      // turn the transactionHistories into transactionItems
+      const ti: TransactionItem[] = []
+      store.getState().transactionHistory.transactionHistory.forEach((th) => {
+        ti.push(...th.transactionItems)
+      })
+      console.log(ti)
+
+      // update transactionItems
+      dispatch(setTransactionItemsState(ti))
+      const newTransactionItems = store.getState().transactionItems.transactionItems
+
+      // display transactionItems (should already be in sorted order)
+      if (newTransactionItems != null) {
+        setCurrentOrders(
+          newTransactionItems.filter(
+            (element) => element.orderStatus != 'FINISHED' && element.orderStatus != 'CANCELLED'
+          )
+        )
+        setPastOrders(
+          newTransactionItems.filter(
+            (element) => element.orderStatus == 'FINISHED' || element.orderStatus == 'CANCELLED'
+          )
+        )
+      }
     }
-  }, [transactionItems])
+
+    temp()
+    const interval = setInterval(() => {
+      temp()
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <SafeAreaView style={{ ...styles.container }}>
@@ -83,6 +107,7 @@ export default function OrdersScreen() {
     </SafeAreaView>
   )
 }
+export default OrdersScreen
 
 const styles = StyleSheet.create({
   container: {

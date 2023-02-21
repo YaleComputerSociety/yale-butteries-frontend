@@ -33,29 +33,26 @@ const OrderTag: React.FC = (props) => {
   const [startingIndex, setStartingIndex] = useState(0)
   useEffect(() => {
     switch (orderStatus) {
-      case 'cancelled':
+      case 'CANCELLED':
         setStartingIndex(0)
         break
-      case 'queued':
+      case 'PENDING':
         setStartingIndex(1)
         break
-      case 'in_progress':
+      case 'IN_PROGRESS':
         setStartingIndex(2)
         break
-      case 'complete':
+      case 'FINISHED':
         setStartingIndex(3)
         break
-      case 'picked_up':
+      case 'PICKED_UP':
         setStartingIndex(4)
-        break
-      case 'pending':
-        setStartingIndex(0)
         break
     }
   }, [])
 
   useEffect(() => {
-    if (orderStatus != 'pending') {
+    if (orderStatus != 'PENDING') {
       setIsStarted(true)
     }
   }, [orderStatus])
@@ -65,14 +62,14 @@ const OrderTag: React.FC = (props) => {
     switch (code) {
       case 0:
         if (!isStarted) {
-          tempStatus = 'pending'
+          tempStatus = 'PENDING'
           setOrderStatus(tempStatus)
         } else {
           Alert.alert('Notice', 'Are you sure you want to cancel this order? This can not be undone', [
             {
               text: 'Yes',
               onPress: () => {
-                tempStatus = 'cancelled'
+                tempStatus = 'CANCELLED'
                 setOrderStatus(tempStatus)
                 slideIndex.forEach((indx) => {
                   console.log(orderNum + indx)
@@ -88,7 +85,7 @@ const OrderTag: React.FC = (props) => {
             {
               text: 'No',
               onPress: () => {
-                tempStatus = 'queued'
+                tempStatus = 'QUEUED'
                 setOrderStatus(tempStatus)
                 slideIndex.forEach((indx) => {
                   console.log(orderNum + indx)
@@ -103,7 +100,7 @@ const OrderTag: React.FC = (props) => {
               },
             },
           ])
-          tempStatus = 'cancelled'
+          tempStatus = 'CANCELLED'
           setOrderStatus(tempStatus)
         }
         slideIndex.forEach((indx) => {
@@ -117,7 +114,7 @@ const OrderTag: React.FC = (props) => {
         )
         break
       case 1:
-        tempStatus = 'queued'
+        tempStatus = 'QUEUED'
         setOrderStatus(tempStatus)
         slideIndex.forEach((indx) => {
           console.log(orderNum + indx)
@@ -130,7 +127,7 @@ const OrderTag: React.FC = (props) => {
         )
         break
       case 2:
-        tempStatus = 'in_progress'
+        tempStatus = 'IN_PROGRESS'
         setOrderStatus(tempStatus)
         slideIndex.forEach((indx) => {
           console.log(orderNum + indx)
@@ -143,7 +140,7 @@ const OrderTag: React.FC = (props) => {
         )
         break
       case 3:
-        tempStatus = 'complete'
+        tempStatus = 'FINISHED'
         setOrderStatus(tempStatus)
         slideIndex.forEach((indx) => {
           console.log(orderNum + indx)
@@ -160,7 +157,7 @@ const OrderTag: React.FC = (props) => {
           {
             text: 'Yes',
             onPress: () => {
-              tempStatus = 'picked_up'
+              tempStatus = 'PICKED_UP'
               setOrderStatus(tempStatus)
               slideIndex.forEach((indx) => {
                 console.log(orderNum + indx)
@@ -176,7 +173,7 @@ const OrderTag: React.FC = (props) => {
           {
             text: 'No',
             onPress: () => {
-              tempStatus = 'complete'
+              tempStatus = 'FINISHED'
               setOrderStatus(tempStatus)
               slideIndex.forEach((indx) => {
                 console.log(orderNum + indx)

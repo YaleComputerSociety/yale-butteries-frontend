@@ -6,6 +6,7 @@ export interface TransactionItem {
   itemCost: number
   orderStatus: 'PENDING' | 'CANCELLED' | 'IN_PROGRESS' | 'FINISHED'
   menuItemId: number
+  name: string
 }
 
 export interface TransactionItemsState {

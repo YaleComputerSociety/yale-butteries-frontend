@@ -65,7 +65,7 @@ async function dummyUser(): Promise<User> {
     id: 5,
     netid: 'awg32',
     name: 'Saddison',
-    college: 'murray',
+    college: 'berkeley',
   }
 }
 
