@@ -45,7 +45,6 @@ export const transactionHistorySlice = createSlice({
     },
     setTransactionHistories: (state, action: PayloadAction<TransactionHistoryEntry[]>) => {
       state.transactionHistory = action.payload
-      console.log(action.payload)
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload

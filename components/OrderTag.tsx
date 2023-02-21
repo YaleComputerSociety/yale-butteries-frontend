@@ -9,20 +9,23 @@ import { ScrollView } from 'react-native-gesture-handler'
 import OrderTagPage from './OrderTagPage'
 
 import { useAppDispatch } from '../store/TypedHooks'
-import { updateTransactionItem } from '../store/slices/TransactionItems'
+import { TransactionItem, updateTransactionItem } from '../store/slices/TransactionItems'
 
-const OrderTag: React.FC = (props) => {
+interface Props {
+  item: TransactionItem
+  transactionItems: TransactionItem[]
+  interactable: boolean
+}
+
+const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Props) => {
   const dispatch = useAppDispatch()
-  const orderTime = '10:37 PM'
-  const orderItem = props.children[0].menuItemId
-  const transactionItems = props.children[1]
-  const transactionIndex = props.children[2]
-  const orderFirstName = 'Aidan'
-  const orderLastName = 'Palmer'
-  const interactable = props.children[3]
-  const orderNum = props.children[0].id + '-'
+
+  const orderItem = item.name
+  const customerName = item.user
+  const transactionIndex = item.id
+  const orderNum = item.id
   const slideIndex = [0, 1, 2, 3, 4]
-  const [orderStatus, setOrderStatus] = useState(props.children[0].orderStatus)
+  const [orderStatus, setOrderStatus] = useState(item.orderStatus)
 
   const [tagActive, setTagActive] = useState(0)
   const [isStarted, setIsStarted] = useState(false)

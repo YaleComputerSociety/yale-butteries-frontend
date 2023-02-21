@@ -78,27 +78,15 @@ const OrdersScreen: React.FC = () => {
           {currentOrders.map((element, index) => {
             return (
               <View key={index} style={styles.tag}>
-                <OrderTag>
-                  {element}
-                  {transactionItems}
-                  {element.id}
-                  {true}
-                  key = {String(element.id) + 'a'}
-                </OrderTag>
+                <OrderTag item={element} transactionItems={transactionItems} interactable={true} key={index} />
               </View>
             )
           })}
           <Text style={{ ...styles.title2 }}>Completed Today</Text>
           {pastOrders.map((element, index) => {
             return (
-              <View key={index + 'a'}>
-                <OrderTag>
-                  {element}
-                  {transactionItems}
-                  {element.id}
-                  {false}
-                  key = {String(element.id) + 'b'}
-                </OrderTag>
+              <View key={index}>
+                <OrderTag item={element} transactionItems={transactionItems} interactable={true} key={index} />
               </View>
             )
           })}

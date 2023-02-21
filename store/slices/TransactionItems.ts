@@ -3,10 +3,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 // import { getJSON } from 'utils/fetch'
 
 export interface TransactionItem {
+  id: number
   itemCost: number
-  orderStatus: 'PENDING' | 'CANCELLED' | 'IN_PROGRESS' | 'FINISHED'
+  orderStatus: 'PENDING' | 'CANCELLED' | 'IN_PROGRESS' | 'FINISHED' | 'PICKED_UP'
   menuItemId: number
   name: string
+  user: string
 }
 
 export interface TransactionItemsState {

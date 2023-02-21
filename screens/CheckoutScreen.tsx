@@ -27,24 +27,24 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const makePayment = async (name: string, amount: number) => {
     try {
       // stripe stuff
-      const obj = { netid: name, price: amount }
-      const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
-        method: 'POST',
-        body: JSON.stringify(obj),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      const data = await response.json()
-      if (!response.ok) return Alert.alert(data.message)
-      const clientSecret = data.paymentIntent.client_secret
-      const initSheet = await stripe.initPaymentSheet({
-        paymentIntentClientSecret: clientSecret,
-        merchantDisplayName: 'Yale Butteries',
-      })
-      if (initSheet.error) return Alert.alert(initSheet.error.message)
-      const presentSheet = await stripe.presentPaymentSheet()
-      if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+      // const obj = { netid: name, price: amount }
+      // const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
+      //   method: 'POST',
+      //   body: JSON.stringify(obj),
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // })
+      // const data = await response.json()
+      // if (!response.ok) return Alert.alert(data.message)
+      // const clientSecret = data.paymentIntent.client_secret
+      // const initSheet = await stripe.initPaymentSheet({
+      //   paymentIntentClientSecret: clientSecret,
+      //   merchantDisplayName: 'Yale Butteries',
+      // })
+      // if (initSheet.error) return Alert.alert(initSheet.error.message)
+      // const presentSheet = await stripe.presentPaymentSheet()
+      // if (presentSheet.error) return Alert.alert(presentSheet.error.message)
 
       interface tempItem {
         itemCost: number
