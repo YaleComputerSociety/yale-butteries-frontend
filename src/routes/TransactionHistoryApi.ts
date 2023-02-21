@@ -1,14 +1,14 @@
 import express from 'express'
 import {
   createTransactionHistory,
-  getAllTransactionHistories,
+  getCollegeTransactionHistories,
   getTransactionHistory,
   updateTransactionHistory,
 } from '../controllers/TransactionHistory'
 
 const router = express.Router()
 
-router.get('/', getAllTransactionHistories)
+router.get('/:college', getCollegeTransactionHistories)
 router.get('/:transactionId', getTransactionHistory)
 router.put('/', updateTransactionHistory)
 router.post('/', createTransactionHistory)

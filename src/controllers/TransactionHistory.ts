@@ -1,4 +1,4 @@
-import { College, PrismaClient, User, TransactionItem, TransactionHistory } from '@prisma/client'
+import { College, PrismaClient, User, TransactionItem, TransactionHistory, MenuItem } from '@prisma/client'
 
 import { Request, Response } from 'express'
 
@@ -6,15 +6,81 @@ interface FrontTransactionItem {
   itemCost: number
   orderStatus: string
   menuItemId: number
+  name: string
+}
+
+interface FrontTransactionHistory {
+  id: number
+  college: string
+  inProgress: string
+  price: number
+  netId: string
+  paymentIntentId: string
+  transactionItems: FrontTransactionItem[]
+  creationTime: Date
 }
 
 const prisma = new PrismaClient()
 
-export async function getAllTransactionHistories(_req: Request, res: Response): Promise<void> {
+const backToFrontTransactionHistories = async (
+  transactionHistories: TransactionHistory[],
+  college: string
+): Promise<FrontTransactionHistory[]> => {
+  const res: FrontTransactionHistory[] = []
+  for (const item of transactionHistories) {
+    const user: User = await getUserFromId(item.userId)
+    const th: TransactionHistory & { transaction_items: TransactionItem[] } = await getTransactionHistoryFromId(item.id)
+    const tis: FrontTransactionItem[] = await backToFrontTransactionItems(th)
+    if (item) {
+      const newItem: FrontTransactionHistory = {
+        id: item.id,
+        college: college,
+        inProgress: item.in_progress,
+        price: item.total_price,
+        netId: user.name,
+        paymentIntentId: item.payment_intent_id,
+        creationTime: item.created_at,
+        transactionItems: tis,
+      }
+      res.push(newItem)
+    }
+  }
+  return res
+}
+
+// returns all transactionHistories of a specific college within the last 6 hours
+export async function getCollegeTransactionHistories(req: Request, res: Response): Promise<void> {
   try {
-    const transactionHistories = await prisma.transactionHistory.findMany(includeProperty)
-    res.send(JSON.stringify(transactionHistories))
+    const college = await getCollegeFromName(req.params.college)
+    console.log(college.college)
+    const date = new Date(Date.now() - 36e5 * 6) // select only transactions from after 6 hours before this moment
+
+    const validTransactionHistories = await prisma.transactionHistory.findMany({
+      where: {
+        collegeId: college.id,
+        created_at: {
+          gte: date,
+        },
+      },
+      include: {
+        transaction_items: true,
+      },
+    })
+
+    console.log(validTransactionHistories)
+
+    const frontValidTransactionHisotries = await backToFrontTransactionHistories(
+      validTransactionHistories,
+      college.college
+    )
+
+    const ret = {
+      transactionHistories: frontValidTransactionHisotries,
+    }
+
+    res.send(JSON.stringify(ret))
   } catch (e) {
+    console.log(e)
     res.status(400).send(e)
   }
 }
@@ -29,7 +95,7 @@ const getCollegeFromId = async (id: number): Promise<College> => {
 }
 
 const getCollegeFromName = async (name: string): Promise<College> => {
-  const college = await prisma.college.findUnique({
+  const college = await prisma.college.findFirst({
     where: {
       college: name,
     },
@@ -55,6 +121,15 @@ const getUserFromNetId = async (netId: string): Promise<User> => {
   return user
 }
 
+const getMenuItemFromId = async (id: number): Promise<MenuItem> => {
+  const item = await prisma.menuItem.findUnique({
+    where: {
+      id: id,
+    },
+  })
+  return item
+}
+
 const getTransactionHistoryFromId = async (
   id: number
 ): Promise<TransactionHistory & { transaction_items: TransactionItem[] }> => {
@@ -69,16 +144,18 @@ const getTransactionHistoryFromId = async (
   return res
 }
 
-const backToFrontTransactionItems = (
+const backToFrontTransactionItems = async (
   transactionHistory: TransactionHistory & { transaction_items: TransactionItem[] }
-): FrontTransactionItem[] => {
+): Promise<FrontTransactionItem[]> => {
   const transactionItems: FrontTransactionItem[] = []
   for (const item of transactionHistory.transaction_items) {
+    const name = await getMenuItemFromId(item.menuItemId)
     if (item) {
-      const newItem = {
+      const newItem: FrontTransactionItem = {
         itemCost: item.item_cost,
         orderStatus: item.order_status,
         menuItemId: item.menuItemId,
+        name: name,
       }
       transactionItems.push(newItem)
     }
