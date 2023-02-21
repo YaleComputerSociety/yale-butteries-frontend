@@ -7,6 +7,8 @@ interface FrontTransactionItem {
   orderStatus: string
   menuItemId: number
   name: string
+  id: number
+  user: string
 }
 
 interface FrontTransactionHistory {
@@ -52,7 +54,6 @@ const backToFrontTransactionHistories = async (
 export async function getCollegeTransactionHistories(req: Request, res: Response): Promise<void> {
   try {
     const college = await getCollegeFromName(req.params.college)
-    console.log(college.college)
     const date = new Date(Date.now() - 36e5 * 6) // select only transactions from after 6 hours before this moment
 
     const validTransactionHistories = await prisma.transactionHistory.findMany({
@@ -66,8 +67,6 @@ export async function getCollegeTransactionHistories(req: Request, res: Response
         transaction_items: true,
       },
     })
-
-    console.log(validTransactionHistories)
 
     const frontValidTransactionHisotries = await backToFrontTransactionHistories(
       validTransactionHistories,
@@ -149,13 +148,16 @@ const backToFrontTransactionItems = async (
 ): Promise<FrontTransactionItem[]> => {
   const transactionItems: FrontTransactionItem[] = []
   for (const item of transactionHistory.transaction_items) {
-    const name = await getMenuItemFromId(item.menuItemId)
+    const menuItem = await getMenuItemFromId(item.menuItemId)
+    const user = await getUserFromId(transactionHistory.userId)
     if (item) {
       const newItem: FrontTransactionItem = {
         itemCost: item.item_cost,
         orderStatus: item.order_status,
         menuItemId: item.menuItemId,
-        name: name,
+        name: menuItem.item,
+        id: item.id,
+        user: user.name,
       }
       transactionItems.push(newItem)
     }
