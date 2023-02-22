@@ -133,7 +133,7 @@ const butteryScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string 
   )
 }
 
-butteryScreen.navigationOptions = (navData) => {
+butteryScreen['navigationOptions'] = (navData) => {
   const collegeName = navData.navigation.getParam('collegeName')
   return {
     headerStyle: {

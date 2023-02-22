@@ -70,7 +70,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           price: price,
           netId: name,
           college: collegeOrderCart,
-          paymentIntentId: 'a', //data.paymentIntent.id,
+          paymentIntentId: 'a',
           transactionItems: transaction_items,
         }),
         headers: {
@@ -93,8 +93,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const removeOrder = (newItem: OrderItem) => {
     dispatch(removeOrderItem(orderItems.find((item) => item.orderItem.id == newItem.orderItem.id)))
   }
-
-  // export default function CheckoutScreen( { navigation } : {navigation:any} ) {
 
   return (
     <View style={checkout.wrapper}>
@@ -138,10 +136,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     </View>
   )
 }
-
-// CheckoutScreen['navigationOptions'] = () => ({
-//   title: 'collegeName',
-// })
 
 CheckoutScreen['navigationOptions'] = (navData) => {
   return {

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AppDispatch } from '../../store/ReduxStore'
 
 // import { getJSON } from 'utils/fetch'
 
@@ -46,7 +47,7 @@ export const { setTransactionItemsState, addTransactionItem, updateTransactionIt
   transactionItemsSlice.actions
 
 export const asyncFetchTransactionItems = () => {
-  return async (dispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
       // const currentUser = await getJSON<CurrentUser>('/api/users/me')
@@ -66,21 +67,21 @@ async function dummyTransactionItems(): Promise<TransactionItem[]> {
     {
       id: 1,
       itemCost: 1,
-      orderStatus: 'complete',
+      orderStatus: 'FINISHED',
       menuItemId: 1,
       transactionHistoryId: 1,
     },
     {
       id: 2,
       itemCost: 15,
-      orderStatus: 'queued',
+      orderStatus: 'IN_PROGRESS',
       menuItemId: 2,
       transactionHistoryId: 1,
     },
     {
       id: 3,
       itemCost: 10,
-      orderStatus: 'complete',
+      orderStatus: 'FINISHED',
       menuItemId: 3,
       transactionHistoryId: 2,
     },
@@ -94,14 +95,14 @@ async function dummyTransactionItems(): Promise<TransactionItem[]> {
     {
       id: 4,
       itemCost: 30,
-      orderStatus: 'queued',
+      orderStatus: 'PENDING',
       menuItemId: 5,
       transactionHistoryId: 3,
     },
     {
       id: 5,
       itemCost: 30,
-      orderStatus: 'complete',
+      orderStatus: 'CANCELLED',
       menuItemId: 6,
       transactionHistoryId: 3,
     },

@@ -7,7 +7,7 @@ import { getNameFromTransactionId } from '../Functions'
 import ProgressBar from 'react-native-progress/Bar'
 import { baseUrl } from '../utils/utils'
 
-const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
+const OrderStatusScreen: FC<{ navigation: any }> = () => {
   const dispatch = useAppDispatch()
   const { isLoading: isLoadingTransactionHistory, currentTransactionHistory } = useAppSelector(
     (state) => state.transactionHistory

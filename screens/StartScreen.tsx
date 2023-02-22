@@ -5,8 +5,8 @@ import { useAppSelector } from '../store/TypedHooks'
 import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
 import { WebView } from 'react-native-webview'
-import passport from 'passport'
-import { Strategy as CasStrategy } from 'passport-cas'
+// import passport from 'passport'
+// import { Strategy as CasStrategy } from 'passport-cas'
 import { baseUrl } from '../utils/utils'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {

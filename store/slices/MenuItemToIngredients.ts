@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AppDispatch } from '../../store/ReduxStore'
 
 // import { getJSON } from 'utils/fetch'
 
@@ -34,7 +35,7 @@ export const menuItemToIngredientsSlice = createSlice({
 export const { setMenuItemToIngredientsState, setIsLoading } = menuItemToIngredientsSlice.actions
 
 export const asyncFetchMenuItemToIngredients = () => {
-  return async (dispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
       // const currentUser = await getJSON<CurrentUser>('/api/users/me')

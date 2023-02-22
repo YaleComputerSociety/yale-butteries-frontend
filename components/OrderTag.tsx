@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, View, Text, StyleSheet } from 'react-native'
+import { Alert, View, StyleSheet } from 'react-native'
 
 import { COLORS } from '../constants/Colors'
 import { TEXTS } from '../constants/Texts'

@@ -12,7 +12,7 @@ export const LAYOUTS = {
   },
   //get width scales the size of elements based on screen dimensions
   //we choose width / 375 as 375 is the width of the iphone8 which we'll use as default
-  getWidth: (input : any) => {
+  getWidth: (input: number): number => {
     return (input * width) / 375
   },
 }

@@ -64,11 +64,11 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
         <ScrollView style={{ ...styles.scrollView }}>
           {itemTypes.map((el, index) => {
             return (
-              <View key={el}>
+              <View key={index}>
                 <Text style={{ ...styles.title }}>{el}</Text>
-                {localMenu.map((item, index) => {
+                {localMenu.map((item, i) => {
                   if (item.foodType == el) {
-                    return <ItemTag key={JSON.stringify(item)} item={item} />
+                    return <ItemTag key={i} item={item} />
                   }
                 })}
               </View>
