@@ -1,8 +1,8 @@
 # Yale Butteries (Frontend)
 
-Yale Butteries is a React Native + Express.js app for ordering in advance from the 14 Yale residential college butteries.
+Yale Butteries is a React Native + Express.js app for ordering in advance from the Yale residential college butteries.
 
-## Setting up the Development Environment (under construction)
+## Setting up the Development Environment
 
 To run the full environment, you will also need access to the [backend repository](https://github.com/TuckerMoses/yale-college-hub), but you can do plenty without it
 
