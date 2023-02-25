@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { View, ScrollView } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, ScrollView, Text } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'
 import { useAppDispatch } from '../store/TypedHooks'
@@ -21,8 +21,29 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false} alwaysBounceVertical={false} bounces={true}>
-      <LinearGradient colors={['#2ebf91', '#f9a000ff']} locations={[0, 1]}>
+      <LinearGradient colors={['#627af7', '#EC6EAD']} locations={[0, 1]}>
+        {/* <View style={{ borderTopWidth: 2, borderBottomWidth: 2, borderColor: 'white' }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 30,
+              paddingVertical: 6,
+              fontFamily: 'HindSiliguri-Bold',
+              color: 'white',
+            }}
+          >
+            GRAND OPENING
+          </Text>
+        </View> */}
         <View style={home.outerContainer}>
+          <Card
+            onPress={() => toMenu('morse')}
+            college="Morse"
+            openTime="6:00"
+            closeTime="5:00"
+            offsetY={560}
+            active={true}
+          />
           <Card
             onPress={() => toMenu('berkeley')}
             college="Berkeley"
@@ -70,14 +91,6 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
             closeTime="6:00am"
             offsetY={480}
             active={false}
-          />
-          <Card
-            onPress={() => toMenu('morse')}
-            college="Morse"
-            openTime="6:00"
-            closeTime="5:00"
-            offsetY={560}
-            active={true}
           />
           <Card
             onPress={() => toMenu('murray')}
@@ -137,7 +150,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
           />
         </View>
       </LinearGradient>
-      <View style={{ height: '20%', width: '100%', backgroundColor: '#f9a000ff' }}></View>
+      <View style={{ height: '20%', width: '100%', backgroundColor: '#EC6EAD' }}></View>
     </ScrollView>
   )
 }

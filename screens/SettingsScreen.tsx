@@ -1,5 +1,5 @@
 //import * as React from 'react'
-import { FC, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { TextInput } from 'react-native-gesture-handler'

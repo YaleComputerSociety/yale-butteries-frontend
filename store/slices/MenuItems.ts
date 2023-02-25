@@ -60,6 +60,7 @@ export const asyncFetchMenuItems = () => {
           isActive: item.isActive,
           description: 'This is a test description',
           limitedTime: false,
+          foodType: 'dessert',
         }
         newData.push(newItem)
       })
@@ -94,7 +95,6 @@ async function dummyMenuItems(): Promise<MenuItem[]> {
       limitedTime: false,
       isActive: true,
       foodType: 'food',
-
     },
     {
       id: 1,
