@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { Switch, View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
+import React, { useState } from 'react'
+import { Switch, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { useAppDispatch } from '../store/TypedHooks'
 
 import { FUNCTIONS } from '../constants/Functions'
-import { COLORS } from '../constants/Colors'
-import { TEXTS } from '../constants/Texts'
 import { LAYOUTS } from '../constants/Layouts'
-import { updateMenuItem } from '../store/slices/MenuItems'
+import { asyncUpdateMenuItem } from '../store/slices/MenuItems'
 import { useNavigation } from '@react-navigation/native'
 
 const ItemTag = (props) => {
   const [item, setItem] = useState(props.item)
   const dispatch = useAppDispatch()
   const navigation = useNavigation()
-  //console.log(props)
+
   const handleSwitch = () => {
+    dispatch(asyncUpdateMenuItem({ ...item, isActive: !item.isActive }))
     setItem({ ...item, isActive: !item.isActive })
-    dispatch(updateMenuItem(item))
   }
+
   return (
     <>
       {item.isActive ? (

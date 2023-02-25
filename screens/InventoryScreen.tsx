@@ -8,11 +8,14 @@ import { TEXTS } from '../constants/Texts'
 import { LAYOUTS } from '../constants/Layouts'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
+import { useIsFocused } from '@react-navigation/native'
 
 const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
   navigation,
 }) => {
   const dispatch = useAppDispatch()
+  const isFocused = useIsFocused()
+
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
@@ -20,23 +23,18 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
   const [itemTypes, setItemTypes] = useState([])
 
   useEffect(() => {
-    if (isLoadingMenuItems || menuItems == null) {
-      dispatch(asyncFetchMenuItems())
+    const temp = async () => {
+      if (isLoadingMenuItems || menuItems == null) {
+        await dispatch(asyncFetchMenuItems())
+      }
     }
-  }, [isLoadingMenuItems])
+    temp()
+  }, [isLoadingMenuItems, isFocused])
 
   useEffect(() => {
-    console.log(menuItems)
     if (menuItems != null) {
       setLocalMenu(menuItems.filter((element) => element.college == currentUser.college))
     }
-    console.log(localMenu)
-    // //console.log(transactionItems)
-    // if (transactionItems != null) {
-    //   setCurrentOrders(transactionItems.filter(element => element.orderStatus != "picked_up" && element.orderStatus != "cancelled"))
-    //   setPastOrders(transactionItems.filter(element => element.orderStatus == "picked_up" || element.orderStatus == "cancelled"))
-    // }
-    // //console.log(currentOrders)
   }, [menuItems])
 
   useEffect(() => {
@@ -48,7 +46,6 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
     }
     setItemTypes(buffer)
     buffer.sort()
-    console.log(itemTypes)
   }, [localMenu])
   return (
     <View style={{ ...styles.container }}>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Alert, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native'
 import { useAppDispatch } from '../store/TypedHooks'
-import { deleteMenuItem, updateMenuItem } from '../store/slices/MenuItems'
+import { asyncUpdateMenuItem, deleteMenuItem, updateMenuItem } from '../store/slices/MenuItems'
 import EditButton from '../components/EditButton'
 import { useNavigation } from '@react-navigation/native'
 
@@ -12,7 +12,6 @@ import { LAYOUTS } from '../constants/Layouts'
 const EditItemScreen: React.FC = (props: any) => {
   const navigation = useNavigation()
   props = props.route.params.data
-  console.log(props)
   const dispatch = useAppDispatch()
 
   const [item, setItem] = useState(props.item)
@@ -27,21 +26,21 @@ const EditItemScreen: React.FC = (props: any) => {
   const handleEditItem = async (text) => {
     setItem(text)
     setDoEditItem(false)
-    dispatch(updateMenuItem({ ...props, item: text }))
+    dispatch(asyncUpdateMenuItem({ ...props, item: text }))
   }
 
   const handleEditPrice = async (text) => {
     const parsed_text = Number(text.replace(/[^0-9]/g, ''))
     setPrice(parsed_text)
     setDoEditPrice(false)
-    dispatch(updateMenuItem({ ...props, price: parsed_text }))
+    dispatch(asyncUpdateMenuItem({ ...props, price: parsed_text }))
   }
 
-  const handleEditFoodType = async (text) => {
-    setFoodType(text)
-    setDoEditFoodType(false)
-    dispatch(updateMenuItem({ ...props, foodType: text }))
-  }
+  // const handleEditFoodType = async (text) => {
+  //   setFoodType(text)
+  //   setDoEditFoodType(false)
+  //   dispatch(asyncUpdateMenuItem({ ...props, foodType: text }))
+  // }
 
   const handleDelete = () => {
     Alert.alert('Warning', 'Are you sure you want to delete this product? This can not be undone', [
@@ -124,7 +123,7 @@ const EditItemScreen: React.FC = (props: any) => {
           )}
         </View>
 
-        <View style={styles.tag}>
+        {/* <View style={styles.tag}>
           <Text style={styles.labelText}>Food type:</Text>
           {doEditFoodType ? (
             <TextInput
@@ -152,7 +151,7 @@ const EditItemScreen: React.FC = (props: any) => {
               />
             </View>
           )}
-        </View>
+        </View> */}
 
         <View style={styles.buttonHolder}>
           <TouchableOpacity style={{ ...styles.button, marginBottom: LAYOUTS.getWidth(30) }} onPress={handleDelete}>

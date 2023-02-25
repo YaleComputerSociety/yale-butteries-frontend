@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Alert, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native'
-import { useAppDispatch } from '../store/TypedHooks'
-import { addMenuItem, MenuItem } from '../store/slices/MenuItems'
+import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
+import { asyncAddMenuItem, MenuItem } from '../store/slices/MenuItems'
 import EditButton from '../components/EditButton'
 import { useNavigation } from '@react-navigation/native'
 
@@ -22,6 +22,8 @@ const CreateItemScreen: React.FC = () => {
   const [foodType, setFoodType] = useState('Enter category')
   const [doEditFoodType, setDoEditFoodType] = useState(false)
 
+  const { currentUser } = useAppSelector((state) => state.currentUser)
+
   const handleEditItem = (text) => {
     setItem(text)
     setDoEditItem(false)
@@ -39,15 +41,15 @@ const CreateItemScreen: React.FC = () => {
   }
 
   const handleCreate = async () => {
-    if (item != 'Enter name' && foodType != 'Enter category') {
+    if (item != 'Enter name' && price > 0) {
       const buffer: MenuItem = {
         item: item,
-        college: 'morse',
+        college: currentUser.college,
         price: price,
         isActive: true,
         foodType: 'food',
       }
-      dispatch(addMenuItem(buffer))
+      dispatch(asyncAddMenuItem(buffer))
       navigation.goBack()
     } else {
       Alert.alert("Please fill in the item's information.")
@@ -117,7 +119,7 @@ const CreateItemScreen: React.FC = () => {
           )}
         </View>
 
-        <View style={styles.tag}>
+        {/* <View style={styles.tag}>
           <Text style={styles.labelText}>Food type:</Text>
           {doEditFoodType ? (
             <TextInput
@@ -145,7 +147,7 @@ const CreateItemScreen: React.FC = () => {
               />
             </View>
           )}
-        </View>
+        </View> */}
 
         <View style={styles.buttonHolder}>
           <TouchableOpacity style={{ ...styles.button, marginBottom: LAYOUTS.getWidth(30) }} onPress={handleCreate}>
