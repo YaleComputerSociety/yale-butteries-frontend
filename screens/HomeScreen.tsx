@@ -6,6 +6,7 @@ import { setCollege } from '../store/slices/OrderCart'
 import { asyncFetchUsers } from '../store/slices/Users'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useEffect } from 'react'
 
 const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()

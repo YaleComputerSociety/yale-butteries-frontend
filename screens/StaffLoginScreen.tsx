@@ -28,7 +28,7 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         <Pressable 
               onPress={() => {
                 if (checkInfo()) {
-                  navigation.navigate('OrderStatusScreen')
+                  navigation.navigate('OrderSt')
                 } else {
                   {setErrorMessage("Password and/or Username is Incorrect. Please Try Again")}
                 }
