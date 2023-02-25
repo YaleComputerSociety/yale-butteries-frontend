@@ -2,6 +2,7 @@ import React, {useEffect, FC, useState } from 'react'
 import {View, Text, TextInput, Pressable} from 'react-native'
 import { staffLogin } from '../styles/StaffLoginStyles'
 import { LinearGradient } from 'expo-linear-gradient'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //import {STAFF_USER, STAFF_PASS} from '@env'
 
 
@@ -23,12 +24,12 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
     <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
       <View style={staffLogin.outerContainer}>
         <Text style={{ fontSize: 30, color: '#000', fontFamily: 'HindSiliguri-Bolder' }}> Staff Sign-In</Text>
-        <TextInput placeholder="username" style={staffLogin.input} onChangeText={setUser}></TextInput>
+        <TextInput placeholder="username" value={username} style={staffLogin.input} onChangeText={setUser}></TextInput>
         <TextInput placeholder="password" style={staffLogin.input} onChangeText={setPassword} secureTextEntry={true}></TextInput>
         <Pressable 
               onPress={() => {
                 if (checkInfo()) {
-                  navigation.navigate('OrderSt')
+                  navigation.navigate('Home')
                 } else {
                   {setErrorMessage("Password and/or Username is Incorrect. Please Try Again")}
                 }
