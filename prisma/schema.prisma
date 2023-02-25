@@ -76,7 +76,8 @@ model MenuItem {
   id Int @id @default(autoincrement())
   item String
   price Int
-  limited_time Boolean
+  description String?
+  limited_time Boolean?
   is_active Boolean
   item_type ItemType @default(FOOD)
   college College @relation(fields: [collegeId], references: [id])

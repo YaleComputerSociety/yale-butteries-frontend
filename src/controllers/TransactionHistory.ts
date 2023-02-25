@@ -84,7 +84,7 @@ export async function getCollegeTransactionHistories(req: Request, res: Response
   }
 }
 
-const getCollegeFromId = async (id: number): Promise<College> => {
+export const getCollegeFromId = async (id: number): Promise<College> => {
   const college = await prisma.college.findUnique({
     where: {
       id: id,
@@ -93,7 +93,7 @@ const getCollegeFromId = async (id: number): Promise<College> => {
   return college
 }
 
-const getCollegeFromName = async (name: string): Promise<College> => {
+export const getCollegeFromName = async (name: string): Promise<College> => {
   const college = await prisma.college.findFirst({
     where: {
       college: name,
@@ -102,7 +102,7 @@ const getCollegeFromName = async (name: string): Promise<College> => {
   return college
 }
 
-const getUserFromId = async (id: number): Promise<User> => {
+export const getUserFromId = async (id: number): Promise<User> => {
   const user = await prisma.user.findUnique({
     where: {
       id: id,
