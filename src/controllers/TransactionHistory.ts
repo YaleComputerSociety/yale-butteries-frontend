@@ -288,6 +288,24 @@ export async function updateTransactionHistory(req: Request, res: Response): Pro
   }
 }
 
+export async function updateTransactionItem(req: Request, res: Response): Promise<void> {
+  try {
+    console.log(req.body)
+    const transactionItem = await prisma.transactionItem.update({
+      where: {
+        id: req.body.id,
+      },
+      data: {
+        order_status: req.body.orderStatus,
+      },
+    })
+    res.send(JSON.stringify(transactionItem))
+  } catch (e) {
+    console.log(e)
+    res.status(400).send(e)
+  }
+}
+
 const includeProperty = {
   include: {
     transaction_items: true,
