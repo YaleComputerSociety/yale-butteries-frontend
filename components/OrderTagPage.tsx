@@ -55,7 +55,7 @@ const OrderTagPage: React.FC<Props> = ({ status, orderItem, started, time }: Pro
         <Text style={{ ...styles.nameText, lineHeight: 14 }}>{getStatus(status)}</Text>
       </View>
       <View style={styles.itemContainer}>
-        <Text style={{ ...styles.regularText }}>{orderItem.name}</Text>
+        <Text style={{ ...styles.regularText }}>{orderItem.name + ' ' + orderItem.id}</Text>
       </View>
       <View style={styles.nameContainer}>
         <Text style={{ ...styles.nameText }}>{orderItem.user}</Text>

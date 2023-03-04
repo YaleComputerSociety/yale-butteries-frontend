@@ -10,6 +10,7 @@ import OrderTag from '../components/OrderTag'
 import { asyncFetchTransactionHistories } from '../store/slices/TransactionHistory'
 import { setTransactionItemsState, TransactionItem } from '../store/slices/TransactionItems'
 import store from '../store/ReduxStore'
+import { useIsFocused } from '@react-navigation/native'
 
 const OrdersScreen: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -20,6 +21,7 @@ const OrdersScreen: React.FC = () => {
     (state) => state.transactionHistory
   )
   const { currentUser } = useAppSelector((state) => state.currentUser)
+  const isFocused = useIsFocused()
 
   // Every x seconds, fetch THs by college and time created and then TIs and Users from backend, then sort by time
   useEffect(() => {
@@ -58,7 +60,7 @@ const OrdersScreen: React.FC = () => {
       temp()
     }, 5000)
     return () => clearInterval(interval)
-  }, [])
+  }, [isFocused])
 
   useEffect(() => {
     if (transactionItems != null) {

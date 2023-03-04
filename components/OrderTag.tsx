@@ -15,18 +15,9 @@ interface Props {
   item: TransactionItem
   transactionItems: TransactionItem[]
   interactable: boolean
-  render: () => void
 }
 
-enum Status {
-  CANCELLED,
-  PENDING,
-  IN_PROGRESS,
-  FINISHED,
-  PICKED_UP,
-}
-
-const statuses = ['CANCELLED', 'PENDING', 'IN_PROGRESS', 'FINISHED', 'PICKED_UP']
+type Status = 'CANCELLED' | 'PENDING' | 'IN_PROGRESS' | 'FINISHED' | 'PICKED_UP'
 
 const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Props) => {
   const dispatch = useAppDispatch()
@@ -77,25 +68,7 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
   }, [orderStatus])
 
   const handleStatus = async (code: number) => {
-    const status = statuses[code]
-    console.log(status)
-
-    // let tempStatus: 'CANCELLED' | 'PENDING' | 'IN_PROGRESS' | 'FINISHED' | 'PICKED_UP'
-    dispatch(
-      updateTransactionItem({
-        ...transactionItems.find((element) => element.id == transactionIndex),
-        orderStatus: status,
-      })
-    )
-    dispatch(
-      asyncUpdateTransactionItem({
-        ...transactionItems.find((element) => element.id == transactionIndex),
-        orderStatus: status,
-      })
-    )
-    console.log('hey')
-    return
-
+    let tempStatus: Status = 'CANCELLED'
     switch (code) {
       case 0:
         if (!isStarted) {
@@ -107,15 +80,26 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
               onPress: () => {
                 tempStatus = 'CANCELLED'
                 setOrderStatus(tempStatus)
-                slideIndex.forEach((indx) => {
-                  console.log(orderNum + indx)
-                })
                 dispatch(
                   asyncUpdateTransactionItem({
                     ...transactionItems.find((element) => element.id == transactionIndex),
                     orderStatus: tempStatus,
                   })
                 )
+              },
+            },
+            {
+              text: 'No',
+              onPress: () => {
+                tempStatus = 'PENDING'
+                setOrderStatus(tempStatus)
+                dispatch(
+                  updateTransactionItem({
+                    ...transactionItems.find((element) => element.id == transactionIndex),
+                    orderStatus: tempStatus,
+                  })
+                )
+                setStartingIndex(3)
               },
             },
           ])
@@ -152,9 +136,6 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
       case 3:
         tempStatus = 'FINISHED'
         setOrderStatus(tempStatus)
-        slideIndex.forEach((indx) => {
-          console.log(orderNum + indx)
-        })
         dispatch(
           updateTransactionItem({
             ...transactionItems.find((element) => element.id == transactionIndex),
@@ -169,9 +150,6 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
             onPress: () => {
               tempStatus = 'PICKED_UP'
               setOrderStatus(tempStatus)
-              slideIndex.forEach((indx) => {
-                console.log(orderNum + indx)
-              })
               dispatch(
                 updateTransactionItem({
                   ...transactionItems.find((element) => element.id == transactionIndex),
@@ -185,9 +163,6 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
             onPress: () => {
               tempStatus = 'FINISHED'
               setOrderStatus(tempStatus)
-              slideIndex.forEach((indx) => {
-                console.log(orderNum + indx)
-              })
               dispatch(
                 updateTransactionItem({
                   ...transactionItems.find((element) => element.id == transactionIndex),
@@ -201,14 +176,11 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
 
         break
     }
-    //console.log(newTransactionItems[transactionIndex])
   }
-  //console.log(orderNum)
 
   const onchange = (nativeEvent) => {
     if (nativeEvent) {
       const slide = Math.round(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width)
-      console.log(slide, tagActive)
       if (slide != tagActive) {
         setTagActive(slide)
         handleStatus(slide)
@@ -230,6 +202,7 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
           horizontal
           style={styles.wrap}
           contentOffset={{ x: startingIndex * LAYOUTS.getWidth(355), y: 0 }}
+          scrollEventThrottle={50}
         >
           {slideIndex.map((index) => {
             return <OrderTagPage status={index} orderItem={item} key={index} started={isStarted} time={orderTime} />
