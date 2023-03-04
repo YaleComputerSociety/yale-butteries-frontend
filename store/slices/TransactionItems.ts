@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { baseUrl } from '../../utils/utils'
 import { AppDispatch } from '../../store/ReduxStore'
 
 // import { getJSON } from 'utils/fetch'
@@ -6,7 +7,7 @@ import { AppDispatch } from '../../store/ReduxStore'
 export interface TransactionItem {
   id: number
   itemCost: number
-  orderStatus: 'PENDING' | 'CANCELLED' | 'IN_PROGRESS' | 'FINISHED' | 'PICKED_UP'
+  orderStatus: 'CANCELLED' | 'PENDING' | 'IN_PROGRESS' | 'FINISHED' | 'PICKED_UP'
   menuItemId: number
   name: string
   user: string
@@ -35,6 +36,7 @@ export const transactionItemsSlice = createSlice({
     },
     updateTransactionItem: (state, action: PayloadAction<TransactionItem>) => {
       const updateIndex = state.transactionItems.findIndex((item) => item.id == action.payload.id)
+      console.log(state.transactionItems[updateIndex], 'asdf', action.payload)
       state.transactionItems[updateIndex] = action.payload
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
@@ -57,6 +59,27 @@ export const asyncFetchTransactionItems = () => {
       console.log(e)
     } finally {
       dispatch(setIsLoading(false))
+    }
+  }
+}
+
+export const asyncUpdateTransactionItem = (transactionItem: TransactionItem) => {
+  return async (dispatch: AppDispatch): Promise<void> => {
+    dispatch(updateTransactionItem(transactionItem))
+    // dispatch(setIsLoading(true))
+    try {
+      const transactions = await fetch(baseUrl + 'api/transactions/item', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(transactionItem),
+      })
+      // const data = await transactions.json()
+    } catch (e) {
+      console.log(e)
+    } finally {
+      // dispatch(setIsLoading(false))
     }
   }
 }

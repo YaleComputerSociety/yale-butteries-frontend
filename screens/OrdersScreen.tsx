@@ -60,6 +60,17 @@ const OrdersScreen: React.FC = () => {
     return () => clearInterval(interval)
   }, [])
 
+  useEffect(() => {
+    if (transactionItems != null) {
+      setCurrentOrders(
+        transactionItems.filter((element) => element.orderStatus != 'FINISHED' && element.orderStatus != 'CANCELLED')
+      )
+      setPastOrders(
+        transactionItems.filter((element) => element.orderStatus == 'FINISHED' || element.orderStatus == 'CANCELLED')
+      )
+    }
+  }, [transactionItems])
+
   return (
     <SafeAreaView style={{ ...styles.container }}>
       {isLoadingTransactionItems || transactionItems == null ? (

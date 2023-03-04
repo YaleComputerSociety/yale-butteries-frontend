@@ -9,13 +9,24 @@ import { ScrollView } from 'react-native-gesture-handler'
 import OrderTagPage from './OrderTagPage'
 
 import { useAppDispatch } from '../store/TypedHooks'
-import { TransactionItem, updateTransactionItem } from '../store/slices/TransactionItems'
+import { asyncUpdateTransactionItem, TransactionItem, updateTransactionItem } from '../store/slices/TransactionItems'
 
 interface Props {
   item: TransactionItem
   transactionItems: TransactionItem[]
   interactable: boolean
+  render: () => void
 }
+
+enum Status {
+  CANCELLED,
+  PENDING,
+  IN_PROGRESS,
+  FINISHED,
+  PICKED_UP,
+}
+
+const statuses = ['CANCELLED', 'PENDING', 'IN_PROGRESS', 'FINISHED', 'PICKED_UP']
 
 const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Props) => {
   const dispatch = useAppDispatch()
@@ -27,27 +38,33 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
   const orderTime = (orderDate.getHours() % 12) + ':' + orderDate.getMinutes()
 
   const [orderStatus, setOrderStatus] = useState(item.orderStatus)
-  const [tagActive, setTagActive] = useState(0)
+  const [tagActive, setTagActive] = useState(-1)
   const [isStarted, setIsStarted] = useState(false)
 
   //Here we need to find based on the orderstatus where to start the slide index
-  const [startingIndex, setStartingIndex] = useState(0)
+  const [startingIndex, setStartingIndex] = useState(-1)
+
   useEffect(() => {
     switch (orderStatus) {
       case 'CANCELLED':
         setStartingIndex(0)
+        setTagActive(0)
         break
       case 'PENDING':
         setStartingIndex(1)
+        setTagActive(1)
         break
       case 'IN_PROGRESS':
         setStartingIndex(2)
+        setTagActive(2)
         break
       case 'FINISHED':
         setStartingIndex(3)
+        setTagActive(3)
         break
       case 'PICKED_UP':
         setStartingIndex(4)
+        setTagActive(4)
         break
     }
   }, [])
@@ -56,15 +73,33 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
     if (orderStatus != 'PENDING') {
       setIsStarted(true)
     }
+    // render()
   }, [orderStatus])
 
-  const handleStatus = (code: number) => {
-    let tempStatus = ''
+  const handleStatus = async (code: number) => {
+    const status = statuses[code]
+    console.log(status)
+
+    // let tempStatus: 'CANCELLED' | 'PENDING' | 'IN_PROGRESS' | 'FINISHED' | 'PICKED_UP'
+    dispatch(
+      updateTransactionItem({
+        ...transactionItems.find((element) => element.id == transactionIndex),
+        orderStatus: status,
+      })
+    )
+    dispatch(
+      asyncUpdateTransactionItem({
+        ...transactionItems.find((element) => element.id == transactionIndex),
+        orderStatus: status,
+      })
+    )
+    console.log('hey')
+    return
+
     switch (code) {
       case 0:
         if (!isStarted) {
-          tempStatus = 'PENDING'
-          setOrderStatus(tempStatus)
+          setOrderStatus('PENDING')
         } else {
           Alert.alert('Notice', 'Are you sure you want to cancel this order? This can not be undone', [
             {
@@ -76,37 +111,17 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
                   console.log(orderNum + indx)
                 })
                 dispatch(
-                  updateTransactionItem({
+                  asyncUpdateTransactionItem({
                     ...transactionItems.find((element) => element.id == transactionIndex),
                     orderStatus: tempStatus,
                   })
                 )
-              },
-            },
-            {
-              text: 'No',
-              onPress: () => {
-                tempStatus = 'QUEUED'
-                setOrderStatus(tempStatus)
-                slideIndex.forEach((indx) => {
-                  console.log(orderNum + indx)
-                })
-                dispatch(
-                  updateTransactionItem({
-                    ...transactionItems.find((element) => element.id == transactionIndex),
-                    orderStatus: tempStatus,
-                  })
-                )
-                setStartingIndex(1)
               },
             },
           ])
           tempStatus = 'CANCELLED'
           setOrderStatus(tempStatus)
         }
-        slideIndex.forEach((indx) => {
-          console.log(orderNum + indx)
-        })
         dispatch(
           updateTransactionItem({
             ...transactionItems.find((element) => element.id == transactionIndex),
@@ -115,11 +130,8 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
         )
         break
       case 1:
-        tempStatus = 'QUEUED'
+        tempStatus = 'PENDING'
         setOrderStatus(tempStatus)
-        slideIndex.forEach((indx) => {
-          console.log(orderNum + indx)
-        })
         dispatch(
           updateTransactionItem({
             ...transactionItems.find((element) => element.id == transactionIndex),
@@ -130,9 +142,6 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
       case 2:
         tempStatus = 'IN_PROGRESS'
         setOrderStatus(tempStatus)
-        slideIndex.forEach((indx) => {
-          console.log(orderNum + indx)
-        })
         dispatch(
           updateTransactionItem({
             ...transactionItems.find((element) => element.id == transactionIndex),
@@ -198,8 +207,8 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
 
   const onchange = (nativeEvent) => {
     if (nativeEvent) {
-      //console.log(nativeEvent)
       const slide = Math.round(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width)
+      console.log(slide, tagActive)
       if (slide != tagActive) {
         setTagActive(slide)
         handleStatus(slide)
