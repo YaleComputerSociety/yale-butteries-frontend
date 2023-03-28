@@ -29,27 +29,38 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
       }
     }
     temp()
+    if (menuItems) {
+      console.log(menuItems.map((element) => element.item + ' ' + element.price))
+    }
   }, [isLoadingMenuItems, isFocused])
 
   useEffect(() => {
     if (menuItems != null) {
-      setLocalMenu(menuItems.filter((element) => element.college == currentUser.college))
+      setLocalMenu(
+        menuItems
+          .filter((element) => element.college == currentUser.college)
+          .sort((a, b) => a.item.localeCompare(b.item))
+      )
+    }
+    if (menuItems) {
+      console.log(menuItems.map((element) => element.item + ' ' + element.price))
     }
   }, [menuItems])
 
-  useEffect(() => {
-    const buffer = []
-    for (let i = 0; i < localMenu.length; i++) {
-      if (!buffer.includes(localMenu[i].foodType)) {
-        buffer.push(localMenu[i].foodType)
-      }
-    }
-    setItemTypes(buffer)
-    buffer.sort()
-  }, [localMenu])
+  // useEffect(() => {
+  //   const buffer = []
+  //   for (let i = 0; i < localMenu.length; i++) {
+  //     if (!buffer.includes(localMenu[i].foodType)) {
+  //       buffer.push(localMenu[i].foodType)
+  //     }
+  //   }
+  //   setItemTypes(buffer)
+  //   buffer.sort()
+  // }, [localMenu])
+
   return (
     <View style={{ ...styles.container }}>
-      {isLoadingMenuItems || itemTypes == null ? (
+      {menuItems == null || isLoadingMenuItems ? (
         <ScrollView
           style={{ ...styles.scrollView }}
           //contentContainerStyle={{alignItems: 'flex-start', justifyContent: 'stretch'}}>
@@ -59,7 +70,10 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
         </ScrollView>
       ) : (
         <ScrollView style={{ ...styles.scrollView }}>
-          {itemTypes.map((el, index) => {
+          {localMenu.map((item, i) => {
+            return <ItemTag key={i} item={item} />
+          })}
+          {/* {itemTypes.map((el, index) => {
             return (
               <View key={index}>
                 <Text style={{ ...styles.title }}>{el}</Text>
@@ -70,7 +84,7 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
                 })}
               </View>
             )
-          })}
+          })} */}
           <View style={styles.buttonHolder}>
             <TouchableOpacity
               style={{ ...styles.button, marginBottom: LAYOUTS.getWidth(30) }}

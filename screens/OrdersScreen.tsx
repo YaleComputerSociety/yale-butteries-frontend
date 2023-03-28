@@ -63,6 +63,9 @@ const OrdersScreen: React.FC = () => {
   }, [isFocused])
 
   useEffect(() => {
+    if (transactionItems) {
+      console.log(transactionItems.map((element) => element.id + ' ' + element.orderStatus))
+    }
     if (transactionItems != null) {
       setCurrentOrders(
         transactionItems.filter((element) => element.orderStatus != 'FINISHED' && element.orderStatus != 'CANCELLED')

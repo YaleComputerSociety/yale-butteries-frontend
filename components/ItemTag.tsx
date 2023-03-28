@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Switch, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { useAppDispatch } from '../store/TypedHooks'
 
@@ -6,6 +6,8 @@ import { FUNCTIONS } from '../constants/Functions'
 import { LAYOUTS } from '../constants/Layouts'
 import { asyncUpdateMenuItem } from '../store/slices/MenuItems'
 import { useNavigation } from '@react-navigation/native'
+
+import { priceToText } from '../Functions'
 
 const ItemTag = (props) => {
   const [item, setItem] = useState(props.item)
@@ -16,6 +18,10 @@ const ItemTag = (props) => {
     dispatch(asyncUpdateMenuItem({ ...item, isActive: !item.isActive }))
     setItem({ ...item, isActive: !item.isActive })
   }
+
+  useEffect(() => {
+    console.log(item)
+  }, [item])
 
   return (
     <>
@@ -31,7 +37,7 @@ const ItemTag = (props) => {
           </View>
           <View style={{ ...styles.priceContainer }}>
             <Text style={{ color: 'black', fontSize: 15, fontWeight: '400', marginRight: LAYOUTS.getWidth(10) }}>
-              {FUNCTIONS.priceFormat(item.price)}
+              {priceToText(item.price)}
             </Text>
             <Switch value={item.isActive} onValueChange={handleSwitch} />
           </View>
@@ -48,7 +54,7 @@ const ItemTag = (props) => {
           </View>
           <View style={{ ...styles.priceContainer }}>
             <Text style={{ color: 'gray', fontSize: 15, fontWeight: '400', marginRight: LAYOUTS.getWidth(10) }}>
-              ${item.price}
+              {priceToText(item.price)}
             </Text>
             <Switch value={item.isActive} onValueChange={handleSwitch} />
           </View>

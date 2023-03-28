@@ -36,7 +36,7 @@ export const transactionItemsSlice = createSlice({
     },
     updateTransactionItem: (state, action: PayloadAction<TransactionItem>) => {
       const updateIndex = state.transactionItems.findIndex((item) => item.id == action.payload.id)
-      console.log(state.transactionItems[updateIndex], 'asdf', action.payload)
+      // console.log(state.transactionItems[updateIndex], 'asdf', action.payload)
       state.transactionItems[updateIndex] = action.payload
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {

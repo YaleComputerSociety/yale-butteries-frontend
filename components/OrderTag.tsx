@@ -18,6 +18,7 @@ interface Props {
 }
 
 type Status = 'CANCELLED' | 'PENDING' | 'IN_PROGRESS' | 'FINISHED' | 'PICKED_UP'
+const statuses: Status[] = ['CANCELLED', 'PENDING', 'IN_PROGRESS', 'FINISHED', 'PICKED_UP']
 
 const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Props) => {
   const dispatch = useAppDispatch()
@@ -58,7 +59,7 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
         setTagActive(4)
         break
     }
-  }, [])
+  }, [orderStatus])
 
   useEffect(() => {
     if (orderStatus != 'PENDING') {
@@ -68,7 +69,73 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
   }, [orderStatus])
 
   const handleStatus = async (code: number) => {
-    let tempStatus: Status = 'CANCELLED'
+    let tempStatus: Status = statuses[code]
+
+    // if (tempStatus == 'CANCELLED') {
+    //   Alert.alert('Notice', 'Are you sure you want to cancel this order? This can not be undone', [
+    //     {
+    //       text: 'Yes',
+    //       onPress: () => {
+    //         setOrderStatus(tempStatus)
+    //         dispatch(
+    //           asyncUpdateTransactionItem({
+    //             ...transactionItems.find((element) => element.id == transactionIndex),
+    //             orderStatus: tempStatus,
+    //           })
+    //         )
+    //       },
+    //     },
+    //     {
+    //       text: 'Go Back',
+    //       onPress: () => {
+    //         setOrderStatus('PENDING')
+    //         dispatch(
+    //           updateTransactionItem({
+    //             ...transactionItems.find((element) => element.id == transactionIndex),
+    //             orderStatus: 'PENDING',
+    //           })
+    //         )
+    //       },
+    //     },
+    //   ])
+    // } else if (tempStatus == 'FINISHED') {
+    //   Alert.alert('Notice', 'Are you sure you want to mark this order as finished? This cannot be undone', [
+    //     {
+    //       text: 'Yes',
+    //       onPress: () => {
+    //         setOrderStatus(tempStatus)
+    //         dispatch(
+    //           asyncUpdateTransactionItem({
+    //             ...transactionItems.find((element) => element.id == transactionIndex),
+    //             orderStatus: tempStatus,
+    //           })
+    //         )
+    //       },
+    //     },
+    //     {
+    //       text: 'Go Back',
+    //       onPress: () => {
+    //         setOrderStatus('IN_PROGRESS')
+    //         dispatch(
+    //           updateTransactionItem({
+    //             ...transactionItems.find((element) => element.id == transactionIndex),
+    //             orderStatus: 'IN_PROGRESS',
+    //           })
+    //         )
+    //       },
+    //     },
+    //   ])
+    // } else {
+    // setOrderStatus(tempStatus)
+    dispatch(
+      asyncUpdateTransactionItem({
+        ...transactionItems.find((element) => element.id == transactionIndex),
+        orderStatus: tempStatus,
+      })
+    )
+    return
+
+    // let tempStatus: Status = 'CANCELLED'
     switch (code) {
       case 0:
         if (!isStarted) {
@@ -99,7 +166,6 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
                     orderStatus: tempStatus,
                   })
                 )
-                setStartingIndex(3)
               },
             },
           ])
@@ -169,7 +235,6 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
                   orderStatus: tempStatus,
                 })
               )
-              setStartingIndex(3)
             },
           },
         ])
@@ -196,13 +261,12 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
     <View style={{ ...styles.container }}>
       {interactable ? (
         <ScrollView
-          onScroll={({ nativeEvent }) => onchange(nativeEvent)}
+          onScrollEndDrag={({ nativeEvent }) => onchange(nativeEvent)}
           showsHorizontalScrollIndicator={false}
           pagingEnabled
           horizontal
           style={styles.wrap}
           contentOffset={{ x: startingIndex * LAYOUTS.getWidth(355), y: 0 }}
-          scrollEventThrottle={50}
         >
           {slideIndex.map((index) => {
             return <OrderTagPage status={index} orderItem={item} key={index} started={isStarted} time={orderTime} />
