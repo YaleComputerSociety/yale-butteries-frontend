@@ -12,6 +12,8 @@ import { setTransactionItemsState, TransactionItem } from '../store/slices/Trans
 import store from '../store/ReduxStore'
 import { useIsFocused } from '@react-navigation/native'
 
+let counter = 0
+
 const OrdersScreen: React.FC = () => {
   const dispatch = useAppDispatch()
   const [currentOrders, setCurrentOrders] = useState([])
@@ -63,9 +65,12 @@ const OrdersScreen: React.FC = () => {
   }, [isFocused])
 
   useEffect(() => {
-    if (transactionItems) {
-      console.log(transactionItems.map((element) => element.id + ' ' + element.orderStatus))
+    if (transactionItems && counter > 5) {
+      counter = 0
+      // console.log(transactionItems.map((element) => element.id + ' ' + element.orderStatus))
     }
+    counter++
+
     if (transactionItems != null) {
       setCurrentOrders(
         transactionItems.filter((element) => element.orderStatus != 'FINISHED' && element.orderStatus != 'CANCELLED')
