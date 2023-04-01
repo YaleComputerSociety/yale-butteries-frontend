@@ -24,7 +24,6 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
   const dispatch = useAppDispatch()
 
   const transactionIndex = item.id
-  const orderNum = item.id
   const slideIndex = [0, 1, 2, 3, 4]
   const orderDate = new Date(item.creationTime)
   const orderTime = (orderDate.getHours() % 12) + ':' + orderDate.getMinutes()
@@ -71,12 +70,43 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
   const handleStatus = async (code: number) => {
     let tempStatus: Status = statuses[code]
 
-    dispatch(
-      asyncUpdateTransactionItem({
-        ...item,
-        orderStatus: tempStatus,
-      })
-    )
+    if (tempStatus == 'CANCELLED') {
+      Alert.alert('Notice', 'Are you sure you want to cancel this order? This can not be undone', [
+        {
+          text: 'Yes',
+          onPress: () => {
+            setOrderStatus(tempStatus)
+            dispatch(
+              asyncUpdateTransactionItem({
+                ...item,
+                orderStatus: tempStatus,
+              })
+            )
+          },
+        },
+        {
+          text: 'Go Back',
+          onPress: () => {
+            setOrderStatus('PENDING')
+            console.log(item)
+            dispatch(
+              updateTransactionItem({
+                ...item,
+                orderStatus: 'PENDING',
+              })
+            )
+            console.log(item)
+          },
+        },
+      ])
+    } else {
+      dispatch(
+        asyncUpdateTransactionItem({
+          ...item,
+          orderStatus: tempStatus,
+        })
+      )
+    }
 
     // if (tempStatus == 'CANCELLED') {
     //   Alert.alert('Notice', 'Are you sure you want to cancel this order? This can not be undone', [

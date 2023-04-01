@@ -21,8 +21,8 @@ const OrdersScreen: React.FC = () => {
   const { transactionItems, isLoading: isLoadingTransactionItems } = useAppSelector((state) => state.transactionItems)
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
-  const [currentOrders, setCurrentOrders] = useState([])
-  const [pastOrders, setPastOrders] = useState([])
+  const [currentOrders, setCurrentOrders] = useState<TransactionItem[]>([])
+  const [pastOrders, setPastOrders] = useState<TransactionItem[]>([])
 
   // Every x seconds, fetch TIs by college and time created, then sort by time
   useEffect(() => {
