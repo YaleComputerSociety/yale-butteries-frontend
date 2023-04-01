@@ -94,7 +94,6 @@ export const asyncUpdateMenuItem = (menuItem: MenuItem) => {
         },
         body: JSON.stringify(menuItem),
       })
-      dispatch(updateMenuItem(menuItem))
     } catch (e) {
       console.log(e)
     } finally {
