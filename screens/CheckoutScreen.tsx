@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
 import { checkout } from '../styles/CheckoutStyles'
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
@@ -14,6 +14,7 @@ import { baseUrl } from '../utils/utils'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   // const [loading, setLoading] = useState(false)
+
   const {
     orderItems,
     isLoading: isLoadingOrderCart,
@@ -21,6 +22,8 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     price,
   } = useAppSelector((state) => state.orderCart)
   const dispatch = useAppDispatch()
+
+  const [isDisabled, setDisabled] = useState((orderItems.length < 1));
 
   const stripe = useStripe()
 
@@ -36,15 +39,20 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         },
       })
       const data = await response.json()
+
       if (!response.ok) return Alert.alert(data.message)
       const clientSecret = data.paymentIntent.client_secret
       const initSheet = await stripe.initPaymentSheet({
         paymentIntentClientSecret: clientSecret,
         merchantDisplayName: 'Yale Butteries',
       })
+
       if (initSheet.error) return Alert.alert(initSheet.error.message)
       const presentSheet = await stripe.presentPaymentSheet()
-      if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+      if (presentSheet.error){
+        setDisabled(false)
+        return Alert.alert(presentSheet.error.message)
+      }
 
       interface tempItem {
         itemCost: number
@@ -81,7 +89,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       dispatch(setTransactionHistoryState(uploadTransactionResponse))
 
       Alert.alert('Payment complete, thank you!')
-
+      setDisabled(false);
       navigation.navigate('OrderStatusScreen')
     } catch (err) {
       console.error(err)
@@ -110,7 +118,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               </View>
               <ScrollView style={checkout.orderList} showsVerticalScrollIndicator={false}>
                 {orderItems.map((checkoutItem, index) => (
-                  <CheckoutItem decUpdate={removeOrder} checkoutItem={checkoutItem} key={index} />
+                  <CheckoutItem decUpdate={removeOrder} checkoutItem={checkoutItem} isDisabled={isDisabled} key={index} />
                 ))}
               </ScrollView>
               <View style={checkout.footer}>
@@ -119,13 +127,14 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             </View>
             <View style={checkout.lowerContainer}>
               <Pressable
-                disabled={orderItems.length < 1 ? true : false}
+                disabled={isDisabled}
                 style={({ pressed }) => [
                   { backgroundColor: pressed ? '#222' : '#333', opacity: orderItems.length < 1 ? 0.7 : 1 },
                   checkout.checkoutButton,
                 ]}
                 onPress={() => {
-                  makePayment('awg32', price)
+                  makePayment('awg32', price)      
+                  setDisabled(true)
                 }}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>
