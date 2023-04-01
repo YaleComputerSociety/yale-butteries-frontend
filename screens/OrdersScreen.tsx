@@ -16,18 +16,17 @@ let counter = 0
 
 const OrdersScreen: React.FC = () => {
   const dispatch = useAppDispatch()
-  const [currentOrders, setCurrentOrders] = useState([])
-  const [pastOrders, setPastOrders] = useState([])
-  const { transactionItems, isLoading: isLoadingTransactionItems } = useAppSelector((state) => state.transactionItems)
-  const { transactionHistory, isLoading: isLoadingTransactionHistory } = useAppSelector(
-    (state) => state.transactionHistory
-  )
-  const { currentUser } = useAppSelector((state) => state.currentUser)
   const isFocused = useIsFocused()
 
-  // Every x seconds, fetch THs by college and time created and then TIs and Users from backend, then sort by time
+  const { transactionItems, isLoading: isLoadingTransactionItems } = useAppSelector((state) => state.transactionItems)
+  const { currentUser } = useAppSelector((state) => state.currentUser)
+
+  const [currentOrders, setCurrentOrders] = useState([])
+  const [pastOrders, setPastOrders] = useState([])
+
+  // Every x seconds, fetch TIs by college and time created, then sort by time
   useEffect(() => {
-    const temp = async () => {
+    const fetchItems = async () => {
       await dispatch(asyncFetchTransactionHistories(currentUser.college))
 
       // turn the transactionHistories into transactionItems
@@ -57,9 +56,9 @@ const OrdersScreen: React.FC = () => {
       }
     }
 
-    temp()
+    fetchItems()
     const interval = setInterval(() => {
-      temp()
+      fetchItems()
     }, 5000)
     return () => clearInterval(interval)
   }, [isFocused])

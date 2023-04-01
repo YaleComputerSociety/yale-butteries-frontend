@@ -71,6 +71,13 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
   const handleStatus = async (code: number) => {
     let tempStatus: Status = statuses[code]
 
+    dispatch(
+      asyncUpdateTransactionItem({
+        ...item,
+        orderStatus: tempStatus,
+      })
+    )
+
     // if (tempStatus == 'CANCELLED') {
     //   Alert.alert('Notice', 'Are you sure you want to cancel this order? This can not be undone', [
     //     {
@@ -127,12 +134,7 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
     //   ])
     // } else {
     // setOrderStatus(tempStatus)
-    dispatch(
-      asyncUpdateTransactionItem({
-        ...transactionItems.find((element) => element.id == transactionIndex),
-        orderStatus: tempStatus,
-      })
-    )
+
     return
 
     // let tempStatus: Status = 'CANCELLED'
