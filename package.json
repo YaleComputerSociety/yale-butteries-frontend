@@ -52,7 +52,8 @@
     "rn-sprite-sheet": "^1.1.12",
     "stripe": "^10.17.0",
     "tsc": "^2.0.4",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
