@@ -96,18 +96,18 @@ const OrdersScreen: React.FC = () => {
           //contentContainerStyle={{alignItems: 'stretch', justifyContent: 'stretch'}}>
         >
           <Text style={{ ...styles.title }}>Live Orders</Text>
-          {currentOrders.map((element, index) => {
+          {currentOrders.map((element) => {
             return (
-              <View key={index} style={styles.tag}>
-                <OrderTag item={element} transactionItems={transactionItems} interactable={true} key={index} />
+              <View key={element.id} style={styles.tag}>
+                <OrderTag item={element} transactionItems={transactionItems} interactable={true} key={element.id} />
               </View>
             )
           })}
           <Text style={{ ...styles.title2 }}>Completed Today</Text>
-          {pastOrders.map((element, index) => {
+          {pastOrders.map((element) => {
             return (
-              <View key={index}>
-                <OrderTag item={element} transactionItems={transactionItems} interactable={true} key={index} />
+              <View key={element.id}>
+                <OrderTag item={element} transactionItems={transactionItems} interactable={true} key={element.id} />
               </View>
             )
           })}
