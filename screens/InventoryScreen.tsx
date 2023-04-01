@@ -29,9 +29,9 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
       }
     }
     temp()
-    if (menuItems) {
-      console.log(menuItems.map((element) => element.item + ' ' + element.price))
-    }
+    // if (menuItems) {
+    //   console.log(menuItems.map((element) => element.item + ' ' + element.price))
+    // }
   }, [isLoadingMenuItems, isFocused])
 
   useEffect(() => {
@@ -42,9 +42,9 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
           .sort((a, b) => a.item.localeCompare(b.item))
       )
     }
-    if (menuItems) {
-      console.log(menuItems.map((element) => element.item + ' ' + element.price))
-    }
+    // if (menuItems) {
+    //   console.log(menuItems.map((element) => element.item + ' ' + element.price))
+    // }
   }, [menuItems])
 
   // useEffect(() => {
