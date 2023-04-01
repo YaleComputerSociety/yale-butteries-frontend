@@ -42,10 +42,8 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         paymentIntentClientSecret: clientSecret,
         merchantDisplayName: 'Yale Butteries',
       })
-      console.log(initSheet)
       if (initSheet.error) return Alert.alert(initSheet.error.message)
       const presentSheet = await stripe.presentPaymentSheet()
-      console.log('a', presentSheet)
       if (presentSheet.error) return Alert.alert(presentSheet.error.message)
 
       interface tempItem {
