@@ -88,6 +88,7 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
           text: 'Go Back',
           onPress: () => {
             setOrderStatus('PENDING')
+            setTagActive(1)
             console.log(item)
             dispatch(
               updateTransactionItem({
@@ -96,6 +97,33 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
               })
             )
             console.log(item)
+          },
+        },
+      ])
+    } else if (tempStatus == 'FINISHED') {
+      Alert.alert('Notice', 'Are you sure you want to mark this order as finished? This cannot be undone', [
+        {
+          text: 'Yes',
+          onPress: () => {
+            setOrderStatus(tempStatus)
+            dispatch(
+              asyncUpdateTransactionItem({
+                ...item,
+                orderStatus: tempStatus,
+              })
+            )
+          },
+        },
+        {
+          text: 'Go Back',
+          onPress: () => {
+            setOrderStatus('IN_PROGRESS')
+            dispatch(
+              updateTransactionItem({
+                ...item,
+                orderStatus: 'IN_PROGRESS',
+              })
+            )
           },
         },
       ])
@@ -108,171 +136,114 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
       )
     }
 
-    // if (tempStatus == 'CANCELLED') {
-    //   Alert.alert('Notice', 'Are you sure you want to cancel this order? This can not be undone', [
-    //     {
-    //       text: 'Yes',
-    //       onPress: () => {
-    //         setOrderStatus(tempStatus)
-    //         dispatch(
-    //           asyncUpdateTransactionItem({
-    //             ...transactionItems.find((element) => element.id == transactionIndex),
-    //             orderStatus: tempStatus,
-    //           })
-    //         )
-    //       },
-    //     },
-    //     {
-    //       text: 'Go Back',
-    //       onPress: () => {
-    //         setOrderStatus('PENDING')
-    //         dispatch(
-    //           updateTransactionItem({
-    //             ...transactionItems.find((element) => element.id == transactionIndex),
-    //             orderStatus: 'PENDING',
-    //           })
-    //         )
-    //       },
-    //     },
-    //   ])
-    // } else if (tempStatus == 'FINISHED') {
-    //   Alert.alert('Notice', 'Are you sure you want to mark this order as finished? This cannot be undone', [
-    //     {
-    //       text: 'Yes',
-    //       onPress: () => {
-    //         setOrderStatus(tempStatus)
-    //         dispatch(
-    //           asyncUpdateTransactionItem({
-    //             ...transactionItems.find((element) => element.id == transactionIndex),
-    //             orderStatus: tempStatus,
-    //           })
-    //         )
-    //       },
-    //     },
-    //     {
-    //       text: 'Go Back',
-    //       onPress: () => {
-    //         setOrderStatus('IN_PROGRESS')
-    //         dispatch(
-    //           updateTransactionItem({
-    //             ...transactionItems.find((element) => element.id == transactionIndex),
-    //             orderStatus: 'IN_PROGRESS',
-    //           })
-    //         )
-    //       },
-    //     },
-    //   ])
-    // } else {
-    // setOrderStatus(tempStatus)
-
     return
 
     // let tempStatus: Status = 'CANCELLED'
-    switch (code) {
-      case 0:
-        if (!isStarted) {
-          setOrderStatus('PENDING')
-        } else {
-          Alert.alert('Notice', 'Are you sure you want to cancel this order? This can not be undone', [
-            {
-              text: 'Yes',
-              onPress: () => {
-                tempStatus = 'CANCELLED'
-                setOrderStatus(tempStatus)
-                dispatch(
-                  asyncUpdateTransactionItem({
-                    ...transactionItems.find((element) => element.id == transactionIndex),
-                    orderStatus: tempStatus,
-                  })
-                )
-              },
-            },
-            {
-              text: 'No',
-              onPress: () => {
-                tempStatus = 'PENDING'
-                setOrderStatus(tempStatus)
-                dispatch(
-                  updateTransactionItem({
-                    ...transactionItems.find((element) => element.id == transactionIndex),
-                    orderStatus: tempStatus,
-                  })
-                )
-              },
-            },
-          ])
-          tempStatus = 'CANCELLED'
-          setOrderStatus(tempStatus)
-        }
-        dispatch(
-          updateTransactionItem({
-            ...transactionItems.find((element) => element.id == transactionIndex),
-            orderStatus: tempStatus,
-          })
-        )
-        break
-      case 1:
-        tempStatus = 'PENDING'
-        setOrderStatus(tempStatus)
-        dispatch(
-          updateTransactionItem({
-            ...transactionItems.find((element) => element.id == transactionIndex),
-            orderStatus: tempStatus,
-          })
-        )
-        break
-      case 2:
-        tempStatus = 'IN_PROGRESS'
-        setOrderStatus(tempStatus)
-        dispatch(
-          updateTransactionItem({
-            ...transactionItems.find((element) => element.id == transactionIndex),
-            orderStatus: tempStatus,
-          })
-        )
-        break
-      case 3:
-        tempStatus = 'FINISHED'
-        setOrderStatus(tempStatus)
-        dispatch(
-          updateTransactionItem({
-            ...transactionItems.find((element) => element.id == transactionIndex),
-            orderStatus: tempStatus,
-          })
-        )
-        break
-      case 4:
-        Alert.alert('Notice', 'Are you sure you this order has been picked up? This can not be undone', [
-          {
-            text: 'Yes',
-            onPress: () => {
-              tempStatus = 'PICKED_UP'
-              setOrderStatus(tempStatus)
-              dispatch(
-                updateTransactionItem({
-                  ...transactionItems.find((element) => element.id == transactionIndex),
-                  orderStatus: tempStatus,
-                })
-              )
-            },
-          },
-          {
-            text: 'No',
-            onPress: () => {
-              tempStatus = 'FINISHED'
-              setOrderStatus(tempStatus)
-              dispatch(
-                updateTransactionItem({
-                  ...transactionItems.find((element) => element.id == transactionIndex),
-                  orderStatus: tempStatus,
-                })
-              )
-            },
-          },
-        ])
+    // switch (code) {
+    //   case 0:
+    //     if (!isStarted) {
+    //       setOrderStatus('PENDING')
+    //     } else {
+    //       Alert.alert('Notice', 'Are you sure you want to cancel this order? This can not be undone', [
+    //         {
+    //           text: 'Yes',
+    //           onPress: () => {
+    //             tempStatus = 'CANCELLED'
+    //             setOrderStatus(tempStatus)
+    //             dispatch(
+    //               asyncUpdateTransactionItem({
+    //                 ...transactionItems.find((element) => element.id == transactionIndex),
+    //                 orderStatus: tempStatus,
+    //               })
+    //             )
+    //           },
+    //         },
+    //         {
+    //           text: 'No',
+    //           onPress: () => {
+    //             tempStatus = 'PENDING'
+    //             setOrderStatus(tempStatus)
+    //             dispatch(
+    //               updateTransactionItem({
+    //                 ...transactionItems.find((element) => element.id == transactionIndex),
+    //                 orderStatus: tempStatus,
+    //               })
+    //             )
+    //           },
+    //         },
+    //       ])
+    //       tempStatus = 'CANCELLED'
+    //       setOrderStatus(tempStatus)
+    //     }
+    //     dispatch(
+    //       updateTransactionItem({
+    //         ...transactionItems.find((element) => element.id == transactionIndex),
+    //         orderStatus: tempStatus,
+    //       })
+    //     )
+    //     break
+    //   case 1:
+    //     tempStatus = 'PENDING'
+    //     setOrderStatus(tempStatus)
+    //     dispatch(
+    //       updateTransactionItem({
+    //         ...transactionItems.find((element) => element.id == transactionIndex),
+    //         orderStatus: tempStatus,
+    //       })
+    //     )
+    //     break
+    //   case 2:
+    //     tempStatus = 'IN_PROGRESS'
+    //     setOrderStatus(tempStatus)
+    //     dispatch(
+    //       updateTransactionItem({
+    //         ...transactionItems.find((element) => element.id == transactionIndex),
+    //         orderStatus: tempStatus,
+    //       })
+    //     )
+    //     break
+    //   case 3:
+    //     tempStatus = 'FINISHED'
+    //     setOrderStatus(tempStatus)
+    //     dispatch(
+    //       updateTransactionItem({
+    //         ...transactionItems.find((element) => element.id == transactionIndex),
+    //         orderStatus: tempStatus,
+    //       })
+    //     )
+    //     break
+    //   case 4:
+    //     Alert.alert('Notice', 'Are you sure you this order has been picked up? This can not be undone', [
+    //       {
+    //         text: 'Yes',
+    //         onPress: () => {
+    //           tempStatus = 'PICKED_UP'
+    //           setOrderStatus(tempStatus)
+    //           dispatch(
+    //             updateTransactionItem({
+    //               ...transactionItems.find((element) => element.id == transactionIndex),
+    //               orderStatus: tempStatus,
+    //             })
+    //           )
+    //         },
+    //       },
+    //       {
+    //         text: 'No',
+    //         onPress: () => {
+    //           tempStatus = 'FINISHED'
+    //           setOrderStatus(tempStatus)
+    //           dispatch(
+    //             updateTransactionItem({
+    //               ...transactionItems.find((element) => element.id == transactionIndex),
+    //               orderStatus: tempStatus,
+    //             })
+    //           )
+    //         },
+    //       },
+    //     ])
 
-        break
-    }
+    //     break
+    // }
   }
 
   const onchange = (nativeEvent) => {
