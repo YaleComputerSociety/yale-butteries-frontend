@@ -107,7 +107,7 @@ const OrdersScreen: React.FC = () => {
           {pastOrders.map((element) => {
             return (
               <View key={element.id}>
-                <OrderTag item={element} transactionItems={transactionItems} interactable={true} key={element.id} />
+                <OrderTag item={element} transactionItems={transactionItems} interactable={false} key={element.id} />
               </View>
             )
           })}
