@@ -45,8 +45,9 @@ export const asyncFetchCurrentUser = () => {
 }
 
 export const asyncUpdateCurrentUser = (name: string) => {
+  
   return async (dispatch): Promise<void> => {
-    dispatch(setIsLoading(true))
+    //dispatch(setIsLoading(true))
     try {
       // send stuff to backend and update it there
       const currentUser = await dummyUser()
@@ -54,13 +55,13 @@ export const asyncUpdateCurrentUser = (name: string) => {
     } catch (e) {
       console.log(e)
     } finally {
-      dispatch(setIsLoading(false))
+      //dispatch(setIsLoading(false))
     }
   }
 }
 
 async function dummyUser(): Promise<User> {
-  await new Promise((r) => setTimeout(r, 200))
+  await new Promise((r) => setTimeout(r, 0))
   return {
     id: 5,
     netid: 'awg32',
