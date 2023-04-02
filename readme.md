@@ -35,3 +35,9 @@ Once inside the database, type ```\d``` to list all database tables
 type ```\q``` to quit
 
 You can directly use SQL queries to view/manipulate data. Just type your SQL query (SQL keywords are in all-caps, names are in double quotes and case-sensitive), and make sure to end your query with a semicolon
+
+
+### Helpful SQL Queries
+SELECT * FROM "TransactionItem" ORDER BY id DESC LIMIT 10;
+UPDATE "TransactionItem" SET order_status = 'FINISHED' WHERE id=?;
+SELECT id, is_active, item, price, "collegeId" FROM "MenuItem";

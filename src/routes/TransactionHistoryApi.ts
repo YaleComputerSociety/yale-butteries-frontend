@@ -9,7 +9,7 @@ import {
 
 const router = express.Router()
 
-router.get('/:college', getCollegeTransactionHistories)
+router.get('/college/:college', getCollegeTransactionHistories)
 router.get('/:transactionId', getTransactionHistory)
 router.put('/', updateTransactionHistory)
 router.put('/:itemId', updateTransactionItem)

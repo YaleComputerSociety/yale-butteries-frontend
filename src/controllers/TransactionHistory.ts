@@ -170,7 +170,8 @@ export async function getTransactionHistory(req: Request, res: Response): Promis
     const transactionHistory = await getTransactionHistoryFromId(parseInt(req.params.transactionId))
     const college = await getCollegeFromId(transactionHistory.collegeId)
     const user = await getUserFromId(transactionHistory.userId)
-    const transactionItems = backToFrontTransactionItems(transactionHistory)
+    const transactionItems = await backToFrontTransactionItems(transactionHistory)
+    console.log(transactionItems)
 
     const ret = {
       id: transactionHistory.id,
@@ -180,6 +181,7 @@ export async function getTransactionHistory(req: Request, res: Response): Promis
       netId: user.netid,
       transactionItems: transactionItems,
     }
+    console.log(ret)
 
     res.send(JSON.stringify(ret))
   } catch (e) {
