@@ -98,15 +98,15 @@ const OrdersScreen: React.FC = () => {
           <Text style={{ ...styles.title }}>Live Orders</Text>
           {currentOrders.map((element) => {
             return (
-              <View key={element.id} style={styles.tag}>
-                <OrderTag item={element} transactionItems={transactionItems} interactable={true} key={element.id} />
+              <View key={element.id + 'vv'} style={styles.tag}>
+                <OrderTag item={element} transactionItems={transactionItems} interactable={true} key={element.id+'b'} />
               </View>
             )
           })}
           <Text style={{ ...styles.title2 }}>Completed Today</Text>
           {pastOrders.map((element) => {
             return (
-              <View key={element.id}>
+              <View key={element.id + 'v'}>
                 <OrderTag item={element} transactionItems={transactionItems} interactable={false} key={element.id} />
               </View>
             )
