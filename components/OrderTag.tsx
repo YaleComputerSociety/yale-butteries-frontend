@@ -96,7 +96,7 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
                 ...item,
                 orderStatus: 'PENDING',
               })
-            )
+            ) 
             console.log(item)
           },
         },
@@ -119,6 +119,7 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
           text: 'Go Back',
           onPress: () => {
             setOrderStatus('IN_PROGRESS')
+            setTagActive(2)
             dispatch(
               updateTransactionItem({
                 ...item,
