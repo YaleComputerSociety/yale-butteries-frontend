@@ -1,10 +1,6 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { Feather } from '@expo/vector-icons'
-import { COLORS } from '../constants/Colors'
-import { TEXTS } from '../constants/Texts'
-import { LAYOUTS } from '../constants/Layouts'
-import { useNavigation } from '@react-navigation/core'
 
 const EditButton = (props) => {
   return (

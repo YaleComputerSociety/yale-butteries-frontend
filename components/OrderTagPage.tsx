@@ -70,12 +70,9 @@ const styles = StyleSheet.create({
     width: LAYOUTS.getWidth(355),
     flex: 1,
     borderRadius: 5,
-    //marginBottom: LAYOUTS.getWidth(10),
     flexDirection: 'row',
     alignItems: 'stretch',
     backgroundColor: COLORS.white,
-    // borderColor: 'black',
-    //borderWidth: 2
   },
   timeContainer: {
     width: LAYOUTS.getWidth(80),
@@ -84,7 +81,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingBottom: LAYOUTS.getWidth(10),
     paddingTop: LAYOUTS.getWidth(4),
-    //borderWidth: 2
   },
   itemContainer: {
     flex: 1,
@@ -101,17 +97,14 @@ const styles = StyleSheet.create({
   boldText: {
     fontSize: TEXTS.adjust(15),
     color: COLORS.black,
-    //fontFamily: 'ri-Bold'
   },
   regularText: {
     fontSize: TEXTS.adjust(17),
     color: COLORS.black,
-    //fontFamily: 'HindSiliguri'
   },
   nameText: {
     fontSize: TEXTS.adjust(12),
     color: COLORS.black,
-    //fontFamily: 'HindSiliguri'
   },
 })
 

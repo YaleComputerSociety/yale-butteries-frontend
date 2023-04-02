@@ -126,6 +126,8 @@ export const Card: FC<butteryProps> = (props: butteryProps) => {
           columns={1}
           rows={14}
           width={100}
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
           offsetY={props.offsetY}
         />
         {/*<Image style={card.butteryIcon} source={props.image} />*/}
