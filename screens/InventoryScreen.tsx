@@ -3,59 +3,64 @@ import { ActivityIndicator, StyleSheet, Text, View, ScrollView, TouchableOpacity
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { asyncFetchMenuItems } from '../store/slices/MenuItems'
 import ItemTag from '../components/ItemTag'
-import { useNavigation } from '@react-navigation/native'
-
 import { COLORS } from '../constants/Colors'
 import { TEXTS } from '../constants/Texts'
 import { LAYOUTS } from '../constants/Layouts'
+import { NavigationStackProp } from 'react-navigation-stack'
+import { NavigationParams } from 'react-navigation'
+import { useIsFocused } from '@react-navigation/native'
 
-export default function InventoryScreen() {
+const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
+  navigation,
+}) => {
   const dispatch = useAppDispatch()
+  const isFocused = useIsFocused()
+
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
+  const { currentUser } = useAppSelector((state) => state.currentUser)
+
   const [localMenu, setLocalMenu] = useState([])
   const [itemTypes, setItemTypes] = useState([])
-  const navigation = useNavigation()
-
-  if (isLoadingMenuItems) {
-    console.log('loading')
-  }
-  useEffect(() => {
-    console.log('loading')
-    if (isLoadingMenuItems || menuItems == null) {
-      dispatch(asyncFetchMenuItems())
-      console.log('fetching')
-    }
-  }, [isLoadingMenuItems])
 
   useEffect(() => {
-    console.log(menuItems)
-    console.log('menutems Updated')
-    if (menuItems != null) {
-      setLocalMenu(menuItems.filter((element) => element.college == 'morse'))
-    }
-    console.log(localMenu)
-    // //console.log(transactionItems)
-    // if (transactionItems != null) {
-    //   setCurrentOrders(transactionItems.filter(element => element.orderStatus != "picked_up" && element.orderStatus != "cancelled"))
-    //   setPastOrders(transactionItems.filter(element => element.orderStatus == "picked_up" || element.orderStatus == "cancelled"))
-    // }
-    // //console.log(currentOrders)
-  }, [menuItems])
-
-  useEffect(() => {
-    const buffer = []
-    for (let i = 0; i < localMenu.length; i++) {
-      if (!buffer.includes(localMenu[i].foodType)) {
-        buffer.push(localMenu[i].foodType)
+    const temp = async () => {
+      if (isLoadingMenuItems || menuItems == null) {
+        await dispatch(asyncFetchMenuItems())
       }
     }
-    setItemTypes(buffer)
-    buffer.sort()
-    console.log(itemTypes)
-  }, [localMenu])
+    temp()
+    // if (menuItems) {
+    //   console.log(menuItems.map((element) => element.item + ' ' + element.price))
+    // }
+  }, [isLoadingMenuItems, isFocused])
+
+  useEffect(() => {
+    if (menuItems != null) {
+      setLocalMenu(
+        menuItems
+          .filter((element) => element.college == currentUser.college)
+          .sort((a, b) => a.item.localeCompare(b.item))
+      )
+    }
+    // if (menuItems) {
+    //   console.log(menuItems.map((element) => element.item + ' ' + element.price))
+    // }
+  }, [menuItems])
+
+  // useEffect(() => {
+  //   const buffer = []
+  //   for (let i = 0; i < localMenu.length; i++) {
+  //     if (!buffer.includes(localMenu[i].foodType)) {
+  //       buffer.push(localMenu[i].foodType)
+  //     }
+  //   }
+  //   setItemTypes(buffer)
+  //   buffer.sort()
+  // }, [localMenu])
+
   return (
     <View style={{ ...styles.container }}>
-      {isLoadingMenuItems || itemTypes == null ? (
+      {menuItems == null || isLoadingMenuItems ? (
         <ScrollView
           style={{ ...styles.scrollView }}
           //contentContainerStyle={{alignItems: 'flex-start', justifyContent: 'stretch'}}>
@@ -65,18 +70,21 @@ export default function InventoryScreen() {
         </ScrollView>
       ) : (
         <ScrollView style={{ ...styles.scrollView }}>
-          {itemTypes.map((el, index) => {
+          {localMenu.map((item, i) => {
+            return <ItemTag key={i} item={item} />
+          })}
+          {/* {itemTypes.map((el, index) => {
             return (
-              <View key={el}>
+              <View key={index}>
                 <Text style={{ ...styles.title }}>{el}</Text>
-                {localMenu.map((item, index) => {
+                {localMenu.map((item, i) => {
                   if (item.foodType == el) {
-                    return <ItemTag key={JSON.stringify(item)} item={item} />
+                    return <ItemTag key={i} item={item} />
                   }
                 })}
               </View>
             )
-          })}
+          })} */}
           <View style={styles.buttonHolder}>
             <TouchableOpacity
               style={{ ...styles.button, marginBottom: LAYOUTS.getWidth(30) }}
@@ -92,6 +100,8 @@ export default function InventoryScreen() {
     </View>
   )
 }
+
+export default InventoryScreen
 
 const styles = StyleSheet.create({
   container: {

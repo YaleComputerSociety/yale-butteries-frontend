@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AppDispatch } from '../../store/ReduxStore'
 
 // import { getJSON } from 'utils/fetch'
 
@@ -30,7 +31,7 @@ export const currentUserSlice = createSlice({
 export const { setCurrentUserState, setIsLoading } = currentUserSlice.actions
 
 export const asyncFetchCurrentUser = () => {
-  return async (dispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
       // const currentUser = await getJSON<CurrentUser>('/api/users/me')
@@ -45,9 +46,8 @@ export const asyncFetchCurrentUser = () => {
 }
 
 export const asyncUpdateCurrentUser = (name: string) => {
-  
-  return async (dispatch): Promise<void> => {
-    //dispatch(setIsLoading(true))
+  return async (dispatch: AppDispatch): Promise<void> => {
+    dispatch(setIsLoading(true))
     try {
       // send stuff to backend and update it there
       const currentUser = await dummyUser()
@@ -55,7 +55,7 @@ export const asyncUpdateCurrentUser = (name: string) => {
     } catch (e) {
       console.log(e)
     } finally {
-      //dispatch(setIsLoading(false))
+      dispatch(setIsLoading(false))
     }
   }
 }
@@ -66,7 +66,7 @@ async function dummyUser(): Promise<User> {
     id: 5,
     netid: 'awg32',
     name: 'Saddison',
-    college: 'murray',
+    college: 'berkeley',
   }
 }
 

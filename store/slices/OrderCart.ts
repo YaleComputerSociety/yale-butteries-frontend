@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { APIError } from '../ReduxStore'
+import { APIError, AppDispatch } from '../ReduxStore'
 import { Ingredient } from './Ingredients'
 import { MenuItem } from './MenuItems'
 import { TransactionHistoryEntry, addTransactionHistoryEntry } from './TransactionHistory'
@@ -61,7 +61,7 @@ export const submitOrder = (
   transactionHistoryCounter: number,
   transactionItemCounter: number
 ) => {
-  return async (dispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
       await dummySubmitOrder(orderItems, currentUser, transactionHistoryCounter, transactionItemCounter, dispatch)

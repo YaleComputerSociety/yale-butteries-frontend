@@ -5,6 +5,7 @@ import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { loading } from '../styles/GlobalStyles'
 import CheckoutItem from '../components/CheckoutItem'
 import { priceToText } from '../Functions'
+// eslint-disable-next-line import/no-unresolved
 import { STRIPE_PK } from '@env'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 import { setTransactionHistoryState } from '../store/slices/TransactionHistory'
@@ -27,24 +28,24 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const makePayment = async (name: string, amount: number) => {
     try {
       // stripe stuff
-      const obj = { netid: name, price: amount }
-      const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
-        method: 'POST',
-        body: JSON.stringify(obj),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      const data = await response.json()
-      if (!response.ok) return Alert.alert(data.message)
-      const clientSecret = data.paymentIntent.client_secret
-      const initSheet = await stripe.initPaymentSheet({
-        paymentIntentClientSecret: clientSecret,
-        merchantDisplayName: 'Yale Butteries',
-      })
-      if (initSheet.error) return Alert.alert(initSheet.error.message)
-      const presentSheet = await stripe.presentPaymentSheet()
-      if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+      // const obj = { netid: name, price: amount }
+      // const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
+      //   method: 'POST',
+      //   body: JSON.stringify(obj),
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // })
+      // const data = await response.json()
+      // if (!response.ok) return Alert.alert(data.message)
+      // const clientSecret = data.paymentIntent.client_secret
+      // const initSheet = await stripe.initPaymentSheet({
+      //   paymentIntentClientSecret: clientSecret,
+      //   merchantDisplayName: 'Yale Butteries',
+      // })
+      // if (initSheet.error) return Alert.alert(initSheet.error.message)
+      // const presentSheet = await stripe.presentPaymentSheet()
+      // if (presentSheet.error) return Alert.alert(presentSheet.error.message)
 
       interface tempItem {
         itemCost: number
@@ -69,7 +70,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           price: price,
           netId: name,
           college: collegeOrderCart,
-          paymentIntentId: 'a', //data.paymentIntent.id,
+          paymentIntentId: 'a',
           transactionItems: transaction_items,
         }),
         headers: {
@@ -92,8 +93,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const removeOrder = (newItem: OrderItem) => {
     dispatch(removeOrderItem(orderItems.find((item) => item.orderItem.id == newItem.orderItem.id)))
   }
-
-  // export default function CheckoutScreen( { navigation } : {navigation:any} ) {
 
   return (
     <View style={checkout.wrapper}>
@@ -137,10 +136,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     </View>
   )
 }
-
-// CheckoutScreen['navigationOptions'] = () => ({
-//   title: 'collegeName',
-// })
 
 CheckoutScreen['navigationOptions'] = (navData) => {
   return {

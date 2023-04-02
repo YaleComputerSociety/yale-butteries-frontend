@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AppDispatch } from '../../store/ReduxStore'
 
 // import { getJSON, putJSON, postJSON } from 'utils/fetch'
 
@@ -42,7 +43,7 @@ export const usersSlice = createSlice({
 export const { setUsersState, updateUser, insertUser, setIsLoading } = usersSlice.actions
 
 export const asyncFetchUsers = () => {
-  return async (dispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
       // const users = await getJSON<User[]>('/api/users')
@@ -57,7 +58,7 @@ export const asyncFetchUsers = () => {
 }
 
 export const asyncUpdateUser = (user: User) => {
-  return async (dispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     try {
       // Spread operator is typescript hack.
       // See: https://stackoverflow.com/questions/60697214/how-to-fix-index-signature-is-missing-in-type-error
@@ -72,7 +73,7 @@ export const asyncUpdateUser = (user: User) => {
 }
 
 export const asyncInsertUser = (user: User) => {
-  return async (dispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     try {
       // const newUser = await postJSON('/api/users', { ...user })
       // dispatch(insertUser(newUser.jsonBody))
@@ -85,7 +86,6 @@ export const asyncInsertUser = (user: User) => {
 }
 
 async function dummyUsers(): Promise<User[]> {
-  const d = new Date()
   await new Promise((r) => setTimeout(r, 200))
   return [
     {

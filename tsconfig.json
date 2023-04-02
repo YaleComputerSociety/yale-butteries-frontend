@@ -5,7 +5,8 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-        "*": ["node_modules/*", "src/*"]
+        "*": ["node_modules/*", "src/*"],
+        "@env": ["node_modules/react-native-dotenv"]
     },
     "jsx": "react",
   },
@@ -14,5 +15,6 @@
     "node_modules",
     "dist",
   ],
-  "compileOnSave": false
+  "compileOnSave": false,
+  "typeRoots": ["./types"],
 }

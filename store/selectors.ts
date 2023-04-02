@@ -5,7 +5,6 @@ import { TransactionItem } from './slices/TransactionItems'
 import { MenuItem } from './slices/MenuItems'
 import { Ingredient } from './slices/Ingredients'
 import { MenuItemToIngredient } from './slices/MenuItemToIngredients'
-import { CurrentUserState } from './slices/CurrentUser'
 
 interface MenuItemWithIngredients {
   menuItem: MenuItem
@@ -15,11 +14,6 @@ interface MenuItemWithIngredients {
 interface TransactionHistoryWithItems {
   transactionHistoryEntry: TransactionHistoryEntry
   transactionItems: TransactionItem[]
-}
-
-interface CurrentUserWithMenuItems {
-  currentUser: CurrentUserState
-  menuItems: MenuItem[]
 }
 
 // const getEventOccurrences = (state) => state.eventOccurrences.eventOccurrences
