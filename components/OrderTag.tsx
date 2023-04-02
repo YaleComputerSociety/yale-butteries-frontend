@@ -20,10 +20,9 @@ interface Props {
 type Status = 'CANCELLED' | 'PENDING' | 'IN_PROGRESS' | 'FINISHED' | 'PICKED_UP'
 const statuses: Status[] = ['CANCELLED', 'PENDING', 'IN_PROGRESS', 'FINISHED', 'PICKED_UP']
 
-const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Props) => {
+const OrderTag: React.FC<Props> = ({ item, interactable }: Props) => {
   const dispatch = useAppDispatch()
 
-  const transactionIndex = item.id
   const slideIndex = [0, 1, 2, 3, 4]
   const orderDate = new Date(item.creationTime)
   const orderTime = (orderDate.getHours() % 12) + ':' + orderDate.getMinutes()
@@ -64,11 +63,10 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
     if (orderStatus != 'PENDING') {
       setIsStarted(true)
     }
-    // render()
   }, [orderStatus])
 
   const handleStatus = async (code: number) => {
-    let tempStatus: Status = statuses[code]
+    const tempStatus: Status = statuses[code]
 
     if (tempStatus == 'CANCELLED') {
       Alert.alert('Notice', 'Are you sure you want to cancel this order? This can not be undone', [
@@ -90,14 +88,12 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
             setOrderStatus('PENDING')
             setTagActive(1)
             setStartingIndex(1)
-            console.log(item)
             dispatch(
               updateTransactionItem({
                 ...item,
                 orderStatus: 'PENDING',
               })
-            ) 
-            console.log(item)
+            )
           },
         },
       ])
@@ -120,6 +116,7 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
           onPress: () => {
             setOrderStatus('IN_PROGRESS')
             setTagActive(2)
+            setStartingIndex(2)
             dispatch(
               updateTransactionItem({
                 ...item,
@@ -137,115 +134,6 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
         })
       )
     }
-
-    return
-
-    // let tempStatus: Status = 'CANCELLED'
-    // switch (code) {
-    //   case 0:
-    //     if (!isStarted) {
-    //       setOrderStatus('PENDING')
-    //     } else {
-    //       Alert.alert('Notice', 'Are you sure you want to cancel this order? This can not be undone', [
-    //         {
-    //           text: 'Yes',
-    //           onPress: () => {
-    //             tempStatus = 'CANCELLED'
-    //             setOrderStatus(tempStatus)
-    //             dispatch(
-    //               asyncUpdateTransactionItem({
-    //                 ...transactionItems.find((element) => element.id == transactionIndex),
-    //                 orderStatus: tempStatus,
-    //               })
-    //             )
-    //           },
-    //         },
-    //         {
-    //           text: 'No',
-    //           onPress: () => {
-    //             tempStatus = 'PENDING'
-    //             setOrderStatus(tempStatus)
-    //             dispatch(
-    //               updateTransactionItem({
-    //                 ...transactionItems.find((element) => element.id == transactionIndex),
-    //                 orderStatus: tempStatus,
-    //               })
-    //             )
-    //           },
-    //         },
-    //       ])
-    //       tempStatus = 'CANCELLED'
-    //       setOrderStatus(tempStatus)
-    //     }
-    //     dispatch(
-    //       updateTransactionItem({
-    //         ...transactionItems.find((element) => element.id == transactionIndex),
-    //         orderStatus: tempStatus,
-    //       })
-    //     )
-    //     break
-    //   case 1:
-    //     tempStatus = 'PENDING'
-    //     setOrderStatus(tempStatus)
-    //     dispatch(
-    //       updateTransactionItem({
-    //         ...transactionItems.find((element) => element.id == transactionIndex),
-    //         orderStatus: tempStatus,
-    //       })
-    //     )
-    //     break
-    //   case 2:
-    //     tempStatus = 'IN_PROGRESS'
-    //     setOrderStatus(tempStatus)
-    //     dispatch(
-    //       updateTransactionItem({
-    //         ...transactionItems.find((element) => element.id == transactionIndex),
-    //         orderStatus: tempStatus,
-    //       })
-    //     )
-    //     break
-    //   case 3:
-    //     tempStatus = 'FINISHED'
-    //     setOrderStatus(tempStatus)
-    //     dispatch(
-    //       updateTransactionItem({
-    //         ...transactionItems.find((element) => element.id == transactionIndex),
-    //         orderStatus: tempStatus,
-    //       })
-    //     )
-    //     break
-    //   case 4:
-    //     Alert.alert('Notice', 'Are you sure you this order has been picked up? This can not be undone', [
-    //       {
-    //         text: 'Yes',
-    //         onPress: () => {
-    //           tempStatus = 'PICKED_UP'
-    //           setOrderStatus(tempStatus)
-    //           dispatch(
-    //             updateTransactionItem({
-    //               ...transactionItems.find((element) => element.id == transactionIndex),
-    //               orderStatus: tempStatus,
-    //             })
-    //           )
-    //         },
-    //       },
-    //       {
-    //         text: 'No',
-    //         onPress: () => {
-    //           tempStatus = 'FINISHED'
-    //           setOrderStatus(tempStatus)
-    //           dispatch(
-    //             updateTransactionItem({
-    //               ...transactionItems.find((element) => element.id == transactionIndex),
-    //               orderStatus: tempStatus,
-    //             })
-    //           )
-    //         },
-    //       },
-    //     ])
-
-    //     break
-    // }
   }
 
   const onchange = (nativeEvent) => {
@@ -255,18 +143,17 @@ const OrderTag: React.FC<Props> = ({ item, transactionItems, interactable }: Pro
         setTagActive(slide)
         handleStatus(slide)
         setIsStarted(true)
+        setStartingIndex(slide)
       }
     }
   }
 
-  //alright threres some real spaghetti here to get this to work...
-  //not proud of it but can be adressed later I suppose
   return (
-    //<SafeAreaView style={{flex: 1}}>
     <View style={{ ...styles.container }}>
       {interactable ? (
         <ScrollView
-          onScrollEndDrag={({ nativeEvent }) => onchange(nativeEvent)}
+          onScroll={({ nativeEvent }) => onchange(nativeEvent)}
+          scrollEventThrottle={0}
           showsHorizontalScrollIndicator={false}
           pagingEnabled
           horizontal
@@ -294,8 +181,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'stretch',
     backgroundColor: COLORS.white,
-    // borderColor: 'black',
-    // borderWidth: 2
   },
   wrap: {
     height: LAYOUTS.getWidth(50),
@@ -303,14 +188,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: LAYOUTS.getWidth(10),
     backgroundColor: COLORS.white,
-    //borderWidth: 3
   },
   timeContainer: {
     width: LAYOUTS.getWidth(80),
     borderRightWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
-    //borderWidth: 2
   },
   itemContainer: {
     flex: 1,
@@ -327,17 +210,14 @@ const styles = StyleSheet.create({
   boldText: {
     fontSize: TEXTS.adjust(17),
     color: COLORS.black,
-    //fontFamily: 'HindSiliguri-Bold'
   },
   regularText: {
     fontSize: TEXTS.adjust(17),
     color: COLORS.black,
-    //fontFamily: 'HindSiliguri'
   },
   nameText: {
     fontSize: TEXTS.adjust(12),
     color: COLORS.black,
-    //fontFamily: 'HindSiliguri'
   },
   imageStyle: {
     height: LAYOUTS.getWidth(20),
