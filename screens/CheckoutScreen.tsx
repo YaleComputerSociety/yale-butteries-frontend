@@ -59,6 +59,9 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       const transaction_items: tempItem[] = []
       orderItems.forEach((item) => {
+        if (!item.orderItem.id) {
+          throw new TypeError("orderItem doesn't have id")
+        }
         const newItem: tempItem = {
           itemCost: item.orderItem.price,
           orderStatus: 'PENDING',

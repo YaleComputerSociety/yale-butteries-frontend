@@ -9,7 +9,7 @@ interface Props {
 }
 
 const StatusItem: FC<Props> = ({ name, status }: Props) => {
-  const getIcon = () => {
+  const getIconVisual = () => {
     switch (status) {
       case 'PENDING':
         return (
@@ -48,7 +48,7 @@ const StatusItem: FC<Props> = ({ name, status }: Props) => {
     <View style={styles.view1}>
       <View style={styles.view2}>
         <Text style={styles.text}>{name}</Text>
-        {getIcon()}
+        {getIconVisual()}
       </View>
     </View>
   )
