@@ -13,7 +13,7 @@ interface Props {
   started?: boolean
 }
 
-const OrderTagPage: React.FC<Props> = ({ status, orderItem, started, time }: Props) => {
+const OrderTagPage: React.FC<Props> = ({ status, orderItem, time }: Props) => {
   const getColor = (status: number): string => {
     switch (status) {
       case 0:
