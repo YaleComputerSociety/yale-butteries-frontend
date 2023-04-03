@@ -22,7 +22,7 @@ function AntDesignBarIcon(props: { name: React.ComponentProps<typeof AntDesign>[
   return <AntDesign size={28} style={{ marginBottom: -3 }} {...props} />
 }
 
-const ManagerStack: React.FC = () => {
+const StaffStack: React.FC = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -60,4 +60,4 @@ const InventoryNavigator = () => {
   )
 }
 
-export default ManagerStack
+export default StaffStack

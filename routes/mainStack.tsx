@@ -1,13 +1,13 @@
 import { createStackNavigator } from 'react-navigation-stack'
 import { createAppContainer } from 'react-navigation'
-import ButterySelectionScreen from '../screens/customer/ButterySelectionScreen'
+import ButterySelectionScreen from '../screens/customer/ButteriesScreen'
 import MenuScreen from '../screens/customer/MenuScreen'
 import CheckoutScreen from '../screens/customer/CheckoutScreen'
 import SettingsScreen from '../screens/customer/SettingsScreen'
-import StartScreen from '../screens/customer/StartScreen'
-import NavigationScreen from '../screens/customer/NavigationScreen'
+import StartScreen from '../screens/StartScreen'
+import NavigationScreen from '../screens/NavigationScreen'
 import OrderStatusScreen from '../screens/customer/OrderStatusScreen'
-import ManagerRenderScreen from '../screens/staff/ManagerRenderScreen'
+import StaffRenderScreen from '../screens/staff/StaffRenderScreen'
 import React from 'react'
 
 const screens = {
@@ -23,7 +23,7 @@ const screens = {
       headerShown: false,
     },
   },
-  Home: {
+  ButteriesScreen: {
     screen: ButterySelectionScreen,
     navigationOptions: {
       title: 'Butteries',
@@ -52,16 +52,16 @@ const screens = {
     navigationOptions: {
       headerShown: false,
       gestureEnabled: false,
-      title: 'StatusScreen',
+      title: 'Status',
       headerLeft: () => <></>,
     },
   },
-  ManagerRenderScreen: {
-    screen: ManagerRenderScreen,
+  StaffRenderScreen: {
+    screen: StaffRenderScreen,
     navigationOptions: {
       headerShown: false,
       gestureEnabled: false,
-      title: 'ManagerScreen',
+      title: 'Staff',
       headerLeft: () => <></>,
     },
   },

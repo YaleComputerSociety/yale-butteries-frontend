@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
-import { home } from '../../styles/HomeStyles'
+import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
 
 const NavigationScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
@@ -11,7 +11,7 @@ const NavigationScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           <View style={styles.view2}>
             <Pressable
               onPress={() => {
-                navigation.navigate('Home')
+                navigation.navigate('ButteriesScreen')
               }}
               style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
             >
@@ -21,7 +21,7 @@ const NavigationScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             </Pressable>
             <Pressable
               onPress={() => {
-                navigation.navigate('ManagerRenderScreen')
+                navigation.navigate('StaffRenderScreen')
               }}
               style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
             >

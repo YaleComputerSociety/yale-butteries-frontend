@@ -34,7 +34,6 @@ const TestingInner: FC = () => {
       ) : (
         <NavigationContainer>
           <AppContainer />
-          {/* <ManagerStack /> */}
         </NavigationContainer>
       )}
       <StatusBar style="auto" />

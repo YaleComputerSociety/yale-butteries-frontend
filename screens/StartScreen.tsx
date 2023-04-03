@@ -1,11 +1,11 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import * as React from 'react'
 import { View, Text, Pressable, Modal } from 'react-native'
-import { useAppSelector } from '../../store/TypedHooks'
-import { home } from '../../styles/HomeStyles'
+import { useAppSelector } from '../store/TypedHooks'
+import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
 import { WebView } from 'react-native-webview'
-import { baseUrl } from '../../utils/utils'
+import { baseUrl } from '../utils/utils'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
@@ -49,7 +49,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 if (managerNetIds.includes(netIdCheck)) {
                   navigation.navigate('NavigationScreen')
                 } else {
-                  navigation.navigate('Home')
+                  navigation.navigate('ButteriesScreen')
                 }
               }}
               style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
