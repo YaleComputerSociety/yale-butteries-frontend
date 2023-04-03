@@ -103,7 +103,6 @@ export const asyncUpdateMenuItem = (menuItem: MenuItem) => {
 }
 
 export const asyncAddMenuItem = (menuItem: MenuItem) => {
-  console.log('adding ' + menuItem.item, menuItem.isActive)
   return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {

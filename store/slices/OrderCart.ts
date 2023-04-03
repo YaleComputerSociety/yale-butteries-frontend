@@ -1,16 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { APIError, AppDispatch } from '../ReduxStore'
-import { Ingredient } from './Ingredients'
 import { MenuItem } from './MenuItems'
 import { TransactionHistoryEntry, addTransactionHistoryEntry } from './TransactionHistory'
 import { TransactionItem, addTransactionItem } from './TransactionItems'
 import { CurrentUserState } from './CurrentUser'
-import { TransactionItemToIngredient, addTransactionItemToIngredient } from './TransactionItemToIngredients'
 
 export interface OrderItem {
   orderItem: MenuItem
-  ingredients?: Ingredient[]
 }
 
 export interface OrderCartState {
