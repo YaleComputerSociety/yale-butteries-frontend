@@ -5,16 +5,16 @@ import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { loading } from '../styles/GlobalStyles'
 import CheckoutItem from '../components/CheckoutItem'
 import { priceToText } from '../Functions'
-// eslint-disable-next-line import/no-unresolved
-import { STRIPE_PK } from '@env'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 import { setTransactionHistoryState } from '../store/slices/TransactionHistory'
 import { removeOrderItem, OrderItem } from '../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { baseUrl } from '../utils/utils'
 
+// eslint-disable-next-line import/no-unresolved
+import { STRIPE_PK } from '@env'
+
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  // const [loading, setLoading] = useState(false)
   const {
     orderItems,
     isLoading: isLoadingOrderCart,
@@ -25,27 +25,31 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const stripe = useStripe()
 
+  const showPaymentSheet = async (name: string, amount: number) => {
+    const obj = { netid: name, price: amount }
+    const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
+      method: 'POST',
+      body: JSON.stringify(obj),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const data = await response.json()
+    if (!response.ok) return Alert.alert(data.message)
+    const clientSecret = data.paymentIntent.client_secret
+    const initSheet = await stripe.initPaymentSheet({
+      paymentIntentClientSecret: clientSecret,
+      merchantDisplayName: 'Yale Butteries',
+    })
+    if (initSheet.error) return Alert.alert(initSheet.error.message)
+    const presentSheet = await stripe.presentPaymentSheet()
+    if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+  }
+
   const makePayment = async (name: string, amount: number) => {
     try {
-      // stripe stuff
-      // const obj = { netid: name, price: amount }
-      // const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
-      //   method: 'POST',
-      //   body: JSON.stringify(obj),
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // })
-      // const data = await response.json()
-      // if (!response.ok) return Alert.alert(data.message)
-      // const clientSecret = data.paymentIntent.client_secret
-      // const initSheet = await stripe.initPaymentSheet({
-      //   paymentIntentClientSecret: clientSecret,
-      //   merchantDisplayName: 'Yale Butteries',
-      // })
-      // if (initSheet.error) return Alert.alert(initSheet.error.message)
-      // const presentSheet = await stripe.presentPaymentSheet()
-      // if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+      // comment this line out to skip the credit card entry screen
+      // await showPaymentSheet(name, amount)
 
       interface tempItem {
         itemCost: number
@@ -91,7 +95,11 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   }
 
   const removeOrder = (newItem: OrderItem) => {
-    dispatch(removeOrderItem(orderItems.find((item) => item.orderItem.id == newItem.orderItem.id)))
+    const item = orderItems.find((item) => item.orderItem.id == newItem.orderItem.id)
+    if (item === undefined) {
+      throw new TypeError("Couldn't find orderItem to delete")
+    }
+    dispatch(removeOrderItem(item))
   }
 
   return (

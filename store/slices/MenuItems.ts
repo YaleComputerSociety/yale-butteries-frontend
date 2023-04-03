@@ -3,7 +3,7 @@ import { AppDispatch } from '../../store/ReduxStore'
 import { baseUrl } from '../../utils/utils'
 
 export interface MenuItem {
-  id?: number
+  id: number
   item: string
   college: string
   price: number
