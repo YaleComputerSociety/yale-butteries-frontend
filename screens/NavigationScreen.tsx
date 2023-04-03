@@ -36,7 +36,7 @@ const NavigationScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   )
 }
 
-NavigationScreen.navigationOptions = (navData) => {
+NavigationScreen['navigationOptions'] = () => {
   return {
     gestureEnabled: false,
   }

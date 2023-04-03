@@ -1,5 +1,6 @@
-import { IOS_DEV_URL, ANDROID_DEV_URL } from '@env'
-import { Platform } from 'react-native'
+import Constants from 'expo-constants'
 
-export const baseUrl = Platform.OS == 'ios' ? IOS_DEV_URL : ANDROID_DEV_URL
-// something
+const { manifest } = Constants
+
+export const baseUrl = `http://${manifest.debuggerHost.split(':').shift()}:3000/`
+// there needs to be a comment here for some peoples' baseUrls to work. Don't ask why

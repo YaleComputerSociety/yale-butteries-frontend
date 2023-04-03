@@ -5,19 +5,14 @@ import { useAppSelector } from '../store/TypedHooks'
 import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
 import { WebView } from 'react-native-webview'
-
+// import passport from 'passport'
+// import { Strategy as CasStrategy } from 'passport-cas'
 import { baseUrl } from '../utils/utils'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
   const [modalVisible, setModalVisible] = React.useState(false)
-  const injectedJs = `
-    document.querySelector('h1').style.backgroundColor = 'red'
-  `
-  //TO-DO: Add event listener onto the react-native-webview
-  //responding to some CAS event?
-  //Depending on the result, either keep on page or redirect to nav page
-  const managerNetIds = ['app43']
+  const managerNetIds = ['awg3', 'app43']
 
   const fetchTest = async () => {
     try {
@@ -54,12 +49,12 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
             >
               <View style={styles.style2}>
-                <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>Login</Text>
+                <Text style={{ fontSize: 18, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>Login</Text>
               </View>
             </Pressable>
             <Pressable onPress={fetchTest} style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}>
               <View style={styles.style3}>
-                <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>About</Text>
+                <Text style={{ fontSize: 18, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>About</Text>
               </View>
             </Pressable>
           </View>
@@ -113,7 +108,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 10,
     margin: 5,
-    width: 180,
+    width: 200,
+    height: 45,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   style3: {
@@ -122,7 +119,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 10,
     margin: 5,
-    width: 180,
+    width: 200,
+    height: 45,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   style4: {

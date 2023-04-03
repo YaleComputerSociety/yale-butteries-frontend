@@ -4,16 +4,16 @@ import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-nati
 import { home } from '../styles/HomeStyles'
 import { TextInput } from 'react-native-gesture-handler'
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
-import { asyncFetchCurrentUser, asyncUpdateCurrentUser } from '../store/slices/CurrentUser'
+import { asyncUpdateCurrentUser } from '../store/slices/CurrentUser'
 
-const Settings: FC<{ navigation: any }> = ({ navigation }) => {
+const Settings: FC<{ navigation: any }> = () => {
   const dispatch = useAppDispatch()
-  const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
+  const { currentUser } = useAppSelector((state) => state.currentUser)
   const [newName, setNewName] = useState('')
 
   const changeName = (name: string) => {
-    if (name.length >= 2) {
-      // console.log(currentUser)
+    if (name.length >= 2 || name.length <= 16) {
+      //console.log(currentUser)
       dispatch(asyncUpdateCurrentUser(name))
     }
   }

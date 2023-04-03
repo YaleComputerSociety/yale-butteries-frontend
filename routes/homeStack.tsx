@@ -8,6 +8,7 @@ import StartScreen from '../screens/StartScreen'
 import NavigationScreen from '../screens/NavigationScreen'
 import OrderStatusScreen from '../screens/OrderStatusScreen'
 import ManagerRenderScreen from '../screens/ManagerRenderScreen'
+import React from 'react'
 
 const screens = {
   StartScreen: {

@@ -1,7 +1,8 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState, useRef } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { useAppSelector, useAppDispatch } from './store/TypedHooks'
 import { asyncFetchCurrentUser } from './store/slices/CurrentUser'
+import { asyncUpdateUser } from './store/slices/Users'
 import { Provider } from 'react-redux'
 import { home } from './styles/HomeStyles'
 import { loading } from './styles/GlobalStyles'
@@ -14,11 +15,37 @@ import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
 
+import * as Notifications from 'expo-notifications'
+import { registerForPushNotificationsAsync } from './Functions'
+
 LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
 
 const TestingInner: FC = () => {
   const dispatch = useAppDispatch()
   const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
+
+  const [notification, setNotification] = useState(false)
+  const notificationListener = useRef()
+  const responseListener = useRef()
+
+  useEffect(() => {
+    const token = registerForPushNotificationsAsync()
+    asyncUpdateUser(currentUser, token)
+
+    notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
+      setNotification(notification)
+    })
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log(response)
+    })
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current)
+      Notifications.removeNotificationSubscription(responseListener.current)
+    }
+  }, [])
+
   useEffect(() => {
     if (currentUser == null) {
       dispatch(asyncFetchCurrentUser())

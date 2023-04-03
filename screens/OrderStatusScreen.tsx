@@ -7,27 +7,25 @@ import { getNameFromTransactionId } from '../Functions'
 import ProgressBar from 'react-native-progress/Bar'
 import { baseUrl } from '../utils/utils'
 
-const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
+const OrderStatusScreen: FC<{ navigation: any }> = () => {
   const dispatch = useAppDispatch()
-  const { isLoading: isLoadingTransactionHistory, currentTransactionHistory } = useAppSelector(
-    (state) => state.transactionHistory
-  )
+  const { currentTransactionHistory } = useAppSelector((state) => state.transactionHistory)
 
+  // turn ratio of orders completed/cancelled into a percentage
   function getPercentageCompleted(transactionHistory) {
     const items = transactionHistory.transactionItems
     const denom = items.length
     let numerator = 0
     for (let i = 0; i < denom; i++) {
       const item_status = items[i].orderStatus
-      if (item_status === 'FINISHED') {
-        numerator += 1
-      } else if (item_status === 'CANCELLED') {
+      if (item_status === 'FINISHED' || item_status === 'CANCELLED') {
         numerator += 1
       }
     }
     return numerator / denom
   }
 
+  // pull from database to update status
   const fetchTransaction = async () => {
     try {
       const currentTransaction = await fetch(baseUrl + 'api/transactions/' + currentTransactionHistory.id, {
@@ -37,7 +35,6 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
         },
       })
       const response = await currentTransaction.json()
-      console.log(response)
       if (response.status == 400) throw response
       dispatch(updateTransactionHistory(response))
     } catch (e) {
@@ -45,11 +42,12 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
     }
   }
 
+  // every 5 seconds, fetchTransaction
   useEffect(() => {
+    fetchTransaction().catch(console.log)
     const interval = setInterval(() => {
       fetchTransaction().catch(console.log)
     }, 5000)
-    //updateTransactionProgress(transactionProgress + getPercentageCompleted(currentTransactionHistory))
     return () => clearInterval(interval)
   }, [])
 
@@ -60,11 +58,10 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
     } else if (progress == 'false') {
       return 'Queued'
     } else {
-      //cancelled
       return 'Cancelled'
     }
   }
-  //need to check if the items are loadinggg before render
+
   return (
     <View style={styles.style1}>
       <View style={styles.style2}>

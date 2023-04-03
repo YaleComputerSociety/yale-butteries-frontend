@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, ScrollView, Text } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { home } from '../styles/HomeStyles'
 import { Card } from '../components/Card'
 import { useAppDispatch } from '../store/TypedHooks'
@@ -155,7 +155,7 @@ const Home: React.FC<{ navigation: any }> = ({ navigation }) => {
   )
 }
 
-Home.navigationOptions = (navData) => {
+Home['navigationOptions'] = (navData) => {
   return {
     gestureEnabled: false,
     headerLeft: () => <></>,
