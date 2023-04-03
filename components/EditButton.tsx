@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 
-const EditButton = (props) => {
+interface Props {
+  size: number
+  top: number
+  right: number
+  left?: number
+  bottom?: number
+  action: (...args: any[]) => void
+}
+
+const EditButton: FC<Props> = (props: Props) => {
   return (
     <TouchableOpacity
       style={{
