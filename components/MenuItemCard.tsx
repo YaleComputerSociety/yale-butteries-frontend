@@ -12,7 +12,7 @@ interface Props {
   incUpdate: (menuItem: MenuItem) => void
 }
 
-export const ItemCard: FC<Props> = ({ menuItem, items, incUpdate }: Props) => {
+export const MenuItemCard: FC<Props> = ({ menuItem, items, incUpdate }: Props) => {
   function getNumberOfMenuItemInCart(items) {
     let count = 0
     for (let i = 0; i < items.length; i++) {

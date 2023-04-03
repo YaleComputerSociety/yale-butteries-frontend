@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { View, ScrollView } from 'react-native'
 import { home } from '../styles/HomeStyles'
-import { Card } from '../components/Card'
+import { ButteryCard } from '../components/ButteryCard'
 import { useAppDispatch } from '../store/TypedHooks'
 import { setCollege } from '../store/slices/OrderCart'
 import { asyncFetchUsers } from '../store/slices/Users'
@@ -54,7 +54,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     }
 
     return (
-      <Card
+      <ButteryCard
         onPress={() => toMenu(navigationName)}
         college={collegeInfo.name}
         openTime={collegeInfo.start}

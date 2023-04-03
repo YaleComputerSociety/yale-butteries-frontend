@@ -4,7 +4,7 @@ import { View, ScrollView, ActivityIndicator, Text, Pressable } from 'react-nati
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { asyncFetchMenuItems, MenuItem } from '../store/slices/MenuItems'
 import { addOrderItem, OrderItem, resetOrderCartState } from '../store/slices/OrderCart'
-import { ItemCard } from '../components/ItemCard'
+import { MenuItemCard } from '../components/MenuItemCard'
 import { home } from '../styles/HomeStyles'
 import { menu } from '../styles/MenuStyles'
 import { loading } from '../styles/GlobalStyles'
@@ -76,7 +76,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
                   return menuItem.college === collegeOrderCart && menuItem.isActive === true
                 })
                 .map((menuItem) => (
-                  <ItemCard incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} items={orderItems} />
+                  <MenuItemCard incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} items={orderItems} />
                 ))}
             </View>
           </ScrollView>

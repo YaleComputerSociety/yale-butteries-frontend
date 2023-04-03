@@ -12,7 +12,7 @@ interface butteryProps {
   onPress: () => void
 }
 
-export const Card: FC<butteryProps> = (props: butteryProps) => {
+export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   const [isOpen, setIsOpen] = useState(true)
   const [openTimeHours, setOpenTimeHours] = useState(0)
   const [closeTimeHours, setCloseTimeHours] = useState(0)
@@ -101,7 +101,6 @@ export const Card: FC<butteryProps> = (props: butteryProps) => {
           <View
             style={{
               flexDirection: 'row',
-              //backgroundColor: 'black',
             }}
           >
             <Text style={card.cardText1}>{props.college}</Text>
@@ -136,7 +135,7 @@ export const Card: FC<butteryProps> = (props: butteryProps) => {
   )
 }
 
-Card.defaultProps = {
+ButteryCard.defaultProps = {
   college: 'Placeholder',
   //image: require('../assets/images/butteryIconPlaceholder.jpg'),
   offsetY: 0,

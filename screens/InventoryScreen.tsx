@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
 import { asyncFetchMenuItems } from '../store/slices/MenuItems'
-import ItemTag from '../components/ItemTag'
+import InventoryItemCard from '../components/staff/InventoryItemCard'
 import { COLORS } from '../constants/Colors'
 import { TEXTS } from '../constants/Texts'
 import { LAYOUTS } from '../constants/Layouts'
@@ -61,30 +61,15 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
   return (
     <View style={{ ...styles.container }}>
       {menuItems == null || isLoadingMenuItems ? (
-        <ScrollView
-          style={{ ...styles.scrollView }}
-          //contentContainerStyle={{alignItems: 'flex-start', justifyContent: 'stretch'}}>
-        >
+        <ScrollView style={{ ...styles.scrollView }}>
           <Text style={{ ...styles.title }}>Loading menu</Text>
           <ActivityIndicator style={styles.loader} size="large" />
         </ScrollView>
       ) : (
         <ScrollView style={{ ...styles.scrollView }}>
           {localMenu.map((item, i) => {
-            return <ItemTag key={i} item={item} />
+            return <InventoryItemCard key={i} item={item} />
           })}
-          {/* {itemTypes.map((el, index) => {
-            return (
-              <View key={index}>
-                <Text style={{ ...styles.title }}>{el}</Text>
-                {localMenu.map((item, i) => {
-                  if (item.foodType == el) {
-                    return <ItemTag key={i} item={item} />
-                  }
-                })}
-              </View>
-            )
-          })} */}
           <View style={styles.buttonHolder}>
             <TouchableOpacity
               style={{ ...styles.button, marginBottom: LAYOUTS.getWidth(30) }}

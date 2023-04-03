@@ -1,19 +1,19 @@
 import React, { FC, useState } from 'react'
 import { Switch, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { useAppDispatch } from '../store/TypedHooks'
+import { useAppDispatch } from '../../store/TypedHooks'
 
-import { LAYOUTS } from '../constants/Layouts'
-import { MenuItem, asyncUpdateMenuItem, updateMenuItem } from '../store/slices/MenuItems'
+import { LAYOUTS } from '../../constants/Layouts'
+import { MenuItem, asyncUpdateMenuItem, updateMenuItem } from '../../store/slices/MenuItems'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
-import { priceToText } from '../Functions'
+import { priceToText } from '../../Functions'
 
 interface Props {
   item: MenuItem
 }
 
-const ItemTag: FC<Props> = (props: Props) => {
+const InventoryItemCard: FC<Props> = (props: Props) => {
   const dispatch = useAppDispatch()
   const navigation = useNavigation<NativeStackNavigationProp<any>>()
 
@@ -87,4 +87,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ItemTag
+export default InventoryItemCard
