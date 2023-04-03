@@ -1,42 +1,18 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import * as React from 'react'
 import { View, Text, Pressable, Modal } from 'react-native'
-import { useAppSelector } from '../store/TypedHooks'
-import { home } from '../styles/HomeStyles'
+import { useAppSelector } from '../../store/TypedHooks'
+import { home } from '../../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
 import { WebView } from 'react-native-webview'
-// import passport from 'passport'
-// import { Strategy as CasStrategy } from 'passport-cas'
-import { baseUrl } from '../utils/utils'
+import { baseUrl } from '../../utils/utils'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
-  // const CasStrategy = require('passport')
-  // passport.use(
-  //   new CasStrategy(
-  //     {
-  //       casURL: 'https://secure.its.yale.edu/cas/login',
-  //     },
-  //     function (username, profile, done) {
-  //       console.log(done)
-  //     }
-  //   )
-  // )
-  // //This is the `verify` callback
-  // const response = await fetch(baseUrl + 'payments/paymentIntent', {
-  //       method: 'POST',
-  //       body: JSON.stringify(obj),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     })
   const [modalVisible, setModalVisible] = React.useState(false)
   const injectedJs = `
     document.querySelector('h1').style.backgroundColor = 'red'
   `
-  //TO-DO: Add event listener onto the react-native-webview
-  //responding to some CAS event?
-  //Depending on the result, either keep on page or redirect to nav page
   const managerNetIds = ['awg32']
 
   const fetchTest = async () => {
@@ -70,8 +46,6 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             <Pressable
               onPress={() => {
                 const netIdCheck = currentUser.netid
-                //setModalVisible(true)
-                //console.log(modalVisible)
                 if (managerNetIds.includes(netIdCheck)) {
                   navigation.navigate('NavigationScreen')
                 } else {

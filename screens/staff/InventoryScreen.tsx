@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
-import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
-import { asyncFetchMenuItems } from '../store/slices/MenuItems'
-import InventoryItemCard from '../components/staff/InventoryItemCard'
-import { COLORS } from '../constants/Colors'
-import { TEXTS } from '../constants/Texts'
-import { LAYOUTS } from '../constants/Layouts'
+import { useAppSelector, useAppDispatch } from '../../store/TypedHooks'
+import { asyncFetchMenuItems } from '../../store/slices/MenuItems'
+import InventoryItemCard from '../../components/staff/InventoryItemCard'
+import { COLORS } from '../../constants/Colors'
+import { TEXTS } from '../../constants/Texts'
+import { LAYOUTS } from '../../constants/Layouts'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
 import { useIsFocused } from '@react-navigation/native'
@@ -20,7 +20,6 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
   const [localMenu, setLocalMenu] = useState([])
-  const [itemTypes, setItemTypes] = useState([])
 
   useEffect(() => {
     const temp = async () => {
@@ -29,9 +28,6 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
       }
     }
     temp()
-    // if (menuItems) {
-    //   console.log(menuItems.map((element) => element.item + ' ' + element.price))
-    // }
   }, [isLoadingMenuItems, isFocused])
 
   useEffect(() => {
@@ -42,21 +38,7 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
           .sort((a, b) => a.item.localeCompare(b.item))
       )
     }
-    // if (menuItems) {
-    //   console.log(menuItems.map((element) => element.item + ' ' + element.price))
-    // }
   }, [menuItems])
-
-  // useEffect(() => {
-  //   const buffer = []
-  //   for (let i = 0; i < localMenu.length; i++) {
-  //     if (!buffer.includes(localMenu[i].foodType)) {
-  //       buffer.push(localMenu[i].foodType)
-  //     }
-  //   }
-  //   setItemTypes(buffer)
-  //   buffer.sort()
-  // }, [localMenu])
 
   return (
     <View style={{ ...styles.container }}>
@@ -99,7 +81,6 @@ const styles = StyleSheet.create({
     marginBottom: LAYOUTS.getWidth(8),
     color: COLORS.black,
     fontWeight: '500',
-    //fontFamily: 'HindSiliguri',
   },
   title2: {
     fontSize: TEXTS.adjust(30),
@@ -107,20 +88,17 @@ const styles = StyleSheet.create({
     marginTop: LAYOUTS.getWidth(8),
     color: COLORS.black,
     fontWeight: '500',
-    //fontFamily: 'HindSiliguri',
   },
   scrollView: {
     paddingTop: LAYOUTS.getWidth(10),
     paddingHorizontal: LAYOUTS.getWidth(10),
     backgroundColor: COLORS.offWhite,
     flex: 1,
-    //borderWidth: 1
   },
   loader: {
     marginTop: LAYOUTS.getWidth(100),
   },
   tag: {
-    //borderWidth: 3,
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',

@@ -1,12 +1,12 @@
 import { AntDesign } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import OrdersScreen from '../screens/OrdersScreen'
-import InventoryScreen from '../screens/InventoryScreen'
-import StripeScreen from '../screens/StripeScreen'
+import OrdersScreen from '../screens/staff/OrdersScreen'
+import InventoryScreen from '../screens/staff/InventoryScreen'
+import StripeScreen from '../screens/staff/StripeScreen'
 import React from 'react'
 
-import EditItemScreen from '../screens/EditItemScreen'
-import CreateItemScreen from '../screens/CreateItemScreen'
+import EditItemScreen from '../screens/staff/EditItemScreen'
+import CreateItemScreen from '../screens/staff/CreateItemScreen'
 import { createStackNavigator } from '@react-navigation/stack'
 
 type InventoryParamList = {

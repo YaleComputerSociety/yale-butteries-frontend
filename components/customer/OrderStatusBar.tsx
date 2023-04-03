@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { orderStatusBarSty } from '../styles/OrderStatusStyles'
+import { orderStatusBarSty } from '../../styles/OrderStatusStyles'
 
 export const OrderStatusBar: React.FC = ({ orderStatus }: any) => {
   function orderStatusBarStyle(orderStatus: any, barNum: any) {

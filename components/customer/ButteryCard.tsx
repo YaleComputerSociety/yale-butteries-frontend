@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FC } from 'react'
 import { View, Text, Pressable } from 'react-native'
-import { card, home } from '../styles/HomeStyles'
+import { card, home } from '../../styles/HomeStyles'
 import SpriteSheet from 'rn-sprite-sheet'
 
 interface butteryProps {
@@ -121,7 +121,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
           <Text style={card.cardText2}>{cleanTime()}</Text>
         </View>
         <SpriteSheet
-          source={require('../assets/college_icon_sprite_sheet.png')}
+          source={require('../../assets/college_icon_sprite_sheet.png')}
           columns={1}
           rows={14}
           width={100}

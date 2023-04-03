@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native'
-import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
+import { useAppSelector, useAppDispatch } from '../../store/TypedHooks'
 
-import { COLORS } from '../constants/Colors'
-import { TEXTS } from '../constants/Texts'
-import { LAYOUTS } from '../constants/Layouts'
+import { COLORS } from '../../constants/Colors'
+import { TEXTS } from '../../constants/Texts'
+import { LAYOUTS } from '../../constants/Layouts'
 
-import OrderCard from '../components/staff/OrderCard'
-import { asyncFetchTransactionHistories } from '../store/slices/TransactionHistory'
-import { setTransactionItemsState, TransactionItem } from '../store/slices/TransactionItems'
-import store from '../store/ReduxStore'
+import OrderCard from '../../components/staff/OrderCard'
+import { asyncFetchTransactionHistories } from '../../store/slices/TransactionHistory'
+import { setTransactionItemsState, TransactionItem } from '../../store/slices/TransactionItems'
+import store from '../../store/ReduxStore'
 import { useIsFocused } from '@react-navigation/native'
 
 let counter = 0

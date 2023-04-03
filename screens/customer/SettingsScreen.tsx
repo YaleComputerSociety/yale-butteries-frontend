@@ -1,10 +1,10 @@
 //import * as React from 'react'
 import React, { FC, useState } from 'react'
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native'
-import { home } from '../styles/HomeStyles'
+import { home } from '../../styles/HomeStyles'
 import { TextInput } from 'react-native-gesture-handler'
-import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
-import { asyncUpdateCurrentUser } from '../store/slices/CurrentUser'
+import { useAppSelector, useAppDispatch } from '../../store/TypedHooks'
+import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
 
 const Settings: FC<{ navigation: any }> = () => {
   const dispatch = useAppDispatch()
@@ -13,7 +13,6 @@ const Settings: FC<{ navigation: any }> = () => {
 
   const changeName = (name: string) => {
     if (name.length >= 2 || name.length <= 16) {
-      //console.log(currentUser)
       dispatch(asyncUpdateCurrentUser(name))
     }
   }

@@ -3,9 +3,9 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import React from 'react'
 import * as Haptics from 'expo-haptics'
 import { View, Text, Pressable } from 'react-native'
-import { priceToText } from '../Functions'
-import { checkout } from '../styles/CheckoutStyles'
-import { MenuItem } from '../store/slices/MenuItems'
+import { priceToText } from '../../Functions'
+import { checkout } from '../../styles/CheckoutStyles'
+import { MenuItem } from '../../store/slices/MenuItems'
 
 interface Props {
   decUpdate: (menuItem: MenuItem) => void

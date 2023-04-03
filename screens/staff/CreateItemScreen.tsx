@@ -1,54 +1,54 @@
 import React, { useState } from 'react'
 import { Alert, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native'
-import { useAppDispatch } from '../store/TypedHooks'
-import { asyncUpdateMenuItem, deleteMenuItem } from '../store/slices/MenuItems'
-import EditButton from '../components/staff/EditButton'
+import { useAppDispatch, useAppSelector } from '../../store/TypedHooks'
+import { asyncAddMenuItem, MenuItem } from '../../store/slices/MenuItems'
+import EditButton from '../../components/staff/EditButton'
 import { useNavigation } from '@react-navigation/native'
 
-import { FUNCTIONS } from '../constants/Functions'
-import { TEXTS } from '../constants/Texts'
-import { LAYOUTS } from '../constants/Layouts'
+import { FUNCTIONS } from '../../constants/Functions'
+import { TEXTS } from '../../constants/Texts'
+import { LAYOUTS } from '../../constants/Layouts'
 
-const EditItemScreen: React.FC = (props: any) => {
+const CreateItemScreen: React.FC = () => {
   const navigation = useNavigation()
-  props = props.route.params.data
   const dispatch = useAppDispatch()
 
-  const [item, setItem] = useState(props.item)
+  const [item, setItem] = useState('Enter name')
   const [doEditItem, setDoEditItem] = useState(false)
 
-  const [price, setPrice] = useState(props.price)
+  const [price, setPrice] = useState(0)
   const [doEditPrice, setDoEditPrice] = useState(false)
 
-  const handleEditItem = async (text) => {
+  const { currentUser } = useAppSelector((state) => state.currentUser)
+
+  const handleEditItem = (text) => {
     setItem(text)
     setDoEditItem(false)
-    dispatch(asyncUpdateMenuItem({ ...props, item: text }))
   }
 
-  const handleEditPrice = async (text) => {
+  const handleEditPrice = (text) => {
     const parsed_text = Number(text.replace(/[^0-9]/g, ''))
     setPrice(parsed_text)
     setDoEditPrice(false)
-    dispatch(asyncUpdateMenuItem({ ...props, price: parsed_text }))
   }
 
-  const handleDelete = () => {
-    Alert.alert('Warning', 'Are you sure you want to delete this product? This can not be undone', [
-      {
-        text: 'Delete',
-        onPress: () => {
-          dispatch(deleteMenuItem(props))
-          navigation.goBack()
-        },
-      },
-      {
-        text: 'Cancel',
-        onPress: () => {
-          console.log('Delete canceled')
-        },
-      },
-    ])
+  const handleCreate = async () => {
+    if (!currentUser) {
+      throw new Error('currentUser not found')
+    }
+    if (item != 'Enter name' && price > 0) {
+      const buffer: MenuItem = {
+        item: item,
+        college: currentUser.college,
+        price: price,
+        isActive: true,
+        foodType: 'food',
+      }
+      dispatch(asyncAddMenuItem(buffer))
+      navigation.goBack()
+    } else {
+      Alert.alert("Please fill in the item's information.")
+    }
   }
 
   const getEditItemVisual = () => {
@@ -124,15 +124,13 @@ const EditItemScreen: React.FC = (props: any) => {
           <Text style={styles.labelText}>Item:</Text>
           {getEditItemVisual()}
         </View>
-
         <View style={styles.tag}>
           <Text style={styles.labelText}>Price:</Text>
           {getEditPriceVisual()}
         </View>
-
         <View style={styles.buttonHolder}>
-          <TouchableOpacity style={{ ...styles.button, marginBottom: LAYOUTS.getWidth(30) }} onPress={handleDelete}>
-            <Text style={{ ...styles.buttonText }}>Delete item</Text>
+          <TouchableOpacity style={{ ...styles.button, marginBottom: LAYOUTS.getWidth(30) }} onPress={handleCreate}>
+            <Text style={{ ...styles.buttonText }}>Submit item</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -140,7 +138,7 @@ const EditItemScreen: React.FC = (props: any) => {
   )
 }
 
-export default EditItemScreen
+export default CreateItemScreen
 
 const styles = StyleSheet.create({
   button: {
@@ -280,7 +278,6 @@ const styles = StyleSheet.create({
     marginTop: LAYOUTS.getWidth(10),
   },
   addCategory: {
-    //borderWidth: 2,
     marginLeft: LAYOUTS.getWidth(40),
     marginRight: LAYOUTS.getWidth(30),
     alignItems: 'center',
