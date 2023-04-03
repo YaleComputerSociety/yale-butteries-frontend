@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Alert, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native'
 import { useAppDispatch } from '../store/TypedHooks'
-import { asyncUpdateMenuItem, deleteMenuItem, updateMenuItem } from '../store/slices/MenuItems'
+import { asyncUpdateMenuItem, deleteMenuItem } from '../store/slices/MenuItems'
 import EditButton from '../components/EditButton'
 import { useNavigation } from '@react-navigation/native'
 
@@ -20,9 +20,6 @@ const EditItemScreen: React.FC = (props: any) => {
   const [price, setPrice] = useState(props.price)
   const [doEditPrice, setDoEditPrice] = useState(false)
 
-  const [foodType, setFoodType] = useState(props.foodType)
-  const [doEditFoodType, setDoEditFoodType] = useState(false)
-
   const handleEditItem = async (text) => {
     setItem(text)
     setDoEditItem(false)
@@ -35,12 +32,6 @@ const EditItemScreen: React.FC = (props: any) => {
     setDoEditPrice(false)
     dispatch(asyncUpdateMenuItem({ ...props, price: parsed_text }))
   }
-
-  // const handleEditFoodType = async (text) => {
-  //   setFoodType(text)
-  //   setDoEditFoodType(false)
-  //   dispatch(asyncUpdateMenuItem({ ...props, foodType: text }))
-  // }
 
   const handleDelete = () => {
     Alert.alert('Warning', 'Are you sure you want to delete this product? This can not be undone', [
@@ -60,98 +51,84 @@ const EditItemScreen: React.FC = (props: any) => {
     ])
   }
 
+  const getEditItemVisual = () => {
+    if (doEditItem) {
+      return (
+        <TextInput
+          multiline={false}
+          style={styles.inputTitleSingle}
+          autoCorrect={false}
+          autoFocus={true}
+          onBlur={() => setDoEditItem(false)}
+          onSubmitEditing={(event) => {
+            handleEditItem(event.nativeEvent.text)
+          }}
+        />
+      )
+    } else {
+      return (
+        <View style={styles.inputContainer}>
+          <View style={styles.inputString}>
+            <Text style={styles.titleText}>{item}</Text>
+          </View>
+          <EditButton
+            size={LAYOUTS.getWidth(18)}
+            top={LAYOUTS.getWidth(-3.5)}
+            right={LAYOUTS.getWidth(8)}
+            action={() => {
+              setDoEditItem(true)
+            }}
+          />
+        </View>
+      )
+    }
+  }
+
+  const getEditPriceVisual = () => {
+    if (doEditPrice) {
+      return (
+        <TextInput
+          multiline={false}
+          style={styles.inputTitleSingle}
+          autoCorrect={false}
+          autoFocus={true}
+          onBlur={() => setDoEditPrice(false)}
+          onSubmitEditing={(event) => {
+            handleEditPrice(event.nativeEvent.text)
+          }}
+        />
+      )
+    } else {
+      return (
+        <View style={styles.inputContainer}>
+          <View style={styles.inputString}>
+            <Text style={styles.titleText}>{FUNCTIONS.priceFormat(price)}</Text>
+          </View>
+          <EditButton
+            size={LAYOUTS.getWidth(18)}
+            top={LAYOUTS.getWidth(-3.5)}
+            right={LAYOUTS.getWidth(8)}
+            action={() => {
+              setDoEditPrice(true)
+            }}
+          />
+        </View>
+      )
+    }
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.tag}>
           <Text style={styles.labelText}>Item:</Text>
-          {doEditItem ? (
-            <TextInput
-              multiline={false}
-              style={styles.inputTitleSingle}
-              autoCorrect={false}
-              autoFocus={true}
-              onBlur={() => setDoEditItem(false)}
-              onSubmitEditing={(event) => {
-                handleEditItem(event.nativeEvent.text)
-              }}
-            />
-          ) : (
-            <View style={styles.inputContainer}>
-              <View style={styles.inputString}>
-                <Text style={styles.titleText}>{item}</Text>
-              </View>
-              <EditButton
-                size={LAYOUTS.getWidth(18)}
-                top={LAYOUTS.getWidth(-3.5)}
-                right={LAYOUTS.getWidth(8)}
-                action={() => {
-                  setDoEditItem(true)
-                }}
-              />
-            </View>
-          )}
+          {getEditItemVisual()}
         </View>
 
         <View style={styles.tag}>
           <Text style={styles.labelText}>Price:</Text>
-          {doEditPrice ? (
-            <TextInput
-              multiline={false}
-              style={styles.inputTitleSingle}
-              autoCorrect={false}
-              autoFocus={true}
-              onBlur={() => setDoEditPrice(false)}
-              onSubmitEditing={(event) => {
-                handleEditPrice(event.nativeEvent.text)
-              }}
-            />
-          ) : (
-            <View style={styles.inputContainer}>
-              <View style={styles.inputString}>
-                <Text style={styles.titleText}>{FUNCTIONS.priceFormat(price)}</Text>
-              </View>
-              <EditButton
-                size={LAYOUTS.getWidth(18)}
-                top={LAYOUTS.getWidth(-3.5)}
-                right={LAYOUTS.getWidth(8)}
-                action={() => {
-                  setDoEditPrice(true)
-                }}
-              />
-            </View>
-          )}
+          {getEditPriceVisual()}
         </View>
-
-        {/* <View style={styles.tag}>
-          <Text style={styles.labelText}>Food type:</Text>
-          {doEditFoodType ? (
-            <TextInput
-              multiline={false}
-              style={styles.inputTitleSingle}
-              autoCorrect={false}
-              autoFocus={true}
-              onBlur={() => setDoEditFoodType(false)}
-              onSubmitEditing={(event) => {
-                handleEditFoodType(event.nativeEvent.text)
-              }}
-            />
-          ) : (
-            <View style={styles.inputContainer}>
-              <View style={styles.inputString}>
-                <Text style={styles.titleText}>{foodType}</Text>
-              </View>
-              <EditButton
-                size={LAYOUTS.getWidth(18)}
-                top={LAYOUTS.getWidth(-3.5)}
-                right={LAYOUTS.getWidth(8)}
-                action={() => {
-                  setDoEditFoodType(true)
-                }}
-              />
-            </View>
-          )}
-        </View> */}
 
         <View style={styles.buttonHolder}>
           <TouchableOpacity style={{ ...styles.button, marginBottom: LAYOUTS.getWidth(30) }} onPress={handleDelete}>
