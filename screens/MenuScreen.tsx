@@ -13,7 +13,7 @@ import * as Haptics from 'expo-haptics'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
 
-const butteryScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
+const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
   navigation,
 }) => {
   //make a function that gets the price from the items in the cart
@@ -133,7 +133,7 @@ const butteryScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string 
   )
 }
 
-butteryScreen['navigationOptions'] = (navData) => {
+MenuScreen['navigationOptions'] = (navData) => {
   const collegeName = navData.navigation.getParam('collegeName')
   return {
     headerStyle: {
@@ -157,4 +157,4 @@ butteryScreen['navigationOptions'] = (navData) => {
   }
 }
 
-export default butteryScreen
+export default MenuScreen

@@ -1,7 +1,7 @@
 import { createStackNavigator } from 'react-navigation-stack'
 import { createAppContainer } from 'react-navigation'
-import Home from '../screens/HomeScreen'
-import ButteryScreen from '../screens/MenuScreen'
+import ButterySelectionScreen from '../screens/ButterySelectionScreen'
+import MenuScreen from '../screens/MenuScreen'
 import CheckoutScreen from '../screens/CheckoutScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import StartScreen from '../screens/StartScreen'
@@ -24,7 +24,7 @@ const screens = {
     },
   },
   Home: {
-    screen: Home,
+    screen: ButterySelectionScreen,
     navigationOptions: {
       title: 'Butteries',
     },
@@ -35,8 +35,8 @@ const screens = {
       title: 'Settings',
     },
   },
-  ButteryScreen: {
-    screen: ButteryScreen,
+  MenuScreen: {
+    screen: MenuScreen,
     navigationOptions: {
       title: 'Menu',
     },
@@ -67,7 +67,7 @@ const screens = {
   },
 }
 
-const HomeStack = createStackNavigator(screens, {
+const MainStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerStyle: {
       backgroundColor: '#28a67e',
@@ -76,17 +76,12 @@ const HomeStack = createStackNavigator(screens, {
       shadowOpacity: 0.2,
       shadowRadius: 10,
     },
-    //cardOverlayEnabled: true,
     headerTitleStyle: { fontFamily: 'HindSiliguri-Bold', fontSize: 20, paddingBottom: 10 },
     headerTintColor: '#FFF',
     headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bold', color: '#FFF', fontSize: 18 },
   },
 })
 
-const AppContainer = createAppContainer(HomeStack)
+const AppContainer = createAppContainer(MainStack)
 
 export default AppContainer
-
-//ok basically what I need to do is just combine both stacks into the app container, and then when
-//you click one of the buttons on the navigation screen, you get redirected (using the containers
-//nav functions) to one of the screens
