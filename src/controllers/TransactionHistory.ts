@@ -171,7 +171,6 @@ export async function getTransactionHistory(req: Request, res: Response): Promis
     const college = await getCollegeFromId(transactionHistory.collegeId)
     const user = await getUserFromId(transactionHistory.userId)
     const transactionItems = await backToFrontTransactionItems(transactionHistory)
-    console.log(transactionItems)
 
     const ret = {
       id: transactionHistory.id,
@@ -181,7 +180,6 @@ export async function getTransactionHistory(req: Request, res: Response): Promis
       netId: user.netid,
       transactionItems: transactionItems,
     }
-    console.log(ret)
 
     res.send(JSON.stringify(ret))
   } catch (e) {
@@ -269,6 +267,29 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
   }
 }
 
+export async function updateTransactionHistoryInner(req: any): Promise<TransactionHistory> {
+  console.log('nnnnnnn', req.body)
+  try {
+    const transactionHistory = await prisma.transactionHistory.update({
+      where: {
+        id: req.body.id,
+      },
+      data: {
+        order_complete: req.body.order_complete || undefined,
+        order_placed: req.body.order_placed || undefined,
+        queue_size_on_complete: req.body.queue_size_on_complete || undefined,
+        queue_size_on_placement: req.body.queue_size_on_placement || undefined,
+        in_progress: req.body.in_progress || undefined,
+        total_price: req.body.total_price || undefined,
+        charged_price: req.body.charged_price || undefined,
+      },
+    })
+    return transactionHistory
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 export async function updateTransactionHistory(req: Request, res: Response): Promise<void> {
   try {
     const transactionHistory = await prisma.transactionHistory.update({
@@ -282,6 +303,7 @@ export async function updateTransactionHistory(req: Request, res: Response): Pro
         queue_size_on_placement: req.body.queue_size_on_placement || undefined,
         in_progress: req.body.in_progress || undefined,
         total_price: req.body.total_price || undefined,
+        charged_price: req.body.charged_price || undefined,
       },
     })
     res.send(JSON.stringify(transactionHistory))
@@ -292,7 +314,6 @@ export async function updateTransactionHistory(req: Request, res: Response): Pro
 
 export async function updateTransactionItem(req: Request, res: Response): Promise<void> {
   try {
-    console.log(req.body)
     const transactionItem = await prisma.transactionItem.update({
       where: {
         id: req.body.id,

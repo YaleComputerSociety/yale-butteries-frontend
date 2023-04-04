@@ -94,7 +94,6 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
       isActive: req.body.isActive,
       foodType: req.body.foodType,
     }
-    console.log('asdofiajsdf', newItem)
 
     const college = await getCollegeFromName(newItem.college)
 
@@ -111,7 +110,6 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
         },
       },
     })
-    console.log(newMenuItem)
     res.send(JSON.stringify(newMenuItem.id))
   } catch (e) {
     res.status(400).send(e)
@@ -120,7 +118,6 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
 
 export async function updateMenuItem(req: Request, res: Response): Promise<void> {
   try {
-    console.log(req.body.isActive)
     const targetMenuItem = await prisma.menuItem.update({
       where: {
         id: req.body.id,
@@ -138,7 +135,6 @@ export async function updateMenuItem(req: Request, res: Response): Promise<void>
         id: req.body.id,
       },
     })
-    console.log(mi)
     res.send(JSON.stringify(targetMenuItem))
   } catch (e) {
     res.status(400).send(e)
