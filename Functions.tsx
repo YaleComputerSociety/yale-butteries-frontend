@@ -93,27 +93,6 @@ export function returnCollegeName(collegeName: string): string[] {
 
 // PUSH NOTIFS
 
-// Can use this function below OR use Expo's Push Notification Tool from: https://expo.dev/notifications
-export async function sendPushNotification(expoPushToken): Promise<void> {
-  const completedMessage = {
-    to: expoPushToken,
-    sound: 'default',
-    title: 'Order Complete',
-    body: 'Your buttery order has been completed!' + '😁'.codePointAt(0),
-    data: { someData: 'goes here' },
-  }
-
-  await fetch('https://exp.host/--/api/v2/push/send', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Accept-encoding': 'gzip, deflate',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(completedMessage),
-  })
-}
-
 export async function registerForPushNotificationsAsync(): Promise<any> {
   let token
   if (Device.isDevice) {
@@ -134,7 +113,6 @@ export async function registerForPushNotificationsAsync(): Promise<any> {
   }
 
   if (Platform.OS === 'android') {
-    //FOR ANDROID >:(
     Notifications.setNotificationChannelAsync('default', {
       name: 'default',
       importance: Notifications.AndroidImportance.MAX,
