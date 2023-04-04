@@ -1,9 +1,21 @@
-import { MenuItemToIngredients, PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import { Request, Response } from 'express'
+import { getCollegeFromName } from './TransactionHistory'
 
 const prisma = new PrismaClient()
 
-export async function getAllMenuItems(_req: Request, res: Response): Promise<void> {
+interface FrontMenuItem {
+  id?: number
+  item: string
+  college: string
+  price: number
+  description?: string
+  limitedTime?: boolean
+  isActive: boolean
+  foodType: 'FOOD' | 'DRINK' | 'DESSERT'
+}
+
+export async function getAllMenuItems(_: Request, res: Response): Promise<void> {
   try {
     const menuItems = await prisma.menuItem.findMany({
       include: {
@@ -75,41 +87,32 @@ export async function getMenuItem(req: Request, res: Response): Promise<void> {
 
 export async function createMenuItem(req: Request, res: Response): Promise<void> {
   try {
-    const {
-      item,
-      price,
-      limited_time,
-      is_active,
-      college_id,
-      ingredients,
-    }: {
-      item: string
-      price: number
-      limited_time: boolean
-      is_active: boolean
-      college_id: number
-      ingredients: MenuItemToIngredients[]
-    } = req.body
+    const newItem: FrontMenuItem = {
+      item: req.body.item,
+      college: req.body.college,
+      price: req.body.price,
+      isActive: req.body.isActive,
+      foodType: req.body.foodType,
+    }
+    console.log('asdofiajsdf', newItem)
+
+    const college = await getCollegeFromName(newItem.college)
 
     const newMenuItem = await prisma.menuItem.create({
       data: {
-        item: item,
-        price: price,
-        limited_time: limited_time,
-        is_active: is_active,
-        ingredients: {
-          createMany: {
-            data: ingredients,
-          },
-        },
+        item: newItem.item,
+        price: newItem.price,
+        is_active: newItem.isActive,
+        item_type: 'FOOD',
         college: {
           connect: {
-            id: college_id,
+            id: college.id,
           },
         },
       },
     })
-    res.send(JSON.stringify(newMenuItem))
+    console.log(newMenuItem)
+    res.send(JSON.stringify(newMenuItem.id))
   } catch (e) {
     res.status(400).send(e)
   }
@@ -117,21 +120,27 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
 
 export async function updateMenuItem(req: Request, res: Response): Promise<void> {
   try {
+    console.log(req.body.isActive)
     const targetMenuItem = await prisma.menuItem.update({
       where: {
         id: req.body.id,
       },
       data: {
-        item: req.body.item || undefined,
-        price: req.body.price || undefined,
+        item: req.body.item,
+        price: req.body.price,
+        is_active: req.body.isActive,
+        // description: req.body.description || undefined,
       },
     })
+
+    const mi = await prisma.menuItem.findFirst({
+      where: {
+        id: req.body.id,
+      },
+    })
+    console.log(mi)
     res.send(JSON.stringify(targetMenuItem))
   } catch (e) {
     res.status(400).send(e)
   }
 }
-
-// Everything in the db needs to be seeded
-// STUDENT STAFF Buttery Staff
-// Get requests, insert update

@@ -3,7 +3,6 @@ services:
   app:
     build: .
     command: bash -c "yarn run start"
-    # yarn run start-dev <- frontend
     container_name: yale_college_hub
     depends_on:
       - db
@@ -17,9 +16,8 @@ services:
   db:
     image: postgres
     container_name: yale-college-hub-db
-    environment:
-      - POSTGRES_USER=yale_college_hub
-      - POSTGRES_PASSWORD=l0c4ldb10(!)
+    env_file:
+      - .env.local
     volumes:
       - .:/app
       - dbvolume:/var/lib/postgresql/data
