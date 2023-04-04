@@ -15,7 +15,6 @@ import * as Notifications from 'expo-notifications'
 // eslint-disable-next-line import/no-unresolved
 import { STRIPE_PK } from '@env'
 
-
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const {
     orderItems,
@@ -27,7 +26,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const stripe = useStripe()
 
-  const showPaymentSheet = async (name: string, amount: number) => {
+  const showPaymentSheet = async (name: string, amount: number): Promise<any> => {
     const obj = { netid: name, price: amount }
     const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
       method: 'POST',
@@ -46,12 +45,13 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     if (initSheet.error) return Alert.alert(initSheet.error.message)
     const presentSheet = await stripe.presentPaymentSheet()
     if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+    return data.paymentIntent
   }
 
   const makePayment = async (name: string, amount: number) => {
     try {
       // comment this line out to skip the credit card entry screen
-      // await showPaymentSheet(name, amount)
+      const paymentIntent = await showPaymentSheet(name, amount)
 
       interface tempItem {
         itemCost: number
@@ -79,7 +79,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           price: price,
           netId: name,
           college: collegeOrderCart,
-          paymentIntentId: 'a',
+          paymentIntentId: paymentIntent.id,
           transactionItems: transaction_items,
         }),
         headers: {
