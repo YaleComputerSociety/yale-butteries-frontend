@@ -1,7 +1,11 @@
 import { PrismaClient, TransactionItem, TransactionHistory } from '@prisma/client'
 import { Request, Response } from 'express'
 import { Expo } from 'expo-server-sdk'
-import { updateTransactionHistory, updateTransactionHistoryInner } from './TransactionHistory'
+import { updateTransactionHistoryInner } from './TransactionHistory'
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Stripe = require('stripe')
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 
 enum Status {
   Incomplete,
@@ -32,16 +36,33 @@ const getTransactionHistoryFromId = async (
   return res
 }
 
-const checkItems = (items: TransactionItem[]) => {
+const getPaymentIntentIdFromId = async (id: number): Promise<string> => {
+  const res = await prisma.transactionHistory.findUnique({
+    where: {
+      id: id,
+    },
+  })
+  return res.payment_intent_id
+}
+
+const checkItems = (items: TransactionItem[]): number => {
   if (items.every((i) => i.order_status === 'CANCELLED')) {
     console.log('Order Cancelled :(')
     orderStatus = Status.Cancelled
   } else if (items.every((i) => i.order_status === 'CANCELLED' || i.order_status === 'FINISHED')) {
     console.log('order complete, sending notification!')
     orderStatus = Status.Complete
+    let res = 0
+    items.forEach((i) => {
+      if (i.order_status === 'FINISHED') {
+        res += i.item_cost
+      }
+    })
+    return res
   } else {
     console.log('waiting on order...')
   }
+  return 0
 }
 async function getItems(id: string) {
   return (await getTransactionHistoryFromId(parseInt(id))).transaction_items
@@ -97,8 +118,10 @@ export async function subscribePushNotifications(req: Request, res: Response): P
       data: { withSome: 'data' },
     }
 
-    const interval = setInterval(() => {
-      getItems(req.body.transactionId).then((items) => checkItems(items))
+    const interval = setInterval(async () => {
+      const items = await getItems(req.body.transactionId)
+      const price = checkItems(items)
+
       if (orderStatus === Status.Complete) {
         clearInterval(interval)
         sendNotification(token, messageComplete)
@@ -107,9 +130,14 @@ export async function subscribePushNotifications(req: Request, res: Response): P
             id: req.body.transactionId,
             order_complete: new Date(),
             in_progress: 'false',
-            charged_price: 100,
+            charged_price: price,
           },
         })
+        const pii = await getPaymentIntentIdFromId(req.body.transactionId)
+        const paymentIntent = await stripe.paymentIntents.capture(pii, {
+          amount_to_capture: price,
+        })
+        console.log(paymentIntent)
       } else if (orderStatus === Status.Cancelled) {
         clearInterval(interval)
         sendNotification(token, messageCancelled)
@@ -121,6 +149,7 @@ export async function subscribePushNotifications(req: Request, res: Response): P
             charged_price: 0,
           },
         })
+        stripe.paymentIntents.cancel(await getPaymentIntentIdFromId(req.body.transactionId))
       }
     }, 5000)
     console.log('sent')
