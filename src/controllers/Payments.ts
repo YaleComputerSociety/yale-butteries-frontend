@@ -1,12 +1,13 @@
 import { Request, Response } from 'express'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const Stripe = require('stripe')
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
+import Stripe from 'stripe'
 
 export interface TypedRequestBody<T> extends Request {
   body: T
 }
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: '2020-08-27',
+})
 
 export async function createPaymentIntent(req: Request, res: Response): Promise<void> {
   try {
@@ -24,7 +25,6 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
     const customerQuery = await stripe.customers.search({
       query: "metadata['netid']:'" + req.body.netid + "'",
     })
-    // console.log(customerQuery.data[0]?.id)
 
     if (!customerQuery.data[0]?.id) {
       res.status(403).json({
@@ -61,7 +61,7 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
       amount: price,
       currency: 'USD',
       customer: customer.id,
-      // setup_future_usage: 'off_session',     for card saving
+      // setup_future_usage: 'off_session', for card saving
       payment_method_types: ['card'], // delayed capturing doesn't work for everything and we can get into legal trouble, let's stick with cards (credit & debit) for now
       capture_method: 'manual', // don't charge the user right now, but we'll need to save the paymentIntent's id to charge later
     })
