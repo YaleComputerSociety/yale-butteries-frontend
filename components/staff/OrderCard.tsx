@@ -10,6 +10,7 @@ import OrderCardBackground from './OrderCardBackground'
 
 import { useAppDispatch } from '../../store/TypedHooks'
 import { asyncUpdateTransactionItem, TransactionItem, updateTransactionItem } from '../../store/slices/TransactionItems'
+import { cleanTime } from '../../Functions'
 
 interface Props {
   item: TransactionItem
@@ -24,8 +25,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable }: Props) => {
   const dispatch = useAppDispatch()
 
   const slideIndex = [0, 1, 2, 3, 4]
-  const orderDate = new Date(item.creationTime)
-  const orderTime = (orderDate.getHours() % 12) + ':' + orderDate.getMinutes()
+  const orderTime = cleanTime(new Date(item.creationTime))
 
   const [orderStatus, setOrderStatus] = useState(item.orderStatus)
   const [tagActive, setTagActive] = useState(-1)
