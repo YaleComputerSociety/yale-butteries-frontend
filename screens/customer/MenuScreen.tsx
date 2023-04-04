@@ -122,7 +122,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
                 },
               ]}
               onPress={() => {
-                navigation.navigate('CheckoutScreen')
+                navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
               }}
             >

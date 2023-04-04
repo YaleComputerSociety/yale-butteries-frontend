@@ -51,11 +51,9 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
     const interval = setInterval(() => {
       fetchTransaction().catch(console.log)
       if (percentage == 1) {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
         clearInterval(interval)
       }
     }, 5000)
-    return () => clearInterval(interval)
   }, [])
 
   const status = () => {

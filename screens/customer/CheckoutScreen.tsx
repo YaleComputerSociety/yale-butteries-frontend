@@ -4,7 +4,7 @@ import { checkout } from '../../styles/CheckoutStyles'
 import { useAppSelector, useAppDispatch } from '../../store/TypedHooks'
 import { loading } from '../../styles/GlobalStyles'
 import CheckoutItem from '../../components/customer/CheckoutItem'
-import { priceToText } from '../../Functions'
+import { priceToText, returnCollegeName } from '../../Functions'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
 import { removeOrderItem, OrderItem } from '../../store/slices/OrderCart'
@@ -166,7 +166,14 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 }
 
 CheckoutScreen['navigationOptions'] = (navData) => {
+  const collegeName = navData.navigation.getParam('collegeName')
   return {
+    headerStyle: {
+      backgroundColor: returnCollegeName(collegeName)[1],
+      borderWidth: 0,
+      shadowColor: '#111',
+      shadowRadius: 200,
+    },
     headerRight: () => (
       <Ionicon
         name="settings-sharp"
