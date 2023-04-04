@@ -12,7 +12,7 @@ import { baseUrl } from '../utils/utils'
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
   const [modalVisible, setModalVisible] = React.useState(false)
-  const managerNetIds = ['awg3', 'app43']
+  const managerNetIds = ['awg32', 'app43']
 
   const fetchTest = async () => {
     try {
