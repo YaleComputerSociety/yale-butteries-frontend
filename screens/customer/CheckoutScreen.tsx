@@ -10,11 +10,11 @@ import { setTransactionHistoryState } from '../../store/slices/TransactionHistor
 import { removeOrderItem, OrderItem } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { baseUrl } from '../../utils/utils'
+import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
 
 // eslint-disable-next-line import/no-unresolved
 import { STRIPE_PK } from '@env'
-
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const {
@@ -107,6 +107,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       const subscribeNotificationResponse = await subscribeNotification.json()
       console.log(subscribeNotificationResponse)
       navigation.navigate('OrderStatusScreen')
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch (err) {
       console.error(err)
       Alert.alert('Something went wrong, try again later!')
