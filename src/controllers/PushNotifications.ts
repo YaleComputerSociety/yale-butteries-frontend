@@ -28,20 +28,14 @@ const getTransactionHistoryFromId = async (
 const checkItems = (items: TransactionItem[]) => {
   let complete = true
   for (let i = 0; i <= items.length - 1; i++) {
-    console.log(i)
-    console.log(items[i].order_status)
-    if (items[i].order_status == 'CANCELLED' || items[i].order_status == 'FINISHED') {
-      console.log('done!')
-    } else {
+    if (items[i].order_status != 'CANCELLED' || items[i].order_status != 'FINISHED') {
       complete = false
     }
   }
   if (complete == true) {
     orderCompleted = true
-    console.log('order complete, sending notification!')
   } else {
     orderCompleted = false
-    console.log('waiting on order...')
   }
 }
 async function getItems(id: string) {
