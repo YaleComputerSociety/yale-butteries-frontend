@@ -1,26 +1,19 @@
 import { AntDesign } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import OrdersScreen from '../screens/OrdersScreen'
-import InventoryScreen from '../screens/InventoryScreen'
-import StripeScreen from '../screens/StripeScreen'
+import OrdersScreen from '../screens/staff/OrdersScreen'
+import InventoryScreen from '../screens/staff/InventoryScreen'
+import StripeScreen from '../screens/staff/StripeScreen'
 import React from 'react'
 
-import EditItemScreen from '../screens/EditItemScreen'
-import CreateItemScreen from '../screens/CreateItemScreen'
+import EditItemScreen from '../screens/staff/EditItemScreen'
+import CreateItemScreen from '../screens/staff/CreateItemScreen'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import { InventoryParamList } from '../types'
-
-// const Tab = createBottomTabNavigator();
-
-// function MyTabs() {
-//   return (
-//     <Tab.Navigator>
-//       <Tab.Screen name="Home" component={HomeScreen} />
-//       <Tab.Screen name="Settings" component={SettingsScreen} />
-//     </Tab.Navigator>
-//   );
-// }Khi/y7epyMIpKL35of2e956ocZC6o7v70Y2+s0A7nzc
+type InventoryParamList = {
+  InventoryScreen: undefined
+  EditItem: undefined
+  CreateItem: undefined
+}
 
 const Tab = createBottomTabNavigator()
 const InventoryStack = createStackNavigator<InventoryParamList>()
@@ -29,7 +22,7 @@ function AntDesignBarIcon(props: { name: React.ComponentProps<typeof AntDesign>[
   return <AntDesign size={28} style={{ marginBottom: -3 }} {...props} />
 }
 
-function ManagerStack() {
+const StaffStack: React.FC = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -57,25 +50,7 @@ function ManagerStack() {
   )
 }
 
-// const screens = {
-//   OrderScreen: {
-//     screen: OrdersScreen,
-//     navigationOptions: {
-//       title : 'Orders',
-//     }
-//   },
-// }
-
-// const ManagerStack = createStackNavigator(screens, {
-//   defaultNavigationOptions: {
-//     headerStyle: { backgroundColor : '#00b2db'},
-//     headerTitleStyle: { fontFamily : 'HindSiliguri-Bolder' , fontSize: 20},
-//     headerTintColor: '#FFF',
-//     headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bolder' , color: '#FFF', fontSize: 20},
-//   }
-// });
-
-function InventoryNavigator() {
+const InventoryNavigator = () => {
   return (
     <InventoryStack.Navigator>
       <InventoryStack.Screen name="InventoryScreen" component={InventoryScreen} options={{ headerShown: false }} />
@@ -85,4 +60,4 @@ function InventoryNavigator() {
   )
 }
 
-export default ManagerStack
+export default StaffStack

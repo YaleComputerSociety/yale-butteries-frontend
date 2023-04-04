@@ -21,6 +21,14 @@ export function getNameFromTransactionId(transactionItem: TransactionItem): stri
   return menuItems.find((element) => element.id == transactionItem.menuItemId).item
 }
 
+export function cleanTime(inputDate: Date): string {
+  const hours = inputDate.getHours() % 12 == 0 ? 12 : inputDate.getHours() % 12
+  const minutes = inputDate.getMinutes() < 10 ? '0' + inputDate.getMinutes() : inputDate.getMinutes()
+  const meridiem = inputDate.getHours() < 12 ? 'AM' : 'PM'
+  const orderTime = hours + ':' + minutes + ' ' + meridiem
+  return orderTime
+}
+
 export function returnCollegeName(collegeName: string): string[] {
   let name = ''
   let headercolor = ''

@@ -1,10 +1,10 @@
 import React, { FC, useState, useEffect } from 'react'
 import { View, Text, Pressable } from 'react-native'
-import { item } from '../styles/MenuStyles'
-import { priceToText } from '../Functions'
-import { MenuItem } from '../store/slices/MenuItems'
+import { item } from '../../styles/MenuStyles'
+import { priceToText } from '../../Functions'
+import { MenuItem } from '../../store/slices/MenuItems'
 import * as Haptics from 'expo-haptics'
-import { OrderItem } from '../store/slices/OrderCart'
+import { OrderItem } from '../../store/slices/OrderCart'
 
 interface Props {
   menuItem: MenuItem
@@ -12,7 +12,7 @@ interface Props {
   incUpdate: (menuItem: MenuItem) => void
 }
 
-export const ItemCard: FC<Props> = ({ menuItem, items, incUpdate }: Props) => {
+export const MenuItemCard: FC<Props> = ({ menuItem, items, incUpdate }: Props) => {
   function getNumberOfMenuItemInCart(items) {
     let count = 0
     for (let i = 0; i < items.length; i++) {

@@ -1,11 +1,11 @@
 import React, { FC, useEffect } from 'react'
 import { View, ScrollView, Text, StyleSheet } from 'react-native'
-import StatusItem from '../components/StatusCard'
-import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
-import { updateTransactionHistory } from '../store/slices/TransactionHistory'
-import { getNameFromTransactionId } from '../Functions'
+import StatusItem from '../../components/customer/StatusCard'
+import { useAppDispatch, useAppSelector } from '../../store/TypedHooks'
+import { updateTransactionHistory } from '../../store/slices/TransactionHistory'
+import { getNameFromTransactionId } from '../../Functions'
 import ProgressBar from 'react-native-progress/Bar'
-import { baseUrl } from '../utils/utils'
+import { baseUrl } from '../../utils/utils'
 
 const OrderStatusScreen: FC<{ navigation: any }> = () => {
   const dispatch = useAppDispatch()

@@ -1,13 +1,13 @@
 import { createStackNavigator } from 'react-navigation-stack'
 import { createAppContainer } from 'react-navigation'
-import Home from '../screens/HomeScreen'
-import ButteryScreen from '../screens/MenuScreen'
-import CheckoutScreen from '../screens/CheckoutScreen'
-import SettingsScreen from '../screens/SettingsScreen'
+import ButterySelectionScreen from '../screens/customer/ButteriesScreen'
+import MenuScreen from '../screens/customer/MenuScreen'
+import CheckoutScreen from '../screens/customer/CheckoutScreen'
+import SettingsScreen from '../screens/customer/SettingsScreen'
 import StartScreen from '../screens/StartScreen'
 import NavigationScreen from '../screens/NavigationScreen'
-import OrderStatusScreen from '../screens/OrderStatusScreen'
-import ManagerRenderScreen from '../screens/ManagerRenderScreen'
+import OrderStatusScreen from '../screens/customer/OrderStatusScreen'
+import StaffRenderScreen from '../screens/staff/StaffRenderScreen'
 import React from 'react'
 
 const screens = {
@@ -23,8 +23,8 @@ const screens = {
       headerShown: false,
     },
   },
-  Home: {
-    screen: Home,
+  ButteriesScreen: {
+    screen: ButterySelectionScreen,
     navigationOptions: {
       title: 'Butteries',
     },
@@ -35,8 +35,8 @@ const screens = {
       title: 'Settings',
     },
   },
-  ButteryScreen: {
-    screen: ButteryScreen,
+  MenuScreen: {
+    screen: MenuScreen,
     navigationOptions: {
       title: 'Menu',
     },
@@ -52,22 +52,22 @@ const screens = {
     navigationOptions: {
       headerShown: false,
       gestureEnabled: false,
-      title: 'StatusScreen',
+      title: 'Status',
       headerLeft: () => <></>,
     },
   },
-  ManagerRenderScreen: {
-    screen: ManagerRenderScreen,
+  StaffRenderScreen: {
+    screen: StaffRenderScreen,
     navigationOptions: {
       headerShown: false,
       gestureEnabled: false,
-      title: 'ManagerScreen',
+      title: 'Staff',
       headerLeft: () => <></>,
     },
   },
 }
 
-const HomeStack = createStackNavigator(screens, {
+const MainStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerStyle: {
       backgroundColor: '#28a67e',
@@ -76,17 +76,12 @@ const HomeStack = createStackNavigator(screens, {
       shadowOpacity: 0.2,
       shadowRadius: 10,
     },
-    //cardOverlayEnabled: true,
     headerTitleStyle: { fontFamily: 'HindSiliguri-Bold', fontSize: 20, paddingBottom: 10 },
     headerTintColor: '#FFF',
     headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bold', color: '#FFF', fontSize: 18 },
   },
 })
 
-const AppContainer = createAppContainer(HomeStack)
+const AppContainer = createAppContainer(MainStack)
 
 export default AppContainer
-
-//ok basically what I need to do is just combine both stacks into the app container, and then when
-//you click one of the buttons on the navigation screen, you get redirected (using the containers
-//nav functions) to one of the screens

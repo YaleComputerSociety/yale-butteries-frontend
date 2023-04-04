@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, View, StyleSheet } from 'react-native'
 
-import { COLORS } from '../constants/Colors'
-import { TEXTS } from '../constants/Texts'
-import { LAYOUTS } from '../constants/Layouts'
+import { COLORS } from '../../constants/Colors'
+import { TEXTS } from '../../constants/Texts'
+import { LAYOUTS } from '../../constants/Layouts'
 import { ScrollView } from 'react-native-gesture-handler'
 
-import OrderTagPage from './OrderTagPage'
+import OrderCardBackground from './OrderCardBackground'
 
-import { useAppDispatch } from '../store/TypedHooks'
-import { asyncUpdateTransactionItem, TransactionItem, updateTransactionItem } from '../store/slices/TransactionItems'
+import { useAppDispatch } from '../../store/TypedHooks'
+import { asyncUpdateTransactionItem, TransactionItem, updateTransactionItem } from '../../store/slices/TransactionItems'
+import { cleanTime } from '../../Functions'
 
 interface Props {
   item: TransactionItem
@@ -20,12 +21,11 @@ interface Props {
 type Status = 'CANCELLED' | 'PENDING' | 'IN_PROGRESS' | 'FINISHED' | 'PICKED_UP'
 const statuses: Status[] = ['CANCELLED', 'PENDING', 'IN_PROGRESS', 'FINISHED', 'PICKED_UP']
 
-const OrderTag: React.FC<Props> = ({ item, interactable }: Props) => {
+const OrderCard: React.FC<Props> = ({ item, interactable }: Props) => {
   const dispatch = useAppDispatch()
 
   const slideIndex = [0, 1, 2, 3, 4]
-  const orderDate = new Date(item.creationTime)
-  const orderTime = (orderDate.getHours() % 12) + ':' + orderDate.getMinutes()
+  const orderTime = cleanTime(new Date(item.creationTime))
 
   const [orderStatus, setOrderStatus] = useState(item.orderStatus)
   const [tagActive, setTagActive] = useState(-1)
@@ -161,11 +161,13 @@ const OrderTag: React.FC<Props> = ({ item, interactable }: Props) => {
           contentOffset={{ x: startingIndex * LAYOUTS.getWidth(355), y: 0 }}
         >
           {slideIndex.map((index) => {
-            return <OrderTagPage status={index} orderItem={item} key={index} started={isStarted} time={orderTime} />
+            return (
+              <OrderCardBackground status={index} orderItem={item} key={index} started={isStarted} time={orderTime} />
+            )
           })}
         </ScrollView>
       ) : (
-        <OrderTagPage status={startingIndex} orderItem={item} started={isStarted} time={orderTime} />
+        <OrderCardBackground status={startingIndex} orderItem={item} started={isStarted} time={orderTime} />
       )}
     </View>
   )
@@ -225,4 +227,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default OrderTag
+export default OrderCard

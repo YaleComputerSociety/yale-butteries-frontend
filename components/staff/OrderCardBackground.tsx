@@ -1,10 +1,10 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-import { COLORS } from '../constants/Colors'
-import { TEXTS } from '../constants/Texts'
-import { LAYOUTS } from '../constants/Layouts'
-import { TransactionItem } from '../store/slices/TransactionItems'
+import { COLORS } from '../../constants/Colors'
+import { TEXTS } from '../../constants/Texts'
+import { LAYOUTS } from '../../constants/Layouts'
+import { TransactionItem } from '../../store/slices/TransactionItems'
 
 interface Props {
   status: number
@@ -13,7 +13,7 @@ interface Props {
   started?: boolean
 }
 
-const OrderTagPage: React.FC<Props> = ({ status, orderItem, started, time }: Props) => {
+const OrderCardBackground: React.FC<Props> = ({ status, orderItem, time }: Props) => {
   const getColor = (status: number): string => {
     switch (status) {
       case 0:
@@ -108,4 +108,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default OrderTagPage
+export default OrderCardBackground
