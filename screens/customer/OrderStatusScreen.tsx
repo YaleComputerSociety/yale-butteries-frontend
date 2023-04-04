@@ -6,6 +6,7 @@ import { updateTransactionHistory } from '../../store/slices/TransactionHistory'
 import { getNameFromTransactionId } from '../../Functions'
 import ProgressBar from 'react-native-progress/Bar'
 import { baseUrl } from '../../utils/utils'
+import * as Haptics from 'expo-haptics'
 
 const OrderStatusScreen: FC<{ navigation: any }> = () => {
   const dispatch = useAppDispatch()
@@ -18,11 +19,12 @@ const OrderStatusScreen: FC<{ navigation: any }> = () => {
     let numerator = 0
     for (let i = 0; i < denom; i++) {
       const item_status = items[i].orderStatus
-      if (item_status === 'FINISHED' || item_status === 'CANCELLED') {
+      if (item_status == 'FINISHED' || item_status == 'CANCELLED') {
         numerator += 1
       }
     }
-    return numerator / denom
+    const fraction = numerator / denom
+    return fraction
   }
 
   // pull from database to update status
@@ -47,6 +49,11 @@ const OrderStatusScreen: FC<{ navigation: any }> = () => {
     fetchTransaction().catch(console.log)
     const interval = setInterval(() => {
       fetchTransaction().catch(console.log)
+      const percentage = getPercentageCompleted(currentTransactionHistory)
+      if (percentage == 1) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+        clearInterval(interval)
+      }
     }, 5000)
     return () => clearInterval(interval)
   }, [])

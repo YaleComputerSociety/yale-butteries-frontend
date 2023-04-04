@@ -57,9 +57,10 @@ export const asyncFetchUsers = () => {
   }
 }
 
-export const asyncUpdateUser = (user: User) => {
+export const asyncUpdateUser = (user: User, pushToken?: string) => {
   return async (dispatch: AppDispatch): Promise<void> => {
     try {
+      const pt = pushToken
       // Spread operator is typescript hack.
       // See: https://stackoverflow.com/questions/60697214/how-to-fix-index-signature-is-missing-in-type-error
       // const updatedUser = await putJSON('/api/users', { ...user })

@@ -10,9 +10,11 @@ import { setTransactionHistoryState } from '../../store/slices/TransactionHistor
 import { removeOrderItem, OrderItem } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { baseUrl } from '../../utils/utils'
+import * as Notifications from 'expo-notifications'
 
 // eslint-disable-next-line import/no-unresolved
 import { STRIPE_PK } from '@env'
+
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const {
@@ -90,6 +92,20 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       Alert.alert('Payment complete, thank you!')
 
+      //send push notification
+      const token = (await Notifications.getExpoPushTokenAsync()).data
+      const subscribeNotification = await fetch(baseUrl + 'api/notifs', {
+        method: 'POST',
+        body: JSON.stringify({
+          transactionId: uploadTransactionResponse.id,
+          pushToken: token,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const subscribeNotificationResponse = await subscribeNotification.json()
+      console.log(subscribeNotificationResponse)
       navigation.navigate('OrderStatusScreen')
     } catch (err) {
       console.error(err)

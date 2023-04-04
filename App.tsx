@@ -14,14 +14,18 @@ import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
 
+import { registerForPushNotificationsAsync } from './Functions'
+
 LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
 
 const TestingInner: FC = () => {
   const dispatch = useAppDispatch()
   const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
+
   useEffect(() => {
     if (currentUser == null) {
       dispatch(asyncFetchCurrentUser())
+      registerForPushNotificationsAsync()
     }
   }, [currentUser])
 

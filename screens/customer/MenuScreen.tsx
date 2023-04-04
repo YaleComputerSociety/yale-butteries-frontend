@@ -105,20 +105,22 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
           <View style={{ position: 'absolute', bottom: 0, alignSelf: 'flex-end' }}>
             <Pressable
               disabled={orderItems.length < 1 ? true : false}
-              style={{
-                opacity: orderItems.length < 1 ? 0.7 : 1,
-                backgroundColor: '#32CD32',
-                width: 160,
-                height: 60,
-                bottom: 0,
-                borderRadius: 25,
-                shadowColor: '#000',
-                shadowOpacity: 0.3,
-                shadowRadius: 20,
-                margin: 30,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+              style={({ pressed }) => [
+                {
+                  opacity: orderItems.length < 1 ? 0.7 : 1,
+                  backgroundColor: pressed ? '#32ba32' : '#32CD32',
+                  width: 160,
+                  height: 60,
+                  bottom: 0,
+                  borderRadius: 25,
+                  shadowColor: '#000',
+                  shadowOpacity: 0.3,
+                  shadowRadius: 20,
+                  margin: 30,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                },
+              ]}
               onPress={() => {
                 navigation.navigate('CheckoutScreen')
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
