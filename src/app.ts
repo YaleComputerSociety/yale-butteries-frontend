@@ -10,6 +10,7 @@ import ratingRouter from './routes/RatingApi'
 import userRouter from './routes/UserApi'
 import transactionRouter from './routes/TransactionHistoryApi'
 import paymentRouter from './routes/PaymentApi'
+import notifsRouter from './routes/PushNotificationsApi'
 
 const app: Application = express()
 
@@ -40,6 +41,7 @@ app.use('/api/ratings', ratingRouter)
 app.use('/api/transactions', transactionRouter)
 app.use('/api/users', userRouter)
 app.use('/api/payments', paymentRouter)
+app.use('/api/notifs', notifsRouter)
 
 app.use(express.static(static_root))
 

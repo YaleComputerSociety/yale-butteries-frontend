@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 
 const prisma = new PrismaClient()
 
-export async function getAllMenuItems(_: Request, res: Response): Promise<void> {
+export async function getAllMenuItems(_req: Request, res: Response): Promise<void> {
   try {
     const menuItems = await prisma.menuItem.findMany({
       include: {

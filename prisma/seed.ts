@@ -164,9 +164,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      netid: 'khy6',
-      email: 'kelvin.yip@yale.edu',
-      name: 'Killvin',
+      netid: 'app43',
+      email: 'aidan.palmer@yale.edu',
+      name: 'Aidan',
       college: {
         connect: { id: 1 },
       },
