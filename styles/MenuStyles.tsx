@@ -106,7 +106,7 @@ export const item = StyleSheet.create({
     fontFamily: 'HindSiliguri-Bold',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 15,
+    fontSize: 16,
     textAlignVertical: 'center',
   },
 

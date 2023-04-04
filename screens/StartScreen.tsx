@@ -1,15 +1,18 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import * as React from 'react'
-import { StyleSheet, View, Text, Pressable, Modal } from 'react-native'
-import { useAppSelector } from '../store/TypedHooks'
+import { StyleSheet, View, Text, Pressable, Modal, TextInput } from 'react-native'
+import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
 import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
-import { WebView } from 'react-native-webview'
 import { baseUrl } from '../utils/utils'
+import { setCurrentUserState } from '../store/slices/CurrentUser'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
+  const dispatch = useAppDispatch()
+
   const [modalVisible, setModalVisible] = React.useState(false)
+  const [newText, setText] = React.useState('')
   const managerNetIds = ['awg32', 'app43']
 
   const fetchTest = async () => {
@@ -23,17 +26,40 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
   }
 
+  const onSubmit = () => {
+    const nextUserId = 1
+    const newUser = {
+      id: nextUserId,
+      netid: 'dummyId',
+      name: newText,
+      college: 'morse',
+    }
+
+    dispatch(setCurrentUserState(newUser))
+    //navigation.navigate('ButteriesScreen')
+  }
+
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
         <View style={home.outerContainer}>
           <View style={styles.style1}>
             <View>
-              <Text style={{ fontSize: 30, color: '#fff', marginBottom: 15, fontFamily: 'HindSiliguri-Bolder' }}>
+              <Text style={{ fontSize: 38, color: '#fff', marginBottom: 15, fontFamily: 'HindSiliguri-Bolder' }}>
                 Yale<Text style={{ color: '#344a61' }}>Butteries</Text>
               </Text>
             </View>
-            <Pressable
+            <TextInput
+              style={styles.input}
+              // onChangeText={onChangeNumber}
+              // value={number}
+              placeholder="Name"
+              clearTextOnFocus={true}
+              placeholderTextColor="black"
+              onSubmitEditing={onSubmit}
+              onChangeText={(newText) => setText(newText)}
+            />
+            {/* <Pressable
               onPress={() => {
                 const netIdCheck = currentUser.netid
                 if (managerNetIds.includes(netIdCheck)) {
@@ -52,7 +78,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               <View style={styles.style3}>
                 <Text style={{ fontSize: 18, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>About</Text>
               </View>
-            </Pressable>
+            </Pressable> */}
           </View>
           <Modal
             animationType="slide"
@@ -141,6 +167,14 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#222',
+    padding: 10,
   },
 })
 

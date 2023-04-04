@@ -107,7 +107,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
               disabled={orderItems.length < 1 ? true : false}
               style={({ pressed }) => [
                 {
-                  opacity: orderItems.length < 1 ? 0.7 : 1,
+                  opacity: orderItems.length < 1 ? 0.6 : 1,
                   backgroundColor: pressed ? '#32ba32' : '#32CD32',
                   width: 160,
                   height: 60,
@@ -122,7 +122,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
                 },
               ]}
               onPress={() => {
-                navigation.navigate('CheckoutScreen')
+                navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
               }}
             >

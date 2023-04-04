@@ -70,7 +70,7 @@ const screens = {
 const MainStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: '#4c68fa',
+      backgroundColor: '#2ebf91',
       borderWidth: 0,
       shadowColor: '#222',
       shadowOpacity: 0.2,

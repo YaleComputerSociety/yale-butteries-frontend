@@ -1,13 +1,14 @@
 import React, { FC, useEffect } from 'react'
-import { View, ScrollView, Text, StyleSheet } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, Pressable } from 'react-native'
 import StatusItem from '../../components/customer/StatusCard'
 import { useAppDispatch, useAppSelector } from '../../store/TypedHooks'
 import { updateTransactionHistory } from '../../store/slices/TransactionHistory'
 import { getNameFromTransactionId } from '../../Functions'
 import ProgressBar from 'react-native-progress/Bar'
 import { baseUrl } from '../../utils/utils'
+import * as Haptics from 'expo-haptics'
 
-const OrderStatusScreen: FC<{ navigation: any }> = () => {
+const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const { currentTransactionHistory } = useAppSelector((state) => state.transactionHistory)
 
@@ -18,11 +19,12 @@ const OrderStatusScreen: FC<{ navigation: any }> = () => {
     let numerator = 0
     for (let i = 0; i < denom; i++) {
       const item_status = items[i].orderStatus
-      if (item_status === 'FINISHED' || item_status === 'CANCELLED') {
+      if (item_status == 'FINISHED' || item_status == 'CANCELLED') {
         numerator += 1
       }
     }
-    return numerator / denom
+    const fraction = numerator / denom
+    return fraction
   }
 
   // pull from database to update status
@@ -42,13 +44,16 @@ const OrderStatusScreen: FC<{ navigation: any }> = () => {
     }
   }
 
+  const percentage = getPercentageCompleted(currentTransactionHistory)
   // every 5 seconds, fetchTransaction
   useEffect(() => {
     fetchTransaction().catch(console.log)
     const interval = setInterval(() => {
       fetchTransaction().catch(console.log)
+      if (percentage == 1) {
+        clearInterval(interval)
+      }
     }, 5000)
-    return () => clearInterval(interval)
   }, [])
 
   const status = () => {
@@ -91,6 +96,19 @@ const OrderStatusScreen: FC<{ navigation: any }> = () => {
           borderWidth={0}
           unfilledColor={'#333'}
         />
+        <Pressable
+          disabled={percentage == 1 ? false : true}
+          style={({ pressed }) => [
+            { backgroundColor: pressed ? '#32ba32' : '#32CD32', opacity: percentage == 1 ? 1 : 0.6 },
+            styles.button,
+          ]}
+          onPress={() => {
+            navigation.navigate('ButteriesScreen')
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+          }}
+        >
+          <Text style={styles.buttonText}>Return Home</Text>
+        </Pressable>
       </View>
     </View>
   )
@@ -108,7 +126,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   text1: {
-    fontSize: 21,
+    fontSize: 20,
     color: 'white',
     fontFamily: 'HindSiliguri',
     alignSelf: 'center',
@@ -130,5 +148,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: '100%',
     width: '100%',
+  },
+  button: {
+    width: '100%',
+    backgroundColor: '#1eb71e',
+    marginTop: 25,
+    height: 50,
+    justifyContent: 'center',
+    borderRadius: 8,
+  },
+  buttonText: {
+    alignSelf: 'center',
+    fontSize: 20,
+    fontFamily: 'HindSiliguri-Bold',
+    color: '#fff',
   },
 })

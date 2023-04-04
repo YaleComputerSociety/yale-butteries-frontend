@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import * as Haptics from 'expo-haptics'
 
 interface Props {
   name: string
@@ -19,7 +18,6 @@ const StatusItem: FC<Props> = ({ name, status }: Props) => {
           </View>
         )
       case 'CANCELLED':
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
         return (
           <View style={styles.cancelledView}>
             <Ionicon name="close-circle" size={23} color="white" />
@@ -34,7 +32,6 @@ const StatusItem: FC<Props> = ({ name, status }: Props) => {
           </View>
         )
       case 'FINISHED':
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
         return (
           <View style={styles.successView}>
             <Ionicon name="checkmark-circle" size={23} color="white" />
