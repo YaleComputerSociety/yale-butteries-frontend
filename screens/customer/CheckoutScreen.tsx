@@ -28,6 +28,8 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const stripe = useStripe()
 
   const showPaymentSheet = async (name: string, amount: number): Promise<any> => {
+    // return { id: 'temp' } // uncomment this line out to skip the credit card entry screen
+
     const obj = { netid: name, price: amount }
     const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
       method: 'POST',
@@ -51,7 +53,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const makePayment = async (name: string, amount: number) => {
     try {
-      // comment this line out to skip the credit card entry screen
       const paymentIntent = await showPaymentSheet(name, amount)
 
       interface tempItem {
