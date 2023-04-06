@@ -10,7 +10,7 @@ import store from './store/ReduxStore'
 import AppLoading from 'expo-app-loading'
 import Navigator from './routes/homeStack'
 // import * as SplashScreen from 'expo-splash-screen'
-
+import * as LocalStorage from '../LocalStorage'
 import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
 

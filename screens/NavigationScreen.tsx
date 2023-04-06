@@ -40,7 +40,11 @@ const NavigationScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 <Text style={{ color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>Customer</Text>
               </View>
             </Pressable>
-            <Pressable style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}>
+            <Pressable  onPress={() =>
+            {
+              navigation.navigate("StaffLogin")
+            }}
+            style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}>
               <View
                 style={{
                   backgroundColor: '#344a61',

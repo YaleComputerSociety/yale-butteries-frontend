@@ -8,9 +8,16 @@ import StartScreen from '../screens/StartScreen'
 import NavigationScreen from '../screens/NavigationScreen'
 import OrderStatusScreen from '../screens/OrderStatusScreen'
 import StaffLoginScreen from '../screens/StaffLoginScreen'
+import LoadScreen from '../screens/LoadScreen'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
 const screens = {
+  LoadScreen: {
+    screen: LoadScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
   StartScreen: {
     screen: StartScreen,
     navigationOptions: {

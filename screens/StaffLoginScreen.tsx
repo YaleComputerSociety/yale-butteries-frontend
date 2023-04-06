@@ -2,9 +2,8 @@ import React, {useEffect, FC, useState } from 'react'
 import {View, Text, TextInput, Pressable} from 'react-native'
 import { staffLogin } from '../styles/StaffLoginStyles'
 import { LinearGradient } from 'expo-linear-gradient'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as LocalStorage from '../LocalStorage'
 //import {STAFF_USER, STAFF_PASS} from '@env'
-
 
 const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [username, setUser] = useState('')
@@ -29,6 +28,10 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         <Pressable 
               onPress={() => {
                 if (checkInfo()) {
+                  var info = [['username', username], 
+                              ['permissions', 'staff'], 
+                              ['id', JSON.stringify(4)]]
+                  LocalStorage.storeUserInfo(info)
                   navigation.navigate('Home')
                 } else {
                   {setErrorMessage("Password and/or Username is Incorrect. Please Try Again")}
