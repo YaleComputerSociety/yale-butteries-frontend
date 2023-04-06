@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 export const home = StyleSheet.create({
   app: {
     flex: 1,
-    backgroundColor: '#2ebf91',
+    backgroundColor: '#54ade4',
   },
 
   nameText: {

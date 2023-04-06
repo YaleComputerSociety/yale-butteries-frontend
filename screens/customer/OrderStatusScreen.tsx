@@ -61,9 +61,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
     if (progress == 'true') {
       return 'In Progress'
     } else if (progress == 'false') {
-      return 'Queued'
-    } else {
-      return 'Cancelled'
+      return 'Done'
     }
   }
 

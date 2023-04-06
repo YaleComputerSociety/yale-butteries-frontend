@@ -35,8 +35,8 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       college: 'morse',
     }
 
-    dispatch(setCurrentUserState(newUser))
-    //navigation.navigate('ButteriesScreen')
+    //dispatch(setCurrentUserState(newUser))
+    navigation.navigate('NavigationScreen')
   }
 
   return (
@@ -59,7 +59,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               onSubmitEditing={onSubmit}
               onChangeText={(newText) => setText(newText)}
             />
-            <Pressable
+            {/* <Pressable
               onPress={() => {
                 const netIdCheck = currentUser.netid
                 if (managerNetIds.includes(netIdCheck)) {
@@ -78,7 +78,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               <View style={styles.style3}>
                 <Text style={{ fontSize: 18, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>About</Text>
               </View>
-            </Pressable>
+            </Pressable> */}
           </View>
           <Modal
             animationType="slide"
