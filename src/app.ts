@@ -11,7 +11,7 @@ import notifsRouter from './routes/PushNotificationsApi'
 
 const app: Application = express()
 
-const port = process.env.APP_PORT || 3000
+const port = process.env.PORT || 3000
 
 app.use('/stripe', express.raw({ type: '*/*' }))
 app.use(express.json())
