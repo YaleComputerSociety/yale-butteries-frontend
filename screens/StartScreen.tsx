@@ -6,8 +6,7 @@ import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
 import { baseUrl } from '../utils/utils'
 import { setCurrentUserState } from '../store/slices/CurrentUser'
-import * as LocalStorage from '../LocalStorage'
-
+import * as Random from 'expo-random'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
@@ -37,10 +36,9 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       college: 'morse',
     }
 
-    dispatch(setCurrentUserState(newUser))
-    //navigation.navigate('ButteriesScreen')
+    //dispatch(setCurrentUserState(newUser))
+    navigation.navigate('NavigationScreen')
   }
-
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
@@ -61,7 +59,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               onSubmitEditing={onSubmit}
               onChangeText={(newText) => setText(newText)}
             />
-            <Pressable
+            {/* <Pressable
               onPress={() => {
                 const netIdCheck = currentUser.netid
                 if (managerNetIds.includes(netIdCheck)) {
@@ -83,7 +81,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               <View style={styles.style3}>
                 <Text style={{ fontSize: 18, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>Employee Login</Text>
               </View>
-            </Pressable>
+            </Pressable> */}
           </View>
           <Modal
             animationType="slide"

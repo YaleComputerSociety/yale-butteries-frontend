@@ -78,10 +78,10 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false} alwaysBounceVertical={false} bounces={true}>
-      <LinearGradient colors={['#2ebf91', '#f9a000ff']} locations={[0, 1]}>
+      <LinearGradient colors={['#54ade4', '#4424a4']} locations={[0, 1]}>
         <View style={home.outerContainer}>{getAllCards()}</View>
       </LinearGradient>
-      <View style={{ height: '20%', width: '100%', backgroundColor: '#f9a000ff' }}></View>
+      <View style={{ height: '20%', width: '100%', backgroundColor: '#4424a4' }}></View>
     </ScrollView>
   )
 }

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { baseUrl } from '../../utils/utils'
 import { AppDispatch } from '../../store/ReduxStore'
 
 // import { getJSON } from 'utils/fetch'
@@ -30,13 +31,18 @@ export const currentUserSlice = createSlice({
 
 export const { setCurrentUserState, setIsLoading } = currentUserSlice.actions
 
-export const asyncFetchCurrentUser = () => {
+export const asyncFetchUser = (id: number) => {
   return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
-      // const currentUser = await getJSON<CurrentUser>('/api/users/me')
-      const currentUser = await dummyUser()
-      dispatch(setCurrentUserState(currentUser))
+      const user = await fetch(baseUrl + 'api/users/' + id, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await user.json()
+      dispatch(setCurrentUserState(data))
     } catch (e) {
       console.log(e)
     } finally {
@@ -45,28 +51,21 @@ export const asyncFetchCurrentUser = () => {
   }
 }
 
-export const asyncUpdateCurrentUser = (name: string) => {
+export const asyncUpdateCurrentUser = (currentUser: User) => {
   return async (dispatch: AppDispatch): Promise<void> => {
-    dispatch(setIsLoading(true))
     try {
-      // send stuff to backend and update it there
-      const currentUser = await dummyUser()
-      dispatch(setCurrentUserState({ ...currentUser, name }))
+      const updatedUser = await fetch(baseUrl + 'api/users', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(currentUser),
+      })
+      const data = await updatedUser.json()
+      dispatch(setCurrentUserState(data))
     } catch (e) {
       console.log(e)
-    } finally {
-      dispatch(setIsLoading(false))
     }
-  }
-}
-
-async function dummyUser(): Promise<User> {
-  await new Promise((r) => setTimeout(r, 0))
-  return {
-    id: 5,
-    netid: 'awg32',
-    name: 'Saddison',
-    college: 'berkeley',
   }
 }
 
