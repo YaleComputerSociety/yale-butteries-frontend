@@ -64,6 +64,12 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     try {
       const paymentIntent = await showPaymentSheet(name, amount)
 
+      // user cancelled
+      if (!paymentIntent) {
+        updateDisabled(false)
+        return
+      }
+
       interface tempItem {
         itemCost: number
         orderStatus: string
@@ -97,6 +103,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           'Content-Type': 'application/json',
         },
       })
+
       const uploadTransactionResponse = await uploadTransaction.json()
       if (uploadTransaction.status == 400) throw uploadTransactionResponse
       dispatch(setTransactionHistoryState(uploadTransactionResponse))
@@ -191,7 +198,7 @@ CheckoutScreen['navigationOptions'] = (navData) => {
   return {
     gestureEnabled: !disabled,
     headerStyle: {
-      backgroundColor: disabled ? returnCollegeName(collegeName)[1] : 'green',
+      backgroundColor: returnCollegeName(collegeName)[1],
       borderWidth: 0,
       shadowColor: '#111',
       shadowRadius: 200,
