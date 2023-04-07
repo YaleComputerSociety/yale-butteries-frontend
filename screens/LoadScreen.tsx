@@ -2,6 +2,7 @@ import React, {useEffect, FC} from 'react'
 import { View, Text, Pressable, Modal } from 'react-native'
 //import { useAppSelector } from '../store/TypedHooks'
 import { home } from '../styles/HomeStyles'
+import { asyncInsertUser } from '../store/slices/Users'
 import { LinearGradient } from 'expo-linear-gradient'
 import * as LocalStorage from '../LocalStorage'
 import { baseUrl } from '../utils/utils'
@@ -38,9 +39,9 @@ const LoadScreen: FC<{ navigation: any }> = ({ navigation }) => {
           }
         } else {
           navigation.navigate('StartScreen')
-          LocalStorage.removeUserInfo(['username', 'permissions', 'id'])
         }
       } else {
+        console.log("Hey girl")
         navigation.nagivate('StartScreen')
       }
     }

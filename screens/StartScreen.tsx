@@ -5,8 +5,11 @@ import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
 import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
 import { baseUrl } from '../utils/utils'
+import * as LocalStorage from '../LocalStorage'
+
 import { setCurrentUserState } from '../store/slices/CurrentUser'
 import * as Random from 'expo-random'
+import { asyncInsertUser } from '../store/slices/Users'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
@@ -30,12 +33,15 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const onSubmit = () => {
     const nextUserId = 1
     const newUser = {
-      id: nextUserId,
+      id: 7,
       netid: 'dummyId',
+      token: 'blsldfh',
+      permissions: 'customer',
       name: newText,
-      college: 'morse',
+      college: 'morse'
     }
-
+    dispatch(asyncInsertUser(newUser))
+    LocalStorage.storeUserInfo([['username', newUser.name], ['permission', 'customers'], ['id', 'abed']])
     //dispatch(setCurrentUserState(newUser))
     navigation.navigate('NavigationScreen')
   }

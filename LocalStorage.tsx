@@ -15,6 +15,7 @@ export const getUserInfo = async (info) => {
 export const storeUserInfo = async (values) => {
   try {
     await AsyncStorage.multiSet(values)
+    console.log(values)
     console.log("Succesfully stored")
   } catch (e) {
     console.log(e)
@@ -28,4 +29,5 @@ export const removeUserInfo = async (values) => {
   } catch (e) {
     console.log(e)
   }
+
 }

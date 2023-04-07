@@ -16,7 +16,7 @@ import { NavigationContainer } from '@react-navigation/native'
 
 import { registerForPushNotificationsAsync } from './Functions'
 
-LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
+// LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
 
 const TestingInner: FC = () => {
   const dispatch = useAppDispatch()

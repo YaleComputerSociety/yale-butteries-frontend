@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppDispatch } from '../../store/ReduxStore'
+import { baseUrl } from '../../utils/utils'
 
 // import { getJSON, putJSON, postJSON } from 'utils/fetch'
 
@@ -76,10 +77,13 @@ export const asyncUpdateUser = (user: User, pushToken?: string) => {
 export const asyncInsertUser = (user: User) => {
   return async (dispatch: AppDispatch): Promise<void> => {
     try {
-      // const newUser = await postJSON('/api/users', { ...user })
-      // dispatch(insertUser(newUser.jsonBody))
-      await new Promise((r) => setTimeout(r, 200))
-      dispatch(insertUser(user))
+      const response = await fetch(baseUrl + 'api/users', {
+        method: 'POST',
+        body: JSON.stringify(user),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
     } catch (e) {
       console.log(e)
     }

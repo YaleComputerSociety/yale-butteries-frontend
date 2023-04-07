@@ -22,6 +22,7 @@ const screens = {
   StartScreen: {
     screen: StartScreen,
     navigationOptions: {
+      title: 'StartScreen',
       headerShown: false,
     },
   },
