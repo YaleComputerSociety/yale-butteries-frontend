@@ -21,7 +21,7 @@
     "cors": "^2.8.5",
     "expo-server-sdk": "^3.7.0",
     "express": "^4.17.1",
-    "pg": "^8.6.0",
+    "pg": "^8.10.0",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.6.2",
     "stripe": "^8.219.0",
