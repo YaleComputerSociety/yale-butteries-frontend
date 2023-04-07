@@ -1,15 +1,16 @@
 import { createStackNavigator } from 'react-navigation-stack'
 import { createAppContainer } from 'react-navigation'
-import Home from '../screens/HomeScreen'
-import ButteryScreen from '../screens/MenuScreen'
-import CheckoutScreen from '../screens/CheckoutScreen'
-import SettingsScreen from '../screens/SettingsScreen'
+import ButterySelectionScreen from '../screens/customer/ButteriesScreen'
+import MenuScreen from '../screens/customer/MenuScreen'
+import CheckoutScreen from '../screens/customer/CheckoutScreen'
+import SettingsScreen from '../screens/customer/SettingsScreen'
 import StartScreen from '../screens/StartScreen'
 import NavigationScreen from '../screens/NavigationScreen'
-import OrderStatusScreen from '../screens/OrderStatusScreen'
 import StaffLoginScreen from '../screens/StaffLoginScreen'
 import LoadScreen from '../screens/LoadScreen'
-import Ionicon from 'react-native-vector-icons/Ionicons'
+import OrderStatusScreen from '../screens/customer/OrderStatusScreen'
+import StaffRenderScreen from '../screens/staff/StaffRenderScreen'
+import React from 'react'
 
 const screens = {
   LoadScreen: {
@@ -36,22 +37,20 @@ const screens = {
       title: 'StaffLogin',
     },
   },
-  Home: {
-    screen: Home,
+  ButteriesScreen: {
+    screen: ButterySelectionScreen,
     navigationOptions: {
       title: 'Butteries',
     },
   },
-
   SettingsScreen: {
     screen: SettingsScreen,
     navigationOptions: {
       title: 'Settings',
     },
   },
-
-  ButteryScreen: {
-    screen: ButteryScreen,
+  MenuScreen: {
+    screen: MenuScreen,
     navigationOptions: {
       title: 'Menu',
     },
@@ -67,44 +66,37 @@ const screens = {
     navigationOptions: {
       headerShown: false,
       gestureEnabled: false,
-      title: 'StatusScreen',
+      title: 'Status',
+      headerLeft: () => <></>,
+    },
+  },
+  StaffRenderScreen: {
+    screen: StaffRenderScreen,
+    navigationOptions: {
+      headerShown: false,
+      gestureEnabled: false,
+      title: 'Staff',
       headerLeft: () => <></>,
     },
   },
   
 }
 
-// const HomeStack = createStackNavigator(screens, {
-//   defaultNavigationOptions: {
-//     headerStyle: { backgroundColor: '#00b2db' },
-//     headerTitleStyle: { fontFamily: 'HindSiliguri-Bolder', fontSize: 20 },
-//     headerTintColor: '#FFF',
-//     headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bolder', color: '#FFF', fontSize: 20 },
-//     headerRight: () => (
-//       <TouchableOpacity onPress={() => console.log("to Settings Screen")}>
-//           <Image
-//             source={require('../assets/images/SettingsIcon.png')}
-//             style={styles.button}
-//           />
-//       </TouchableOpacity>
-//     )
-//   },
-// })
-
-const HomeStack = createStackNavigator(screens, {
+const MainStack = createStackNavigator(screens, {
   defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: '#28a67e',
+      backgroundColor: '#2ebf91',
       borderWidth: 0,
       shadowColor: '#222',
       shadowOpacity: 0.2,
       shadowRadius: 10,
     },
-    //cardOverlayEnabled: true,
     headerTitleStyle: { fontFamily: 'HindSiliguri-Bold', fontSize: 20, paddingBottom: 10 },
     headerTintColor: '#FFF',
     headerBackTitleStyle: { fontFamily: 'HindSiliguri-Bold', color: '#FFF', fontSize: 18 },
   },
 })
 
-export default createAppContainer(HomeStack)
+const AppContainer = createAppContainer(MainStack)
+
+export default AppContainer

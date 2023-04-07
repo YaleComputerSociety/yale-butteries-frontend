@@ -1,19 +1,18 @@
 //import * as React from 'react'
-import { FC, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native'
-import { home } from '../styles/HomeStyles'
+import { home } from '../../styles/HomeStyles'
 import { TextInput } from 'react-native-gesture-handler'
-import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
-import { asyncFetchCurrentUser, asyncUpdateCurrentUser } from '../store/slices/CurrentUser'
+import { useAppSelector, useAppDispatch } from '../../store/TypedHooks'
+import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
 
-const Settings: FC<{ navigation: any }> = ({ navigation }) => {
+const Settings: FC<{ navigation: any }> = () => {
   const dispatch = useAppDispatch()
-  const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
+  const { currentUser } = useAppSelector((state) => state.currentUser)
   const [newName, setNewName] = useState('')
 
   const changeName = (name: string) => {
-    if (name.length >= 2) {
-      // console.log(currentUser)
+    if (name.length >= 2 || name.length <= 16) {
       dispatch(asyncUpdateCurrentUser(name))
     }
   }

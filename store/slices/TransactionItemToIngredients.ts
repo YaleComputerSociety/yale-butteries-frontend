@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AppDispatch } from '../../store/ReduxStore'
 
 export interface TransactionItemToIngredient {
   transactionItemId: number
@@ -35,7 +36,7 @@ export const { setTransactionItemToIngredientsState, addTransactionItemToIngredi
   transactionItemToIngredientsSlice.actions
 
 export const asyncFetchtransactionItemToIngredients = () => {
-  return async (dispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
       // const currentUser = await getJSON<CurrentUser>('/api/users/me')

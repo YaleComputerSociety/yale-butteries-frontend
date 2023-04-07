@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { View, Text, Pressable } from 'react-native'
-import { item, menu } from '../styles/MenuStyles'
+import { item, menu } from '../../styles/MenuStyles'
 
 interface Props {
   itemCount: number

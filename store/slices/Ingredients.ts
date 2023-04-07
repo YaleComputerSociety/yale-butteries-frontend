@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AppDispatch } from '../../store/ReduxStore'
 
 // import { getJSON } from 'utils/fetch'
 
@@ -40,7 +41,7 @@ export const ingredientsSlice = createSlice({
 export const { setIngredientsState, setIsLoading, updateIngredient } = ingredientsSlice.actions
 
 export const asyncFetchIngredients = () => {
-  return async (dispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
       // const currentUser = await getJSON<CurrentUser>('/api/users/me')
@@ -75,14 +76,14 @@ async function dummyIngredients(): Promise<Ingredient[]> {
       id: 3,
       college: 'morse',
       ingredient: 'Sprite',
-      price: 1.00,
+      price: 1,
       available: true,
     },
     {
       id: 4,
       college: 'morse',
       ingredient: 'Diet Coke',
-      price: 1.00,
+      price: 1,
       available: true,
     },
     {
@@ -117,7 +118,7 @@ async function dummyIngredients(): Promise<Ingredient[]> {
 }
 
 export const asyncUpdateIngredient = (ingredient: Ingredient) => {
-  return async (dispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     try {
       // Spread operator is typescript hack.
       // See: https://stackoverflow.com/questions/60697214/how-to-fix-index-signature-is-missing-in-type-error

@@ -1,16 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { APIError } from '../ReduxStore'
-import { Ingredient } from './Ingredients'
+import { APIError, AppDispatch } from '../ReduxStore'
 import { MenuItem } from './MenuItems'
 import { TransactionHistoryEntry, addTransactionHistoryEntry } from './TransactionHistory'
 import { TransactionItem, addTransactionItem } from './TransactionItems'
 import { CurrentUserState } from './CurrentUser'
-import { TransactionItemToIngredient, addTransactionItemToIngredient } from './TransactionItemToIngredients'
 
 export interface OrderItem {
   orderItem: MenuItem
-  ingredients?: Ingredient[]
 }
 
 export interface OrderCartState {
@@ -61,7 +58,7 @@ export const submitOrder = (
   transactionHistoryCounter: number,
   transactionItemCounter: number
 ) => {
-  return async (dispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
       await dummySubmitOrder(orderItems, currentUser, transactionHistoryCounter, transactionItemCounter, dispatch)

@@ -4,8 +4,6 @@ export const getUserInfo = async (info) => {
   try {
     const savedData = await AsyncStorage.multiGet(info)
     if(savedData !== null) {
-      //get customer's username
-      //vcconsole.log(savedData)
       return savedData
     }
   } catch(e) {
@@ -16,9 +14,17 @@ export const getUserInfo = async (info) => {
 
 export const storeUserInfo = async (values) => {
   try {
-    // stores customer's username
     await AsyncStorage.multiSet(values)
     console.log("Succesfully stored")
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const removeUserInfo = async (values) => {
+  try {
+    await AsyncStorage.multiRemove(values)
+    console.log("Successfully removed")
   } catch (e) {
     console.log(e)
   }

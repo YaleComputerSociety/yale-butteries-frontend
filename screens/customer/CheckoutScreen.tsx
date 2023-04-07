@@ -1,19 +1,22 @@
-/* eslint-disable import/no-unresolved */
 import * as React from 'react'
 import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
-import { checkout } from '../styles/CheckoutStyles'
-import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
-import { loading } from '../styles/GlobalStyles'
-import CheckoutItem from '../components/CheckoutItem'
-import { priceToText } from '../Functions'
-import { STRIPE_PK } from '@env'
+import { checkout } from '../../styles/CheckoutStyles'
+import { useAppSelector, useAppDispatch } from '../../store/TypedHooks'
+import { loading } from '../../styles/GlobalStyles'
+import CheckoutItem from '../../components/customer/CheckoutItem'
+import { priceToText, returnCollegeName } from '../../Functions'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
-import { setTransactionHistoryState } from '../store/slices/TransactionHistory'
-import { removeOrderItem, OrderItem } from '../store/slices/OrderCart'
+import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
+import { removeOrderItem, OrderItem } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
+import { baseUrl } from '../../utils/utils'
+import * as Haptics from 'expo-haptics'
+import * as Notifications from 'expo-notifications'
+
+// eslint-disable-next-line import/no-unresolved
+import { STRIPE_PK } from '@env'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  // const [loading, setLoading] = useState(false)
   const {
     orderItems,
     isLoading: isLoadingOrderCart,
@@ -24,31 +27,46 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const stripe = useStripe()
 
+  const showPaymentSheet = async (name: string, amount: number): Promise<any> => {
+    // return { id: 'temp' } // uncomment this line out to skip the credit card entry screen
+
+    const obj = { netid: name, price: amount }
+    const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
+      method: 'POST',
+      body: JSON.stringify(obj),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    const data = await response.json()
+    if (!response.ok) return Alert.alert(data.message)
+    const clientSecret = data.paymentIntent.client_secret
+    const initSheet = await stripe.initPaymentSheet({
+      paymentIntentClientSecret: clientSecret,
+      merchantDisplayName: 'Yale Butteries',
+    })
+    if (initSheet.error) return Alert.alert(initSheet.error.message)
+    const presentSheet = await stripe.presentPaymentSheet()
+    if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+    return data.paymentIntent
+  }
+
   const makePayment = async (name: string, amount: number) => {
     try {
-      // stripe stuff
-      // const obj = { netid: name, price: amount }
-      // const response = await fetch('http://localhost:3000/api/payments/paymentIntent', {
-      //   method: 'POST',
-      //   body: JSON.stringify(obj),
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // })
-      // const data = await response.json()
-      // if (!response.ok) return Alert.alert(data.message)
-      // const clientSecret = data.paymentIntent.client_secret
-      // const initSheet = await stripe.initPaymentSheet({
-      //   paymentIntentClientSecret: clientSecret,
-      //   merchantDisplayName: 'Yale Butteries',
-      // })
-      // if (initSheet.error) return Alert.alert(initSheet.error.message)
-      // const presentSheet = await stripe.presentPaymentSheet()
-      // if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+      const paymentIntent = await showPaymentSheet(name, amount)
 
-      const transaction_items = []
+      interface tempItem {
+        itemCost: number
+        orderStatus: string
+        menuItemId: number
+      }
+
+      const transaction_items: tempItem[] = []
       orderItems.forEach((item) => {
-        const newItem = {
+        if (!item.orderItem.id) {
+          throw new TypeError("orderItem doesn't have id")
+        }
+        const newItem: tempItem = {
           itemCost: item.orderItem.price,
           orderStatus: 'PENDING',
           menuItemId: item.orderItem.id,
@@ -56,14 +74,14 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         transaction_items.push(newItem)
       })
 
-      const uploadTransaction = await fetch('http://localhost:3000/api/transactions', {
+      const uploadTransaction = await fetch(baseUrl + 'api/transactions', {
         method: 'POST',
         body: JSON.stringify({
           inProgress: 'true',
           price: price,
           netId: name,
           college: collegeOrderCart,
-          paymentIntentId: 'a', //data.paymentIntent.id,
+          paymentIntentId: paymentIntent.id,
           transactionItems: transaction_items,
         }),
         headers: {
@@ -76,7 +94,22 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       Alert.alert('Payment complete, thank you!')
 
+      //send push notification
+      const token = (await Notifications.getExpoPushTokenAsync()).data
+      const subscribeNotification = await fetch(baseUrl + 'api/notifs', {
+        method: 'POST',
+        body: JSON.stringify({
+          transactionId: uploadTransactionResponse.id,
+          pushToken: token,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const subscribeNotificationResponse = await subscribeNotification.json()
+      console.log(subscribeNotificationResponse)
       navigation.navigate('OrderStatusScreen')
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch (err) {
       console.error(err)
       Alert.alert('Something went wrong, try again later!')
@@ -84,10 +117,12 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   }
 
   const removeOrder = (newItem: OrderItem) => {
-    dispatch(removeOrderItem(orderItems.find((item) => item.orderItem.id == newItem.orderItem.id)))
+    const item = orderItems.find((item) => item.orderItem.id == newItem.orderItem.id)
+    if (item === undefined) {
+      throw new TypeError("Couldn't find orderItem to delete")
+    }
+    dispatch(removeOrderItem(item))
   }
-
-  // export default function CheckoutScreen( { navigation } : {navigation:any} ) {
 
   return (
     <View style={checkout.wrapper}>
@@ -132,12 +167,15 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   )
 }
 
-// CheckoutScreen['navigationOptions'] = () => ({
-//   title: 'collegeName',
-// })
-
-CheckoutScreen.navigationOptions = (navData) => {
+CheckoutScreen['navigationOptions'] = (navData) => {
+  const collegeName = navData.navigation.getParam('collegeName')
   return {
+    headerStyle: {
+      backgroundColor: returnCollegeName(collegeName)[1],
+      borderWidth: 0,
+      shadowColor: '#111',
+      shadowRadius: 200,
+    },
     headerRight: () => (
       <Ionicon
         name="settings-sharp"

@@ -3,11 +3,10 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import React from 'react'
 import * as Haptics from 'expo-haptics'
 import { View, Text, Pressable } from 'react-native'
-import { priceToText } from '../Functions'
-import { checkout } from '../styles/CheckoutStyles'
-import { MenuItem } from '../store/slices/MenuItems'
+import { priceToText } from '../../Functions'
+import { checkout } from '../../styles/CheckoutStyles'
+import { MenuItem } from '../../store/slices/MenuItems'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 interface Props {
   decUpdate: (menuItem: MenuItem) => void
   menuItem: MenuItem
@@ -28,9 +27,6 @@ const CheckoutItem: any = ({ decUpdate, checkoutItem }: Props) => {
       <View style={checkout.NAME}>
         <Text style={checkout.itemNameText}>{checkoutItem.orderItem.item}</Text>
       </View>
-      {/* <View style={checkout.COUNT}>
-        <Text style={checkout.text}>{checkoutItem.orderItem.count}</Text>
-      </View> */}
       <View style={checkout.PRICE}>
         <Text style={checkout.text}>{priceToText(checkoutItem.orderItem.price)}</Text>
       </View>

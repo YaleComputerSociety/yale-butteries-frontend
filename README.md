@@ -1,12 +1,14 @@
 # Yale Butteries (Frontend)
 
-Yale Butteries is a React Native + Express.js app for ordering in advance from the 14 Yale residential college butteries.
+Yale Butteries is a React Native + Express.js app for ordering in advance from the Yale residential college butteries.
 
-## Setting up the Development Environment (under construction)
+## Setting up the Development Environment
 
 To run the full environment, you will also need access to the [backend repository](https://github.com/TuckerMoses/yale-college-hub), but you can do plenty without it
 
 Install the latest version of **Node.js** and then **Yarn**. Additionally, download **XCode** if you're using a mac, and **Android Studio** otherwise (you can also use Android Studio on a Mac, but with the M1 chips it's a little tricky). 
+
+There's a secret **.env** file that contains various private variables (passwords, urls, etc). In order to get access to this file, message the **yale-butteries** Slack channel. We'll send the contents of the file, and you should make a new file in the root of the `buttery-app` repository called EXACTLY `.env` where you should paste the contents. Be sure not to share this file with anyone with anyone outside the team. Also, **PLEASE MAKE SURE THE .env FILE IS GRAYED OUT, OTHERWISE EVERY PUSH WILL SEND THE FILE TO GITHUB WHERE ANYONE CAN ACCESS IT**
 
 In the root of `buttery-app`, run ```yarn add``` to install all of the dependencies. Whenever someone adds a new package you'll need to run this command again (but it'll be shorter the next time)
 
