@@ -27,6 +27,13 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const [isDisabled, setDisabled] = useState(orderItems.length < 1)
 
+  const updateDisabled = (b: boolean) => {
+    navigation.setParams({
+      disabled: b,
+    })
+    setDisabled(b)
+  }
+
   const stripe = useStripe()
 
   const showPaymentSheet = async (name: string, amount: number): Promise<any> => {
@@ -95,6 +102,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       dispatch(setTransactionHistoryState(uploadTransactionResponse))
 
       Alert.alert('Payment complete, thank you!')
+      updateDisabled(false)
 
       //send push notification
       const token = (await Notifications.getExpoPushTokenAsync()).data
@@ -115,6 +123,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     } catch (err) {
       console.error(err)
       Alert.alert('Something went wrong, try again later!')
+      updateDisabled(false)
     }
   }
 
@@ -161,8 +170,8 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                   checkout.checkoutButton,
                 ]}
                 onPress={() => {
+                  updateDisabled(true)
                   makePayment('awg32', price)
-                  setDisabled(true)
                 }}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>
@@ -177,15 +186,31 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
 CheckoutScreen['navigationOptions'] = (navData) => {
   const collegeName = navData.navigation.getParam('collegeName')
+  const disabled = navData.navigation.getParam('disabled') || false
+
   return {
+    gestureEnabled: !disabled,
     headerStyle: {
-      backgroundColor: returnCollegeName(collegeName)[1],
+      backgroundColor: disabled ? returnCollegeName(collegeName)[1] : 'green',
       borderWidth: 0,
       shadowColor: '#111',
       shadowRadius: 200,
     },
+    headerLeft: () => (
+      <Ionicon
+        disabled={disabled}
+        name="chevron-back"
+        size={30}
+        color="#fff"
+        onPress={() => {
+          navData.navigation.navigate('MenuScreen')
+        }}
+        style={{ paddingLeft: 15 }}
+      />
+    ),
     headerRight: () => (
       <Ionicon
+        disabled={disabled}
         name="settings-sharp"
         size={20}
         color="#fff"
