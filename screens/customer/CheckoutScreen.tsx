@@ -112,6 +112,8 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       updateDisabled(false)
 
       //send push notification
+      const push = await Notifications.getExpoPushTokenAsync()
+      console.log(push)
       const token = (await Notifications.getExpoPushTokenAsync()).data
       const subscribeNotification = await fetch(baseUrl + 'api/notifs', {
         method: 'POST',
