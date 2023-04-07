@@ -6,6 +6,7 @@ import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
 import { baseUrl } from '../utils/utils'
 import { setCurrentUserState } from '../store/slices/CurrentUser'
+import * as Random from 'expo-random'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
@@ -38,7 +39,6 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     //dispatch(setCurrentUserState(newUser))
     navigation.navigate('NavigationScreen')
   }
-
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>

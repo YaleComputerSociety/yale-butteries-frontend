@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { useAppSelector, useAppDispatch } from './store/TypedHooks'
-import { asyncFetchCurrentUser } from './store/slices/CurrentUser'
+import { asyncFetchUser } from './store/slices/CurrentUser'
 import { Provider } from 'react-redux'
 import { home } from './styles/HomeStyles'
 import { loading } from './styles/GlobalStyles'
@@ -24,7 +24,7 @@ const TestingInner: FC = () => {
 
   useEffect(() => {
     if (currentUser == null) {
-      dispatch(asyncFetchCurrentUser())
+      dispatch(asyncFetchUser(1))
       registerForPushNotificationsAsync()
     }
   }, [currentUser])
