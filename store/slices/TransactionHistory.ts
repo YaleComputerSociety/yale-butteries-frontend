@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { TransactionItem } from './TransactionItems'
-import { Alert } from 'react-native'
-import { assert } from 'console'
+import { AppDispatch } from '../../store/ReduxStore'
+import { baseUrl } from '../../utils/utils'
 
 export interface TransactionHistoryEntry {
   id: number
@@ -11,6 +11,7 @@ export interface TransactionHistoryEntry {
   netId: string
   paymentIntentId: string
   transactionItems: TransactionItem[]
+  creationTime: string
 }
 
 export interface TransactionHistoryState {
@@ -42,68 +43,42 @@ export const transactionHistorySlice = createSlice({
       state.transactionHistory[transactionHistoryIndex] = action.payload
       state.currentTransactionHistory = state.transactionHistory[state.transactionHistory.length - 1]
     },
+    setTransactionHistories: (state, action: PayloadAction<TransactionHistoryEntry[]>) => {
+      state.transactionHistory = action.payload
+    },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload
     },
   },
 })
 
-export const { setTransactionHistoryState, addTransactionHistoryEntry, updateTransactionHistory, setIsLoading } =
-  transactionHistorySlice.actions
+export const {
+  setTransactionHistoryState,
+  addTransactionHistoryEntry,
+  updateTransactionHistory,
+  setTransactionHistories,
+  setIsLoading,
+} = transactionHistorySlice.actions
 
-export const asyncFetchTransactionHistory = () => {
-  return async (dispatch): Promise<void> => {
+export const asyncFetchTransactionHistories = (college: string) => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
-      // const currentUser = await getJSON<CurrentUser>('/api/users/me')
-      // const transactionHistory = await dummyTransactionHistory()
-      // dispatch(setTransactionHistoryState(transactionHistory))
+      const transactions = await fetch(baseUrl + 'api/transactions/college/' + college, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await transactions.json()
+      const newData: TransactionHistoryEntry[] = []
+      data.transactionHistories.forEach((item) => {
+        const newItem: TransactionHistoryEntry = { ...item }
+        newData.push(newItem)
+      })
+      dispatch(setTransactionHistories(newData))
     } catch (e) {
       console.log(e)
-    } finally {
-      dispatch(setIsLoading(false))
-    }
-  }
-}
-
-// async function dummyTransactionHistory(): Promise<TransactionHistoryEntry[]> {
-//   await new Promise((r) => setTimeout(r, 2000))
-//   return [
-//     {
-//       id: 1,
-//       college: 'Morse',
-//       inProgress: 'cancelled',
-//       paymentIntentId: 'e',
-//       price: 3.0,
-//       userId: 3,
-//     },
-//     {
-//       id: 2,
-//       college: 'Morse',
-//       inProgress: 'false',
-//       paymentIntentId: 'f',
-//       price: 2.5,
-//       userId: 4,
-//     },
-//     {
-//       id: 3,
-//       college: 'Morse',
-//       inProgress: 'true',
-//       paymentIntentId: 'g',
-//       price: 4.5,
-//       userId: 5,
-//     },
-//   ]
-// }
-
-export const asyncAddTransactionHistory = (transaction_hisotry: TransactionHistoryEntry) => {
-  return async (dispatch): Promise<void> => {
-    dispatch(setIsLoading(true))
-    try {
-      console.log('hhh')
-    } catch (e) {
-      console.log(e)
-      Alert.alert(e)
     } finally {
       dispatch(setIsLoading(false))
     }
@@ -111,7 +86,7 @@ export const asyncAddTransactionHistory = (transaction_hisotry: TransactionHisto
 }
 
 export const asyncUpdateTransactionHistoryEntry = (transactionHistoryEntry: TransactionHistoryEntry) => {
-  return async (dispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<void> => {
     try {
       // const updatedUser = await putJSON('/api/users', { ...user })
       // dispatch(updateUser(updatedUser.jsonBody))

@@ -2,12 +2,9 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import usersReducer from './slices/Users'
 import currentUserReducer from './slices/CurrentUser'
-import ingredientsReducer from './slices/Ingredients'
 import menuItemsReducer from './slices/MenuItems'
-import menuItemToIngredientsReducer from './slices/MenuItemToIngredients'
 import transactionHistoryReducer from './slices/TransactionHistory'
 import transactionItemsReducer from './slices/TransactionItems'
-import transactionItemToIngredientsReducer from './slices/TransactionItemToIngredients'
 import orderCartReducer from './slices/OrderCart'
 
 export interface APIError {
@@ -20,12 +17,9 @@ const store = configureStore({
   reducer: {
     users: usersReducer,
     currentUser: currentUserReducer,
-    ingredients: ingredientsReducer,
     menuItems: menuItemsReducer,
-    menuItemToIngredients: menuItemToIngredientsReducer,
     transactionHistory: transactionHistoryReducer,
     transactionItems: transactionItemsReducer,
-    transactionItemToIngredients: transactionItemToIngredientsReducer,
     orderCart: orderCartReducer,
   },
 })

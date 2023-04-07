@@ -3,12 +3,12 @@ import { AppDispatch } from '../../store/ReduxStore'
 import { baseUrl } from '../../utils/utils'
 
 export interface MenuItem {
-  id: number
+  id?: number
   item: string
   college: string
   price: number
-  description: string
-  limitedTime: boolean
+  description?: string
+  limitedTime?: boolean
   isActive: boolean
   foodType: 'food' | 'drink' | 'dessert'
 }
@@ -34,7 +34,7 @@ export const menuItemsSlice = createSlice({
       state.isLoading = action.payload
     },
     updateMenuItem: (state, action: PayloadAction<MenuItem>) => {
-      const updateIndex = state.menuItems.findIndex((item) => item.item == action.payload.item)
+      const updateIndex = state.menuItems.findIndex((item) => item.id == action.payload.id)
       state.menuItems[updateIndex] = action.payload
     },
     deleteMenuItem: (state, action: PayloadAction<MenuItem>) => {
@@ -75,6 +75,47 @@ export const asyncFetchMenuItems = () => {
         newData.push(newItem)
       })
       dispatch(setMenuItemsState(newData))
+    } catch (e) {
+      console.log(e)
+    } finally {
+      dispatch(setIsLoading(false))
+    }
+  }
+}
+
+export const asyncUpdateMenuItem = (menuItem: MenuItem) => {
+  return async (dispatch: AppDispatch): Promise<void> => {
+    dispatch(setIsLoading(true))
+    try {
+      await fetch(baseUrl + 'api/menu_items', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(menuItem),
+      })
+    } catch (e) {
+      console.log(e)
+    } finally {
+      dispatch(setIsLoading(false))
+    }
+  }
+}
+
+export const asyncAddMenuItem = (menuItem: MenuItem) => {
+  return async (dispatch: AppDispatch): Promise<void> => {
+    dispatch(setIsLoading(true))
+    try {
+      const menuItems = await fetch(baseUrl + 'api/menu_items', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(menuItem),
+      })
+      const data = await menuItems.json()
+      console.log(data)
+      dispatch(addMenuItem(menuItem))
     } catch (e) {
       console.log(e)
     } finally {

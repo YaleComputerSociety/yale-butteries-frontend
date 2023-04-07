@@ -8,20 +8,24 @@ import { loading } from './styles/GlobalStyles'
 import { ActivityIndicator, View, LogBox } from 'react-native'
 import store from './store/ReduxStore'
 import * as SplashScreen from 'expo-splash-screen'
-import AppContainer from './routes/homeStack'
+import AppContainer from './routes/mainStack'
 
 import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
+
+import { registerForPushNotificationsAsync } from './Functions'
 
 LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
 
 const TestingInner: FC = () => {
   const dispatch = useAppDispatch()
   const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
+
   useEffect(() => {
     if (currentUser == null) {
       dispatch(asyncFetchCurrentUser())
+      registerForPushNotificationsAsync()
     }
   }, [currentUser])
 
@@ -34,7 +38,6 @@ const TestingInner: FC = () => {
       ) : (
         <NavigationContainer>
           <AppContainer />
-          {/* <ManagerStack /> */}
         </NavigationContainer>
       )}
       <StatusBar style="auto" />

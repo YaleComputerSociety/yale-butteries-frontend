@@ -4,7 +4,7 @@ export const menu = StyleSheet.create({
   wrapper: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#fff',
+    backgroundColor: '#FAF9F6',
   },
 
   upperContainer: {
@@ -59,7 +59,7 @@ export const item = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 100,
-    backgroundColor: '#fff',
+    backgroundColor: '#FAF9F6',
     borderBottomColor: '#eee',
     borderBottomWidth: 0.5,
     shadowRadius: 2,
@@ -106,7 +106,7 @@ export const item = StyleSheet.create({
     fontFamily: 'HindSiliguri-Bold',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 15,
+    fontSize: 16,
     textAlignVertical: 'center',
   },
 

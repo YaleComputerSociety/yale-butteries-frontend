@@ -1,19 +1,19 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import React, { FC, useEffect, useState } from 'react'
 import { View, ScrollView, ActivityIndicator, Text, Pressable } from 'react-native'
-import { useAppSelector, useAppDispatch } from '../store/TypedHooks'
-import { asyncFetchMenuItems, MenuItem } from '../store/slices/MenuItems'
-import { addOrderItem, OrderItem, resetOrderCartState } from '../store/slices/OrderCart'
-import { ItemCard } from '../components/ItemCard'
-import { home } from '../styles/HomeStyles'
-import { menu } from '../styles/MenuStyles'
-import { loading } from '../styles/GlobalStyles'
-import { getPriceFromOrderItems, returnCollegeName } from '../Functions'
+import { useAppSelector, useAppDispatch } from '../../store/TypedHooks'
+import { asyncFetchMenuItems, MenuItem } from '../../store/slices/MenuItems'
+import { addOrderItem, OrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
+import { MenuItemCard } from '../../components/customer/MenuItemCard'
+import { home } from '../../styles/HomeStyles'
+import { menu } from '../../styles/MenuStyles'
+import { loading } from '../../styles/GlobalStyles'
+import { getPriceFromOrderItems, returnCollegeName } from '../../Functions'
 import * as Haptics from 'expo-haptics'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
 
-const butteryScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
+const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
   navigation,
 }) => {
   //make a function that gets the price from the items in the cart
@@ -76,7 +76,7 @@ const butteryScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string 
                   return menuItem.college === collegeOrderCart && menuItem.isActive === true
                 })
                 .map((menuItem) => (
-                  <ItemCard incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} items={orderItems} />
+                  <MenuItemCard incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} items={orderItems} />
                 ))}
             </View>
           </ScrollView>
@@ -105,22 +105,24 @@ const butteryScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string 
           <View style={{ position: 'absolute', bottom: 0, alignSelf: 'flex-end' }}>
             <Pressable
               disabled={orderItems.length < 1 ? true : false}
-              style={{
-                opacity: orderItems.length < 1 ? 0.7 : 1,
-                backgroundColor: '#32CD32',
-                width: 160,
-                height: 60,
-                bottom: 0,
-                borderRadius: 25,
-                shadowColor: '#000',
-                shadowOpacity: 0.3,
-                shadowRadius: 20,
-                margin: 30,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+              style={({ pressed }) => [
+                {
+                  opacity: orderItems.length < 1 ? 0.6 : 1,
+                  backgroundColor: pressed ? '#32ba32' : '#32CD32',
+                  width: 160,
+                  height: 60,
+                  bottom: 0,
+                  borderRadius: 25,
+                  shadowColor: '#000',
+                  shadowOpacity: 0.3,
+                  shadowRadius: 20,
+                  margin: 30,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                },
+              ]}
               onPress={() => {
-                navigation.navigate('CheckoutScreen')
+                navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
               }}
             >
@@ -133,7 +135,7 @@ const butteryScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string 
   )
 }
 
-butteryScreen.navigationOptions = (navData) => {
+MenuScreen['navigationOptions'] = (navData) => {
   const collegeName = navData.navigation.getParam('collegeName')
   return {
     headerStyle: {
@@ -157,4 +159,4 @@ butteryScreen.navigationOptions = (navData) => {
   }
 }
 
-export default butteryScreen
+export default MenuScreen
