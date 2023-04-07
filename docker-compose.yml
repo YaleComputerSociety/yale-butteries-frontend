@@ -2,6 +2,7 @@ version: '3.8'
 services:
   app:
     build: .
+    command: bash -c "yarn start"
     container_name: yale_college_hub
     depends_on:
       - db
