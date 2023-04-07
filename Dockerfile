@@ -6,3 +6,5 @@ RUN apt-get update -qq && apt-get install -y postgresql-client
 RUN mkdir /app
 WORKDIR /app
 COPY . .
+
+CMD [ "yarn", "start" ]
