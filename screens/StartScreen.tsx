@@ -6,6 +6,8 @@ import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
 import { baseUrl } from '../utils/utils'
 import { setCurrentUserState } from '../store/slices/CurrentUser'
+import * as LocalStorage from '../LocalStorage'
+
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
@@ -63,7 +65,10 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               onPress={() => {
                 const netIdCheck = currentUser.netid
                 if (managerNetIds.includes(netIdCheck)) {
-                  navigation.navigate('NavigationScreen')
+                  var temp = LocalStorage.getUserInfo(['username', 'permissions', 'id'])
+                  console.log(temp)
+                  //navigation.navigate('NavigationScreen')
+                  
                 } else {
                   navigation.navigate('ButteriesScreen')
                 }
