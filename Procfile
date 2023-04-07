@@ -1,1 +1,1 @@
-app: yarn start
+web: yarn start

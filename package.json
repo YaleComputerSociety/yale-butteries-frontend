@@ -1,15 +1,13 @@
 {
   "name": "yale_college_hub",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.ts",
   "author": "tuckermoses <john.tucker.moses@gmail.com>",
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
   },
   "license": "MIT",
   "scripts": {
-    "build-frontend": "cd src/frontend && yarn run build",
-    "build-frontend-dev": "cd src/frontend && yarn run build-dev",
     "start": "ts-node src/app.ts",
     "start-dev": "nodemon --watch 'src/frontend' --ignore 'src/frontend/dist' --ext 'ts,tsx,js,jsx,scss' --exec 'yarn run build-frontend-dev && ts-node src/app.ts'",
     "lint": "yarn eslint --max-warnings 0 'src/**/*.{js,ts,tsx}'"
