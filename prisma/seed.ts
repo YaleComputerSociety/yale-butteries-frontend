@@ -153,6 +153,8 @@ const main = async () => {
       netid: 'awg32',
       email: 'addison.goolsbee@yale.edu',
       name: 'Addison',
+      permissions: 'manager',
+      token: 'abcd',
       college: {
         connect: { id: 1 },
       },
@@ -167,6 +169,8 @@ const main = async () => {
       netid: 'app43',
       email: 'aidan.palmer@yale.edu',
       name: 'Aidan',
+      token: 'abdc',
+      permissions: 'customer',
       college: {
         connect: { id: 1 },
       },
