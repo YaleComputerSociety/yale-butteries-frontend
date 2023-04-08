@@ -35,6 +35,14 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       permissions: 'customer',
     }
 
+    const localStorageInfo = [
+      ['username', newText],
+      ['token', token],
+      ['permissions', 'staff'],
+    ]
+
+    LocalStorage.storeUserInfo(localStorageInfo)
+
     dispatch(asyncCreateUser(newUser))
     navigation.navigate('NavigationScreen')
   }
