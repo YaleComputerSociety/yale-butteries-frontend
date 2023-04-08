@@ -8,12 +8,19 @@ import { asyncCreateUser } from '../store/slices/Users'
 import * as Random from 'expo-random'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  // const { currentUser } = useAppSelector((state) => state.currentUser)
+  const { currentUser } = useAppSelector((state) => state.currentUser)
 
   const dispatch = useAppDispatch()
 
   const [modalVisible, setModalVisible] = React.useState(false)
   const [newText, setText] = React.useState('')
+
+  if (currentUser) {
+    console.log('current user found!')
+    console.log(currentUser)
+  } else {
+    console.log('need to create a user..')
+  }
 
   const onSubmit = () => {
     let token = ''
