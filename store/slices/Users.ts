@@ -1,13 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { baseUrl } from '../../utils/utils'
 import { AppDispatch } from '../../store/ReduxStore'
+import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
 
 // import { getJSON, putJSON, postJSON } from 'utils/fetch'
 
 export interface User {
-  id: number
+  email: string
   netid: string
   name: string
-  college: string
+  college_id: number
+  token: string
+  permissions: string
 }
 
 export interface UsersState {
@@ -32,7 +36,8 @@ export const usersSlice = createSlice({
       state.users[userIndex] = action.payload
     },
     insertUser: (state, action: PayloadAction<User>) => {
-      state.users.push(action.payload)
+      const user = action.payload
+      state.users.push(user)
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload
@@ -42,44 +47,18 @@ export const usersSlice = createSlice({
 
 export const { setUsersState, updateUser, insertUser, setIsLoading } = usersSlice.actions
 
-export const asyncFetchUsers = () => {
-  return async (dispatch: AppDispatch): Promise<void> => {
-    dispatch(setIsLoading(true))
-    try {
-      // const users = await getJSON<User[]>('/api/users')
-      const users = await dummyUsers()
-      dispatch(setUsersState(users))
-    } catch (e) {
-      console.log(e)
-    } finally {
-      dispatch(setIsLoading(false))
-    }
-  }
-}
-
-export const asyncUpdateUser = (user: User, pushToken?: string) => {
+export const asyncCreateUser = (user: User) => {
   return async (dispatch: AppDispatch): Promise<void> => {
     try {
-      const pt = pushToken
-      // Spread operator is typescript hack.
-      // See: https://stackoverflow.com/questions/60697214/how-to-fix-index-signature-is-missing-in-type-error
-      // const updatedUser = await putJSON('/api/users', { ...user })
-      // dispatch(updateUser(updatedUser.jsonBody))
-      await new Promise((r) => setTimeout(r, 200))
-      dispatch(updateUser(user))
-    } catch (e) {
-      console.log(e)
-    }
-  }
-}
-
-export const asyncInsertUser = (user: User) => {
-  return async (dispatch: AppDispatch): Promise<void> => {
-    try {
-      // const newUser = await postJSON('/api/users', { ...user })
-      // dispatch(insertUser(newUser.jsonBody))
-      await new Promise((r) => setTimeout(r, 200))
-      dispatch(insertUser(user))
+      const newUser = await fetch(baseUrl + 'api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      })
+      const data = await newUser.json()
+      dispatch(asyncUpdateCurrentUser(data))
     } catch (e) {
       console.log(e)
     }

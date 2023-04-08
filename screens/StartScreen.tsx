@@ -4,39 +4,31 @@ import { StyleSheet, View, Text, Pressable, Modal, TextInput } from 'react-nativ
 import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
 import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
-import { baseUrl } from '../utils/utils'
-import { setCurrentUserState } from '../store/slices/CurrentUser'
+import { asyncCreateUser } from '../store/slices/Users'
 import * as Random from 'expo-random'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const { currentUser } = useAppSelector((state) => state.currentUser)
+  // const { currentUser } = useAppSelector((state) => state.currentUser)
+
   const dispatch = useAppDispatch()
 
   const [modalVisible, setModalVisible] = React.useState(false)
   const [newText, setText] = React.useState('')
-  const managerNetIds = ['awg32', 'app43']
-
-  const fetchTest = async () => {
-    try {
-      console.log(baseUrl)
-      const result = await fetch(baseUrl + 'api/users')
-      const res = await result.json()
-      console.log(res)
-    } catch (e) {
-      console.log(e)
-    }
-  }
 
   const onSubmit = () => {
-    const nextUserId = 1
+    let token = ''
+    token += Random.getRandomBytes(8).toString()
+
     const newUser = {
-      id: nextUserId,
-      netid: 'dummyId',
+      email: 'random@blah.edu',
+      netid: token,
       name: newText,
-      college: 'morse',
+      college_id: 1,
+      token: token,
+      permissions: 'customer',
     }
 
-    //dispatch(setCurrentUserState(newUser))
+    dispatch(asyncCreateUser(newUser))
     navigation.navigate('NavigationScreen')
   }
   return (

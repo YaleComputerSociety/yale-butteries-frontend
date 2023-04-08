@@ -63,6 +63,7 @@ export const asyncUpdateCurrentUser = (currentUser: User) => {
       })
       const data = await updatedUser.json()
       dispatch(setCurrentUserState(data))
+      console.log(data)
     } catch (e) {
       console.log(e)
     }
