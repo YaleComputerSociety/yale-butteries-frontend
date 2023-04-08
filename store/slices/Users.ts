@@ -31,10 +31,6 @@ export const usersSlice = createSlice({
     setUsersState: (state, action: PayloadAction<User[]>) => {
       state.users = action.payload
     },
-    updateUser: (state, action: PayloadAction<User>) => {
-      const userIndex = state.users.findIndex((element) => element.id == action.payload.id)
-      state.users[userIndex] = action.payload
-    },
     insertUser: (state, action: PayloadAction<User>) => {
       const user = action.payload
       state.users.push(user)
@@ -45,7 +41,7 @@ export const usersSlice = createSlice({
   },
 })
 
-export const { setUsersState, updateUser, insertUser, setIsLoading } = usersSlice.actions
+export const { setUsersState, insertUser, setIsLoading } = usersSlice.actions
 
 export const asyncCreateUser = (user: User) => {
   return async (dispatch: AppDispatch): Promise<void> => {
@@ -65,33 +61,4 @@ export const asyncCreateUser = (user: User) => {
   }
 }
 
-async function dummyUsers(): Promise<User[]> {
-  await new Promise((r) => setTimeout(r, 200))
-  return [
-    {
-      id: 3,
-      netid: 'testmctester1',
-      name: 'Testing McTester',
-      college: 'Morse',
-    },
-    {
-      id: 4,
-      netid: 'testmctester12',
-      name: 'Testing McTester II',
-      college: 'Morse',
-    },
-    {
-      id: 5,
-      netid: 'testmctester123',
-      name: 'Testing McTester III',
-      college: 'Morse',
-    },
-    {
-      id: 6,
-      netid: 'staffman123',
-      name: 'Staffon McStaffrey',
-      college: 'Morse',
-    },
-  ]
-}
 export default usersSlice.reducer
