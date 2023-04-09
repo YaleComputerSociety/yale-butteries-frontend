@@ -9,11 +9,13 @@ import { User } from './Users'
 export interface CurrentUserState {
   currentUser: User | null
   isLoading: boolean
+  id: number | null
 }
 
 const currentUserInitialState: CurrentUserState = {
   currentUser: null,
   isLoading: false,
+  id: null,
 }
 
 export const currentUserSlice = createSlice({
@@ -23,13 +25,16 @@ export const currentUserSlice = createSlice({
     setCurrentUserState: (state, action: PayloadAction<User>) => {
       state.currentUser = action.payload
     },
+    setCurrentUserId: (state, action: PayloadAction<number>) => {
+      state.id = action.payload
+    },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload
     },
   },
 })
 
-export const { setCurrentUserState, setIsLoading } = currentUserSlice.actions
+export const { setCurrentUserState, setIsLoading, setCurrentUserId } = currentUserSlice.actions
 
 export const asyncFetchUser = (id: number) => {
   return async (dispatch: AppDispatch): Promise<void> => {
@@ -42,7 +47,6 @@ export const asyncFetchUser = (id: number) => {
         },
       })
       const data = await user.json()
-      console.log(data)
       dispatch(setCurrentUserState(data))
     } catch (e) {
       console.log(e)

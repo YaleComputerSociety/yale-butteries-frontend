@@ -5,19 +5,25 @@ import { home } from '../../styles/HomeStyles'
 import { TextInput } from 'react-native-gesture-handler'
 import { useAppSelector, useAppDispatch } from '../../store/TypedHooks'
 import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
+import * as LocalStorage from './../../LocalStorage'
 
 const Settings: FC<{ navigation: any }> = () => {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector((state) => state.currentUser)
+
   const [newName, setNewName] = useState('')
 
-  const changeName = (name: string) => {
+  const changeName = async (name: string) => {
+    const id = await LocalStorage.getUserInfo('id')
     console.log('name changed')
     if (name.length >= 2 || name.length <= 16) {
       const updatedCurrentUser = {
-        id: currentUser.id,
-        college: currentUser.college,
+        id: id,
         name: name,
+        college_id: null,
+        permissions: null,
+        token: null,
+        email: null,
         netid: currentUser.netid,
       }
       dispatch(asyncUpdateCurrentUser(updatedCurrentUser))
