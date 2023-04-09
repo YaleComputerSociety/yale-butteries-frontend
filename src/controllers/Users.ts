@@ -29,17 +29,17 @@ export async function getUser(req: Request, res: Response): Promise<void> {
 
 export async function createUser(req: Request, res: Response): Promise<void> {
   try {
-    const { netid, email, name, token, permissions, college_id } = req.body
+    console.log(req.body)
     const newUser = await prisma.user.create({
       data: {
-        netid: netid || undefined,
-        email: email || undefined,
-        name: name,
-        token: token,
-        permissions: permissions,
+        netid: req.body.netid || undefined,
+        email: req.body.email || undefined,
+        name: req.body.name,
+        token: req.body.token || undefined,
+        permissions: req.body.permissions || undefined,
         college: {
           connect: {
-            id: parseInt(college_id) || 1,
+            id: parseInt(req.body.college_id) || 1,
           },
         },
       },
