@@ -42,6 +42,7 @@ export const asyncFetchUser = (id: number) => {
         },
       })
       const data = await user.json()
+      console.log(data)
       dispatch(setCurrentUserState(data))
     } catch (e) {
       console.log(e)

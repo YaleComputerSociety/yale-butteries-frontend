@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseUrl } from '../../utils/utils'
 import { AppDispatch } from '../../store/ReduxStore'
-import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
+import { setCurrentUserState } from '../../store/slices/CurrentUser'
+import * as LocalStorage from '../../LocalStorage'
 
 // import { getJSON, putJSON, postJSON } from 'utils/fetch'
 
@@ -43,7 +44,7 @@ export const usersSlice = createSlice({
 
 export const { setUsersState, insertUser, setIsLoading } = usersSlice.actions
 
-export const asyncCreateUser = (user: User) => {
+export const asyncCreateUser = (user: User, username: string, token: string) => {
   return async (dispatch: AppDispatch): Promise<void> => {
     try {
       const newUser = await fetch(baseUrl + 'api/users', {
@@ -54,7 +55,18 @@ export const asyncCreateUser = (user: User) => {
         body: JSON.stringify(user),
       })
       const data = await newUser.json()
-      dispatch(asyncUpdateCurrentUser(data))
+
+      dispatch(setCurrentUserState(data))
+
+      const localStorageInfo = [
+        ['id', data.id.toString()],
+        ['username', username],
+        ['token', token],
+        ['permissions', 'customer'],
+      ]
+
+      LocalStorage.storeUserInfo(localStorageInfo)
+      console.log('stored!', 'user with id ===> ' + data.id.toString() + '\n\n')
     } catch (e) {
       console.log(e)
     }

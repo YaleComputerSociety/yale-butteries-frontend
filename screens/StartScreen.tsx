@@ -15,14 +15,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [modalVisible, setModalVisible] = React.useState(false)
   const [newText, setText] = React.useState('')
 
-  if (currentUser) {
-    console.log('current user found!')
-    console.log(currentUser)
-  } else {
-    console.log('need to create a user..')
-  }
-
-  const onSubmit = () => {
+  const onSubmit = async () => {
     let token = ''
     token += Random.getRandomBytes(8).toString()
 
@@ -35,15 +28,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       permissions: 'customer',
     }
 
-    const localStorageInfo = [
-      ['username', newText],
-      ['token', token],
-      ['permissions', 'staff'],
-    ]
-
-    LocalStorage.storeUserInfo(localStorageInfo)
-
-    dispatch(asyncCreateUser(newUser))
+    dispatch(asyncCreateUser(newUser, newText, token))
     navigation.navigate('NavigationScreen')
   }
   return (
@@ -58,34 +43,12 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             </View>
             <TextInput
               style={styles.input}
-              // onChangeText={onChangeNumber}
-              // value={number}
               placeholder="Name"
               clearTextOnFocus={true}
               placeholderTextColor="black"
               onSubmitEditing={onSubmit}
               onChangeText={(newText) => setText(newText)}
             />
-            {/* <Pressable
-              onPress={() => {
-                const netIdCheck = currentUser.netid
-                if (managerNetIds.includes(netIdCheck)) {
-                  navigation.navigate('NavigationScreen')
-                } else {
-                  navigation.navigate('ButteriesScreen')
-                }
-              }}
-              style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
-            >
-              <View style={styles.style2}>
-                <Text style={{ fontSize: 18, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>Login</Text>
-              </View>
-            </Pressable>
-            <Pressable onPress={fetchTest} style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}>
-              <View style={styles.style3}>
-                <Text style={{ fontSize: 18, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>About</Text>
-              </View>
-            </Pressable> */}
           </View>
           <Modal
             animationType="slide"
@@ -95,16 +58,6 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             }}
             transparent={true}
           >
-            <View style={styles.style4}>
-              {/* <WebView
-                injectedJavaScript={injectedJs}
-                style={{ borderRadius: 8 }}
-                source={{ uri: 'https://secure.its.yale.edu/cas' }}
-                onMessage={(event) => {
-                  console.log('MESSAGE >>>>' + event.nativeEvent.data)
-                }}
-              /> */}
-            </View>
             <Pressable
               style={styles.style5}
               onPress={() => {

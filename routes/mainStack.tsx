@@ -6,6 +6,7 @@ import CheckoutScreen from '../screens/customer/CheckoutScreen'
 import SettingsScreen from '../screens/customer/SettingsScreen'
 import StartScreen from '../screens/StartScreen'
 import NavigationScreen from '../screens/NavigationScreen'
+import StaffLoginScreen from '../screens/StaffLoginScreen'
 import OrderStatusScreen from '../screens/customer/OrderStatusScreen'
 import StaffRenderScreen from '../screens/staff/StaffRenderScreen'
 import React from 'react'
@@ -14,6 +15,7 @@ const screens = {
   StartScreen: {
     screen: StartScreen,
     navigationOptions: {
+      title: 'StartScreen',
       headerShown: false,
     },
   },
@@ -21,6 +23,12 @@ const screens = {
     screen: NavigationScreen,
     navigationOptions: {
       headerShown: false,
+    },
+  },
+  StaffLogin: {
+    screen: StaffLoginScreen,
+    navigationOptions: {
+      title: 'StaffLogin',
     },
   },
   ButteriesScreen: {

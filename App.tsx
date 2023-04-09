@@ -5,29 +5,48 @@ import { asyncFetchUser } from './store/slices/CurrentUser'
 import { Provider } from 'react-redux'
 import { home } from './styles/HomeStyles'
 import { loading } from './styles/GlobalStyles'
-import { ActivityIndicator, View, LogBox } from 'react-native'
+import { ActivityIndicator, View } from 'react-native'
 import store from './store/ReduxStore'
 import * as SplashScreen from 'expo-splash-screen'
 import AppContainer from './routes/mainStack'
+import * as LocalStorage from './LocalStorage'
 
 import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
 
 import { registerForPushNotificationsAsync } from './Functions'
+import { setIsLoading } from './store/slices/Users'
 
-LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
+// LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
 
 const TestingInner: FC = () => {
   const dispatch = useAppDispatch()
   const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
 
   useEffect(() => {
-    if (currentUser == null) {
-      dispatch(asyncFetchUser(1))
+    async function establishUser() {
       registerForPushNotificationsAsync()
+      try {
+        // Keep the splash screen visible while we fetch resources
+        // check for a user token
+        const userInfo = await LocalStorage.getUserInfo('token')
+        if (userInfo) {
+          console.log('user found!')
+          const id = await LocalStorage.getUserInfo('id')
+          //if token is in local storage
+          dispatch(asyncFetchUser(parseInt(id))) //sets the current user state to a user
+        } else {
+          console.log('no user stored!')
+          dispatch(setIsLoading(false))
+        }
+        // Pre-load fonts, make any API calls you need to do here
+      } catch (e) {
+        console.warn(e)
+      }
     }
-  }, [currentUser])
+    establishUser()
+  }, [])
 
   return (
     <View style={home.container}>
