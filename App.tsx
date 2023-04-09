@@ -50,7 +50,7 @@ const TestingInner: FC = () => {
 
   return (
     <View style={home.container}>
-      {isLoadingCurrentUser || currentUser == null ? (
+      {isLoadingCurrentUser ? (
         <View style={loading.container}>
           <ActivityIndicator size="large" />
         </View>

@@ -6,12 +6,9 @@ import { useAppDispatch } from '../../store/TypedHooks'
 import { setCollege } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { LinearGradient } from 'expo-linear-gradient'
-import { clearAsyncStorage } from '../../LocalStorage'
 
 const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
-
-  clearAsyncStorage()
 
   const colleges: CollegeInfo[] = [
     { name: 'Berkeley', start: '5:00am', end: '4:00am', active: true },

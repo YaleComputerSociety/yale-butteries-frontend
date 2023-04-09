@@ -5,6 +5,7 @@ import { home } from '../../styles/HomeStyles'
 import { TextInput } from 'react-native-gesture-handler'
 import { useAppSelector, useAppDispatch } from '../../store/TypedHooks'
 import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
+import { clearAsyncStorage } from '../../LocalStorage'
 import * as LocalStorage from './../../LocalStorage'
 
 const Settings: FC<{ navigation: any }> = () => {
@@ -18,7 +19,7 @@ const Settings: FC<{ navigation: any }> = () => {
     console.log('name changed')
     if (name.length >= 2 || name.length <= 16) {
       const updatedCurrentUser = {
-        id: id,
+        id: parseInt(id),
         name: name,
         college_id: null,
         permissions: null,
@@ -26,6 +27,7 @@ const Settings: FC<{ navigation: any }> = () => {
         email: null,
         netid: currentUser.netid,
       }
+      console.log(updatedCurrentUser)
       dispatch(asyncUpdateCurrentUser(updatedCurrentUser))
     }
   }
@@ -39,11 +41,14 @@ const Settings: FC<{ navigation: any }> = () => {
           autoCorrect={false}
           onChangeText={(t) => setNewName(t)}
         />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.text}> Update Payment Info </Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.save_button} onPress={() => changeName(newName)}>
           <Text style={styles.text}> Save </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.save_button} onPress={() => clearAsyncStorage()}>
+          <Text style={styles.text}> Clear Async Storage </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.text}> Update Payment Info </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -60,7 +65,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: '#00b2db',
     alignSelf: 'center',
-    top: '450%',
+    marginTop: 200,
   },
   save_button: {
     width: '30%',
@@ -71,7 +76,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: 'grey',
     alignSelf: 'center',
-    top: '200%',
+    marginTop: 50,
   },
   input_text: {
     fontSize: 25,
@@ -81,7 +86,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlignVertical: 'center',
     textAlign: 'center',
-    top: '200%',
+    marginTop: 150,
   },
   text: {
     fontSize: 20,
