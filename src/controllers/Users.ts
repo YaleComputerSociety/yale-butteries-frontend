@@ -6,8 +6,7 @@ const prisma = new PrismaClient()
 export async function getAllUsers(_req: Request, res: Response): Promise<void> {
   try {
     const users = await prisma.user.findMany(includeProperty)
-    console.log(users)
-    res.send(JSON.stringify({ bony: 3 }))
+    res.send(JSON.stringify({ users }))
   } catch (e) {
     console.log(e)
     res.status(400).send(e)
