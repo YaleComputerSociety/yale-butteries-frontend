@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
 import { checkout } from '../../styles/CheckoutStyles'
 import { useAppSelector, useAppDispatch } from '../../store/TypedHooks'
@@ -24,6 +24,15 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     price,
   } = useAppSelector((state) => state.orderCart)
   const dispatch = useAppDispatch()
+
+  const [isDisabled, setDisabled] = useState(orderItems.length < 1)
+
+  const updateDisabled = (b: boolean) => {
+    navigation.setParams({
+      disabled: b,
+    })
+    setDisabled(b)
+  }
 
   const stripe = useStripe()
 
@@ -54,6 +63,12 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const makePayment = async (name: string, amount: number) => {
     try {
       const paymentIntent = await showPaymentSheet(name, amount)
+
+      // user cancelled
+      if (!paymentIntent) {
+        updateDisabled(false)
+        return
+      }
 
       interface tempItem {
         itemCost: number
@@ -88,13 +103,17 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           'Content-Type': 'application/json',
         },
       })
+
       const uploadTransactionResponse = await uploadTransaction.json()
       if (uploadTransaction.status == 400) throw uploadTransactionResponse
       dispatch(setTransactionHistoryState(uploadTransactionResponse))
 
       Alert.alert('Payment complete, thank you!')
+      updateDisabled(false)
 
       //send push notification
+      const push = await Notifications.getExpoPushTokenAsync()
+      console.log(push)
       const token = (await Notifications.getExpoPushTokenAsync()).data
       const subscribeNotification = await fetch(baseUrl + 'api/notifs', {
         method: 'POST',
@@ -113,6 +132,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     } catch (err) {
       console.error(err)
       Alert.alert('Something went wrong, try again later!')
+      updateDisabled(false)
     }
   }
 
@@ -139,7 +159,12 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               </View>
               <ScrollView style={checkout.orderList} showsVerticalScrollIndicator={false}>
                 {orderItems.map((checkoutItem, index) => (
-                  <CheckoutItem decUpdate={removeOrder} checkoutItem={checkoutItem} key={index} />
+                  <CheckoutItem
+                    decUpdate={removeOrder}
+                    checkoutItem={checkoutItem}
+                    isDisabled={isDisabled}
+                    key={index}
+                  />
                 ))}
               </ScrollView>
               <View style={checkout.footer}>
@@ -148,12 +173,13 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             </View>
             <View style={checkout.lowerContainer}>
               <Pressable
-                disabled={orderItems.length < 1 ? true : false}
+                disabled={isDisabled}
                 style={({ pressed }) => [
                   { backgroundColor: pressed ? '#222' : '#333', opacity: orderItems.length < 1 ? 0.7 : 1 },
                   checkout.checkoutButton,
                 ]}
                 onPress={() => {
+                  updateDisabled(true)
                   makePayment('awg32', price)
                 }}
               >
@@ -169,15 +195,31 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
 CheckoutScreen['navigationOptions'] = (navData) => {
   const collegeName = navData.navigation.getParam('collegeName')
+  const disabled = navData.navigation.getParam('disabled') || false
+
   return {
+    gestureEnabled: !disabled,
     headerStyle: {
       backgroundColor: returnCollegeName(collegeName)[1],
       borderWidth: 0,
       shadowColor: '#111',
       shadowRadius: 200,
     },
+    headerLeft: () => (
+      <Ionicon
+        disabled={disabled}
+        name="chevron-back"
+        size={30}
+        color="#fff"
+        onPress={() => {
+          navData.navigation.navigate('MenuScreen')
+        }}
+        style={{ paddingLeft: 15 }}
+      />
+    ),
     headerRight: () => (
       <Ionicon
+        disabled={disabled}
         name="settings-sharp"
         size={20}
         color="#fff"
