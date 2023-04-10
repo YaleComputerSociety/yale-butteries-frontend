@@ -17,58 +17,18 @@ import { NavigationContainer } from '@react-navigation/native'
 
 import { registerForPushNotificationsAsync } from './Functions'
 import { setIsLoading } from './store/slices/Users'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
 
-const TestingInner: FC = () => {
+const InnerApp: FC = () => {
+  const [appIsReady, setAppIsReady] = useState(false)
   const dispatch = useAppDispatch()
   const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
+  const { transactionHistory } = useAppSelector((state) => state.transactionHistory)
 
-  useEffect(() => {
-    async function establishUser() {
-      registerForPushNotificationsAsync()
-      // try {
-      //   // Keep the splash screen visible while we fetch resources
-      //   // check for a user token
-      //   const userInfo = await LocalStorage.getUserInfo('token')
-      //   if (userInfo) {
-      //     console.log('user found!')
-      //     const id = await LocalStorage.getUserInfo('id')
-      //     //if token is in local storage
-      //     dispatch(asyncFetchUser(parseInt(id))) //sets the current user state to a user
-      //   } else {
-      //     console.log('no user stored!')
-      //     dispatch(setIsLoading(false))
-      //   }
-      //   // Pre-load fonts, make any API calls you need to do here
-      // } catch (e) {
-      //   console.warn(e)
-      // }
-    }
-    establishUser()
-  }, [])
-
-  return (
-    <View style={home.container}>
-      {isLoadingCurrentUser ? (
-        <View style={loading.container}>
-          <ActivityIndicator size="large" />
-        </View>
-      ) : (
-        <NavigationContainer>
-          <AppContainer />
-        </NavigationContainer>
-      )}
-      <StatusBar style="auto" />
-    </View>
-  )
-}
-
-const App: FC = () => {
-  const [appIsReady, setAppIsReady] = useState(false)
-
-  const loadFonts = () =>
-    Font.loadAsync({
+  const loadFonts = async () => {
+    await Font.loadAsync({
       Roboto: require('./assets/fonts/Roboto-Black.ttf'),
       'HindSiliguri-Bold': require('./assets/fonts/HindSiliguri-SemiBold.ttf'),
       'HindSiliguri-Bolder': require('./assets/fonts/HindSiliguri-Bold.ttf'),
@@ -76,17 +36,40 @@ const App: FC = () => {
       'Roboto-Light': require('./assets/fonts/HindSiliguri-Light.ttf'),
       'Roboto-Italic': require('./assets/fonts/Roboto-LightItalic.ttf'),
     })
+  }
+
+  const establishUser = async () => {
+    try {
+      // Keep the splash screen visible while we fetch resources
+      // check for a user token
+      // AsyncStorage.clear()
+      const userInfo = await LocalStorage.getUserInfo('token')
+      if (userInfo) {
+        console.log('user found!')
+        const id = await LocalStorage.getUserInfo('id')
+        //if token is in local storage
+        await dispatch(asyncFetchUser(parseInt(id))) //sets the current user state to a user
+        console.log('aaaaa', transactionHistory)
+      } else {
+        console.log('no user stored!')
+        dispatch(setIsLoading(false))
+      }
+      // Pre-load fonts, make any API calls you need to do here
+    } catch (e) {
+      console.warn(e)
+    }
+  }
 
   useEffect(() => {
     async function prepare() {
       try {
+        console.log('start')
         // Keep the splash screen visible while we fetch resources
         await SplashScreen.preventAutoHideAsync()
         // Pre-load fonts, make any API calls you need to do here
         await loadFonts()
-        // Artificially delay for two seconds to simulate a slow loading
-        // experience. Please remove this if you copy and paste the code!
-        // await new Promise((resolve) => setTimeout(resolve, 2000))
+        await establishUser()
+        await new Promise((resolve) => setTimeout(resolve, 2000))
       } catch (e) {
         console.warn(e)
       } finally {
@@ -112,17 +95,33 @@ const App: FC = () => {
     finishedLoading()
   }, [appIsReady])
 
-  if (!appIsReady) {
-    return null
-  }
-
   if (appIsReady) {
     return (
-      <Provider store={store}>
-        <TestingInner />
-      </Provider>
+      <View style={home.container}>
+        {isLoadingCurrentUser ? (
+          <View style={loading.container}>
+            <ActivityIndicator size="large" />
+          </View>
+        ) : (
+          <NavigationContainer>
+            <AppContainer />
+          </NavigationContainer>
+        )}
+        <StatusBar style="auto" />
+      </View>
     )
+  } else {
+    return null
   }
+}
+
+// seperate outer component for redux store to work on the inner component
+const App: FC = () => {
+  return (
+    <Provider store={store}>
+      <InnerApp />
+    </Provider>
+  )
 }
 
 export default App

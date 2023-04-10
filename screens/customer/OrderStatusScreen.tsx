@@ -1,8 +1,8 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { View, ScrollView, Text, StyleSheet, Pressable } from 'react-native'
 import StatusItem from '../../components/customer/StatusCard'
 import { useAppDispatch, useAppSelector } from '../../store/TypedHooks'
-import { updateTransactionHistory } from '../../store/slices/TransactionHistory'
+import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
 import { getNameFromTransactionId } from '../../Functions'
 import ProgressBar from 'react-native-progress/Bar'
 import { baseUrl } from '../../utils/utils'
@@ -10,11 +10,26 @@ import * as Haptics from 'expo-haptics'
 
 const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
+  const [percentage, setPercentage] = useState(0)
   const { currentTransactionHistory } = useAppSelector((state) => state.transactionHistory)
 
+  // every 5 seconds, fetchTransaction
+  useEffect(() => {
+    fetchTransaction().catch(console.log)
+
+    const intervalId = setInterval(async () => {
+      fetchTransaction().catch(console.log)
+      if (percentage == 1) {
+        setPercentage(0)
+        clearInterval(intervalId)
+      }
+    }, 5000)
+    return () => clearInterval(intervalId)
+  }, [percentage])
+
   // turn ratio of orders completed/cancelled into a percentage
-  function getPercentageCompleted(transactionHistory) {
-    const items = transactionHistory.transactionItems
+  const getPercentageCompleted = (newTransactionHistory) => {
+    const items = newTransactionHistory.transactionItems
     const denom = items.length
     let numerator = 0
     for (let i = 0; i < denom; i++) {
@@ -23,8 +38,8 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
         numerator += 1
       }
     }
-    const fraction = numerator / denom
-    return fraction
+    setPercentage(numerator / denom)
+    return numerator / denom
   }
 
   // pull from database to update status
@@ -38,30 +53,21 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
       })
       const response = await currentTransaction.json()
       if (response.status == 400) throw response
-      dispatch(updateTransactionHistory(response))
+      dispatch(setTransactionHistoryState(response))
+      return getPercentageCompleted(response)
     } catch (e) {
       console.log(e)
     }
   }
 
-  const percentage = getPercentageCompleted(currentTransactionHistory)
-  // every 5 seconds, fetchTransaction
-  useEffect(() => {
-    fetchTransaction().catch(console.log)
-    const interval = setInterval(() => {
-      fetchTransaction().catch(console.log)
-      if (percentage == 1) {
-        clearInterval(interval)
-      }
-    }, 5000)
-  }, [])
-
   const status = () => {
-    const progress = currentTransactionHistory.inProgress
+    const progress = currentTransactionHistory?.inProgress
     if (progress == 'true') {
       return 'In Progress'
     } else if (progress == 'false') {
       return 'Done'
+    } else {
+      return 'Loading...'
     }
   }
 
@@ -75,7 +81,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
       </View>
       <View style={styles.outerView}>
         <ScrollView>
-          {currentTransactionHistory.transactionItems.map((transactionItem, index) => (
+          {currentTransactionHistory?.transactionItems.map((transactionItem, index) => (
             <StatusItem
               name={getNameFromTransactionId(transactionItem)}
               status={transactionItem.orderStatus}
@@ -87,7 +93,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
       <View style={{ width: '90%' }}>
         <ProgressBar
           animated={true}
-          progress={getPercentageCompleted(currentTransactionHistory)}
+          progress={percentage}
           width={null}
           height={20}
           borderRadius={8}

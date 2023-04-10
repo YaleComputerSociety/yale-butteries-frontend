@@ -5,6 +5,8 @@ import { AppDispatch } from '../../store/ReduxStore'
 // import { getJSON } from 'utils/fetch'
 
 import { User } from './Users'
+import { setTransactionHistoryState } from './TransactionHistory'
+import { asyncFetchMenuItems } from './MenuItems'
 
 export interface CurrentUserState {
   currentUser: User | null
@@ -48,6 +50,8 @@ export const asyncFetchUser = (id: number) => {
       })
       const data = await user.json()
       dispatch(setCurrentUserState(data))
+      dispatch(setTransactionHistoryState(data.currentOrder))
+      dispatch(asyncFetchMenuItems())
     } catch (e) {
       console.log(e)
     } finally {
@@ -68,7 +72,6 @@ export const asyncUpdateCurrentUser = (currentUser: User) => {
       })
       const data = await updatedUser.json()
       dispatch(setCurrentUserState(data))
-      console.log(data)
     } catch (e) {
       console.log(e)
     }

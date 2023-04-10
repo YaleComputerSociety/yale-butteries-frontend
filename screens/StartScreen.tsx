@@ -29,7 +29,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
 
     dispatch(asyncCreateUser(newUser, newText, token))
-    navigation.navigate('NavigationScreen')
+    navigation.navigate('ButteriesScreen')
   }
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>

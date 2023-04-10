@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, ScrollView } from 'react-native'
 import { home } from '../../styles/HomeStyles'
 import { ButteryCard } from '../../components/customer/ButteryCard'
@@ -6,9 +6,17 @@ import { useAppDispatch } from '../../store/TypedHooks'
 import { setCollege } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { LinearGradient } from 'expo-linear-gradient'
+import { registerForPushNotificationsAsync } from '../../Functions'
 
 const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    const push = async () => {
+      await registerForPushNotificationsAsync()
+    }
+    push()
+  }, [])
 
   const colleges: CollegeInfo[] = [
     { name: 'Berkeley', start: '5:00am', end: '4:00am', active: true },
