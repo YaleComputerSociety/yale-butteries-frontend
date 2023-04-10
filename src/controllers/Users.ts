@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
+import { backToFrontTransactionHistories } from './TransactionHistory'
 
 const prisma = new PrismaClient()
 
@@ -21,7 +22,33 @@ export async function getUser(req: Request, res: Response): Promise<void> {
         id: parseInt(req.params.userId),
       },
     })
-    res.send(JSON.stringify(user))
+
+    const recentOrder = (
+      await prisma.user.findMany({
+        select: {
+          transaction_histories: {
+            orderBy: {
+              created_at: 'desc',
+            },
+            take: 1,
+          },
+        },
+      })
+    )[0].transaction_histories
+    const modifiedRecentOrder = (await backToFrontTransactionHistories(recentOrder, user.college.college))[0]
+    const lifetime = Math.abs(new Date().getTime() - recentOrder[0].order_placed.getTime()) / 36e5
+    const currentOrder = lifetime < 6 ? modifiedRecentOrder : null
+
+    const frontUser = {
+      college_id: user.collegeId,
+      id: user.id,
+      permissions: user.permissions,
+      token: user.token,
+      name: user.name,
+      email: user.email,
+      currentOrder: currentOrder,
+    }
+    res.send(JSON.stringify(frontUser))
   } catch (e) {
     res.status(400).send(e)
   }

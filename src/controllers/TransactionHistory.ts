@@ -24,7 +24,7 @@ interface FrontTransactionHistory {
 
 const prisma = new PrismaClient()
 
-const backToFrontTransactionHistories = async (
+export const backToFrontTransactionHistories = async (
   transactionHistories: TransactionHistory[],
   college: string
 ): Promise<FrontTransactionHistory[]> => {
