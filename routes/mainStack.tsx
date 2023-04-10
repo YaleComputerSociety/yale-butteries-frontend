@@ -9,9 +9,16 @@ import NavigationScreen from '../screens/NavigationScreen'
 import StaffLoginScreen from '../screens/StaffLoginScreen'
 import OrderStatusScreen from '../screens/customer/OrderStatusScreen'
 import StaffRenderScreen from '../screens/staff/StaffRenderScreen'
+import LoadScreen from '../screens/LoadScreen'
 import React from 'react'
 
 const screens = {
+  LoadScreen: {
+    screen: LoadScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
   StartScreen: {
     screen: StartScreen,
     navigationOptions: {

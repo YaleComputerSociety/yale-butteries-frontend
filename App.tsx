@@ -27,23 +27,23 @@ const TestingInner: FC = () => {
   useEffect(() => {
     async function establishUser() {
       registerForPushNotificationsAsync()
-      try {
-        // Keep the splash screen visible while we fetch resources
-        // check for a user token
-        const userInfo = await LocalStorage.getUserInfo('token')
-        if (userInfo) {
-          console.log('user found!')
-          const id = await LocalStorage.getUserInfo('id')
-          //if token is in local storage
-          dispatch(asyncFetchUser(parseInt(id))) //sets the current user state to a user
-        } else {
-          console.log('no user stored!')
-          dispatch(setIsLoading(false))
-        }
-        // Pre-load fonts, make any API calls you need to do here
-      } catch (e) {
-        console.warn(e)
-      }
+      // try {
+      //   // Keep the splash screen visible while we fetch resources
+      //   // check for a user token
+      //   const userInfo = await LocalStorage.getUserInfo('token')
+      //   if (userInfo) {
+      //     console.log('user found!')
+      //     const id = await LocalStorage.getUserInfo('id')
+      //     //if token is in local storage
+      //     dispatch(asyncFetchUser(parseInt(id))) //sets the current user state to a user
+      //   } else {
+      //     console.log('no user stored!')
+      //     dispatch(setIsLoading(false))
+      //   }
+      //   // Pre-load fonts, make any API calls you need to do here
+      // } catch (e) {
+      //   console.warn(e)
+      // }
     }
     establishUser()
   }, [])
