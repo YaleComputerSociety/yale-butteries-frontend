@@ -21,31 +21,37 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   const [closeTimeMinutes, setCloseTimeMinutes] = useState(0)
   const activeText = props.active ? 'CLOSED' : 'INACTIVE'
   const days = ['M ', 'T ', 'W ', 'T ', 'F ', 'S ', 'S']
+  const d = new Date().getDay()
 
   // determines whether the buttery is currently open
   function currentlyOpen() {
     const h = new Date().getHours()
     const m = new Date().getMinutes()
+    let validTime: boolean
 
     if (openTimeHours < closeTimeHours) {
       // standard case
-      return (
+      validTime =
         (h > openTimeHours && h < closeTimeHours) ||
         (h == openTimeHours && m >= openTimeMinutes) ||
         (h == closeTimeHours && m < closeTimeMinutes)
-      )
     } else if (openTimeHours > closeTimeHours) {
       // time wraps around midnight
-      return (
+      validTime =
         h > openTimeHours ||
         h < closeTimeHours ||
         (h == openTimeHours && m >= openTimeMinutes) ||
         (h == closeTimeHours && m < closeTimeMinutes)
-      )
     } else {
       // within the same hour
-      return m >= openTimeMinutes && m < closeTimeMinutes
+      validTime = m >= openTimeMinutes && m < closeTimeMinutes
     }
+    let validDay = props.daysOpen[d]
+    // 2am monday counts as sunday
+    if (h < 4) {
+      validDay = props.daysOpen[(d + 1) % 7]
+    }
+    return validDay && validTime
   }
 
   // immediately check if the buttery is open
@@ -94,7 +100,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
 
   const getDayVisual = (value: boolean, index: number) => {
     return (
-      <Text style={value ? card.dayActive : card.dayInactive} key={index}>
+      <Text style={[value ? card.dayActive : card.dayInactive, d === index ? card.underlined : null]} key={index}>
         {days[index]}{' '}
       </Text>
     )
@@ -111,23 +117,19 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   }
 
   return (
-    <Pressable
-      onPress={props.onPress}
-      disabled={!props.active}
-      style={({ pressed }) => [{ opacity: pressed || !props.active ? 0.7 : 1 }]}
-    >
+    <Pressable onPress={props.onPress} disabled={!isOpen} style={{ opacity: isOpen ? 1 : 0.6 }}>
       <View style={card.cardContent}>
         <View style={home.textContent}>
           <View style={{ flexDirection: 'row' }}>
             <Text style={card.cardText1}>{props.college}</Text>
             <Text
               style={{
-                opacity: props.active ? 0 : 1,
+                opacity: isOpen ? 0 : 1,
+                backgroundColor: props.active ? '#ee3930' : '#ff9600',
                 alignSelf: 'center',
                 color: 'white',
                 paddingHorizontal: 8,
                 marginLeft: 10,
-                backgroundColor: '#ff9600',
                 fontFamily: 'HindSiliguri-Bold',
               }}
             >

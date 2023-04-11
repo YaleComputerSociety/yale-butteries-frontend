@@ -14,7 +14,6 @@ export const home = StyleSheet.create({
 
   container: {
     flex: 1,
-    //alignItems: 'stretch',
     justifyContent: 'center',
   },
 
@@ -66,8 +65,8 @@ export const card = StyleSheet.create({
     fontWeight: 'bold',
     color: '#fff',
     fontSize: 20,
-    marginTop: 12,
-    marginBottom: 10,
+    marginTop: 9,
+    marginBottom: 5,
     alignContent: 'center',
     justifyContent: 'flex-start',
   },
@@ -122,5 +121,9 @@ export const card = StyleSheet.create({
   dayContainer: {
     display: 'flex',
     flexDirection: 'row',
+  },
+
+  underlined: {
+    textDecorationLine: 'underline',
   },
 })

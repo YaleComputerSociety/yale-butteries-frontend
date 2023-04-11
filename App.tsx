@@ -42,7 +42,7 @@ const InnerApp: FC = () => {
     try {
       // Keep the splash screen visible while we fetch resources
       // check for a user token
-      AsyncStorage.clear()
+      // AsyncStorage.clear()
       const userInfo = await LocalStorage.getUserInfo('token')
       const id = await LocalStorage.getUserInfo('id')
       console.log(userInfo)
