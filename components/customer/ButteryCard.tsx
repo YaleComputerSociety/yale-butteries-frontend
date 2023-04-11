@@ -7,6 +7,7 @@ interface butteryProps {
   college: string
   openTime: string
   closeTime: string
+  daysOpen: boolean[]
   offsetY: number
   active: boolean
   onPress: () => void
@@ -19,6 +20,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   const [openTimeMinutes, setOpenTimeMinutes] = useState(0)
   const [closeTimeMinutes, setCloseTimeMinutes] = useState(0)
   const activeText = props.active ? 'CLOSED' : 'INACTIVE'
+  const days = ['M ', 'T ', 'W ', 'T ', 'F ', 'S ', 'S']
 
   // determines whether the buttery is currently open
   function currentlyOpen() {
@@ -90,6 +92,20 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
     return cleanOpen + ' - ' + cleanClose
   }
 
+  const getDayVisual = (value: boolean, index: number) => {
+    return <Text style={value ? card.dayActive : card.dayInactive}>{days[index]} </Text>
+  }
+
+  const getAllWeekDays = () => {
+    const weekDays: JSX.Element[] = []
+
+    for (let i = 0; i < days.length; i++) {
+      weekDays.push(getDayVisual(props.daysOpen[i], i))
+    }
+
+    return <View style={card.dayContainer}>{weekDays}</View>
+  }
+
   return (
     <Pressable
       onPress={props.onPress}
@@ -115,7 +131,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
             </Text>
           </View>
           <Text style={card.cardText2}>{cleanTime()}</Text>
-          <Text style={card.dayText}>{'M  T  W  T  F  S  S'}</Text>
+          {getAllWeekDays()}
         </View>
         <SpriteSheet
           source={require('../../assets/college_icon_sprite_sheet.png')}

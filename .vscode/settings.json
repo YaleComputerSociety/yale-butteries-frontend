@@ -1,8 +1,9 @@
 {
-    "files.eol": "\n",
-    "eslint.format.enable": true,
-    "javascript.format.enable": false,
-    "typescript.format.enable": false,
-    "typescript.preferences.importModuleSpecifier": "non-relative",
-    "editor.tabSize": 2
+  "files.eol": "\n",
+  "eslint.format.enable": true,
+  "javascript.format.enable": false,
+  "typescript.format.enable": false,
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "editor.tabSize": 2,
+  "prettier.printWidth": 405
 }

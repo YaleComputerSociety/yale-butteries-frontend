@@ -19,20 +19,104 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   }, [])
 
   const colleges: CollegeInfo[] = [
-    { name: 'Morse', start: '5:00am', end: '4:00am', active: true },
-    { name: 'Berkeley', start: '5:00am', end: '4:00am', active: true },
-    { name: 'Branford', start: '10:30pm', end: '12:45am', active: false },
-    { name: 'Davenport', start: '10:00pm', end: '12:30am', active: false },
-    { name: 'Franklin', start: '10:00pm', end: '1:00am', active: false },
-    { name: 'Hopper', start: '10:00pm', end: '12:30am', active: false },
-    { name: 'JE', start: '9:30pm', end: '12:30am', active: false },
-    { name: 'Murray', start: '10:00pm', end: '1:00am', active: false },
-    { name: 'Pierson', start: '10:30pm', end: '12:30am', active: false },
-    { name: 'Saybrook', start: '9:00pm', end: '12:00am', active: false },
-    { name: 'Silliman', start: '10:00pm', end: '1:00am', active: false },
-    { name: 'Stiles', start: '10:00pm', end: '12:50am', active: false },
-    { name: 'TD', start: '10:00pm', end: '1:00am', active: false },
-    { name: 'Trumbull', start: '10:00pm', end: '11:30am', active: false },
+    {
+      name: 'Morse',
+      start: '5:00am',
+      end: '4:00am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: true,
+    },
+    {
+      name: 'Berkeley',
+      start: '5:00am',
+      end: '4:00am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: true,
+    },
+    {
+      name: 'Branford',
+      start: '10:30pm',
+      end: '12:45am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: false,
+    },
+    {
+      name: 'Davenport',
+      start: '10:00pm',
+      end: '12:30am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: false,
+    },
+    {
+      name: 'Franklin',
+      start: '10:00pm',
+      end: '1:00am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: false,
+    },
+    {
+      name: 'Hopper',
+      start: '10:00pm',
+      end: '12:30am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: false,
+    },
+    {
+      name: 'JE',
+      start: '9:30pm',
+      end: '12:30am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: false,
+    },
+    {
+      name: 'Murray',
+      start: '10:00pm',
+      end: '1:00am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: false,
+    },
+    {
+      name: 'Pierson',
+      start: '10:30pm',
+      end: '12:30am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: false,
+    },
+    {
+      name: 'Saybrook',
+      start: '9:00pm',
+      end: '12:00am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: false,
+    },
+    {
+      name: 'Silliman',
+      start: '10:00pm',
+      end: '1:00am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: false,
+    },
+    {
+      name: 'Stiles',
+      start: '10:00pm',
+      end: '12:50am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: false,
+    },
+    {
+      name: 'TD',
+      start: '10:00pm',
+      end: '1:00am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: false,
+    },
+    {
+      name: 'Trumbull',
+      start: '10:00pm',
+      end: '11:30am',
+      daysOpen: [true, true, false, false, false, true, false],
+      active: false,
+    },
   ]
 
   const toMenu = (college: string) => {
@@ -45,6 +129,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     start: string
     end: string
     active: boolean
+    daysOpen: boolean[]
   }
 
   const getCollegeVisual = (collegeInfo: CollegeInfo, index: number) => {
@@ -65,6 +150,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
         offsetY={offset}
         active={collegeInfo.active}
         key={index}
+        daysOpen={collegeInfo.daysOpen}
       />
     )
   }

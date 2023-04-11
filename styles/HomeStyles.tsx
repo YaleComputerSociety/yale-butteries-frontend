@@ -103,4 +103,24 @@ export const card = StyleSheet.create({
     marginRight: -12,
     opacity: 1,
   },
+
+  dayActive: {
+    fontFamily: 'HindSiliguri',
+    fontStyle: 'normal',
+    color: 'white',
+    marginTop: 5,
+  },
+
+  dayInactive: {
+    fontFamily: 'HindSiliguri',
+    fontStyle: 'normal',
+    color: 'white',
+    opacity: 0.2,
+    marginTop: 5,
+  },
+
+  dayContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
 })
