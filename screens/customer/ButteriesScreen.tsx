@@ -23,14 +23,14 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
       name: 'Morse',
       start: '5:00am',
       end: '4:00am',
-      daysOpen: [true, true, false, false, false, true, false],
+      daysOpen: [true, true, true, true, true, true, true],
       active: true,
     },
     {
       name: 'Berkeley',
       start: '5:00am',
       end: '4:00am',
-      daysOpen: [true, true, false, false, false, true, false],
+      daysOpen: [true, true, true, false, false, false, true],
       active: true,
     },
     {
@@ -134,11 +134,15 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
   const getCollegeVisual = (collegeInfo: CollegeInfo, index: number) => {
     const navigationName: string = collegeInfo.name.length > 2 ? collegeInfo.name.toLowerCase() : collegeInfo.name
-    let offset = index * 80
+    let offset = (index - 1) * 80
     if (collegeInfo.name == 'Stiles') {
       offset = 240
-    } else if (index > 3 && index < 12) {
+    } else if (collegeInfo.name == 'Morse') {
+      offset = 560
+    } else if ((index > 3 && index < 7) || index >= 12) {
       offset += 80
+    } else if (index >= 7 && index < 12) {
+      offset += 160
     }
 
     return (

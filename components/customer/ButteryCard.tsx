@@ -93,7 +93,11 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   }
 
   const getDayVisual = (value: boolean, index: number) => {
-    return <Text style={value ? card.dayActive : card.dayInactive}>{days[index]} </Text>
+    return (
+      <Text style={value ? card.dayActive : card.dayInactive} key={index}>
+        {days[index]}{' '}
+      </Text>
+    )
   }
 
   const getAllWeekDays = () => {
@@ -133,6 +137,8 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
           <Text style={card.cardText2}>{cleanTime()}</Text>
           {getAllWeekDays()}
         </View>
+        {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore */}
         <SpriteSheet
           source={require('../../assets/college_icon_sprite_sheet.png')}
           columns={1}
