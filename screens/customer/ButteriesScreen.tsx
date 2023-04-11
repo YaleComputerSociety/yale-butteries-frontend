@@ -21,18 +21,18 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   const colleges: CollegeInfo[] = [
     { name: 'Morse', start: '5:00am', end: '4:00am', active: true },
     { name: 'Berkeley', start: '5:00am', end: '4:00am', active: true },
-    { name: 'Branford', start: '5:00am', end: '4:00am', active: false },
-    { name: 'Davenport', start: '5:00am', end: '4:00am', active: false },
-    { name: 'Franklin', start: '5:00am', end: '4:00am', active: false },
-    { name: 'Hopper', start: '5:00am', end: '4:00am', active: false },
-    { name: 'JE', start: '5:00am', end: '4:00am', active: false },
-    { name: 'Murray', start: '5:00am', end: '4:00am', active: false },
-    { name: 'Pierson', start: '5:00am', end: '4:00am', active: false },
-    { name: 'Saybrook', start: '5:00am', end: '4:00am', active: false },
-    { name: 'Silliman', start: '5:00am', end: '4:00am', active: false },
-    { name: 'Stiles', start: '5:00am', end: '4:00am', active: false },
-    { name: 'TD', start: '5:00am', end: '4:00am', active: false },
-    { name: 'Trumbull', start: '5:00am', end: '4:00am', active: false },
+    { name: 'Branford', start: '10:30pm', end: '12:45am', active: false },
+    { name: 'Davenport', start: '10:00pm', end: '12:30am', active: false },
+    { name: 'Franklin', start: '10:00pm', end: '1:00am', active: false },
+    { name: 'Hopper', start: '10:00pm', end: '12:30am', active: false },
+    { name: 'JE', start: '9:30pm', end: '12:30am', active: false },
+    { name: 'Murray', start: '10:00pm', end: '1:00am', active: false },
+    { name: 'Pierson', start: '10:30pm', end: '12:30am', active: false },
+    { name: 'Saybrook', start: '9:00pm', end: '12:00am', active: false },
+    { name: 'Silliman', start: '10:00pm', end: '1:00am', active: false },
+    { name: 'Stiles', start: '10:00pm', end: '12:50am', active: false },
+    { name: 'TD', start: '10:00pm', end: '1:00am', active: false },
+    { name: 'Trumbull', start: '10:00pm', end: '11:30am', active: false },
   ]
 
   const toMenu = (college: string) => {
@@ -83,7 +83,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     <ScrollView style={home.app} showsVerticalScrollIndicator={false} alwaysBounceVertical={false} bounces={true}>
       <LinearGradient colors={['#54ade4', '#4424a4']} locations={[0, 1]}>
         <View style={home.outerContainer}>
-          {getCollegeVisual({ name: 'Morse', start: '5:00am', end: '4:00am', active: true }, 0)}
+          {getCollegeVisual(colleges[0], 0)}
           <View style={home.partition}>
             <Text style={home.announcement}>More Butteries Coming Soon!</Text>
           </View>

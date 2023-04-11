@@ -76,13 +76,13 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   // takes openTime and closeTime and puts them into clean text form. Assumes (h)h:(m)m form with optional pm/am
   function cleanTime() {
     const cleanOpen =
-      (openTimeHours % 12) +
+      (openTimeHours % 12 == 0 ? 12 : openTimeHours % 12) +
       ':' +
       (openTimeMinutes < 10 ? '0' : '') +
       openTimeMinutes +
       (openTimeHours > 12 ? 'pm' : 'am')
     const cleanClose =
-      (closeTimeHours % 12) +
+      (closeTimeHours % 12 == 0 ? 12 : closeTimeHours % 12) +
       ':' +
       (closeTimeMinutes < 10 ? '0' : '') +
       closeTimeMinutes +
@@ -98,11 +98,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
     >
       <View style={card.cardContent}>
         <View style={home.textContent}>
-          <View
-            style={{
-              flexDirection: 'row',
-            }}
-          >
+          <View style={{ flexDirection: 'row' }}>
             <Text style={card.cardText1}>{props.college}</Text>
             <Text
               style={{
@@ -119,6 +115,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
             </Text>
           </View>
           <Text style={card.cardText2}>{cleanTime()}</Text>
+          <Text style={card.dayText}>{'M  T  W  T  F  S  S'}</Text>
         </View>
         <SpriteSheet
           source={require('../../assets/college_icon_sprite_sheet.png')}
@@ -129,7 +126,6 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
           // @ts-ignore
           offsetY={props.offsetY}
         />
-        {/*<Image style={card.butteryIcon} source={props.image} />*/}
       </View>
     </Pressable>
   )
@@ -137,6 +133,5 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
 
 ButteryCard.defaultProps = {
   college: 'Placeholder',
-  //image: require('../assets/images/butteryIconPlaceholder.jpg'),
   offsetY: 0,
 }

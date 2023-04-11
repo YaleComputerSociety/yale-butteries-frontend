@@ -74,9 +74,16 @@ export const card = StyleSheet.create({
 
   cardText2: {
     fontFamily: 'Roboto-Italic',
-    //backgroundColor: 'black',
     color: '#fff',
     fontSize: 15,
+  },
+
+  dayText: {
+    fontFamily: 'HindSiliguri',
+    fontStyle: 'normal',
+    fontWeight: '100',
+    color: 'white',
+    marginTop: 5,
   },
 
   card: {
