@@ -58,7 +58,7 @@ export const asyncCreateUser = (user: User, username: string, token: string) => 
 
       dispatch(setCurrentUserState(data))
 
-      const localStorageInfo = [
+      const localStorageInfo: [string, string][] = [
         ['id', data.id.toString()],
         ['username', username],
         ['token', token],

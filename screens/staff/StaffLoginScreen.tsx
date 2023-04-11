@@ -19,7 +19,7 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
     const verified = await asyncVerifyStaffLogin(username, password)
     console.log(verified)
     if (verified) {
-      const info = [
+      const info: [string, string][] = [
         ['username', username],
         ['permissions', 'staff'],
         ['id', JSON.stringify(3)],
