@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
 export const staffLogin = StyleSheet.create({
   outerContainer: {
@@ -8,8 +8,6 @@ export const staffLogin = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderRadius: 4,
   },
   input: {
     margin: 5,
@@ -19,7 +17,6 @@ export const staffLogin = StyleSheet.create({
     paddingLeft: 8,
     paddingBottom: 5,
     borderWidth: 1,
-    borderColor: "#000",
   },
   button: {
     backgroundColor: '#344a61',
@@ -29,7 +26,5 @@ export const staffLogin = StyleSheet.create({
     margin: 5,
     width: 180,
     alignItems: 'center',
-  }
-
-
+  },
 })

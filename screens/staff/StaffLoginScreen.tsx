@@ -7,6 +7,7 @@ import { asyncVerifyStaffLogin, setCurrentUserState } from '../../store/slices/C
 import { useAppDispatch } from '../../store/TypedHooks'
 import { baseUrl } from '../../utils/utils'
 import { asyncFetchMenuItems } from '../../store/slices/MenuItems'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 
 const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [username, setUser] = useState('')
@@ -52,6 +53,15 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <LinearGradient colors={['#4E65FF', '#c971b9']} locations={[0, 1]}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
+        <Ionicon
+          name="chevron-back"
+          size={30}
+          color="#fff"
+          onPress={() => {
+            navigation.navigate('StartScreen')
+          }}
+          style={{ paddingLeft: 15, paddingTop: 45, fontSize: 40 }}
+        />
         <View style={staffLogin.outerContainer}>
           <Text style={{ fontSize: 30, color: '#000', fontFamily: 'HindSiliguri-Bolder' }}> Staff Sign-In</Text>
           <TextInput

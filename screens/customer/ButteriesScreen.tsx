@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, ScrollView } from 'react-native'
+import { Text, View, ScrollView } from 'react-native'
 import { home } from '../../styles/HomeStyles'
 import { ButteryCard } from '../../components/customer/ButteryCard'
 import { useAppDispatch } from '../../store/TypedHooks'
@@ -72,7 +72,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   const getAllCards = () => {
     const collegeCards: JSX.Element[] = []
 
-    for (let i = 0; i < colleges.length; i++) {
+    for (let i = 1; i < colleges.length; i++) {
       collegeCards.push(getCollegeVisual(colleges[i], i))
     }
 
@@ -82,7 +82,13 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false} alwaysBounceVertical={false} bounces={true}>
       <LinearGradient colors={['#54ade4', '#4424a4']} locations={[0, 1]}>
-        <View style={home.outerContainer}>{getAllCards()}</View>
+        <View style={home.outerContainer}>
+          {getCollegeVisual({ name: 'Morse', start: '5:00am', end: '4:00am', active: true }, 0)}
+          <View style={{ height: 80, display: 'flex', alignContent: 'center' }}>
+            <Text>Coming Soon!</Text>
+          </View>
+          {getAllCards()}
+        </View>
       </LinearGradient>
       <View style={{ height: '20%', width: '100%', backgroundColor: '#4424a4' }}></View>
     </ScrollView>
