@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
 import { checkout } from '../../styles/CheckoutStyles'
-import { useAppSelector, useAppDispatch } from '../../store/TypedHooks'
+import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { loading } from '../../styles/GlobalStyles'
 import CheckoutItem from '../../components/customer/CheckoutItem'
 import { priceToText, returnCollegeName } from '../../Functions'

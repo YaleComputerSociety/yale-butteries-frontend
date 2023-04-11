@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
-import { useAppSelector, useAppDispatch } from '../../store/TypedHooks'
+import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems } from '../../store/slices/MenuItems'
 import InventoryItemCard from '../../components/staff/InventoryItemCard'
 import { COLORS } from '../../constants/Colors'

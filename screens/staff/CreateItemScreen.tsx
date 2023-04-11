@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Alert, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native'
-import { useAppDispatch, useAppSelector } from '../../store/TypedHooks'
+import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { asyncAddMenuItem, MenuItem } from '../../store/slices/MenuItems'
 import EditButton from '../../components/staff/EditButton'
 import { useNavigation } from '@react-navigation/native'

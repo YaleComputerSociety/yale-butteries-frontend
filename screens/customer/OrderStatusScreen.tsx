@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { View, ScrollView, Text, StyleSheet, Pressable } from 'react-native'
 import StatusItem from '../../components/customer/StatusCard'
-import { useAppDispatch, useAppSelector } from '../../store/TypedHooks'
+import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
 import { getNameFromTransactionId } from '../../Functions'
 import ProgressBar from 'react-native-progress/Bar'

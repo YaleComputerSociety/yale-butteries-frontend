@@ -22,7 +22,11 @@ const CheckoutItem: any = ({ decUpdate, checkoutItem, isDisabled }: Props) => {
 
   return (
     <View style={checkout.item}>
-      <Pressable disabled={isDisabled} onPress={removeItem} style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }, checkout.icon]}>
+      <Pressable
+        disabled={isDisabled}
+        onPress={removeItem}
+        style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }, checkout.icon]}
+      >
         <Ionicon name="trash" size={20} color="#000" />
       </Pressable>
       <View style={checkout.NAME}>

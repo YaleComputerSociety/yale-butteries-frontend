@@ -1,12 +1,11 @@
 import React, { FC, useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { useAppSelector, useAppDispatch } from './store/TypedHooks'
+import store, { useAppSelector, useAppDispatch } from './store/ReduxStore'
 import { asyncFetchUser } from './store/slices/CurrentUser'
 import { Provider } from 'react-redux'
-import { home } from './styles/HomeStyles'
+import { home } from './styles/ButtereiesStyles'
 import { loading } from './styles/GlobalStyles'
 import { ActivityIndicator, View } from 'react-native'
-import store from './store/ReduxStore'
 import * as SplashScreen from 'expo-splash-screen'
 import AppContainer from './routes/mainStack'
 import * as LocalStorage from './LocalStorage'
@@ -15,8 +14,8 @@ import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
 
-import { registerForPushNotificationsAsync } from './Functions'
 import { setIsLoading } from './store/slices/Users'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
@@ -24,17 +23,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const InnerApp: FC = () => {
   const [appIsReady, setAppIsReady] = useState(false)
   const dispatch = useAppDispatch()
-  const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
-  const { transactionHistory } = useAppSelector((state) => state.transactionHistory)
+  const { isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
 
   const loadFonts = async () => {
     await Font.loadAsync({
       Roboto: require('./assets/fonts/Roboto-Black.ttf'),
+      'Roboto-Light': require('./assets/fonts/HindSiliguri-Light.ttf'),
+      'Roboto-Italic': require('./assets/fonts/Roboto-LightItalic.ttf'),
       'HindSiliguri-Bold': require('./assets/fonts/HindSiliguri-SemiBold.ttf'),
       'HindSiliguri-Bolder': require('./assets/fonts/HindSiliguri-Bold.ttf'),
       HindSiliguri: require('./assets/fonts/HindSiliguri-Regular.ttf'),
-      'Roboto-Light': require('./assets/fonts/HindSiliguri-Light.ttf'),
-      'Roboto-Italic': require('./assets/fonts/Roboto-LightItalic.ttf'),
     })
   }
 
@@ -49,7 +47,6 @@ const InnerApp: FC = () => {
       if (userInfo && id) {
         //if token is in local storage
         await dispatch(asyncFetchUser(parseInt(id))) //sets the current user state to a user
-        console.log('aaaaa', transactionHistory)
       } else {
         dispatch(setIsLoading(false))
       }
@@ -102,6 +99,8 @@ const InnerApp: FC = () => {
           </View>
         ) : (
           <NavigationContainer>
+            {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            @ts-ignore */}
             <AppContainer />
           </NavigationContainer>
         )}

@@ -1,7 +1,7 @@
 import { TransactionItem } from './store/slices/TransactionItems'
 import { OrderItem } from './store/slices/OrderCart'
 import * as Device from 'expo-device'
-import { useAppSelector } from './store/TypedHooks'
+import { useAppSelector } from './store/ReduxStore'
 import * as Notifications from 'expo-notifications'
 import { Platform } from 'react-native'
 

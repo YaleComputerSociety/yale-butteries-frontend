@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export const getUserInfo = async (param) => {
+export const getUserInfo = async (param: string): Promise<string> => {
   try {
     const savedData = await AsyncStorage.getItem(param)
     return savedData
@@ -9,7 +9,7 @@ export const getUserInfo = async (param) => {
   }
 }
 
-export const storeUserInfo = async (values) => {
+export const storeUserInfo = async (values: [string, string][]): Promise<void> => {
   try {
     await AsyncStorage.multiSet(values)
     console.log(values)
@@ -19,7 +19,7 @@ export const storeUserInfo = async (values) => {
   }
 }
 
-export const removeUserInfo = async (values) => {
+export const removeUserInfo = async (values: string[]): Promise<void> => {
   try {
     await AsyncStorage.multiRemove(values)
     console.log('Successfully removed')
@@ -28,6 +28,6 @@ export const removeUserInfo = async (values) => {
   }
 }
 
-export const clearAsyncStorage = async () => {
+export const clearAsyncStorage = async (): Promise<void> => {
   AsyncStorage.clear()
 }

@@ -8,7 +8,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 
 import OrderCardBackground from './OrderCardBackground'
 
-import { useAppDispatch } from '../../store/TypedHooks'
+import { useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateTransactionItem, TransactionItem, updateTransactionItem } from '../../store/slices/TransactionItems'
 import { cleanTime } from '../../Functions'
 

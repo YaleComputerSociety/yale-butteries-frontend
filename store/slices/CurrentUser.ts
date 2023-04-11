@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseUrl } from '../../utils/utils'
 import { AppDispatch } from '../../store/ReduxStore'
-
-// import { getJSON } from 'utils/fetch'
-
 import { User } from './Users'
 import { setTransactionHistoryState } from './TransactionHistory'
 import { asyncFetchMenuItems } from './MenuItems'
@@ -79,7 +76,7 @@ export const asyncUpdateCurrentUser = (currentUser: User) => {
   }
 }
 
-export const asyncVerifyStaffLogin = async (username: string, password: string) => {
+export const asyncVerifyStaffLogin = async (username: string, password: string): Promise<boolean> => {
   try {
     const verified = await fetch(baseUrl + 'api/users/staffLogin', {
       method: 'POST',

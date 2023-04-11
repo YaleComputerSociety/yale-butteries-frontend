@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import { Switch, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { useAppDispatch } from '../../store/TypedHooks'
+import { useAppDispatch } from '../../store/ReduxStore'
 
 import { LAYOUTS } from '../../constants/Layouts'
 import { MenuItem, asyncUpdateMenuItem, updateMenuItem } from '../../store/slices/MenuItems'

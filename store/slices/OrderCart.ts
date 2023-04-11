@@ -1,10 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { APIError, AppDispatch } from '../ReduxStore'
+import { APIError } from '../ReduxStore'
 import { MenuItem } from './MenuItems'
-import { TransactionHistoryEntry, addTransactionHistoryEntry } from './TransactionHistory'
-import { TransactionItem, addTransactionItem } from './TransactionItems'
-import { CurrentUserState } from './CurrentUser'
 
 export interface OrderItem {
   orderItem: MenuItem
@@ -51,71 +48,5 @@ export const orderCartSlice = createSlice({
 })
 
 export const { resetOrderCartState, addOrderItem, removeOrderItem, setIsLoading, setCollege } = orderCartSlice.actions
-
-export const submitOrder = (
-  orderItems: OrderItem[],
-  currentUser: CurrentUserState,
-  transactionHistoryCounter: number,
-  transactionItemCounter: number
-) => {
-  return async (dispatch: AppDispatch): Promise<void> => {
-    dispatch(setIsLoading(true))
-    try {
-      await dummySubmitOrder(orderItems, currentUser, transactionHistoryCounter, transactionItemCounter, dispatch)
-      dispatch(setIsLoading(false))
-    } catch (e) {
-      setIsLoading({
-        errors: [],
-        callback: submitOrder,
-        parameters: [],
-      })
-    } finally {
-      dispatch(resetOrderCartState())
-    }
-  }
-}
-
-async function dummySubmitOrder(
-  orderItems: OrderItem[],
-  currentUser: CurrentUserState,
-  transactionHistoryCounter,
-  transactionItemCounter,
-  dispatch
-): Promise<void> {
-  const calcPrice = orderItems.reduce((totalPrice, orderItem) => (totalPrice += orderItem.orderItem.price), 0)
-  const transactionHistoryEntry: TransactionHistoryEntry = {
-    id: transactionHistoryCounter,
-    college: orderItems[0].orderItem.college,
-    inProgress: 'true',
-    price: calcPrice,
-    userId: currentUser.currentUser.id,
-  }
-
-  dispatch(addTransactionHistoryEntry(transactionHistoryCounter))
-  dispatch(incrementTransactionHistoryCounter())
-
-  let tmpCounter = transactionItemCounter
-  orderItems.forEach((orderItem) => {
-    const transactionItem: TransactionItem = {
-      id: tmpCounter,
-      itemCost: orderItem.orderItem.price,
-      orderStatus: 'queued',
-      menuItemId: orderItem.orderItem.id,
-      transactionHistoryId: transactionHistoryEntry.id,
-    }
-
-    dispatch(addTransactionItem(transactionItem))
-    dispatch(incrementTransactionItemCounter())
-    tmpCounter += 1
-
-    orderItem.ingredients.forEach((ingredient) => {
-      const transactionItemToIngredients: TransactionItemToIngredient = {
-        transactionItemId: transactionItem.id,
-        ingredientId: ingredient.id,
-      }
-      dispatch(addTransactionItemToIngredient(transactionItemToIngredients))
-    })
-  })
-}
 
 export default orderCartSlice.reducer
