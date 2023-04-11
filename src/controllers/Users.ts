@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 import { backToFrontTransactionHistories } from './TransactionHistory'
+import { getCollegeFromId } from './TransactionHistory'
+import { getCollegeFromName } from './TransactionHistory'
 
 const prisma = new PrismaClient()
 
@@ -35,12 +37,17 @@ export async function getUser(req: Request, res: Response): Promise<void> {
         },
       })
     )[0].transaction_histories
+    let currentOrder = null
     const modifiedRecentOrder = (await backToFrontTransactionHistories(recentOrder, user.college.college))[0]
-    const lifetime = Math.abs(new Date().getTime() - recentOrder[0].order_placed.getTime()) / 36e5
-    const currentOrder = lifetime < 6 ? modifiedRecentOrder : null
+    if (recentOrder.length > 0) {
+      const lifetime = Math.abs(new Date().getTime() - recentOrder[0].order_placed.getTime()) / 36e5
+      currentOrder = lifetime < 6 ? modifiedRecentOrder : null
+    }
+
+    console.log(user.college.college)
 
     const frontUser = {
-      college_id: user.collegeId,
+      college: user.college.college,
       id: user.id,
       permissions: user.permissions,
       token: user.token,
@@ -48,6 +55,7 @@ export async function getUser(req: Request, res: Response): Promise<void> {
       email: user.email,
       currentOrder: currentOrder,
     }
+    console.log(frontUser)
     res.send(JSON.stringify(frontUser))
   } catch (e) {
     res.status(400).send(e)
@@ -57,6 +65,9 @@ export async function getUser(req: Request, res: Response): Promise<void> {
 export async function createUser(req: Request, res: Response): Promise<void> {
   try {
     console.log(req.body)
+    const college = await getCollegeFromName(req.body.college)
+    console.log(college.id)
+
     const newUser = await prisma.user.create({
       data: {
         netid: req.body.netid || undefined,
@@ -66,7 +77,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
         permissions: req.body.permissions || undefined,
         college: {
           connect: {
-            id: parseInt(req.body.college_id) || 1,
+            id: college.id || 1,
           },
         },
       },
@@ -99,4 +110,21 @@ const includeProperty = {
   include: {
     college: true,
   },
+}
+
+export async function verifyStaffLogin(req: Request, res: Response): Promise<void> {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: 3,
+      },
+    })
+    let ret = false
+    if (user.name === req.body.username && user.token === req.body.password) {
+      ret = true
+    }
+    res.send(ret)
+  } catch (e) {
+    res.status(400).send(e)
+  }
 }
