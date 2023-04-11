@@ -153,7 +153,7 @@ const main = async () => {
       netid: 'awg32',
       email: 'addison.goolsbee@yale.edu',
       name: 'Addison',
-      permissions: 'manager',
+      permissions: 'staff',
       token: 'abcd',
       college: {
         connect: { id: 1 },
@@ -173,6 +173,22 @@ const main = async () => {
       permissions: 'customer',
       college: {
         connect: { id: 1 },
+      },
+    },
+  })
+  await prisma.user.upsert({
+    where: {
+      id: 3,
+    },
+    update: {},
+    create: {
+      netid: 'staff',
+      email: 'addison.goolsbee@yale.edu',
+      name: 'MorselChef',
+      token: 'itswalrustime',
+      permissions: 'staff',
+      college: {
+        connect: { id: 7 },
       },
     },
   })
