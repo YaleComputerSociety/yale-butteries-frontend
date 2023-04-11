@@ -126,4 +126,12 @@ export const card = StyleSheet.create({
   underlined: {
     textDecorationLine: 'underline',
   },
+
+  banner: {
+    alignSelf: 'center',
+    color: 'white',
+    paddingHorizontal: 8,
+    marginLeft: 10,
+    fontFamily: 'HindSiliguri-Bold',
+  },
 })

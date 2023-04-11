@@ -123,15 +123,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
           <View style={{ flexDirection: 'row' }}>
             <Text style={card.cardText1}>{props.college}</Text>
             <Text
-              style={{
-                opacity: isOpen ? 0 : 1,
-                backgroundColor: props.active ? '#ee3930' : '#ff9600',
-                alignSelf: 'center',
-                color: 'white',
-                paddingHorizontal: 8,
-                marginLeft: 10,
-                fontFamily: 'HindSiliguri-Bold',
-              }}
+              style={[{ opacity: isOpen ? 0 : 1, backgroundColor: props.active ? '#ee3930' : '#ff9600' }, card.banner]}
             >
               {activeText}
             </Text>
