@@ -42,6 +42,22 @@ export const home = StyleSheet.create({
     height: '18%',
     backgroundColor: '#fff',
   },
+
+  partition: {
+    height: 150,
+    display: 'flex',
+    borderBottomColor: '#ddd',
+    borderBottomWidth: 0.75,
+  },
+
+  announcement: {
+    fontFamily: 'HindSiliguri-Bold',
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    marginTop: 62,
+    fontSize: 20,
+    color: 'white',
+  },
 })
 
 export const card = StyleSheet.create({

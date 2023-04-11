@@ -3,6 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { View } from 'react-native'
 import { useAppSelector } from '../store/TypedHooks'
 
+// This is the screen after the splash screen, before we decide what screen to put the user on while we wait to see who the user is/connect to the backend
 const Dummy: FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
   const { currentTransactionHistory } = useAppSelector((state) => state.transactionHistory)
@@ -16,7 +17,7 @@ const Dummy: FC<{ navigation: any }> = ({ navigation }) => {
           navigation.navigate('ButteriesScreen')
         }
       } else if (currentUser.permissions === 'staff') {
-        navigation.navigate('OrdersScreen')
+        navigation.navigate('StaffRenderScreen')
       }
     } else {
       navigation.navigate('StartScreen')

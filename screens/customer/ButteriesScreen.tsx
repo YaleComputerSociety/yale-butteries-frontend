@@ -84,8 +84,8 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
       <LinearGradient colors={['#54ade4', '#4424a4']} locations={[0, 1]}>
         <View style={home.outerContainer}>
           {getCollegeVisual({ name: 'Morse', start: '5:00am', end: '4:00am', active: true }, 0)}
-          <View style={{ height: 80, display: 'flex', alignContent: 'center' }}>
-            <Text>Coming Soon!</Text>
+          <View style={home.partition}>
+            <Text style={home.announcement}>More Butteries Coming Soon!</Text>
           </View>
           {getAllCards()}
         </View>
