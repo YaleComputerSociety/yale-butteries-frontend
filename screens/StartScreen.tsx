@@ -1,18 +1,13 @@
-import Ionicon from 'react-native-vector-icons/Ionicons'
 import * as React from 'react'
-import { StyleSheet, View, Text, Pressable, Modal, TextInput } from 'react-native'
-import { useAppDispatch, useAppSelector } from '../store/TypedHooks'
+import { StyleSheet, View, Text, Pressable, TextInput } from 'react-native'
+import { useAppDispatch } from '../store/TypedHooks'
 import { home } from '../styles/HomeStyles'
 import { LinearGradient } from 'expo-linear-gradient'
 import { asyncCreateUser } from '../store/slices/Users'
 import * as Random from 'expo-random'
 
 const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const { currentUser } = useAppSelector((state) => state.currentUser)
-
   const dispatch = useAppDispatch()
-
-  const [modalVisible, setModalVisible] = React.useState(false)
   const [newText, setText] = React.useState('')
 
   const onSubmit = async () => {
@@ -23,7 +18,7 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       email: 'random@blah.edu',
       netid: token,
       name: newText,
-      college_id: 1,
+      college: 'morse',
       token: token,
       permissions: 'customer',
     }
@@ -31,6 +26,11 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     dispatch(asyncCreateUser(newUser, newText, token))
     navigation.navigate('ButteriesScreen')
   }
+
+  const handleStaffPress = () => {
+    navigation.navigate('StaffLoginScreen')
+  }
+
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
       <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
@@ -48,25 +48,12 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               placeholderTextColor="black"
               onSubmitEditing={onSubmit}
               onChangeText={(newText) => setText(newText)}
+              autoCorrect={false}
             />
-          </View>
-          <Modal
-            animationType="slide"
-            visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(!modalVisible)
-            }}
-            transparent={true}
-          >
-            <Pressable
-              style={styles.style5}
-              onPress={() => {
-                setModalVisible(!modalVisible)
-              }}
-            >
-              <Ionicon name="close" size={20} color="#fff" />
+            <Pressable onPress={handleStaffPress} style={styles.button}>
+              <Text style={{ color: 'lightgray', fontWeight: '500' }}>Staff Login</Text>
             </Pressable>
-          </Modal>
+          </View>
         </View>
       </View>
     </LinearGradient>
@@ -135,6 +122,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#222',
     padding: 10,
+  },
+  button: {
+    backgroundColor: '#407899',
+    padding: 10,
+    borderRadius: 10,
   },
 })
 

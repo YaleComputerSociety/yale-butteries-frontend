@@ -19,13 +19,13 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   }, [])
 
   const colleges: CollegeInfo[] = [
+    { name: 'Morse', start: '5:00am', end: '4:00am', active: true },
     { name: 'Berkeley', start: '5:00am', end: '4:00am', active: true },
     { name: 'Branford', start: '5:00am', end: '4:00am', active: false },
     { name: 'Davenport', start: '5:00am', end: '4:00am', active: false },
     { name: 'Franklin', start: '5:00am', end: '4:00am', active: false },
     { name: 'Hopper', start: '5:00am', end: '4:00am', active: false },
     { name: 'JE', start: '5:00am', end: '4:00am', active: false },
-    { name: 'Morse', start: '5:00am', end: '4:00am', active: true },
     { name: 'Murray', start: '5:00am', end: '4:00am', active: false },
     { name: 'Pierson', start: '5:00am', end: '4:00am', active: false },
     { name: 'Saybrook', start: '5:00am', end: '4:00am', active: false },

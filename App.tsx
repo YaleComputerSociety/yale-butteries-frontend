@@ -42,16 +42,15 @@ const InnerApp: FC = () => {
     try {
       // Keep the splash screen visible while we fetch resources
       // check for a user token
-      // AsyncStorage.clear()
+      AsyncStorage.clear()
       const userInfo = await LocalStorage.getUserInfo('token')
-      if (userInfo) {
-        console.log('user found!')
-        const id = await LocalStorage.getUserInfo('id')
+      const id = await LocalStorage.getUserInfo('id')
+      console.log(userInfo)
+      if (userInfo && id) {
         //if token is in local storage
         await dispatch(asyncFetchUser(parseInt(id))) //sets the current user state to a user
         console.log('aaaaa', transactionHistory)
       } else {
-        console.log('no user stored!')
         dispatch(setIsLoading(false))
       }
       // Pre-load fonts, make any API calls you need to do here
@@ -63,13 +62,12 @@ const InnerApp: FC = () => {
   useEffect(() => {
     async function prepare() {
       try {
-        console.log('start')
         // Keep the splash screen visible while we fetch resources
         await SplashScreen.preventAutoHideAsync()
         // Pre-load fonts, make any API calls you need to do here
         await loadFonts()
         await establishUser()
-        await new Promise((resolve) => setTimeout(resolve, 2000))
+        // await new Promise((resolve) => setTimeout(resolve, 2000))
       } catch (e) {
         console.warn(e)
       } finally {

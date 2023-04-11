@@ -38,7 +38,7 @@ export const currentUserSlice = createSlice({
 
 export const { setCurrentUserState, setIsLoading, setCurrentUserId } = currentUserSlice.actions
 
-export const asyncFetchUser = (id: number) => {
+export const asyncFetchUser = async (id: number) => {
   return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
@@ -49,6 +49,7 @@ export const asyncFetchUser = (id: number) => {
         },
       })
       const data = await user.json()
+      console.log('hhhhhhh', data)
       dispatch(setCurrentUserState(data))
       dispatch(setTransactionHistoryState(data.currentOrder))
       dispatch(asyncFetchMenuItems())
@@ -75,6 +76,22 @@ export const asyncUpdateCurrentUser = (currentUser: User) => {
     } catch (e) {
       console.log(e)
     }
+  }
+}
+
+export const asyncVerifyStaffLogin = async (username: string, password: string) => {
+  try {
+    const verified = await fetch(baseUrl + 'api/users/staffLogin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username: username, password: password }),
+    })
+    const data = await verified.json()
+    return data
+  } catch (e) {
+    console.log(e)
   }
 }
 

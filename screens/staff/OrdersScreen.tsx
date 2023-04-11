@@ -24,35 +24,41 @@ const OrdersScreen: React.FC = () => {
   const [currentOrders, setCurrentOrders] = useState<TransactionItem[]>([])
   const [pastOrders, setPastOrders] = useState<TransactionItem[]>([])
 
+  useEffect(() => {
+    console.log('ttttt', currentUser)
+  }, [currentUser])
+
   // Every x seconds, fetch TIs by college and time created, then sort by time
   useEffect(() => {
     const fetchItems = async () => {
-      await dispatch(asyncFetchTransactionHistories(currentUser.college))
+      if (currentUser.college) {
+        await dispatch(asyncFetchTransactionHistories(currentUser.college))
 
-      // turn the transactionHistories into transactionItems
-      const ti: TransactionItem[] = []
-      store.getState().transactionHistory.transactionHistory.forEach((th) => {
-        th.transactionItems.forEach((item) => {
-          ti.push({ ...item, creationTime: th.creationTime })
+        // turn the transactionHistories into transactionItems
+        const ti: TransactionItem[] = []
+        store.getState().transactionHistory.transactionHistory.forEach((th) => {
+          th.transactionItems.forEach((item) => {
+            ti.push({ ...item, creationTime: th.creationTime })
+          })
         })
-      })
 
-      // update transactionItems
-      dispatch(setTransactionItemsState(ti))
-      const newTransactionItems = store.getState().transactionItems.transactionItems
+        // update transactionItems
+        dispatch(setTransactionItemsState(ti))
+        const newTransactionItems = store.getState().transactionItems.transactionItems
 
-      // display transactionItems (should already be in sorted order)
-      if (newTransactionItems != null) {
-        setCurrentOrders(
-          newTransactionItems.filter(
-            (element) => element.orderStatus != 'FINISHED' && element.orderStatus != 'CANCELLED'
+        // display transactionItems (should already be in sorted order)
+        if (newTransactionItems != null) {
+          setCurrentOrders(
+            newTransactionItems.filter(
+              (element) => element.orderStatus != 'FINISHED' && element.orderStatus != 'CANCELLED'
+            )
           )
-        )
-        setPastOrders(
-          newTransactionItems.filter(
-            (element) => element.orderStatus == 'FINISHED' || element.orderStatus == 'CANCELLED'
+          setPastOrders(
+            newTransactionItems.filter(
+              (element) => element.orderStatus == 'FINISHED' || element.orderStatus == 'CANCELLED'
+            )
           )
-        )
+        }
       }
     }
 

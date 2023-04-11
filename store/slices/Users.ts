@@ -10,7 +10,7 @@ export interface User {
   email: string
   netid: string
   name: string
-  college_id: number
+  college: string
   token: string
   permissions: string
 }

@@ -21,7 +21,7 @@ const Settings: FC<{ navigation: any }> = () => {
       const updatedCurrentUser = {
         id: parseInt(id),
         name: name,
-        college_id: null,
+        college: null,
         permissions: null,
         token: null,
         email: null,
