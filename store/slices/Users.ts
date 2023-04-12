@@ -3,6 +3,7 @@ import { baseUrl } from '../../utils/utils'
 import { AppDispatch } from '../../store/ReduxStore'
 import { setCurrentUserState } from '../../store/slices/CurrentUser'
 import * as LocalStorage from '../../LocalStorage'
+import { TransactionItem } from './TransactionItems'
 
 // import { getJSON, putJSON, postJSON } from 'utils/fetch'
 
@@ -11,8 +12,18 @@ export interface User {
   netid: string
   name: string
   college: string
-  token: string
   permissions: string
+  id: number
+  currentOrder?: TransactionItem
+}
+
+export interface NewUser {
+  email: string
+  netid: string
+  name: string
+  college: string
+  permissions: string
+  token: string
 }
 
 export interface UsersState {
@@ -44,7 +55,7 @@ export const usersSlice = createSlice({
 
 export const { setUsersState, insertUser, setIsLoading } = usersSlice.actions
 
-export const asyncCreateUser = (user: User, username: string, token: string) => {
+export const asyncCreateUser = (user: NewUser, username: string, token: string) => {
   return async (dispatch: AppDispatch): Promise<void> => {
     try {
       const newUser = await fetch(baseUrl + 'api/users', {
@@ -55,6 +66,7 @@ export const asyncCreateUser = (user: User, username: string, token: string) => 
         body: JSON.stringify(user),
       })
       const data = await newUser.json()
+      console.log('new user created: ', data)
 
       dispatch(setCurrentUserState(data))
 

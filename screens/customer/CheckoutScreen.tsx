@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
 import { checkout } from '../../styles/CheckoutStyles'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
@@ -23,9 +23,14 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     college: collegeOrderCart,
     price,
   } = useAppSelector((state) => state.orderCart)
+  const { currentUser } = useAppSelector((state) => state.currentUser)
   const dispatch = useAppDispatch()
 
   const [isDisabled, setDisabled] = useState(orderItems.length < 1)
+
+  useEffect(() => {
+    console.log(currentUser)
+  }, [])
 
   const updateDisabled = (b: boolean) => {
     navigation.setParams({
@@ -36,10 +41,11 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const stripe = useStripe()
 
-  const showPaymentSheet = async (name: string, amount: number): Promise<any> => {
+  const showPaymentSheet = async (amount: number): Promise<any> => {
+    console.log(currentUser)
     // return { id: 'temp' } // uncomment this line out to skip the credit card entry screen
 
-    const obj = { netid: name, price: amount }
+    const obj = { userId: currentUser.id, price: amount }
     const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
       method: 'POST',
       body: JSON.stringify(obj),
@@ -60,9 +66,9 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     return data.paymentIntent
   }
 
-  const makePayment = async (name: string, amount: number) => {
+  const makePayment = async (amount: number) => {
     try {
-      const paymentIntent = await showPaymentSheet(name, amount)
+      const paymentIntent = await showPaymentSheet(amount)
 
       // user cancelled
       if (!paymentIntent) {
@@ -94,7 +100,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         body: JSON.stringify({
           inProgress: 'true',
           price: price,
-          netId: name,
+          userId: currentUser.id,
           college: collegeOrderCart,
           paymentIntentId: paymentIntent.id,
           transactionItems: transaction_items,
@@ -180,7 +186,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 ]}
                 onPress={() => {
                   updateDisabled(true)
-                  makePayment('awg32', price)
+                  makePayment(price)
                 }}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>

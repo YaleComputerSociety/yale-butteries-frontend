@@ -8,7 +8,7 @@ export interface TransactionHistoryEntry {
   college: string
   inProgress: 'false' | 'true' | 'cancelled'
   price: number
-  netId: string
+  userId: string
   paymentIntentId: string
   transactionItems: TransactionItem[]
   creationTime: string

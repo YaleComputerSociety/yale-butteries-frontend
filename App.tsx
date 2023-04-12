@@ -1,11 +1,10 @@
 import React, { FC, useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import store, { useAppSelector, useAppDispatch } from './store/ReduxStore'
+import store, { useAppDispatch } from './store/ReduxStore'
 import { asyncFetchUser } from './store/slices/CurrentUser'
 import { Provider } from 'react-redux'
 import { home } from './styles/ButtereiesStyles'
-import { loading } from './styles/GlobalStyles'
-import { ActivityIndicator, View } from 'react-native'
+import { View } from 'react-native'
 import * as SplashScreen from 'expo-splash-screen'
 import AppContainer from './routes/mainStack'
 import * as LocalStorage from './LocalStorage'
@@ -23,7 +22,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const InnerApp: FC = () => {
   const [appIsReady, setAppIsReady] = useState(false)
   const dispatch = useAppDispatch()
-  const { isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -40,13 +38,13 @@ const InnerApp: FC = () => {
     try {
       // Keep the splash screen visible while we fetch resources
       // check for a user token
-      // AsyncStorage.clear()
+      AsyncStorage.clear()
       const userInfo = await LocalStorage.getUserInfo('token')
       const id = await LocalStorage.getUserInfo('id')
-      console.log(userInfo)
       if (userInfo && id) {
-        //if token is in local storage
-        await dispatch(asyncFetchUser(parseInt(id))) //sets the current user state to a user
+        // if token is in local storage
+        console.log(id)
+        dispatch(asyncFetchUser(parseInt(id))) // sets the current user state to a user
       } else {
         dispatch(setIsLoading(false))
       }
@@ -93,17 +91,11 @@ const InnerApp: FC = () => {
   if (appIsReady) {
     return (
       <View style={home.container}>
-        {isLoadingCurrentUser ? (
-          <View style={loading.container}>
-            <ActivityIndicator size="large" />
-          </View>
-        ) : (
-          <NavigationContainer>
-            {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        <NavigationContainer>
+          {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             @ts-ignore */}
-            <AppContainer />
-          </NavigationContainer>
-        )}
+          <AppContainer />
+        </NavigationContainer>
         <StatusBar style="auto" />
       </View>
     )

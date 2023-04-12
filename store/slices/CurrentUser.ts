@@ -35,7 +35,7 @@ export const currentUserSlice = createSlice({
 
 export const { setCurrentUserState, setIsLoading, setCurrentUserId } = currentUserSlice.actions
 
-export const asyncFetchUser = async (id: number) => {
+export const asyncFetchUser = (id: number) => {
   return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
@@ -46,7 +46,6 @@ export const asyncFetchUser = async (id: number) => {
         },
       })
       const data = await user.json()
-      console.log('hhhhhhh', data)
       dispatch(setCurrentUserState(data))
       dispatch(setTransactionHistoryState(data.currentOrder))
       dispatch(asyncFetchMenuItems())
