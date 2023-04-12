@@ -6,6 +6,16 @@ import { getCollegeFromName } from './TransactionHistory'
 
 const prisma = new PrismaClient()
 
+export interface FrontUser {
+  email: string
+  netid: string
+  name: string
+  college: string
+  permissions: string
+  id: number
+  currentOrder?: unknown
+}
+
 export async function getAllUsers(_req: Request, res: Response): Promise<void> {
   try {
     const users = await prisma.user.findMany(includeProperty)
@@ -44,8 +54,6 @@ export async function getUser(req: Request, res: Response): Promise<void> {
       currentOrder = lifetime < 6 ? modifiedRecentOrder : null
     }
 
-    console.log(user.college.college)
-
     const frontUser = {
       college: user.college.college,
       id: user.id,
@@ -64,9 +72,7 @@ export async function getUser(req: Request, res: Response): Promise<void> {
 
 export async function createUser(req: Request, res: Response): Promise<void> {
   try {
-    console.log(req.body)
     const college = await getCollegeFromName(req.body.college)
-    console.log(college.id)
 
     const newUser = await prisma.user.create({
       data: {
@@ -74,7 +80,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
         email: req.body.email || undefined,
         name: req.body.name,
         token: req.body.token || undefined,
-        permissions: req.body.permissions || undefined,
+        permissions: req.body.permissions || 'customer',
         college: {
           connect: {
             id: college.id || 1,
@@ -82,7 +88,17 @@ export async function createUser(req: Request, res: Response): Promise<void> {
         },
       },
     })
-    res.send(JSON.stringify(newUser))
+
+    const frontUser: FrontUser = {
+      email: newUser.email,
+      netid: newUser.netid,
+      name: newUser.name,
+      permissions: 'customer',
+      college: req.body.college,
+      id: newUser.id,
+    }
+
+    res.send(JSON.stringify(frontUser))
   } catch (e) {
     res.status(400).send(e)
   }

@@ -16,20 +16,20 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
       res.status(400).json({ message: 'Please enter a price' })
       return
     }
-    if (!req.body.netid) {
-      res.status(400).json({ message: "You aren't logged in. Missing NetID" })
+    if (!req.body.userId) {
+      res.status(400).json({ message: "You aren't logged in. No user found" })
       return
     }
 
     // check if the customer exists in stripe, their account is created when they first login to CAS
     const customerQuery = await stripe.customers.search({
-      query: "metadata['netid']:'" + req.body.netid + "'",
+      query: "metadata['userId']:'" + req.body.userId + "'",
     })
 
     if (!customerQuery.data[0]?.id) {
       res.status(403).json({
         message:
-          'Invalid netid: either the netid is incorrect, or this netid has never been set up with Yale Butteries ',
+          'Invalid user: either the user id is incorrect, or this user has never been set up with Yale Butteries ',
       })
       return
     }

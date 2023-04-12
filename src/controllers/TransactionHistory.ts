@@ -16,7 +16,7 @@ interface FrontTransactionHistory {
   college: string
   inProgress: string
   price: number
-  netId: string
+  userId: number
   paymentIntentId: string
   transactionItems: FrontTransactionItem[]
   creationTime: Date
@@ -39,7 +39,7 @@ export const backToFrontTransactionHistories = async (
         college: college,
         inProgress: item.in_progress,
         price: item.total_price,
-        netId: user.name,
+        userId: user.id,
         paymentIntentId: item.payment_intent_id,
         creationTime: item.created_at,
         transactionItems: tis,
@@ -177,7 +177,7 @@ export async function getTransactionHistory(req: Request, res: Response): Promis
       college: college.college,
       inProgress: transactionHistory.in_progress,
       price: transactionHistory.total_price,
-      netId: user.netid,
+      userId: user.id,
       transactionItems: transactionItems,
     }
 
@@ -194,20 +194,9 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
     const in_progress = req.body.inProgress
     const total_price = parseInt(req.body.price)
     const payment_intent_id = req.body.paymentIntentId
-
-    const user = await getUserFromNetId(req.body.netId)
-    if (!user) throw "Couldn't find user, try restarting the app and logging in again"
-    const user_id = user.id
     const college = await getCollegeFromName(req.body.college)
     if (!college) throw "Sorry, that college doesn't work"
     const college_id = college.id
-    // const getMetadata = await prisma.butteryMetaData.findUnique({
-    //   where: {
-    //     collegeId: college_id,
-    //   },
-    // })
-    // console.log(getMetadata)
-    // const queue_size_on_placement = getMetadata.reserved_queue_spots
     const queue_size_on_placement = 0 // change later, not super necessary
 
     // make array of transaction items
@@ -241,7 +230,7 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
         },
         user: {
           connect: {
-            id: user_id,
+            id: req.body.userId,
           },
         },
         transaction_items: {
@@ -257,7 +246,7 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
       college: req.body.college,
       inProgress: req.body.inProgress,
       price: req.body.price,
-      netId: req.body.netId,
+      userId: req.body.userId,
       transactionItems: transactionItems,
     }
     res.send(JSON.stringify(sendTransaction))
