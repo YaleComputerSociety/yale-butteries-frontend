@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { backToFrontTransactionHistories } from './TransactionHistory'
 import { getCollegeFromId } from './TransactionHistory'
 import { getCollegeFromName } from './TransactionHistory'
+import { stripe } from './Payments'
 
 const prisma = new PrismaClient()
 
@@ -89,6 +90,14 @@ export async function createUser(req: Request, res: Response): Promise<void> {
       },
     })
 
+    const stripeUser = await stripe.customers.create({
+      email: req.body.email,
+      name: req.body.name,
+      metadata: { userId: newUser.id },
+    })
+    console.log(stripeUser)
+    console.log('aaaaa')
+
     const frontUser: FrontUser = {
       email: newUser.email,
       netid: newUser.netid,
@@ -97,9 +106,11 @@ export async function createUser(req: Request, res: Response): Promise<void> {
       college: req.body.college,
       id: newUser.id,
     }
+    console.log('bbbbb')
 
     res.send(JSON.stringify(frontUser))
   } catch (e) {
+    console.log(e)
     res.status(400).send(e)
   }
 }
