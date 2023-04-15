@@ -51,7 +51,7 @@ export const backToFrontTransactionHistories = async (
 }
 
 // returns all transactionHistories of a specific college within the last 6 hours
-export async function getCollegeTransactionHistories(req: Request, res: Response): Promise<void> {
+export async function getRecentCollegeTransactionHistories(req: Request, res: Response): Promise<void> {
   try {
     const college = await getCollegeFromName(req.params.college)
     const date = new Date(Date.now() - 36e5 * 6) // select only transactions from after 6 hours before this moment
@@ -62,6 +62,38 @@ export async function getCollegeTransactionHistories(req: Request, res: Response
         created_at: {
           gte: date,
         },
+      },
+      include: {
+        transaction_items: true,
+      },
+    })
+
+    const frontValidTransactionHisotries = await backToFrontTransactionHistories(
+      validTransactionHistories,
+      college.college
+    )
+
+    const ret = {
+      transactionHistories: frontValidTransactionHisotries,
+    }
+
+    res.send(JSON.stringify(ret))
+  } catch (e) {
+    console.log(e)
+    res.status(400).send(e)
+  }
+}
+
+// returns all of the transaction histories along with their items
+// used for the staff payments screen
+// will probably not be able to do this once there are enough orders...
+export async function getAllCollegeTransactionHistories(req: Request, res: Response): Promise<void> {
+  try {
+    const college = await getCollegeFromName(req.params.college)
+
+    const validTransactionHistories = await prisma.transactionHistory.findMany({
+      where: {
+        collegeId: college.id,
       },
       include: {
         transaction_items: true,

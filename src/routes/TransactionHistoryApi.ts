@@ -1,7 +1,8 @@
 import express from 'express'
 import {
   createTransactionHistory,
-  getCollegeTransactionHistories,
+  getAllCollegeTransactionHistories,
+  getRecentCollegeTransactionHistories,
   getTransactionHistory,
   updateTransactionHistory,
   updateTransactionItem,
@@ -9,7 +10,8 @@ import {
 
 const router = express.Router()
 
-router.get('/college/:college', getCollegeTransactionHistories)
+router.get('/recent/college/:college', getRecentCollegeTransactionHistories)
+router.get('/college/:college', getAllCollegeTransactionHistories)
 router.get('/:transactionId', getTransactionHistory)
 router.put('/', updateTransactionHistory)
 router.put('/:itemId', updateTransactionItem)

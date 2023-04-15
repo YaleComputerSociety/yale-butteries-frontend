@@ -138,6 +138,8 @@ model TransactionHistory {
   in_progress String
   total_price Int
   charged_price Int?
+  stripe_fee Int?
+  reimbursed Int?
   college College @relation(fields: [collegeId], references: [id])
   collegeId Int
   user User @relation(fields: [userId], references: [id])
