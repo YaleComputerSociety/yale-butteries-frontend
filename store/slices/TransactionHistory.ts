@@ -60,9 +60,35 @@ export const {
   setIsLoading,
 } = transactionHistorySlice.actions
 
-export const asyncFetchTransactionHistories = (college: string) => {
+export const asyncFetchRecentTransactionHistories = (college: string) => {
   return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
+    try {
+      const transactions = await fetch(baseUrl + 'api/transactions/recent/college/' + college, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await transactions.json()
+      const newData: TransactionHistoryEntry[] = []
+      data.transactionHistories.forEach((item) => {
+        const newItem: TransactionHistoryEntry = { ...item }
+        newData.push(newItem)
+      })
+      dispatch(setTransactionHistories(newData))
+    } catch (e) {
+      console.log(e)
+    } finally {
+      dispatch(setIsLoading(false))
+    }
+  }
+}
+
+export const asyncFetchAllTransactionHistories = (college: string) => {
+  return async (dispatch: AppDispatch): Promise<void> => {
+    dispatch(setIsLoading(true))
+    console.log(college)
     try {
       const transactions = await fetch(baseUrl + 'api/transactions/college/' + college, {
         method: 'GET',

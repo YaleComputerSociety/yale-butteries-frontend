@@ -7,7 +7,7 @@ import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
 
 import OrderCard from '../../components/staff/OrderCard'
-import { asyncFetchTransactionHistories } from '../../store/slices/TransactionHistory'
+import { asyncFetchAllTransactionHistories } from '../../store/slices/TransactionHistory'
 import { setTransactionItemsState, TransactionItem } from '../../store/slices/TransactionItems'
 import { useIsFocused } from '@react-navigation/native'
 
@@ -31,7 +31,8 @@ const OrdersScreen: React.FC = () => {
   useEffect(() => {
     const fetchItems = async () => {
       if (currentUser.college) {
-        await dispatch(asyncFetchTransactionHistories(currentUser.college))
+        // should fetch only recent to save time, but for a while this will be fine
+        await dispatch(asyncFetchAllTransactionHistories(currentUser.college))
 
         // turn the transactionHistories into transactionItems
         const ti: TransactionItem[] = []

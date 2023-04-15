@@ -2,7 +2,6 @@ import { AntDesign } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import OrdersScreen from '../screens/staff/OrdersScreen'
 import InventoryScreen from '../screens/staff/InventoryScreen'
-import StripeScreen from '../screens/staff/StripeScreen'
 import React from 'react'
 
 import EditItemScreen from '../screens/staff/EditItemScreen'
@@ -37,13 +36,6 @@ const StaffStack: React.FC = () => {
         component={InventoryNavigator}
         options={{
           tabBarIcon: ({ color }) => <AntDesignBarIcon name="table" color={color} />,
-        }}
-      />
-      <Tab.Screen
-        name="Stripe"
-        component={StripeScreen}
-        options={{
-          tabBarIcon: ({ color }) => <AntDesignBarIcon name="wallet" color={color} />,
         }}
       />
     </Tab.Navigator>
