@@ -74,6 +74,7 @@ export async function getUser(req: Request, res: Response): Promise<void> {
 export async function createUser(req: Request, res: Response): Promise<void> {
   try {
     const college = await getCollegeFromName(req.body.college)
+    console.log(req.body)
 
     const newUser = await prisma.user.create({
       data: {

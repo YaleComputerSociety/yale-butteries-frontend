@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id               Int      @id @default(autoincrement())
-  netid            String   @unique
+  netid            String   
   email            String
   name             String
   token            String?

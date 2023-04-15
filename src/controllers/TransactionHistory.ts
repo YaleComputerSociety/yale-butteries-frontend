@@ -111,15 +111,6 @@ export const getUserFromId = async (id: number): Promise<User> => {
   return user
 }
 
-const getUserFromNetId = async (netId: string): Promise<User> => {
-  const user = await prisma.user.findUnique({
-    where: {
-      netid: netId,
-    },
-  })
-  return user
-}
-
 const getMenuItemFromId = async (id: number): Promise<MenuItem> => {
   const item = await prisma.menuItem.findUnique({
     where: {
