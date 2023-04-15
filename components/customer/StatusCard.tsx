@@ -13,8 +13,8 @@ const StatusItem: FC<Props> = ({ name, status }: Props) => {
       case 'PENDING':
         return (
           <View style={styles.pendingView}>
-            <Ionicon name="information-circle" size={23} color="white" />
-            <Text style={styles.statusText}>Pending... </Text>
+            <Ionicon name="timer-outline" size={23} color="white" />
+            <Text style={styles.statusText}>Pending </Text>
           </View>
         )
       case 'CANCELLED':
