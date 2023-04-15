@@ -294,6 +294,8 @@ export async function updateTransactionHistoryInner(req: any): Promise<Transacti
         in_progress: req.body.in_progress || undefined,
         total_price: req.body.total_price || undefined,
         charged_price: req.body.charged_price || undefined,
+        stripe_fee: req.body.stripe_fee || undefined,
+        reimbursed: req.body.reimbursed || undefined,
       },
     })
     return transactionHistory

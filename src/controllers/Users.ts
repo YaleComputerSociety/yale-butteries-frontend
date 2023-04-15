@@ -96,8 +96,6 @@ export async function createUser(req: Request, res: Response): Promise<void> {
       name: req.body.name,
       metadata: { userId: newUser.id },
     })
-    console.log(stripeUser)
-    console.log('aaaaa')
 
     const frontUser: FrontUser = {
       email: newUser.email,
@@ -107,7 +105,6 @@ export async function createUser(req: Request, res: Response): Promise<void> {
       college: req.body.college,
       id: newUser.id,
     }
-    console.log('bbbbb')
 
     res.send(JSON.stringify(frontUser))
   } catch (e) {

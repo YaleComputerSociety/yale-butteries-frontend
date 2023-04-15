@@ -139,7 +139,7 @@ model TransactionHistory {
   total_price Int
   charged_price Int?
   stripe_fee Int?
-  reimbursed Int?
+  reimbursed Boolean?
   college College @relation(fields: [collegeId], references: [id])
   collegeId Int
   user User @relation(fields: [userId], references: [id])

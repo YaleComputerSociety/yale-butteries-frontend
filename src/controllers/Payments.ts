@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
+import { College, PrismaClient, User, TransactionItem, TransactionHistory, MenuItem } from '@prisma/client'
 import Stripe from 'stripe'
+import { getCollegeFromName } from './TransactionHistory'
 
 export interface TypedRequestBody<T> extends Request {
   body: T
@@ -8,6 +10,8 @@ export interface TypedRequestBody<T> extends Request {
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2020-08-27',
 })
+
+const prisma = new PrismaClient()
 
 export async function createPaymentIntent(req: Request, res: Response): Promise<void> {
   try {
@@ -29,13 +33,39 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
     if (!customerQuery.data[0]?.id) {
       res.status(403).json({
         message:
-          'Invalid user: either the user id is incorrect, or this user has never been set up with Yale Butteries ',
+          "Invalid user: you might have created a user and then ordered too fast, please wait 10 seconds. If that doesn't work, try reloading the app",
       })
       return
     }
 
     const customer = await stripe.customers.retrieve(customerQuery.data[0].id)
     const price: number = req.body.price
+
+    // verify that backend data matches frontend order:
+    // verify all the prices match
+    // verify all the items are enabled
+
+    console.log(req.body.items)
+
+    const college = await getCollegeFromName(req.body.college)
+
+    const backendItems = await prisma.menuItem.findMany({
+      where: {
+        collegeId: college.id,
+        is_active: true,
+      },
+    })
+
+    let validOrder = true
+
+    req.body.items.forEach((item) => {
+      const backendItem = backendItems.find((i) => i.id === item.orderItem.id)
+      if (!backendItem || backendItem.price != item.orderItem.price) {
+        validOrder = false
+      }
+    })
+
+    console.log(validOrder)
 
     // card saving; will use later
     // const paymentMethods = await stripe.customers.listPaymentMethods(customer.id, { type: 'card' })
