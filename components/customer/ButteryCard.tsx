@@ -117,7 +117,16 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   }
 
   return (
-    <Pressable onPress={props.onPress} disabled={!isOpen} style={{ opacity: isOpen ? 1 : 0.6 }}>
+    <Pressable
+      onPress={props.onPress}
+      disabled={!isOpen}
+      style={({ pressed }) => [
+        {
+          opacity: isOpen ? 1 : 0.6,
+          backgroundColor: pressed ? 'rgba(0, 0, 0, 0.1)' : 'transparent',
+        },
+      ]}
+    >
       <View style={card.cardContent}>
         <View style={home.textContent}>
           <View style={{ flexDirection: 'row' }}>
