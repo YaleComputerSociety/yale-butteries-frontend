@@ -45,7 +45,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     console.log(currentUser)
     // return { id: 'temp' } // uncomment this line out to skip the credit card entry screen
 
-    const obj = { userId: currentUser.id, price: amount }
+    const obj = { userId: currentUser.id, price: price, items: orderItems, college: collegeOrderCart }
     const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
       method: 'POST',
       body: JSON.stringify(obj),

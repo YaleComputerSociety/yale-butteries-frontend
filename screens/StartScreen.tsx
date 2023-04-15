@@ -41,14 +41,14 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
       setLoadingUser(true)
       setUserSet(true)
       await dispatch(asyncCreateUser(newUser, name, token))
-      await navigation.navigate('ButteriesScreen')
+
       setLoadingUser(false)
     }
   }
 
   useEffect(() => {
     if (currentUser) {
-      console.log('here', currentUser)
+      navigation.navigate('ButteriesScreen')
     }
   }, [currentUser])
 

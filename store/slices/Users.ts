@@ -69,7 +69,6 @@ export const asyncCreateUser = (user: NewUser, username: string, token: string) 
       if (newUser.status != 200) {
         throw 'failed to create new user'
       }
-      console.log('new user created: ', data)
 
       dispatch(setCurrentUserState(data))
 
