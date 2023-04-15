@@ -1,6 +1,6 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import React, { FC, useEffect, useState } from 'react'
-import { View, ScrollView, ActivityIndicator, Text, Pressable } from 'react-native'
+import { StyleSheet, View, ScrollView, ActivityIndicator, Text, Pressable } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems, MenuItem } from '../../store/slices/MenuItems'
 import { addOrderItem, OrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
@@ -54,22 +54,6 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
       ) : (
         <View style={menu.wrapper}>
           <ScrollView style={menu.upperContainer} showsVerticalScrollIndicator={false}>
-            {/* <View style={menu.iconContainer}>
-              <ScrollView horizontal={true}>
-                <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? '#6DD5FF' : '#6DD5FA' }, menu.icon]}>
-                  <Ionicon name="pizza" size={30} color="#fff" />
-                  <Text style={menu.text}>Food</Text>
-                </Pressable>
-                <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? '#bbb' : '#7F7FD5' }, menu.icon]}>
-                  <Ionicon name="cafe" size={30} color="#fff" />
-                  <Text style={menu.text}>Drink</Text>
-                </Pressable>
-                <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? '#ffc00a' : '#bfe6ba' }, menu.icon]}>
-                  <Ionicon name="ice-cream" size={30} color="#fff" />
-                  <Text style={menu.text}>Dessert</Text>
-                </Pressable>
-              </ScrollView>
-            </View> */}
             <View style={home.menuView}>
               {menuItems
                 .filter((menuItem) => {
@@ -80,53 +64,21 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
                 ))}
             </View>
           </ScrollView>
-          <View style={{ position: 'absolute', bottom: 0, alignSelf: 'flex-start' }}>
-            <Pressable
-              style={{
-                backgroundColor: returnCollegeName(collegeOrderCart)[1],
-                width: 80,
-                height: 60,
-                bottom: 0,
-                borderRadius: 25,
-                shadowColor: '#000',
-                shadowOpacity: 0.3,
-                shadowRadius: 20,
-                margin: 30,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-evenly',
-                paddingHorizontal: 8,
-              }}
-            >
-              <Ionicon name="cart" size={25} color="#fff" />
-              <Text style={{ color: '#fff', fontSize: 20, fontFamily: 'HindSiliguri-Bold' }}>{orderItems.length}</Text>
-            </Pressable>
-          </View>
-          <View style={{ position: 'absolute', bottom: 0, alignSelf: 'flex-end' }}>
+          <View style={styles.footer}>
             <Pressable
               disabled={orderItems.length < 1 ? true : false}
-              style={({ pressed }) => [
-                {
-                  opacity: orderItems.length < 1 ? 0.6 : 1,
-                  backgroundColor: pressed ? '#32ba32' : '#32CD32',
-                  width: 160,
-                  height: 60,
-                  bottom: 0,
-                  borderRadius: 25,
-                  shadowColor: '#000',
-                  shadowOpacity: 0.3,
-                  shadowRadius: 20,
-                  margin: 30,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                },
+              style={[
+                { opacity: orderItems.length < 1 ? 0.6 : 1, backgroundColor: returnCollegeName(collegeOrderCart)[1] },
+                styles.cartButton,
               ]}
               onPress={() => {
                 navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
               }}
             >
-              <Text style={{ color: 'white', fontSize: 20, fontFamily: 'HindSiliguri-Bold' }}>Go to Cart</Text>
+              <Text style={[styles.cartText, { marginRight: 30 }]}>Go to Cart</Text>
+              <Ionicon name="cart" size={25} color="#fff" />
+              <Text style={styles.cartText}>{orderItems.length}</Text>
             </Pressable>
           </View>
         </View>
@@ -134,6 +86,35 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  cartButton: {
+    width: '60%',
+    height: 60,
+    bottom: 0,
+    borderRadius: 25,
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    margin: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  footer: {
+    position: 'absolute',
+    alignItems: 'center',
+    bottom: 0,
+    width: '100%',
+  },
+  cartText: {
+    color: 'white',
+    fontSize: 20,
+    fontFamily: 'HindSiliguri-Bold',
+    marginHorizontal: 10,
+  },
+})
 
 MenuScreen['navigationOptions'] = (navData) => {
   const collegeName = navData.navigation.getParam('collegeName')
