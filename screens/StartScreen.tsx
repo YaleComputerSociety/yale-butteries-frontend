@@ -1,31 +1,41 @@
-import * as React from 'react'
-import { StyleSheet, View, Text, Pressable, TextInput } from 'react-native'
-import { useAppDispatch } from '../store/ReduxStore'
-import { home } from '../styles/ButtereiesStyles'
+import React, { useEffect, useState, FC } from 'react'
+import { StyleSheet, View, Text, Pressable, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { useAppDispatch, useAppSelector } from '../store/ReduxStore'
 import { LinearGradient } from 'expo-linear-gradient'
 import { asyncCreateUser } from '../store/slices/Users'
 import * as Random from 'expo-random'
 
-const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
-  const [newText, setText] = React.useState('')
+  const [name, setName] = useState('')
+  const [displayError, setDisplayError] = useState(false)
+  const { currentUser } = useAppSelector((state) => state.currentUser)
 
   const onSubmit = async () => {
-    let token = ''
-    token += Random.getRandomBytes(8).toString()
+    if (name.length < 3) {
+      setDisplayError(true)
+    } else {
+      let token = ''
+      token += Random.getRandomBytes(8).toString()
 
-    const newUser = {
-      email: 'random@blah.edu',
-      netid: token,
-      name: newText,
-      college: 'morse',
-      token: token,
-      permissions: 'customer',
+      const newUser = {
+        email: 'random@blah.edu',
+        netid: 'temp',
+        name: name,
+        college: 'morse',
+        token: token,
+        permissions: 'customer',
+      }
+      dispatch(asyncCreateUser(newUser, name, token))
     }
-
-    dispatch(asyncCreateUser(newUser, newText, token))
-    navigation.navigate('ButteriesScreen')
   }
+
+  useEffect(() => {
+    if (currentUser) {
+      console.log('here', currentUser)
+      navigation.navigate('ButteriesScreen')
+    }
+  }, [currentUser])
 
   const handleStaffPress = () => {
     navigation.navigate('StaffLoginScreen')
@@ -33,8 +43,8 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
-      <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
-        <View style={home.outerContainer}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
           <View style={styles.style1}>
             <View>
               <Text style={{ fontSize: 38, color: '#fff', marginBottom: 15, fontFamily: 'HindSiliguri-Bolder' }}>
@@ -46,16 +56,20 @@ const StartScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               placeholder="Name"
               clearTextOnFocus={true}
               placeholderTextColor="black"
-              onSubmitEditing={onSubmit}
-              onChangeText={(newText) => setText(newText)}
+              onSubmitEditing={async () => {
+                await onSubmit()
+              }}
+              onChangeText={(name) => setName(name)}
+              onFocus={() => setDisplayError(false)}
               autoCorrect={false}
             />
+            {displayError && <Text style={styles.error}>Please enter a name longer than 2 characters</Text>}
             <Pressable onPress={handleStaffPress} style={styles.button}>
               <Text style={{ color: 'lightgray', fontWeight: '500' }}>Staff Login</Text>
             </Pressable>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </LinearGradient>
   )
 }
@@ -68,8 +82,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     width: '60%',
-    backgroundColor: 'transparent',
-    height: '100%',
+    height: '60%',
   },
   style2: {
     backgroundColor: '#1084ff',
@@ -117,16 +130,23 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    margin: 12,
+    marginTop: 12,
     width: '100%',
     borderWidth: 1,
     borderColor: '#222',
     padding: 10,
+    fontFamily: 'HindSiliguri',
   },
   button: {
     backgroundColor: '#407899',
     padding: 10,
     borderRadius: 10,
+    marginTop: 20,
+  },
+  error: {
+    color: '#bb3333',
+    fontFamily: 'HindSiliguri',
+    fontSize: 12,
   },
 })
 
