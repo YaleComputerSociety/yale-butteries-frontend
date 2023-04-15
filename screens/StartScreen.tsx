@@ -1,5 +1,14 @@
 import React, { useEffect, useState, FC } from 'react'
-import { StyleSheet, View, Text, Pressable, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  Pressable,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ActivityIndicator,
+} from 'react-native'
 import { useAppDispatch, useAppSelector } from '../store/ReduxStore'
 import { LinearGradient } from 'expo-linear-gradient'
 import { asyncCreateUser } from '../store/slices/Users'
@@ -9,6 +18,9 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const [name, setName] = useState('')
   const [displayError, setDisplayError] = useState(false)
+  const [loadingUser, setLoadingUser] = useState(false)
+  const [userSet, setUserSet] = useState(false) // weird edge case where user can click staff login the instant the user creation finishes, before the page finishes transitioning to butteries screen
+
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
   const onSubmit = async () => {
@@ -26,14 +38,17 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
         token: token,
         permissions: 'customer',
       }
-      dispatch(asyncCreateUser(newUser, name, token))
+      setLoadingUser(true)
+      setUserSet(true)
+      await dispatch(asyncCreateUser(newUser, name, token))
+      await navigation.navigate('ButteriesScreen')
+      setLoadingUser(false)
     }
   }
 
   useEffect(() => {
     if (currentUser) {
       console.log('here', currentUser)
-      navigation.navigate('ButteriesScreen')
     }
   }, [currentUser])
 
@@ -47,10 +62,11 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
         <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
           <View style={styles.style1}>
             <View>
-              <Text style={{ fontSize: 38, color: '#fff', marginBottom: 15, fontFamily: 'HindSiliguri-Bolder' }}>
+              <Text style={{ fontSize: 38, color: '#fff', marginBottom: 20, fontFamily: 'HindSiliguri-Bolder' }}>
                 Yale<Text style={{ color: '#344a61' }}>Butteries</Text>
               </Text>
             </View>
+            {loadingUser && <ActivityIndicator size="large" />}
             <TextInput
               style={styles.input}
               placeholder="Name"
@@ -62,9 +78,10 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
               onChangeText={(name) => setName(name)}
               onFocus={() => setDisplayError(false)}
               autoCorrect={false}
+              editable={!loadingUser}
             />
             {displayError && <Text style={styles.error}>Please enter a name longer than 2 characters</Text>}
-            <Pressable onPress={handleStaffPress} style={styles.button}>
+            <Pressable onPress={handleStaffPress} style={styles.button} disabled={userSet}>
               <Text style={{ color: 'lightgray', fontWeight: '500' }}>Staff Login</Text>
             </Pressable>
           </View>
@@ -141,7 +158,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#407899',
     padding: 10,
     borderRadius: 10,
-    marginTop: 20,
+    marginTop: 30,
   },
   error: {
     color: '#bb3333',
