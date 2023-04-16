@@ -66,6 +66,10 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
     })
 
     console.log(validOrder)
+    if (!validOrder) {
+      res.status(400).json({ message: 'Transaction failed' })
+      return
+    }
 
     // card saving; will use later
     // const paymentMethods = await stripe.customers.listPaymentMethods(customer.id, { type: 'card' })

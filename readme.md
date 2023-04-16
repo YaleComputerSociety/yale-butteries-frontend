@@ -45,4 +45,5 @@ SELECT * FROM "TransactionItem" ORDER BY id DESC LIMIT 10;
 SELECT id, order_complete, in_progress, total_price, "collegeId", "userId", charged_price, payment_intent_id FROM "TransactionHistory" ORDER BY id DESC LIMIT 3;
 UPDATE "TransactionItem" SET order_status = 'FINISHED' WHERE id=?;
 SELECT id, is_active, item, price, "collegeId" FROM "MenuItem";
+UPDATE "MenuItem" SET is_active = false WHERE id=1;
 ```
