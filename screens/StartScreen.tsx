@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
+  Image,
 } from 'react-native'
 import { useAppDispatch, useAppSelector } from '../store/ReduxStore'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -62,6 +63,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
         <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
           <View style={styles.style1}>
             <View>
+              <Image source={require('../assets/images/logo.png')} style={styles.logo} />
               <Text style={{ fontSize: 38, color: '#fff', marginBottom: 20, fontFamily: 'HindSiliguri-Bolder' }}>
                 Yale<Text style={{ color: '#344a61' }}>Butteries</Text>
               </Text>
@@ -164,6 +166,12 @@ const styles = StyleSheet.create({
     color: '#bb3333',
     fontFamily: 'HindSiliguri',
     fontSize: 12,
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    alignSelf: 'center',
+    marginBottom: 20,
   },
 })
 
