@@ -8,16 +8,22 @@ import { useAppDispatch } from '../../store/ReduxStore'
 import { baseUrl } from '../../utils/utils'
 import { asyncFetchMenuItems } from '../../store/slices/MenuItems'
 import Ionicon from 'react-native-vector-icons/Ionicons'
+import EvilModal from '../../components/EvilModal'
 
 const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [username, setUser] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const dispatch = useAppDispatch()
-
+  const [backendError, setBackendError] = useState(false)
   const checkInfo = async () => {
     const verified = await asyncVerifyStaffLogin(username, password)
-    console.log(verified)
+    
+    if(verified == undefined) {
+      console.log("p")
+      setBackendError(true)
+    }
+    
     if (verified) {
       const info: [string, string][] = [
         ['username', username],
@@ -41,7 +47,8 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         await dispatch(setCurrentUserState(data))
         await dispatch(asyncFetchMenuItems())
       } catch (e) {
-        console.log(e)
+        console.log("pooopy")
+        console.log(e) 
       }
 
       navigation.navigate('StaffRenderScreen')
@@ -52,6 +59,9 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <LinearGradient colors={['#4E65FF', '#c971b9']} locations={[0, 1]}>
+      <EvilModal
+      display={backendError}
+      />
       <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
         <Ionicon
           name="chevron-back"
@@ -70,6 +80,7 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
             style={staffLogin.input}
             onChangeText={setUser}
             autoCorrect={false}
+            autoCapitalize="none"
           ></TextInput>
           <TextInput
             placeholder="password"
@@ -77,6 +88,7 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
             onChangeText={setPassword}
             secureTextEntry={true}
             autoCorrect={false}
+            autoCapitalize="none"
           ></TextInput>
           <Pressable onPress={() => checkInfo()} style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}>
             <View style={staffLogin.button}>
