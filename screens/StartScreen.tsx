@@ -42,11 +42,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
       }
       setLoadingUser(true)
       setUserSet(true)
-      const success = await dispatch(asyncCreateUser(newUser, name, token))
-      if (success==undefined) {
-        setBackendError(true)
-      }
-      console.log(success)
+      await dispatch(asyncCreateUser(newUser, name, token))
       setLoadingUser(false)
     }
   }
@@ -64,10 +60,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
-      <EvilModal
-      toggle={setBackendError}
-      display={backendError}
-      />
+      <EvilModal toggle={setBackendError} display={backendError} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
           <View style={styles.style1}>
