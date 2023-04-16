@@ -27,7 +27,7 @@ const Dummy: FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <View style={styles.style1}>
-      <Image source={require('../assets/images/logo.png')} style={styles.logo} />
+      <Image source={require('../assets/images/splashScreen.png')} style={styles.logo} />
     </View>
   )
 }
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2D90DD',
   },
   logo: {
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     height: '100%',
     width: '100%',
   },

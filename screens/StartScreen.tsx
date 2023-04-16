@@ -69,7 +69,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
         <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
           <View style={styles.style1}>
             <View>
-              <Image source={require('../assets/images/logo.png')} style={styles.logo} />
+              <Image source={require('../assets/images/logo_transparent.png')} style={styles.logo} />
               <Text style={{ fontSize: 38, color: '#fff', marginBottom: 20, fontFamily: 'HindSiliguri-Bolder' }}>
                 Yale<Text style={{ color: '#344a61' }}>Butteries</Text>
               </Text>
@@ -177,7 +177,6 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     alignSelf: 'center',
-    marginBottom: 20,
   },
 })
 
