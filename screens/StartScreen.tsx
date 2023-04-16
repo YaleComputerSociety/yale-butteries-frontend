@@ -42,7 +42,11 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
       }
       setLoadingUser(true)
       setUserSet(true)
-      await dispatch(asyncCreateUser(newUser, name, token))
+      const success = await dispatch(asyncCreateUser(newUser, name, token))
+      if (!success) {
+        console.log('hey', success)
+        setBackendError(true)
+      }
       setLoadingUser(false)
     }
   }
