@@ -21,8 +21,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2020-08-27',
 })
 
-let orderStatus = Status.Incomplete
-
 const getTransactionHistoryFromId = async (
   id: number
 ): Promise<TransactionHistory & { transaction_items: TransactionItem[] }> => {
@@ -50,21 +48,13 @@ const checkItems = (items: TransactionItem[], transactionHistory: TransactionHis
   const transactionLifetime = Math.abs(new Date().getTime() - transactionHistory.order_placed.getTime()) / 36e5
   if (transactionLifetime > 6 || items.every((i) => i.order_status === 'CANCELLED')) {
     console.log('Order Cancelled :(')
-    orderStatus = Status.Cancelled
+    return Status.Cancelled
   } else if (items.every((i) => i.order_status === 'CANCELLED' || i.order_status === 'FINISHED')) {
     console.log('order complete, sending notification!')
-    orderStatus = Status.Complete
-
-    // find cost of completed items
-    let res = 0
-    items.forEach((i) => {
-      if (i.order_status === 'FINISHED') {
-        res += i.item_cost
-      }
-    })
-    return res
+    return Status.Complete
   } else {
     console.log('waiting on order...')
+    return Status.Incomplete
   }
   return 0
 }
@@ -124,9 +114,17 @@ export async function subscribePushNotifications(req: Request, res: Response): P
 
     const interval = setInterval(async () => {
       const items = await getItems(req.body.transactionId)
-      const price = checkItems(items, await getTransactionHistoryFromId(req.body.transactionId))
+      const orderStatus = checkItems(items, await getTransactionHistoryFromId(req.body.transactionId))
 
+      console.log(orderStatus)
       if (orderStatus === Status.Complete) {
+        let price = 0
+        items.forEach((i) => {
+          if (i.order_status === 'FINISHED') {
+            price += i.item_cost
+          }
+        })
+
         clearInterval(interval)
         sendNotification(token, messageComplete)
         updateTransactionHistoryInner({
@@ -137,6 +135,7 @@ export async function subscribePushNotifications(req: Request, res: Response): P
             charged_price: price,
           },
         })
+        console.log(1, req.body)
         const pii = await getPaymentIntentIdFromId(req.body.transactionId)
         await stripe.paymentIntents.capture(pii, {
           amount_to_capture: price,
@@ -152,6 +151,7 @@ export async function subscribePushNotifications(req: Request, res: Response): P
             charged_price: 0,
           },
         })
+        console.log(2)
         stripe.paymentIntents.cancel(await getPaymentIntentIdFromId(req.body.transactionId))
       }
     }, 5000)
