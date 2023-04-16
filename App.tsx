@@ -8,7 +8,6 @@ import { View } from 'react-native'
 import * as SplashScreen from 'expo-splash-screen'
 import AppContainer from './routes/mainStack'
 import * as LocalStorage from './LocalStorage'
-import { Image } from 'react-native'
 
 import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
@@ -39,7 +38,7 @@ const InnerApp: FC = () => {
     try {
       // Keep the splash screen visible while we fetch resources
       // check for a user token
-      // AsyncStorage.clear()
+      AsyncStorage.clear()
       const userInfo = await LocalStorage.getUserInfo('token')
       const id = await LocalStorage.getUserInfo('id')
       if (userInfo && id) {

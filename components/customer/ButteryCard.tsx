@@ -20,7 +20,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   const [openTimeMinutes, setOpenTimeMinutes] = useState(0)
   const [closeTimeMinutes, setCloseTimeMinutes] = useState(0)
   const activeText = props.active ? 'CLOSED' : 'INACTIVE'
-  const days = ['M ', 'T ', 'W ', 'T ', 'F ', 'S ', 'S']
+  const days = ['S ', 'M ', 'T ', 'W ', 'T ', 'F ', 'S ']
   const d = new Date().getDay()
 
   // determines whether the buttery is currently open
