@@ -1,6 +1,6 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import React, { FC, useEffect, useState } from 'react'
-import { StyleSheet, View, ScrollView, ActivityIndicator, Text, Pressable } from 'react-native'
+import React, { FC, useCallback, useEffect, useState } from 'react'
+import { StyleSheet, View, ScrollView, ActivityIndicator, Text, Pressable, RefreshControl } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems, MenuItem } from '../../store/slices/MenuItems'
 import { addOrderItem, OrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
@@ -28,6 +28,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   } = useAppSelector((state) => state.orderCart)
 
   const [priceTotal, setPriceTotal] = useState(getPriceFromOrderItems(orderItems))
+  const [refreshing, setRefreshing] = React.useState(false)
 
   useEffect(() => {
     console.log('hey')
@@ -46,44 +47,49 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
     dispatch(resetOrderCartState())
   }, [])
 
+  // when the user pulls down from the top, trigger loading
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true)
+    await dispatch(asyncFetchMenuItems())
+    setRefreshing(false)
+  }, [])
+
   return (
     <View style={home.container}>
-      {isLoadingMenuItems || isLoadingOrderCart || menuItems == null ? (
-        <View style={loading.container}>
-          <ActivityIndicator size="large" />
-        </View>
-      ) : (
-        <View style={menu.wrapper}>
-          <ScrollView style={menu.upperContainer} showsVerticalScrollIndicator={false}>
-            <View style={home.menuView}>
-              {menuItems
-                .filter((menuItem) => {
-                  return menuItem.college === collegeOrderCart && menuItem.isActive === true
-                })
-                .map((menuItem) => (
-                  <MenuItemCard incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} items={orderItems} />
-                ))}
-            </View>
-          </ScrollView>
-          <View style={styles.footer}>
-            <Pressable
-              disabled={orderItems.length < 1 ? true : false}
-              style={[
-                { opacity: orderItems.length < 1 ? 0.6 : 1, backgroundColor: returnCollegeName(collegeOrderCart)[1] },
-                styles.cartButton,
-              ]}
-              onPress={() => {
-                navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
-              }}
-            >
-              <Text style={[styles.cartText, { marginRight: 30 }]}>Go to Cart</Text>
-              <Ionicon name="cart" size={25} color="#fff" />
-              <Text style={styles.cartText}>{orderItems.length}</Text>
-            </Pressable>
+      <View style={menu.wrapper}>
+        <ScrollView
+          style={menu.upperContainer}
+          showsVerticalScrollIndicator={false}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        >
+          <View style={home.menuView}>
+            {menuItems
+              .filter((menuItem) => {
+                return menuItem.college === collegeOrderCart && menuItem.isActive === true
+              })
+              .map((menuItem) => (
+                <MenuItemCard incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} items={orderItems} />
+              ))}
           </View>
+        </ScrollView>
+        <View style={styles.footer}>
+          <Pressable
+            disabled={orderItems.length < 1 ? true : false}
+            style={[
+              { opacity: orderItems.length < 1 ? 0.6 : 1, backgroundColor: returnCollegeName(collegeOrderCart)[1] },
+              styles.cartButton,
+            ]}
+            onPress={() => {
+              navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+            }}
+          >
+            <Text style={[styles.cartText, { marginRight: 30 }]}>Go to Cart</Text>
+            <Ionicon name="cart" size={25} color="#fff" />
+            <Text style={styles.cartText}>{orderItems.length}</Text>
+          </Pressable>
         </View>
-      )}
+      </View>
     </View>
   )
 }
