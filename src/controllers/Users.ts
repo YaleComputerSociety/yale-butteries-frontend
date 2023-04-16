@@ -30,30 +30,31 @@ export async function getAllUsers(_req: Request, res: Response): Promise<void> {
 export async function getUser(req: Request, res: Response): Promise<void> {
   try {
     const user = await prisma.user.findUnique({
-      ...includeProperty,
+      include: {
+        college: true,
+        transaction_histories: true,
+      },
       where: {
         id: parseInt(req.params.userId),
       },
     })
 
-    const recentOrder = (
-      await prisma.user.findMany({
-        select: {
-          transaction_histories: {
-            orderBy: {
-              created_at: 'desc',
-            },
-            take: 1,
-          },
-        },
-      })
-    )[0].transaction_histories
+    let recentOrder = null
     let currentOrder = null
-    const modifiedRecentOrder = (await backToFrontTransactionHistories(recentOrder, user.college.college))[0]
-    if (recentOrder.length > 0) {
-      const lifetime = Math.abs(new Date().getTime() - recentOrder[0].order_placed.getTime()) / 36e5
-      currentOrder = lifetime < 6 ? modifiedRecentOrder : null
+
+    if (user.transaction_histories) {
+      recentOrder = user.transaction_histories[user.transaction_histories.length - 1]
+      console.log('hi')
+      // THIS ISN'T WORKING START BACK UP HERE
+      const modifiedRecentOrder = (await backToFrontTransactionHistories(recentOrder, user.college.college))[0]
+      console.log(modifiedRecentOrder, 'asdfjaisdhufajsdfuajiosdfjais', recentOrder)
+      if (recentOrder.length > 0) {
+        const lifetime = Math.abs(new Date().getTime() - recentOrder[0].order_placed.getTime()) / 36e5
+        currentOrder = lifetime < 6 ? modifiedRecentOrder : null
+      }
     }
+
+    console.log(currentOrder)
 
     const frontUser = {
       college: user.college.college,
