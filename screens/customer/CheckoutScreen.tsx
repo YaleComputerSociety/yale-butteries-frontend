@@ -41,7 +41,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const stripe = useStripe()
 
-  const showPaymentSheet = async (amount: number): Promise<any> => {
+  const showPaymentSheet = async (): Promise<any> => {
     console.log(currentUser)
     // return { id: 'temp' } // uncomment this line out to skip the credit card entry screen
 
@@ -53,6 +53,10 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         'Content-Type': 'application/json',
       },
     })
+    if (response.status === 400) {
+      Alert.alert('Sorry, an item that you ordered ran out of stock! please refresh the menu page')
+      return null
+    }
     const data = await response.json()
     if (!response.ok) return Alert.alert(data.message)
     const clientSecret = data.paymentIntent.client_secret
@@ -66,11 +70,11 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     return data.paymentIntent
   }
 
-  const makePayment = async (amount: number) => {
+  const makePayment = async () => {
     try {
-      const paymentIntent = await showPaymentSheet(amount)
+      const paymentIntent = await showPaymentSheet()
 
-      // user cancelled
+      // user cancelled or there was an error
       if (!paymentIntent) {
         updateDisabled(false)
         return
@@ -186,7 +190,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 ]}
                 onPress={() => {
                   updateDisabled(true)
-                  makePayment(price)
+                  makePayment()
                 }}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>

@@ -12,12 +12,14 @@ import { getPriceFromOrderItems, returnCollegeName } from '../../Functions'
 import * as Haptics from 'expo-haptics'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
+import { useIsFocused } from '@react-navigation/native'
 
 const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
   navigation,
 }) => {
   //make a function that gets the price from the items in the cart
   const dispatch = useAppDispatch()
+  const isFocused = useIsFocused()
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
   const {
     orderItems,
@@ -28,10 +30,9 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const [priceTotal, setPriceTotal] = useState(getPriceFromOrderItems(orderItems))
 
   useEffect(() => {
-    if (menuItems == null) {
-      dispatch(asyncFetchMenuItems())
-    }
-  }, [])
+    console.log('hey')
+    dispatch(asyncFetchMenuItems())
+  }, [isFocused])
 
   const addOrder = (newItem: MenuItem) => {
     const temp: OrderItem = { orderItem: newItem }
