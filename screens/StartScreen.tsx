@@ -22,7 +22,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [displayError, setDisplayError] = useState(false)
   const [loadingUser, setLoadingUser] = useState(false)
   const [userSet, setUserSet] = useState(false) // weird edge case where user can click staff login the instant the user creation finishes, before the page finishes transitioning to butteries screen
-  const [backendError, setBackendError] = useState(false)
+  const [connection, setConnection] = useState(true)
 
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
@@ -46,7 +46,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
       const success = await dispatch(asyncCreateUser(newUser, name, token))
       if (!success) {
         console.log('hey', success)
-        setBackendError(true)
+        setConnection(false)
       }
       setLoadingUser(false)
     }
@@ -64,7 +64,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
-      <EvilModal toggle={setBackendError} display={backendError} />
+      <EvilModal toggle={setConnection} display={!connection} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
           <View style={styles.style1}>

@@ -13,6 +13,7 @@ import * as Haptics from 'expo-haptics'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
 import { useIsFocused } from '@react-navigation/native'
+import EvilModal from '../../components/EvilModal'
 
 const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
   navigation,
@@ -26,9 +27,14 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const [priceTotal, setPriceTotal] = useState(getPriceFromOrderItems(orderItems))
   const [refreshing, setRefreshing] = useState(false)
   const [begin, setBegin] = useState(true)
+  const [connection, setConnection] = useState(true)
 
   useEffect(() => {
-    dispatch(asyncFetchMenuItems())
+    dispatch(asyncFetchMenuItems()).then((success: boolean) => {
+      if (!success) {
+        setConnection(false)
+      }
+    })
   }, [isFocused])
 
   useEffect(() => {
@@ -36,12 +42,6 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
       setBegin(false)
     }
   }, [menuItems])
-
-  const addOrder = (newItem: MenuItem) => {
-    const temp: OrderItem = { orderItem: newItem }
-    dispatch(addOrderItem(temp))
-    setPriceTotal(priceTotal + newItem.price)
-  }
 
   // reset the order cart upon loading the page
   useEffect(() => {
@@ -51,12 +51,23 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   // when the user pulls down from the top, trigger loading
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
-    await dispatch(asyncFetchMenuItems())
+    await dispatch(asyncFetchMenuItems()).then((success: boolean) => {
+      if (!success) {
+        setConnection(false)
+      }
+    })
     setRefreshing(false)
   }, [])
 
+  const addOrder = (newItem: MenuItem) => {
+    const temp: OrderItem = { orderItem: newItem }
+    dispatch(addOrderItem(temp))
+    setPriceTotal(priceTotal + newItem.price)
+  }
+
   return (
     <View style={home.container}>
+      <EvilModal toggle={setConnection} display={!connection} />
       {begin ? (
         <View style={loading.container}>
           <ActivityIndicator size="large" />

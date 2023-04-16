@@ -58,7 +58,7 @@ export const asyncFetchUser = (id: number) => {
 }
 
 export const asyncUpdateCurrentUser = (currentUser: User) => {
-  return async (dispatch: AppDispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<boolean> => {
     try {
       const updatedUser = await fetch(baseUrl + 'api/users', {
         method: 'PUT',
@@ -69,8 +69,10 @@ export const asyncUpdateCurrentUser = (currentUser: User) => {
       })
       const data = await updatedUser.json()
       dispatch(setCurrentUserState(data))
+      return true
     } catch (e) {
       console.log(e)
+      return false
     }
   }
 }

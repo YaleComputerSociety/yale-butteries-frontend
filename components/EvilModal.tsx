@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Alert, TouchableOpacity, Modal, StyleSheet, Text, Pressable, View } from 'react-native'
+import { Modal, StyleSheet, Text, View } from 'react-native'
 import { LAYOUTS } from '../constants/Layouts'
 import { TEXTS } from '../constants/Texts'
 
@@ -31,7 +31,7 @@ const EvilModal: React.FC<Props> = ({ display, toggle }: Props) => {
             <Text style={styles.text}>
               There was a network error. Please connect to internet and restart the app to continue.
             </Text>
-            <Text style={styles.text}>If the problem persists, please call 312-788-0722 thank uuuu! :3</Text>
+            <Text style={styles.text}>If the problem persists, please call 312-788-0722</Text>
           </View>
         </View>
       </Modal>

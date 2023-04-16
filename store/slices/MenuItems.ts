@@ -50,7 +50,7 @@ export const menuItemsSlice = createSlice({
 export const { setMenuItemsState, setIsLoading, updateMenuItem, deleteMenuItem, addMenuItem } = menuItemsSlice.actions
 
 export const asyncFetchMenuItems = () => {
-  return async (dispatch: AppDispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(setIsLoading(true))
     try {
       const menuItems = await fetch(baseUrl + 'api/menu_items', {
@@ -75,8 +75,10 @@ export const asyncFetchMenuItems = () => {
         newData.push(newItem)
       })
       dispatch(setMenuItemsState(newData))
+      return true
     } catch (e) {
       console.log(e)
+      return false
     } finally {
       dispatch(setIsLoading(false))
     }

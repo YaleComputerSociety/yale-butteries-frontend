@@ -18,12 +18,12 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [backendError, setBackendError] = useState(false)
   const checkInfo = async () => {
     const verified = await asyncVerifyStaffLogin(username, password)
-    
-    if(verified == undefined) {
-      console.log("p")
+
+    if (verified == undefined) {
+      console.log('p')
       setBackendError(true)
     }
-    
+
     if (verified) {
       const info: [string, string][] = [
         ['username', username],
@@ -47,8 +47,8 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         await dispatch(setCurrentUserState(data))
         await dispatch(asyncFetchMenuItems())
       } catch (e) {
-        console.log("pooopy")
-        console.log(e) 
+        console.log('pooopy')
+        console.log(e)
       }
 
       navigation.navigate('StaffRenderScreen')
@@ -59,9 +59,7 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <LinearGradient colors={['#4E65FF', '#c971b9']} locations={[0, 1]}>
-      <EvilModal
-      display={backendError}
-      />
+      <EvilModal display={backendError} />
       <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
         <Ionicon
           name="chevron-back"

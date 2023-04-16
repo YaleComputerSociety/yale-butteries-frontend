@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
 import { checkout } from '../../styles/CheckoutStyles'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
@@ -27,10 +27,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
 
   const [isDisabled, setDisabled] = useState(orderItems.length < 1)
-
-  useEffect(() => {
-    console.log(currentUser)
-  }, [])
 
   const updateDisabled = (b: boolean) => {
     navigation.setParams({

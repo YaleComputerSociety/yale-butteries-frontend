@@ -6,7 +6,7 @@ import { asyncFetchAllTransactionHistories } from '../../store/slices/Transactio
 
 const StripeScreen: FC = () => {
   const dispatch = useAppDispatch()
-  const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
+  const { currentUser } = useAppSelector((state) => state.currentUser)
   const { transactionHistory } = useAppSelector((state) => state.transactionHistory)
 
   useEffect(() => {

@@ -1,18 +1,19 @@
 //import * as React from 'react'
 import React, { FC, useState } from 'react'
-import { View, ScrollView, StyleSheet, TouchableOpacity, Text } from 'react-native'
-import { home } from '../../styles/ButtereiesStyles'
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
 import { clearAsyncStorage } from '../../LocalStorage'
 import * as LocalStorage from './../../LocalStorage'
+import EvilModal from '../../components/EvilModal'
 
 const Settings: FC<{ navigation: any }> = () => {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
   const [newName, setNewName] = useState('')
+  const [connection, setConnection] = useState(true)
 
   const changeName = async (name: string) => {
     const id = await LocalStorage.getUserInfo('id')
@@ -28,13 +29,20 @@ const Settings: FC<{ navigation: any }> = () => {
         netid: currentUser.netid,
       }
       console.log(updatedCurrentUser)
-      dispatch(asyncUpdateCurrentUser(updatedCurrentUser))
+      const success = await dispatch(asyncUpdateCurrentUser(updatedCurrentUser))
+      if (!success) {
+        setConnection(false)
+      }
     }
   }
 
   return (
-    <ScrollView style={home.app} showsVerticalScrollIndicator={false}>
-      <View style={home.outerContainer}>
+    <View
+      style={{ width: '100%', height: '100%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center' }}
+    >
+      <EvilModal toggle={setConnection} display={!connection} />
+      <View style={{ display: 'flex', height: '60%', justifyContent: 'space-cevenly' }}>
+        <Text style={styles.text}>Change your name:</Text>
         <TextInput
           placeholder={currentUser.name}
           style={styles.input_text}
@@ -51,7 +59,7 @@ const Settings: FC<{ navigation: any }> = () => {
           <Text style={styles.text}> Update Payment Info </Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   )
 }
 
@@ -65,7 +73,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: '#00b2db',
     alignSelf: 'center',
-    marginTop: 200,
   },
   save_button: {
     width: '30%',
@@ -76,7 +83,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: 'grey',
     alignSelf: 'center',
-    marginTop: 50,
   },
   input_text: {
     fontSize: 25,
@@ -86,7 +92,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlignVertical: 'center',
     textAlign: 'center',
-    marginTop: 150,
   },
   text: {
     fontSize: 20,
