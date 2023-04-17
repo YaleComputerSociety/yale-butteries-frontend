@@ -38,12 +38,11 @@ const InnerApp: FC = () => {
     try {
       // Keep the splash screen visible while we fetch resources
       // check for a user token
-      AsyncStorage.clear()
       const userInfo = await LocalStorage.getUserInfo('token')
       const id = await LocalStorage.getUserInfo('id')
       if (userInfo && id) {
         // if token is in local storage
-        console.log(id)
+        console.log('user id: ', id)
         dispatch(asyncFetchUser(parseInt(id))) // sets the current user state to a user
       } else {
         dispatch(setIsLoading(false))

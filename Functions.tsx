@@ -19,11 +19,6 @@ export function getPriceFromOrderItems(orderItems: OrderItem[]): string {
   return priceToText(sum)
 }
 
-export function getNameFromTransactionId(transactionItem: TransactionItem): string {
-  const { menuItems } = useAppSelector((state) => state.menuItems)
-  return menuItems.find((element) => element.id == transactionItem.menuItemId).item
-}
-
 export function cleanTime(inputDate: Date): string {
   const hours = inputDate.getHours() % 12 == 0 ? 12 : inputDate.getHours() % 12
   const minutes = inputDate.getMinutes() < 10 ? '0' + inputDate.getMinutes() : inputDate.getMinutes()

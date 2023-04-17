@@ -32,9 +32,6 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         ['token', password],
       ]
       LocalStorage.storeUserInfo(info)
-      // await asyncFetchUser(3)
-      console.log(baseUrl + 'api/users/' + 3)
-
       try {
         const user = await fetch(baseUrl + 'api/users/' + 3, {
           method: 'GET',
@@ -43,11 +40,9 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
           },
         })
         const data = await user.json()
-        console.log('hhhhhhh', data)
         await dispatch(setCurrentUserState(data))
         await dispatch(asyncFetchMenuItems())
       } catch (e) {
-        console.log('pooopy')
         console.log(e)
       }
 

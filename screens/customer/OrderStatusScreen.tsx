@@ -3,15 +3,16 @@ import { View, ScrollView, Text, StyleSheet, Pressable } from 'react-native'
 import StatusItem from '../../components/customer/StatusCard'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
-import { getNameFromTransactionId } from '../../Functions'
 import ProgressBar from 'react-native-progress/Bar'
 import { baseUrl } from '../../utils/utils'
 import * as Haptics from 'expo-haptics'
+import { TransactionItem } from '../../store/slices/TransactionItems'
 
 const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const [percentage, setPercentage] = useState(0)
   const { currentTransactionHistory } = useAppSelector((state) => state.transactionHistory)
+  const { menuItems } = useAppSelector((state) => state.menuItems)
 
   // every 5 seconds, fetchTransaction
   useEffect(() => {
@@ -66,6 +67,14 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
       return 'In Progress'
     } else if (progress == 'false') {
       return 'Done'
+    } else {
+      return 'Loading...'
+    }
+  }
+
+  function getNameFromTransactionId(transactionItem: TransactionItem): string {
+    if (menuItems) {
+      return menuItems.find((element) => element.id == transactionItem.menuItemId).item
     } else {
       return 'Loading...'
     }
