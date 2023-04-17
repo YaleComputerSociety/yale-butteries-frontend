@@ -56,7 +56,6 @@ const checkItems = (items: TransactionItem[], transactionHistory: TransactionHis
     console.log('waiting on order...')
     return Status.Incomplete
   }
-  return 0
 }
 async function getItems(id: string) {
   return (await getTransactionHistoryFromId(parseInt(id))).transaction_items
