@@ -42,19 +42,15 @@ export async function getUser(req: Request, res: Response): Promise<void> {
     let recentOrder = null
     let currentOrder = null
 
-    if (user.transaction_histories) {
+    if (user.transaction_histories.length > 0) {
       recentOrder = user.transaction_histories[user.transaction_histories.length - 1]
-      console.log('hi')
       // THIS ISN'T WORKING START BACK UP HERE
-      const modifiedRecentOrder = (await backToFrontTransactionHistories(recentOrder, user.college.college))[0]
-      console.log(modifiedRecentOrder, 'asdfjaisdhufajsdfuajiosdfjais', recentOrder)
-      if (recentOrder.length > 0) {
-        const lifetime = Math.abs(new Date().getTime() - recentOrder[0].order_placed.getTime()) / 36e5
+      const modifiedRecentOrder = (await backToFrontTransactionHistories([recentOrder], user.college.college))[0]
+      if (recentOrder) {
+        const lifetime = Math.abs(new Date().getTime() - recentOrder.order_placed.getTime()) / 36e5
         currentOrder = lifetime < 6 ? modifiedRecentOrder : null
       }
     }
-
-    console.log(currentOrder)
 
     const frontUser = {
       college: user.college.college,
@@ -65,9 +61,9 @@ export async function getUser(req: Request, res: Response): Promise<void> {
       email: user.email,
       currentOrder: currentOrder,
     }
-    console.log(frontUser)
     res.send(JSON.stringify(frontUser))
   } catch (e) {
+    console.log(e)
     res.status(400).send(e)
   }
 }
@@ -75,7 +71,6 @@ export async function getUser(req: Request, res: Response): Promise<void> {
 export async function createUser(req: Request, res: Response): Promise<void> {
   try {
     const college = await getCollegeFromName(req.body.college)
-    console.log(req.body)
 
     const newUser = await prisma.user.create({
       data: {
