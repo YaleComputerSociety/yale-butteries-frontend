@@ -112,6 +112,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       const uploadTransactionResponse = await uploadTransaction.json()
       if (uploadTransaction.status == 400) throw uploadTransactionResponse
+      // console.log('transaction created: ', uploadTransactionResponse.id)
       dispatch(setTransactionHistoryState(uploadTransactionResponse))
 
       Alert.alert('Payment complete, thank you!')
