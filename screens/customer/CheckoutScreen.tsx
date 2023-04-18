@@ -12,6 +12,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import { baseUrl } from '../../utils/utils'
 import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
+import { StackActions, NavigationActions } from 'react-navigation'
 
 // eslint-disable-next-line import/no-unresolved
 import { STRIPE_PK } from '@env'

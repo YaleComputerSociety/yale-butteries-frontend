@@ -7,6 +7,7 @@ import ProgressBar from 'react-native-progress/Bar'
 import { baseUrl } from '../../utils/utils'
 import * as Haptics from 'expo-haptics'
 import { TransactionItem } from '../../store/slices/TransactionItems'
+import { NavigationActions, StackActions } from 'react-navigation'
 
 const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
@@ -80,6 +81,14 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
     }
   }
 
+  const test = () => {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'ButteriesScreen' })],
+    })
+    navigation.dispatch(resetAction)
+  }
+
   return (
     <View style={styles.view3}>
       <View style={styles.view2}>
@@ -116,7 +125,8 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
             styles.button,
           ]}
           onPress={() => {
-            navigation.navigate('ButteriesScreen')
+            test()
+            // navigation.navigate('ButteriesScreen')
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
           }}
         >
