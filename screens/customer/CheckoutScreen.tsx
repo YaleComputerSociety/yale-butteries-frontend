@@ -209,9 +209,6 @@ CheckoutScreen['navigationOptions'] = (navData) => {
     gestureEnabled: !disabled,
     headerStyle: {
       backgroundColor: returnCollegeName(collegeName)[1],
-      borderWidth: 0,
-      shadowColor: '#111',
-      shadowRadius: 200,
     },
     headerLeft: () => (
       <Ionicon

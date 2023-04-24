@@ -81,7 +81,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
     }
   }
 
-  const test = () => {
+  const back = () => {
     const resetAction = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName: 'ButteriesScreen' })],
@@ -125,8 +125,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
             styles.button,
           ]}
           onPress={() => {
-            test()
-            // navigation.navigate('ButteriesScreen')
+            back()
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
           }}
         >

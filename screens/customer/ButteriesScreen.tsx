@@ -171,7 +171,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
   return (
     <ScrollView style={home.app} showsVerticalScrollIndicator={false} alwaysBounceVertical={false} bounces={true}>
-      <LinearGradient colors={['#54ade4', '#4424a4']} locations={[0, 1]}>
+      <LinearGradient colors={['#54ade4', '#43cea2', '#54ade4']} locations={[0, 0.5, 1]}>
         <View style={home.outerContainer}>
           {getCollegeVisual(colleges[0], 0)}
           <View style={home.partition}>
@@ -180,7 +180,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
           {getAllCards()}
         </View>
       </LinearGradient>
-      <View style={{ height: '20%', width: '100%', backgroundColor: '#4424a4' }}></View>
+      <View style={{ height: '20%', width: '100%', backgroundColor: '#54ade4' }}></View>
     </ScrollView>
   )
 }

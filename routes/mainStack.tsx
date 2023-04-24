@@ -90,7 +90,7 @@ const MainStack = createStackNavigator(screens, {
       backgroundColor: '#54a1e4',
       borderWidth: 0,
       shadowColor: '#222',
-      shadowOpacity: 0.2,
+      shadowOpacity: 0.3,
       shadowRadius: 10,
     },
     headerTitleStyle: { fontFamily: 'HindSiliguri-Bold', fontSize: 20, paddingBottom: 10 },

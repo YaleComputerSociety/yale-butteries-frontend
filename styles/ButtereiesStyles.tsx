@@ -45,8 +45,10 @@ export const home = StyleSheet.create({
   partition: {
     height: 150,
     display: 'flex',
-    borderBottomColor: '#ddd',
-    borderBottomWidth: 0.75,
+    borderColor: '#ddd',
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
+    marginTop: 10,
   },
 
   announcement: {
@@ -92,14 +94,14 @@ export const card = StyleSheet.create({
 
   cardContent: {
     flex: 1,
-    padding: 8,
+    padding: 5,
     color: '#fff',
     borderColor: '#fff',
-    borderBottomWidth: 0.25,
+    borderWidth: 0.25,
+    borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginRight: -12,
     opacity: 1,
   },
 
