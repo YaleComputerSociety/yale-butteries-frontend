@@ -7,9 +7,10 @@ import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
 
 import OrderCard from '../../components/staff/OrderCard'
-import { asyncFetchAllTransactionHistories } from '../../store/slices/TransactionHistory'
+import { asyncFetchRecentTransactionHistories } from '../../store/slices/TransactionHistory'
 import { setTransactionItemsState, TransactionItem } from '../../store/slices/TransactionItems'
 import { useIsFocused } from '@react-navigation/native'
+import EvilModal from '../../components/EvilModal'
 
 let counter = 0
 
@@ -22,6 +23,8 @@ const OrdersScreen: React.FC = () => {
 
   const [currentOrders, setCurrentOrders] = useState<TransactionItem[]>([])
   const [pastOrders, setPastOrders] = useState<TransactionItem[]>([])
+  const [connection, setConnection] = useState(true) // remind the user but don't need to do anything
+  const [necessaryConnection, setNecessaryConnection] = useState(true) // user needs to reload app
 
   useEffect(() => {
     console.log('ttttt', currentUser)
@@ -32,7 +35,10 @@ const OrdersScreen: React.FC = () => {
     const fetchItems = async () => {
       if (currentUser.college) {
         // should fetch only recent to save time, but for a while this will be fine
-        await dispatch(asyncFetchAllTransactionHistories(currentUser.college))
+        await dispatch(asyncFetchRecentTransactionHistories(currentUser.college)).then((success: boolean) => {
+          console.log(success)
+          setConnection(success)
+        })
 
         // turn the transactionHistories into transactionItems
         const ti: TransactionItem[] = []
@@ -88,6 +94,10 @@ const OrdersScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={{ ...styles.container }}>
+      {!necessaryConnection && <EvilModal toggle={setNecessaryConnection} display={!necessaryConnection} />}
+      {!connection && (
+        <Text style={styles.connectionError}>You aren't connected to the internet. Orders may not be accurate</Text>
+      )}
       {isLoadingTransactionItems || transactionItems == null ? (
         <ScrollView
           style={{ ...styles.scrollView }}
@@ -165,5 +175,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
+  },
+  connectionError: {
+    color: '#b33',
+    fontFamily: 'HindSiliguri',
+    fontSize: 14,
+    alignSelf: 'center',
+    marginTop: 5,
   },
 })

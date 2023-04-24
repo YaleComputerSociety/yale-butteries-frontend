@@ -61,7 +61,7 @@ export const {
 } = transactionHistorySlice.actions
 
 export const asyncFetchRecentTransactionHistories = (college: string) => {
-  return async (dispatch: AppDispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(setIsLoading(true))
     try {
       const transactions = await fetch(baseUrl + 'api/transactions/recent/college/' + college, {
@@ -77,8 +77,10 @@ export const asyncFetchRecentTransactionHistories = (college: string) => {
         newData.push(newItem)
       })
       dispatch(setTransactionHistories(newData))
+      return true
     } catch (e) {
       console.log(e)
+      return false
     } finally {
       dispatch(setIsLoading(false))
     }

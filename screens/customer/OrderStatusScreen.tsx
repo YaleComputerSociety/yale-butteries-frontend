@@ -8,7 +8,6 @@ import { baseUrl } from '../../utils/utils'
 import * as Haptics from 'expo-haptics'
 import { TransactionItem } from '../../store/slices/TransactionItems'
 import { NavigationActions, StackActions } from 'react-navigation'
-import EvilModal from '../../components/EvilModal'
 
 const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
