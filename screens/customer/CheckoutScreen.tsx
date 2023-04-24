@@ -12,7 +12,6 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import { baseUrl } from '../../utils/utils'
 import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
-import { StackActions, NavigationActions } from 'react-navigation'
 
 // eslint-disable-next-line import/no-unresolved
 import { STRIPE_PK } from '@env'
@@ -139,7 +138,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch (err) {
       console.error(err)
-      Alert.alert('Something went wrong, try again later!')
+      Alert.alert('Something went wrong, check your internet connection')
       updateDisabled(false)
     }
   }

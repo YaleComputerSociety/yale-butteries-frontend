@@ -8,10 +8,12 @@ import { baseUrl } from '../../utils/utils'
 import * as Haptics from 'expo-haptics'
 import { TransactionItem } from '../../store/slices/TransactionItems'
 import { NavigationActions, StackActions } from 'react-navigation'
+import EvilModal from '../../components/EvilModal'
 
 const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const [percentage, setPercentage] = useState(0)
+  const [connection, setConnection] = useState(true)
   const { currentTransactionHistory } = useAppSelector((state) => state.transactionHistory)
   const { menuItems } = useAppSelector((state) => state.menuItems)
 
@@ -56,9 +58,11 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
       const response = await currentTransaction.json()
       if (response.status == 400) throw response
       dispatch(setTransactionHistoryState(response))
+      setConnection(true)
       return getPercentageCompleted(response)
     } catch (e) {
       console.log(e)
+      setConnection(false)
     }
   }
 
@@ -96,6 +100,11 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
           Order Status:
           <Text style={{ fontFamily: 'HindSiliguri-Bold' }}> {status()} </Text>
         </Text>
+        {!connection && (
+          <Text style={styles.connectionError}>
+            You aren't connected to the internet. Your status may not be accurate
+          </Text>
+        )}
       </View>
       <View style={styles.outerView}>
         <ScrollView>
@@ -184,5 +193,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'HindSiliguri-Bold',
     color: '#fff',
+  },
+  connectionError: {
+    color: '#d44',
+    fontFamily: 'HindSiliguri',
+    fontSize: 12,
   },
 })
