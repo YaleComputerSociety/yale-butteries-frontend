@@ -36,7 +36,7 @@ export const currentUserSlice = createSlice({
 export const { setCurrentUserState, setIsLoading, setCurrentUserId } = currentUserSlice.actions
 
 export const asyncFetchUser = (id: number) => {
-  return async (dispatch: AppDispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(setIsLoading(true))
     try {
       const user = await fetch(baseUrl + 'api/users/' + id, {
@@ -49,8 +49,10 @@ export const asyncFetchUser = (id: number) => {
       dispatch(setCurrentUserState(data))
       dispatch(setTransactionHistoryState(data.currentOrder))
       dispatch(asyncFetchMenuItems())
+      return true
     } catch (e) {
       console.log(e)
+      return false
     } finally {
       dispatch(setIsLoading(false))
     }

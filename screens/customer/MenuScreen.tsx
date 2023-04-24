@@ -21,7 +21,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   //make a function that gets the price from the items in the cart
   const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
-  const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
+  const { menuItems } = useAppSelector((state) => state.menuItems)
   const { orderItems, college: collegeOrderCart } = useAppSelector((state) => state.orderCart)
 
   const [priceTotal, setPriceTotal] = useState(getPriceFromOrderItems(orderItems))

@@ -16,11 +16,13 @@ import { NavigationContainer } from '@react-navigation/native'
 import { setIsLoading } from './store/slices/Users'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import EvilModal from './components/EvilModal'
 
 // LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
 
 const InnerApp: FC = () => {
   const [appIsReady, setAppIsReady] = useState(false)
+  const [connection, setConnection] = useState(true)
   const dispatch = useAppDispatch()
 
   const loadFonts = async () => {
@@ -44,7 +46,12 @@ const InnerApp: FC = () => {
       if (userInfo && id) {
         // if token is in local storage
         console.log('user id: ', id)
-        dispatch(asyncFetchUser(parseInt(id))) // sets the current user state to a user
+        // sets the current user state to a user, if it can't connect to the database then show evil modal
+        await dispatch(asyncFetchUser(parseInt(id))).then((success: boolean) => {
+          if (!success) {
+            setConnection(false)
+          }
+        })
       } else {
         dispatch(setIsLoading(false))
       }
@@ -91,6 +98,7 @@ const InnerApp: FC = () => {
   if (appIsReady) {
     return (
       <View style={home.container}>
+        <EvilModal toggle={setConnection} display={!connection} />
         <NavigationContainer>
           {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             @ts-ignore */}
