@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { asyncAddMenuItem, MenuItem } from '../../store/slices/MenuItems'
 import EditButton from '../../components/staff/EditButton'
-import { useIsFocused, useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 
 import { FUNCTIONS } from '../../constants/Functions'
 import { TEXTS } from '../../constants/Texts'
@@ -12,7 +12,6 @@ import { LAYOUTS } from '../../constants/Layouts'
 const CreateItemScreen: React.FC = () => {
   const navigation = useNavigation()
   const dispatch = useAppDispatch()
-  const isFocused = useIsFocused()
 
   const [item, setItem] = useState('Enter name')
   const [doEditItem, setDoEditItem] = useState(false)
@@ -30,10 +29,6 @@ const CreateItemScreen: React.FC = () => {
     setItem(text)
     setDoEditItem(false)
   }
-
-  // useEffect(() => {
-  //   setDisabled(false)
-  // }, [isFocused])
 
   const handleEditPrice = (text) => {
     const parsed_text = Number(text.replace(/[^0-9]/g, ''))

@@ -8,9 +8,12 @@ import { baseUrl } from '../../utils/utils'
 import * as Haptics from 'expo-haptics'
 import { TransactionItem } from '../../store/slices/TransactionItems'
 import { NavigationActions, StackActions } from 'react-navigation'
+import { useIsFocused } from '@react-navigation/native'
 
 const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
+  const isFocused = useIsFocused()
+
   const [percentage, setPercentage] = useState(0)
   const [connection, setConnection] = useState(true)
   const { currentTransactionHistory } = useAppSelector((state) => state.transactionHistory)
@@ -23,12 +26,15 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
     const intervalId = setInterval(async () => {
       fetchTransaction().catch(console.log)
       if (percentage == 1) {
-        setPercentage(0)
         clearInterval(intervalId)
       }
     }, 5000)
     return () => clearInterval(intervalId)
   }, [percentage])
+
+  useEffect(() => {
+    setPercentage(0)
+  }, [isFocused])
 
   // turn ratio of orders completed/cancelled into a percentage
   const getPercentageCompleted = (newTransactionHistory) => {
