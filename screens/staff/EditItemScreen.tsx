@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import { Alert, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native'
 import { useAppDispatch } from '../../store/ReduxStore'
-import { asyncUpdateMenuItem, deleteMenuItem } from '../../store/slices/MenuItems'
+import { asyncUpdateMenuItem } from '../../store/slices/MenuItems'
 import EditButton from '../../components/staff/EditButton'
-import { useNavigation } from '@react-navigation/native'
 
 import { FUNCTIONS } from '../../constants/Functions'
 import { TEXTS } from '../../constants/Texts'
@@ -11,7 +10,6 @@ import { LAYOUTS } from '../../constants/Layouts'
 import EvilModal from '../../components/EvilModal'
 
 const EditItemScreen: React.FC = (props: any) => {
-  const navigation = useNavigation()
   props = props.route.params.data
   const dispatch = useAppDispatch()
 
@@ -33,24 +31,6 @@ const EditItemScreen: React.FC = (props: any) => {
     const parsed_text = Number(text.replace(/[^0-9]/g, ''))
     setPrice(parsed_text)
     setDoEditPrice(false)
-  }
-
-  const handleDelete = () => {
-    Alert.alert('Warning', 'Are you sure you want to delete this product? This can not be undone', [
-      {
-        text: 'Delete',
-        onPress: () => {
-          dispatch(deleteMenuItem(props))
-          navigation.goBack()
-        },
-      },
-      {
-        text: 'Cancel',
-        onPress: () => {
-          console.log('Delete canceled')
-        },
-      },
-    ])
   }
 
   const getEditItemVisual = () => {
@@ -164,12 +144,6 @@ const EditItemScreen: React.FC = (props: any) => {
         <View style={styles.buttonHolder}>
           <TouchableOpacity style={{ ...styles.saveButton, marginBottom: LAYOUTS.getWidth(30) }} onPress={saveChanges}>
             <Text style={{ ...styles.buttonText }}>Save</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.buttonHolder}>
-          <TouchableOpacity style={{ ...styles.button, marginBottom: LAYOUTS.getWidth(30) }} onPress={handleDelete}>
-            <Text style={{ ...styles.buttonText }}>Delete item</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
