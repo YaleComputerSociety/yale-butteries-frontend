@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
 
 MenuScreen['navigationOptions'] = (navData) => {
   const collegeName = navData.navigation.getParam('collegeName')
+  console.log(collegeName)
   return {
     headerStyle: {
       backgroundColor: returnCollegeName(collegeName)[1],

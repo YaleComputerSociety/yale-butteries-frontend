@@ -121,7 +121,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
   const toMenu = (college: string) => {
     dispatch(setCollege(college))
-    navigation.navigate('MenuScreen', { collegeNe: college })
+    navigation.navigate('MenuScreen', { collegeName: college })
   }
 
   interface CollegeInfo {
