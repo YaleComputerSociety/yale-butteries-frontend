@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { asyncAddMenuItem, MenuItem } from '../../store/slices/MenuItems'
 import EditButton from '../../components/staff/EditButton'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 
 import { FUNCTIONS } from '../../constants/Functions'
 import { TEXTS } from '../../constants/Texts'
@@ -12,6 +12,7 @@ import { LAYOUTS } from '../../constants/Layouts'
 const CreateItemScreen: React.FC = () => {
   const navigation = useNavigation()
   const dispatch = useAppDispatch()
+  const isFocused = useIsFocused()
 
   const [item, setItem] = useState('Enter name')
   const [doEditItem, setDoEditItem] = useState(false)
@@ -21,6 +22,7 @@ const CreateItemScreen: React.FC = () => {
 
   const [validName, setValidName] = useState(true)
   const [validPrice, setValidPrice] = useState(true)
+  const [disabled, setDisabled] = useState(false)
 
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
@@ -29,6 +31,10 @@ const CreateItemScreen: React.FC = () => {
     setDoEditItem(false)
   }
 
+  // useEffect(() => {
+  //   setDisabled(false)
+  // }, [isFocused])
+
   const handleEditPrice = (text) => {
     const parsed_text = Number(text.replace(/[^0-9]/g, ''))
     setPrice(parsed_text)
@@ -36,7 +42,9 @@ const CreateItemScreen: React.FC = () => {
   }
 
   const handleCreate = async () => {
+    setDisabled(true)
     if (!currentUser) {
+      setDisabled(false)
       throw new Error('currentUser not found')
     }
     let exitEarly = false
@@ -53,7 +61,10 @@ const CreateItemScreen: React.FC = () => {
       setValidPrice(true)
     }
 
-    if (exitEarly) return
+    if (exitEarly) {
+      setDisabled(false)
+      return
+    }
 
     const buffer: MenuItem = {
       item: item,
@@ -67,6 +78,7 @@ const CreateItemScreen: React.FC = () => {
         navigation.goBack()
       } else {
         Alert.alert('Please connect to the internet and try again')
+        setDisabled(false)
       }
     })
   }
@@ -151,7 +163,11 @@ const CreateItemScreen: React.FC = () => {
         </View>
         {!validPrice && <Text style={styles.error}>Price must be at least $0.50</Text>}
         <View style={styles.buttonHolder}>
-          <TouchableOpacity style={{ ...styles.saveButton, marginBottom: LAYOUTS.getWidth(30) }} onPress={handleCreate}>
+          <TouchableOpacity
+            style={{ ...styles.saveButton, marginBottom: LAYOUTS.getWidth(30) }}
+            onPress={handleCreate}
+            disabled={disabled}
+          >
             <Text style={{ ...styles.buttonText }}>Submit item</Text>
           </TouchableOpacity>
         </View>
