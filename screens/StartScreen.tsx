@@ -27,7 +27,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
   const onSubmit = async () => {
-    if (name.length < 3) {
+    if (name.length <= 2 || name.length >= 16) {
       setDisplayError(true)
     } else {
       let token = ''
@@ -88,7 +88,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
               autoCorrect={false}
               editable={!loadingUser}
             />
-            {displayError && <Text style={styles.error}>Please enter a name longer than 2 characters</Text>}
+            {displayError && <Text style={styles.error}>Please enter a name between 3 and 15 characters</Text>}
             <Pressable onPress={handleStaffPress} style={styles.button} disabled={userSet}>
               <Text style={{ color: 'lightgray', fontWeight: '500' }}>Staff Login</Text>
             </Pressable>
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   error: {
     color: '#bb3333',
     fontFamily: 'HindSiliguri',
-    fontSize: 12,
+    fontSize: 11,
   },
   logo: {
     width: 100,

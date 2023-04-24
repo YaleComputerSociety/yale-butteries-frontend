@@ -14,11 +14,15 @@ const Settings: FC<{ navigation: any }> = () => {
 
   const [newName, setNewName] = useState(currentUser.name)
   const [connection, setConnection] = useState(true)
+  const [invalidName, setInvalidName] = useState(false)
 
   const changeName = async (name: string) => {
     const id = await LocalStorage.getUserInfo('id')
-    console.log('name changed')
-    if (name.length >= 2 || name.length <= 16) {
+    if (name.length <= 2 || name.length >= 16) {
+      setInvalidName(true)
+    } else {
+      console.log('name changed')
+      setInvalidName(true)
       const updatedCurrentUser = {
         id: parseInt(id),
         name: name,
@@ -54,6 +58,7 @@ const Settings: FC<{ navigation: any }> = () => {
               maxLength={30}
             />
           </View>
+          {invalidName && <Text style={styles.error}>Please enter a name between 3 and 15 characters</Text>}
           <TouchableOpacity style={styles.save_button} onPress={() => changeName(newName)}>
             <Text style={styles.button_text}> Save </Text>
           </TouchableOpacity>
@@ -117,6 +122,13 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowRadius: 20,
+  },
+  error: {
+    color: '#bb3333',
+    fontFamily: 'HindSiliguri',
+    fontSize: 11,
+    marginLeft: 120,
+    marginBottom: 10,
   },
 })
 
