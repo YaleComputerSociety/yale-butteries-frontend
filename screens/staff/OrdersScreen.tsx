@@ -36,7 +36,6 @@ const OrdersScreen: React.FC = () => {
       if (currentUser.college) {
         // should fetch only recent to save time, but for a while this will be fine
         await dispatch(asyncFetchRecentTransactionHistories(currentUser.college)).then((success: boolean) => {
-          console.log(success)
           setConnection(success)
         })
 
@@ -119,6 +118,7 @@ const OrdersScreen: React.FC = () => {
                   item={element}
                   transactionItems={transactionItems}
                   interactable={true}
+                  setConnection={setNecessaryConnection}
                   key={element.id + 'b'}
                 />
               </View>
@@ -128,7 +128,13 @@ const OrdersScreen: React.FC = () => {
           {pastOrders.map((element) => {
             return (
               <View key={element.id + 'v'}>
-                <OrderCard item={element} transactionItems={transactionItems} interactable={false} key={element.id} />
+                <OrderCard
+                  item={element}
+                  transactionItems={transactionItems}
+                  interactable={false}
+                  setConnection={setNecessaryConnection}
+                  key={element.id}
+                />
               </View>
             )
           })}

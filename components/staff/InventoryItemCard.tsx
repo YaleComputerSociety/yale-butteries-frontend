@@ -11,6 +11,7 @@ import { priceToText } from '../../Functions'
 
 interface Props {
   item: MenuItem
+  setConnection: (connection: boolean) => void
 }
 
 const InventoryItemCard: FC<Props> = (props: Props) => {
@@ -22,7 +23,9 @@ const InventoryItemCard: FC<Props> = (props: Props) => {
   const handleSwitch = () => {
     setItem({ ...item, isActive: !item.isActive })
     dispatch(updateMenuItem({ ...item, isActive: !item.isActive }))
-    dispatch(asyncUpdateMenuItem({ ...item, isActive: !item.isActive }))
+    dispatch(asyncUpdateMenuItem({ ...item, isActive: !item.isActive })).then((success: boolean) => {
+      props.setConnection(success)
+    })
   }
 
   return (

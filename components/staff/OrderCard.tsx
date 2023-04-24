@@ -16,12 +16,13 @@ interface Props {
   item: TransactionItem
   transactionItems: TransactionItem[]
   interactable: boolean
+  setConnection: (necessaryConnection: boolean) => void
 }
 
 type Status = 'CANCELLED' | 'PENDING' | 'IN_PROGRESS' | 'FINISHED' | 'PICKED_UP'
 const statuses: Status[] = ['CANCELLED', 'PENDING', 'IN_PROGRESS', 'FINISHED', 'PICKED_UP']
 
-const OrderCard: React.FC<Props> = ({ item, interactable }: Props) => {
+const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props) => {
   const dispatch = useAppDispatch()
 
   const slideIndex = [0, 1, 2, 3, 4]
@@ -79,7 +80,9 @@ const OrderCard: React.FC<Props> = ({ item, interactable }: Props) => {
                 ...item,
                 orderStatus: tempStatus,
               })
-            )
+            ).then((success: boolean) => {
+              setConnection(success)
+            })
           },
         },
         {
@@ -108,7 +111,9 @@ const OrderCard: React.FC<Props> = ({ item, interactable }: Props) => {
                 ...item,
                 orderStatus: tempStatus,
               })
-            )
+            ).then((success: boolean) => {
+              setConnection(success)
+            })
           },
         },
         {
@@ -132,7 +137,9 @@ const OrderCard: React.FC<Props> = ({ item, interactable }: Props) => {
           ...item,
           orderStatus: tempStatus,
         })
-      )
+      ).then((success: boolean) => {
+        setConnection(success)
+      })
     }
   }
 

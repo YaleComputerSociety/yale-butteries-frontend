@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 import { FUNCTIONS } from '../../constants/Functions'
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
+import EvilModal from '../../components/EvilModal'
 
 const EditItemScreen: React.FC = (props: any) => {
   const navigation = useNavigation()
@@ -19,18 +20,19 @@ const EditItemScreen: React.FC = (props: any) => {
 
   const [price, setPrice] = useState(props.price)
   const [doEditPrice, setDoEditPrice] = useState(false)
+  const [validName, setValidName] = useState(true)
+  const [validPrice, setValidPrice] = useState(true)
+  const [connection, setConnection] = useState(true)
 
   const handleEditItem = async (text) => {
     setItem(text)
     setDoEditItem(false)
-    dispatch(asyncUpdateMenuItem({ ...props, item: text }))
   }
 
   const handleEditPrice = async (text) => {
     const parsed_text = Number(text.replace(/[^0-9]/g, ''))
     setPrice(parsed_text)
     setDoEditPrice(false)
-    dispatch(asyncUpdateMenuItem({ ...props, price: parsed_text }))
   }
 
   const handleDelete = () => {
@@ -117,17 +119,52 @@ const EditItemScreen: React.FC = (props: any) => {
     }
   }
 
+  const saveChanges = () => {
+    console.log('heye')
+    console.log(item, price)
+    let exitEarly = false
+    if (item.length <= 2 || item.length >= 26) {
+      setValidName(false)
+      exitEarly = true
+    } else {
+      setValidName(true)
+    }
+    // stripe requirement
+    if (price < 50) {
+      setValidPrice(false)
+      exitEarly = true
+    } else {
+      setValidPrice(true)
+    }
+
+    if (exitEarly) return
+
+    dispatch(asyncUpdateMenuItem({ ...props, item: item, price: price })).then((success: boolean) => {
+      console.log(success)
+      setConnection(success)
+    })
+  }
+
   return (
     <View style={styles.container}>
+      {!connection && <EvilModal toggle={setConnection} display={!connection} />}
       <ScrollView style={styles.scrollView}>
         <View style={styles.tag}>
           <Text style={styles.labelText}>Item:</Text>
           {getEditItemVisual()}
         </View>
+        {!validName && <Text style={styles.error}>Name must be between 3 and 25 characters</Text>}
 
         <View style={styles.tag}>
           <Text style={styles.labelText}>Price:</Text>
           {getEditPriceVisual()}
+        </View>
+        {!validPrice && <Text style={styles.error}>Price must be at least $0.50</Text>}
+
+        <View style={styles.buttonHolder}>
+          <TouchableOpacity style={{ ...styles.saveButton, marginBottom: LAYOUTS.getWidth(30) }} onPress={saveChanges}>
+            <Text style={{ ...styles.buttonText }}>Save</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.buttonHolder}>
@@ -143,6 +180,11 @@ const EditItemScreen: React.FC = (props: any) => {
 export default EditItemScreen
 
 const styles = StyleSheet.create({
+  error: {
+    color: '#bb3333',
+    fontFamily: 'HindSiliguri',
+    fontSize: 11,
+  },
   button: {
     width: LAYOUTS.getWidth(150),
     height: LAYOUTS.getWidth(20),
@@ -294,5 +336,15 @@ const styles = StyleSheet.create({
   XText: {
     fontWeight: '600',
     fontSize: 20,
+  },
+  saveButton: {
+    fontSize: 20,
+    width: LAYOUTS.getWidth(150),
+    borderRadius: 10,
+    justifyContent: 'center',
+    marginBottom: LAYOUTS.getWidth(10),
+    marginTop: LAYOUTS.getWidth(5),
+    backgroundColor: 'orange',
+    padding: 15,
   },
 })

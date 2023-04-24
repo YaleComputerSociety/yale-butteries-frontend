@@ -48,7 +48,7 @@ export const { setTransactionItemsState, addTransactionItem, updateTransactionIt
   transactionItemsSlice.actions
 
 export const asyncUpdateTransactionItem = (transactionItem: TransactionItem) => {
-  return async (dispatch: AppDispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(updateTransactionItem(transactionItem))
     // dispatch(setIsLoading(true))
     try {
@@ -59,8 +59,10 @@ export const asyncUpdateTransactionItem = (transactionItem: TransactionItem) => 
         },
         body: JSON.stringify(transactionItem),
       })
+      return true
     } catch (e) {
       console.log(e)
+      return false
     } finally {
       // dispatch(setIsLoading(false))
     }

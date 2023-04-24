@@ -9,6 +9,7 @@ import { LAYOUTS } from '../../constants/Layouts'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
 import { useIsFocused } from '@react-navigation/native'
+import EvilModal from '../../components/EvilModal'
 
 const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
   navigation,
@@ -20,11 +21,14 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
   const [localMenu, setLocalMenu] = useState([])
+  const [connection, setConnection] = useState(true)
 
   useEffect(() => {
     const temp = async () => {
       if (isLoadingMenuItems || menuItems == null) {
-        await dispatch(asyncFetchMenuItems())
+        await dispatch(asyncFetchMenuItems()).then((success: boolean) => {
+          setConnection(success)
+        })
       }
     }
     temp()
@@ -42,6 +46,7 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
 
   return (
     <View style={{ ...styles.container }}>
+      {!connection && <EvilModal toggle={setConnection} display={!connection} />}
       {menuItems == null || isLoadingMenuItems ? (
         <ScrollView style={{ ...styles.scrollView }}>
           <Text style={{ ...styles.title }}>Loading menu</Text>
@@ -50,7 +55,7 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
       ) : (
         <ScrollView style={{ ...styles.scrollView }}>
           {localMenu.map((item, i) => {
-            return <InventoryItemCard key={i} item={item} />
+            return <InventoryItemCard key={i} item={item} setConnection={setConnection} />
           })}
           <View style={styles.buttonHolder}>
             <TouchableOpacity
