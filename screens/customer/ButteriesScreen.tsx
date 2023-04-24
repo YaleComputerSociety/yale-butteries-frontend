@@ -20,100 +20,100 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
   const colleges: CollegeInfo[] = [
     {
-      name: 'Morse',
-      start: '5:00am',
-      end: '4:00am',
+      ne: 'Morse',
+      start: '5:00',
+      end: '4:00',
       daysOpen: [true, true, true, true, true, true, true],
       active: true,
     },
     {
-      name: 'Berkeley',
-      start: '5:00am',
-      end: '4:00am',
+      ne: 'Berkeley',
+      start: '5:00',
+      end: '4:00',
       daysOpen: [true, true, true, false, false, false, true],
       active: true,
     },
     {
-      name: 'Branford',
-      start: '10:30pm',
-      end: '12:45am',
+      ne: 'Branford',
+      start: '22:30',
+      end: '0:45',
       daysOpen: [true, true, false, false, false, true, false],
       active: false,
     },
     {
-      name: 'Davenport',
-      start: '10:00pm',
-      end: '12:30am',
+      ne: 'Davenport',
+      start: '5:00',
+      end: '4:00',
       daysOpen: [true, true, false, false, false, true, false],
       active: false,
     },
     {
-      name: 'Franklin',
-      start: '10:00pm',
-      end: '1:00am',
+      ne: 'Franklin',
+      start: '22:00',
+      end: '1:00',
       daysOpen: [true, true, false, false, false, true, false],
       active: false,
     },
     {
-      name: 'Hopper',
-      start: '10:00pm',
-      end: '12:30am',
+      ne: 'Hopper',
+      start: '22:00',
+      end: '0:30',
       daysOpen: [true, true, false, false, false, true, false],
       active: false,
     },
     {
-      name: 'JE',
-      start: '9:30pm',
-      end: '12:30am',
+      ne: 'JE',
+      start: '21:30',
+      end: '0:30',
       daysOpen: [true, true, false, false, false, true, false],
       active: false,
     },
     {
-      name: 'Murray',
-      start: '10:00pm',
-      end: '1:00am',
+      ne: 'Murray',
+      start: '22:00',
+      end: '1:00',
       daysOpen: [true, true, false, false, false, true, false],
       active: false,
     },
     {
-      name: 'Pierson',
-      start: '10:30pm',
-      end: '12:30am',
+      ne: 'Pierson',
+      start: '22:30',
+      end: '0:30',
       daysOpen: [true, true, false, false, false, true, false],
       active: false,
     },
     {
-      name: 'Saybrook',
-      start: '9:00pm',
-      end: '12:00am',
+      ne: 'Saybrook',
+      start: '21:00',
+      end: '0:00',
       daysOpen: [true, true, false, false, false, true, false],
       active: false,
     },
     {
-      name: 'Silliman',
-      start: '10:00pm',
-      end: '1:00am',
+      ne: 'Silliman',
+      start: '22:00',
+      end: '1:00',
       daysOpen: [true, true, false, false, false, true, false],
       active: false,
     },
     {
-      name: 'Stiles',
-      start: '10:00pm',
-      end: '12:50am',
+      ne: 'Stiles',
+      start: '22:00',
+      end: '0:50',
       daysOpen: [true, true, false, false, false, true, false],
       active: false,
     },
     {
-      name: 'TD',
-      start: '10:00pm',
-      end: '1:00am',
+      ne: 'TD',
+      start: '22:00',
+      end: '1:00',
       daysOpen: [true, true, false, false, false, true, false],
       active: false,
     },
     {
-      name: 'Trumbull',
-      start: '10:00pm',
-      end: '11:30am',
+      ne: 'Trumbull',
+      start: '22:00',
+      end: '23:30',
       daysOpen: [true, true, false, false, false, true, false],
       active: false,
     },
@@ -121,11 +121,11 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
   const toMenu = (college: string) => {
     dispatch(setCollege(college))
-    navigation.navigate('MenuScreen', { collegeName: college })
+    navigation.navigate('MenuScreen', { collegeNe: college })
   }
 
   interface CollegeInfo {
-    name: string
+    ne: string
     start: string
     end: string
     active: boolean
@@ -133,11 +133,11 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   }
 
   const getCollegeVisual = (collegeInfo: CollegeInfo, index: number) => {
-    const navigationName: string = collegeInfo.name.length > 2 ? collegeInfo.name.toLowerCase() : collegeInfo.name
+    const navigationNe: string = collegeInfo.ne.length > 2 ? collegeInfo.ne.toLowerCase() : collegeInfo.ne
     let offset = (index - 1) * 80
-    if (collegeInfo.name == 'Stiles') {
+    if (collegeInfo.ne == 'Stiles') {
       offset = 240
-    } else if (collegeInfo.name == 'Morse') {
+    } else if (collegeInfo.ne == 'Morse') {
       offset = 560
     } else if ((index > 3 && index < 7) || index >= 12) {
       offset += 80
@@ -147,8 +147,8 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
     return (
       <ButteryCard
-        onPress={() => toMenu(navigationName)}
-        college={collegeInfo.name}
+        onPress={() => toMenu(navigationNe)}
+        college={collegeInfo.ne}
         openTime={collegeInfo.start}
         closeTime={collegeInfo.end}
         offsetY={offset}

@@ -23,47 +23,34 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   const days = ['S ', 'M ', 'T ', 'W ', 'T ', 'F ', 'S ']
   const d = new Date().getDay()
 
-  // determines whether the buttery is currently open
-  function currentlyOpen() {
-    const h = new Date().getHours()
-    const m = new Date().getMinutes()
-    let validTime: boolean
-
-    if (openTimeHours < closeTimeHours) {
-      // standard case
-      validTime =
-        (h > openTimeHours && h < closeTimeHours) ||
-        (h == openTimeHours && m >= openTimeMinutes) ||
-        (h == closeTimeHours && m < closeTimeMinutes)
-    } else if (openTimeHours > closeTimeHours) {
-      // time wraps around midnight
-      validTime =
-        h > openTimeHours ||
-        h < closeTimeHours ||
-        (h == openTimeHours && m >= openTimeMinutes) ||
-        (h == closeTimeHours && m < closeTimeMinutes)
-    } else {
-      // within the same hour
-      validTime = m >= openTimeMinutes && m < closeTimeMinutes
+  // turns string input into date object. Upper indicates if this is the close time
+  const setDateTime = function (str: string, upper: boolean) {
+    const sp = str.split(':')
+    const date = new Date()
+    date.setHours(parseInt(sp[0]))
+    date.setMinutes(parseInt(sp[1]))
+    date.setSeconds(0)
+    if (upper && date.getHours() < 10) {
+      date.setDate(date.getDate() + 1)
     }
-    let validDay = props.daysOpen[d]
-    // 2am monday counts as sunday
-    if (h < 4) {
-      validDay = props.daysOpen[(d + 1) % 7]
-    }
-    return validDay && validTime
+    return date
   }
 
-  // immediately check if the buttery is open
+  // determines whether the buttery is currently open
+  function currentlyOpen() {
+    const today = new Date()
+    const lower = setDateTime(props.openTime, false)
+    const upper = setDateTime(props.closeTime, true)
+
+    return today < upper && today >= lower
+  }
+
+  //check every 20 seconds whether the buttery is open
   useEffect(() => {
     setIsOpen(currentlyOpen())
-  }, [isOpen])
-
-  //check every minute whether the buttery is open
-  useEffect(() => {
     const interval = setInterval(() => {
       setIsOpen(currentlyOpen())
-    }, 1000)
+    }, 20000)
     return () => clearInterval(interval)
   }, [isOpen])
 
@@ -119,10 +106,10 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   return (
     <Pressable
       onPress={props.onPress}
-      disabled={!isOpen}
+      disabled={!(isOpen && props.active)}
       style={({ pressed }) => [
         {
-          opacity: isOpen ? 1 : 0.6,
+          opacity: props.active && isOpen ? 1 : 0.6,
           backgroundColor: pressed ? 'rgba(0, 0, 0, 0.1)' : 'transparent',
         },
       ]}
@@ -132,7 +119,10 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
           <View style={{ flexDirection: 'row' }}>
             <Text style={card.cardText1}>{props.college}</Text>
             <Text
-              style={[{ opacity: isOpen ? 0 : 1, backgroundColor: props.active ? '#ee3930' : '#ff9600' }, card.banner]}
+              style={[
+                { opacity: props.active && isOpen ? 0 : 1, backgroundColor: props.active ? '#ee3930' : '#ff9600' },
+                card.banner,
+              ]}
             >
               {activeText}
             </Text>
