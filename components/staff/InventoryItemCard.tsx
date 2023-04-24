@@ -34,7 +34,7 @@ const InventoryItemCard: FC<Props> = (props: Props) => {
         <TouchableOpacity
           style={{ ...styles.container, backgroundColor: 'white' }}
           onPress={() => {
-            navigation.push('EditItem', { data: props.item })
+            navigation.push('Edit', { data: props.item })
           }}
         >
           <View style={{ ...styles.nameContainer }}>
@@ -51,7 +51,7 @@ const InventoryItemCard: FC<Props> = (props: Props) => {
         <TouchableOpacity
           style={{ ...styles.container, backgroundColor: 'white' }}
           onPress={() => {
-            navigation.push('EditItem', { data: props.item })
+            navigation.push('Edit', { data: props.item })
           }}
         >
           <View style={{ ...styles.nameContainer }}>

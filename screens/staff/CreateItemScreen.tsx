@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert, StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { asyncAddMenuItem, MenuItem } from '../../store/slices/MenuItems'
 import EditButton from '../../components/staff/EditButton'
@@ -19,6 +19,9 @@ const CreateItemScreen: React.FC = () => {
   const [price, setPrice] = useState(0)
   const [doEditPrice, setDoEditPrice] = useState(false)
 
+  const [validName, setValidName] = useState(true)
+  const [validPrice, setValidPrice] = useState(true)
+
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
   const handleEditItem = (text) => {
@@ -36,19 +39,36 @@ const CreateItemScreen: React.FC = () => {
     if (!currentUser) {
       throw new Error('currentUser not found')
     }
-    if (item != 'Enter name' && price > 0) {
-      const buffer: MenuItem = {
-        item: item,
-        college: currentUser.college,
-        price: price,
-        isActive: true,
-        foodType: 'food',
-      }
-      dispatch(asyncAddMenuItem(buffer))
-      navigation.goBack()
+    let exitEarly = false
+    if (!(item.length >= 2 && item.length <= 26 && item != 'Enter name')) {
+      setValidName(false)
+      exitEarly = true
     } else {
-      Alert.alert("Please fill in the item's information.")
+      setValidName(true)
     }
+    if (!(price >= 50)) {
+      setValidPrice(false)
+      exitEarly = true
+    } else {
+      setValidPrice(true)
+    }
+
+    if (exitEarly) return
+
+    const buffer: MenuItem = {
+      item: item,
+      college: currentUser.college,
+      price: price,
+      isActive: true,
+      foodType: 'food',
+    }
+    dispatch(asyncAddMenuItem(buffer)).then((success: boolean) => {
+      if (success) {
+        navigation.goBack()
+      } else {
+        Alert.alert('Please connect to the internet and try again')
+      }
+    })
   }
 
   const getEditItemVisual = () => {
@@ -124,12 +144,14 @@ const CreateItemScreen: React.FC = () => {
           <Text style={styles.labelText}>Item:</Text>
           {getEditItemVisual()}
         </View>
+        {!validName && <Text style={styles.error}>Name must be between 3 and 25 characters</Text>}
         <View style={styles.tag}>
           <Text style={styles.labelText}>Price:</Text>
           {getEditPriceVisual()}
         </View>
+        {!validPrice && <Text style={styles.error}>Price must be at least $0.50</Text>}
         <View style={styles.buttonHolder}>
-          <TouchableOpacity style={{ ...styles.button, marginBottom: LAYOUTS.getWidth(30) }} onPress={handleCreate}>
+          <TouchableOpacity style={{ ...styles.saveButton, marginBottom: LAYOUTS.getWidth(30) }} onPress={handleCreate}>
             <Text style={{ ...styles.buttonText }}>Submit item</Text>
           </TouchableOpacity>
         </View>
@@ -141,6 +163,21 @@ const CreateItemScreen: React.FC = () => {
 export default CreateItemScreen
 
 const styles = StyleSheet.create({
+  error: {
+    color: '#bb3333',
+    fontFamily: 'HindSiliguri',
+    fontSize: 11,
+  },
+  saveButton: {
+    fontSize: 20,
+    width: LAYOUTS.getWidth(150),
+    borderRadius: 10,
+    justifyContent: 'center',
+    marginBottom: LAYOUTS.getWidth(10),
+    marginTop: LAYOUTS.getWidth(5),
+    backgroundColor: 'orange',
+    padding: 15,
+  },
   button: {
     width: LAYOUTS.getWidth(150),
     height: LAYOUTS.getWidth(20),

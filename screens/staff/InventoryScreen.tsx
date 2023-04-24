@@ -61,7 +61,7 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
             <TouchableOpacity
               style={{ ...styles.button, marginBottom: LAYOUTS.getWidth(30) }}
               onPress={() => {
-                navigation.push('CreateItem')
+                navigation.push('Create')
               }}
             >
               <Text style={{ ...styles.buttonText }}>Add new item</Text>

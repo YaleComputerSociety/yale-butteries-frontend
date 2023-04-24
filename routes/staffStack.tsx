@@ -10,8 +10,8 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 type InventoryParamList = {
   InventoryScreen: undefined
-  EditItem: undefined
-  CreateItem: undefined
+  Edit: undefined
+  Create: undefined
 }
 
 const Tab = createBottomTabNavigator()
@@ -46,8 +46,8 @@ const InventoryNavigator = () => {
   return (
     <InventoryStack.Navigator>
       <InventoryStack.Screen name="InventoryScreen" component={InventoryScreen} options={{ headerShown: false }} />
-      <InventoryStack.Screen name="EditItem" component={EditItemScreen} />
-      <InventoryStack.Screen name="CreateItem" component={CreateItemScreen} />
+      <InventoryStack.Screen name="Edit" component={EditItemScreen} />
+      <InventoryStack.Screen name="Create" component={CreateItemScreen} />
     </InventoryStack.Navigator>
   )
 }

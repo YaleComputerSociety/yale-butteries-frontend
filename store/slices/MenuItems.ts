@@ -109,7 +109,7 @@ export const asyncUpdateMenuItem = (menuItem: MenuItem) => {
 }
 
 export const asyncAddMenuItem = (menuItem: MenuItem) => {
-  return async (dispatch: AppDispatch): Promise<void> => {
+  return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(setIsLoading(true))
     try {
       const menuItems = await fetch(baseUrl + 'api/menu_items', {
@@ -122,8 +122,10 @@ export const asyncAddMenuItem = (menuItem: MenuItem) => {
       const data = await menuItems.json()
       console.log(data)
       dispatch(addMenuItem(menuItem))
+      return true
     } catch (e) {
       console.log(e)
+      return false
     } finally {
       dispatch(setIsLoading(false))
     }

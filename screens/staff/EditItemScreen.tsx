@@ -8,10 +8,12 @@ import { FUNCTIONS } from '../../constants/Functions'
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
 import EvilModal from '../../components/EvilModal'
+import { useNavigation } from '@react-navigation/native'
 
 const EditItemScreen: React.FC = (props: any) => {
   props = props.route.params.data
   const dispatch = useAppDispatch()
+  const navigation = useNavigation()
 
   const [item, setItem] = useState(props.item)
   const [doEditItem, setDoEditItem] = useState(false)
@@ -100,8 +102,6 @@ const EditItemScreen: React.FC = (props: any) => {
   }
 
   const saveChanges = () => {
-    console.log('heye')
-    console.log(item, price)
     let exitEarly = false
     if (item.length <= 2 || item.length >= 26) {
       setValidName(false)
@@ -120,8 +120,8 @@ const EditItemScreen: React.FC = (props: any) => {
     if (exitEarly) return
 
     dispatch(asyncUpdateMenuItem({ ...props, item: item, price: price })).then((success: boolean) => {
-      console.log(success)
       setConnection(success)
+      if (success) navigation.goBack()
     })
   }
 
