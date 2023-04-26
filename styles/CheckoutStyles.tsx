@@ -97,6 +97,13 @@ export const checkout = StyleSheet.create({
     color: '#fff',
   },
 
+  paymentInformation: {
+    color: '#d33',
+    fontSize: 11,
+    top: -5,
+    fontFamily: 'Roboto-Italic',
+  },
+
   NAME: {
     flex: 2,
     alignContent: 'flex-start',

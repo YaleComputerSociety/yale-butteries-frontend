@@ -22,7 +22,7 @@ const Settings: FC<{ navigation: any }> = () => {
       setInvalidName(true)
     } else {
       console.log('name changed')
-      setInvalidName(true)
+      setInvalidName(false)
       const updatedCurrentUser = {
         id: parseInt(id),
         name: name,

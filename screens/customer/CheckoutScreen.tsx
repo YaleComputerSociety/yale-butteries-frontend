@@ -191,6 +191,9 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 }}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>
+                <Text style={checkout.paymentInformation}>
+                  Because we are in beta, we will not save your card information
+                </Text>
               </Pressable>
             </View>
           </View>
