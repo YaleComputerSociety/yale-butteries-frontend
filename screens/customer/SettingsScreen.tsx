@@ -21,7 +21,6 @@ const Settings: FC<{ navigation: any }> = () => {
     if (name.length <= 2 || name.length >= 16) {
       setInvalidName(true)
     } else {
-      console.log('name changed')
       setInvalidName(false)
       const updatedCurrentUser = {
         id: parseInt(id),
@@ -32,7 +31,6 @@ const Settings: FC<{ navigation: any }> = () => {
         email: null,
         netid: currentUser.netid,
       }
-      console.log(updatedCurrentUser)
       const success = await dispatch(asyncUpdateCurrentUser(updatedCurrentUser))
       if (!success) {
         setConnection(false)

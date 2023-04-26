@@ -20,7 +20,6 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
     const verified = await asyncVerifyStaffLogin(username, password)
 
     if (verified == undefined) {
-      console.log('p')
       setBackendError(true)
     }
 

@@ -7,13 +7,10 @@ export const FUNCTIONS = {
   },
 
   clearCache: async (): Promise<void> => {
-    console.log('clearing cache')
-    const result = await FileSystem.deleteAsync(FileSystem.cacheDirectory + 'productImages/')
-    console.log(result)
+    await FileSystem.deleteAsync(FileSystem.cacheDirectory + 'productImages/')
     const dir = FileSystem.cacheDirectory + 'productImages/'
     const dirInfo = await FileSystem.getInfoAsync(dir)
     if (!dirInfo.exists) {
-      console.log("ProductImages directory doesn't exist, creating...")
       await FileSystem.makeDirectoryAsync(dir, { intermediates: true })
     }
   },

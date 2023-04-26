@@ -38,7 +38,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const stripe = useStripe()
 
   const showPaymentSheet = async (): Promise<any> => {
-    console.log(currentUser)
+    // console.log(currentUser)
     // return { id: 'temp' } // uncomment this line out to skip the credit card entry screen
 
     const obj = { userId: currentUser.id, price: price, items: orderItems, college: collegeOrderCart }
@@ -120,7 +120,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       //send push notification
       const push = await Notifications.getExpoPushTokenAsync()
-      console.log(push)
+      // console.log(push)
       const token = (await Notifications.getExpoPushTokenAsync()).data
       const subscribeNotification = await fetch(baseUrl + 'api/notifs', {
         method: 'POST',
@@ -133,7 +133,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         },
       })
       const subscribeNotificationResponse = await subscribeNotification.json()
-      console.log(subscribeNotificationResponse)
+      // console.log(subscribeNotificationResponse)
       navigation.navigate('OrderStatusScreen')
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch (err) {

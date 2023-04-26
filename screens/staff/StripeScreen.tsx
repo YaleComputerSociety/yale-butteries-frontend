@@ -11,15 +11,12 @@ const StripeScreen: FC = () => {
 
   useEffect(() => {
     if (currentUser) {
-      console.log('hi')
       dispatch(asyncFetchAllTransactionHistories(currentUser.college))
     }
   }, [currentUser])
 
   useEffect(() => {
     if (currentUser) {
-      console.log('||||||||||')
-      console.log(transactionHistory)
     }
   }, [transactionHistory])
 

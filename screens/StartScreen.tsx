@@ -45,7 +45,6 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
       setUserSet(true)
       const success = await dispatch(asyncCreateUser(newUser, name, token))
       if (!success) {
-        console.log('hey', success)
         setConnection(false)
       }
       setLoadingUser(false)

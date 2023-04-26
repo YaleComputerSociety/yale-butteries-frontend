@@ -26,10 +26,6 @@ const OrdersScreen: React.FC = () => {
   const [connection, setConnection] = useState(true) // remind the user but don't need to do anything
   const [necessaryConnection, setNecessaryConnection] = useState(true) // user needs to reload app
 
-  useEffect(() => {
-    console.log('ttttt', currentUser)
-  }, [currentUser])
-
   // Every x seconds, fetch TIs by college and time created, then sort by time
   useEffect(() => {
     const fetchItems = async () => {

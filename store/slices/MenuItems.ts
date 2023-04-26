@@ -120,7 +120,6 @@ export const asyncAddMenuItem = (menuItem: MenuItem) => {
         body: JSON.stringify(menuItem),
       })
       const data = await menuItems.json()
-      console.log(data)
       dispatch(addMenuItem(menuItem))
       return true
     } catch (e) {

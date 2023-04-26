@@ -45,7 +45,7 @@ const InnerApp: FC = () => {
       const id = await LocalStorage.getUserInfo('id')
       if (userInfo && id) {
         // if token is in local storage
-        console.log('user id: ', id)
+        // console.log('user id: ', id)
         // sets the current user state to a user, if it can't connect to the database then show evil modal
         await dispatch(asyncFetchUser(parseInt(id))).then((success: boolean) => {
           if (!success) {

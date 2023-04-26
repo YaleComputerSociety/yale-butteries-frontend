@@ -80,7 +80,7 @@ export const asyncCreateUser = (user: NewUser, username: string, token: string) 
       ]
 
       LocalStorage.storeUserInfo(localStorageInfo)
-      console.log('stored!', 'user with id ===> ' + data.id.toString() + '\n\n')
+      // console.log('stored!', 'user with id ===> ' + data.id.toString() + '\n\n')
       return true
     } catch (e) {
       console.log(e)

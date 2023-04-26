@@ -90,7 +90,6 @@ export const asyncFetchRecentTransactionHistories = (college: string) => {
 export const asyncFetchAllTransactionHistories = (college: string) => {
   return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
-    console.log(college)
     try {
       const transactions = await fetch(baseUrl + 'api/transactions/college/' + college, {
         method: 'GET',
