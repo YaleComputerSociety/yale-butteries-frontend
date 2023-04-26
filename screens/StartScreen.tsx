@@ -34,7 +34,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
       token += Random.getRandomBytes(8).toString()
 
       const newUser = {
-        email: 'random@blah.edu',
+        email: 'betatester@gmail.edu',
         netid: 'temp',
         name: name,
         college: 'morse',

@@ -49,7 +49,7 @@ const CreateItemScreen: React.FC = () => {
     } else {
       setValidName(true)
     }
-    if (!(price >= 50)) {
+    if (!(price >= 50 && price <= 2000)) {
       setValidPrice(false)
       exitEarly = true
     } else {
@@ -156,7 +156,7 @@ const CreateItemScreen: React.FC = () => {
           <Text style={styles.labelText}>Price:</Text>
           {getEditPriceVisual()}
         </View>
-        {!validPrice && <Text style={styles.error}>Price must be at least $0.50</Text>}
+        {!validPrice && <Text style={styles.error}>Price must be at between $0.50 and $20.00</Text>}
         <View style={styles.buttonHolder}>
           <TouchableOpacity
             style={{ ...styles.saveButton, marginBottom: LAYOUTS.getWidth(30) }}

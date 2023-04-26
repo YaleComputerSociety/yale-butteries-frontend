@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native'
 import { useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateMenuItem } from '../../store/slices/MenuItems'
 import EditButton from '../../components/staff/EditButton'
@@ -110,7 +110,7 @@ const EditItemScreen: React.FC = (props: any) => {
       setValidName(true)
     }
     // stripe requirement
-    if (price < 50) {
+    if (price < 50 || price > 2000) {
       setValidPrice(false)
       exitEarly = true
     } else {
@@ -121,7 +121,11 @@ const EditItemScreen: React.FC = (props: any) => {
 
     dispatch(asyncUpdateMenuItem({ ...props, item: item, price: price })).then((success: boolean) => {
       setConnection(success)
-      if (success) navigation.goBack()
+      if (success) {
+        navigation.goBack()
+      } else {
+        Alert.alert('Please connect to the internet and try again')
+      }
     })
   }
 
@@ -139,7 +143,7 @@ const EditItemScreen: React.FC = (props: any) => {
           <Text style={styles.labelText}>Price:</Text>
           {getEditPriceVisual()}
         </View>
-        {!validPrice && <Text style={styles.error}>Price must be at least $0.50</Text>}
+        {!validPrice && <Text style={styles.error}>Price must be at between $0.50 and $20.00</Text>}
 
         <View style={styles.buttonHolder}>
           <TouchableOpacity style={{ ...styles.saveButton, marginBottom: LAYOUTS.getWidth(30) }} onPress={saveChanges}>

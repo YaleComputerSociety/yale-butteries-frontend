@@ -7,18 +7,12 @@ import { asyncFetchAllTransactionHistories } from '../../store/slices/Transactio
 const StripeScreen: FC = () => {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector((state) => state.currentUser)
-  const { transactionHistory } = useAppSelector((state) => state.transactionHistory)
 
   useEffect(() => {
     if (currentUser) {
       dispatch(asyncFetchAllTransactionHistories(currentUser.college))
     }
   }, [currentUser])
-
-  useEffect(() => {
-    if (currentUser) {
-    }
-  }, [transactionHistory])
 
   return (
     <SafeAreaView>

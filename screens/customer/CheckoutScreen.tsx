@@ -12,9 +12,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import { baseUrl } from '../../utils/utils'
 import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
-
-// eslint-disable-next-line import/no-unresolved
-import { STRIPE_PK } from '@env'
+import { stripePK } from '../../utils/utils'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const {
@@ -158,7 +156,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           <ActivityIndicator size="large" />
         </View>
       ) : (
-        <StripeProvider publishableKey={STRIPE_PK}>
+        <StripeProvider publishableKey={stripePK}>
           <View style={{ flex: 1 }}>
             <View style={checkout.upperContainer}>
               <View style={checkout.header}>
