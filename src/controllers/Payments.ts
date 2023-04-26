@@ -96,7 +96,7 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
       customer: customer.id,
       // setup_future_usage: 'off_session', for card saving
       payment_method_types: ['card'], // delayed capturing doesn't work for everything and we can get into legal trouble, let's stick with cards (credit & debit) for now
-      capture_method: 'manual', // don't charge the user right now, but we'll need to save the paymentIntent's id to charge later
+      capture_method: 'manual', // don't charge the user right now, but we'll need to save the paymentIntent's id to charge later.
     })
     res.json({ message: 'Payment initiated', paymentIntent })
   } catch (err) {
