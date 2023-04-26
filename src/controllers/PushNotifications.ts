@@ -48,15 +48,15 @@ const getPaymentIntentIdFromId = async (id: number): Promise<string> => {
 const checkItems = (items: TransactionItem[], transactionHistory: TransactionHistory): number => {
   const transactionLifetime = Math.abs(new Date().getTime() - transactionHistory.order_placed.getTime()) / 36e5
   if (items.every((i) => i.order_status === 'CANCELLED')) {
-    console.log('Order Cancelled :(')
+    console.log('Order cancelled :(')
     return Status.Cancelled
   } else if (transactionLifetime > 6) {
+    console.log('Order timed out')
     return Status.TimedOut
   } else if (items.every((i) => i.order_status === 'CANCELLED' || i.order_status === 'FINISHED')) {
-    console.log('order complete, sending notification!')
+    console.log('order complete')
     return Status.Complete
   } else {
-    console.log('waiting on order...')
     return Status.Incomplete
   }
 }
@@ -118,7 +118,6 @@ export async function subscribePushNotifications(req: Request, res: Response): P
       const items = await getItems(req.body.transactionId)
       const orderStatus = checkItems(items, await getTransactionHistoryFromId(req.body.transactionId))
 
-      console.log(orderStatus)
       if (orderStatus === Status.Complete) {
         let price = 0
         items.forEach((i) => {
@@ -137,14 +136,13 @@ export async function subscribePushNotifications(req: Request, res: Response): P
             charged_price: price,
           },
         })
-        console.log(1, req.body)
         const pii = await getPaymentIntentIdFromId(req.body.transactionId)
         await stripe.paymentIntents.capture(pii, {
           amount_to_capture: price,
         })
       } else if (orderStatus === Status.Cancelled || orderStatus === Status.TimedOut) {
         clearInterval(interval)
-        if (orderStatus === Status.Cancelled) sendNotification(token, messageCancelled) && console.log('cancelled')
+        if (orderStatus === Status.Cancelled) sendNotification(token, messageCancelled)
         updateTransactionHistoryInner({
           body: {
             id: req.body.transactionId,
@@ -153,12 +151,10 @@ export async function subscribePushNotifications(req: Request, res: Response): P
             charged_price: 0,
           },
         })
-        console.log(2)
         stripe.paymentIntents.cancel(await getPaymentIntentIdFromId(req.body.transactionId))
       }
     }, 5000)
-    console.log('sent')
-    res.send(JSON.stringify('blah!'))
+    res.send(JSON.stringify('exited order function'))
   } catch (e) {
     res.status(400).send(e)
   }

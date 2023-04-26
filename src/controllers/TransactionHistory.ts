@@ -280,7 +280,6 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
 }
 
 export async function updateTransactionHistoryInner(req: any): Promise<TransactionHistory> {
-  console.log('nnnnnnn', req.body)
   try {
     const transactionHistory = await prisma.transactionHistory.update({
       where: {

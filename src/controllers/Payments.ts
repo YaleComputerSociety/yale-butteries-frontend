@@ -45,7 +45,7 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
     // verify all the prices match
     // verify all the items are enabled
 
-    console.log(req.body.items)
+    // console.log(req.body.items)
 
     const college = await getCollegeFromName(req.body.college)
 
@@ -65,7 +65,6 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
       }
     })
 
-    console.log(validOrder)
     if (!validOrder) {
       res.status(400).json({ message: 'Transaction failed' })
       return
