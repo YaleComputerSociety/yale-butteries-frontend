@@ -1,8 +1,6 @@
 import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
-import { backToFrontTransactionHistories } from './TransactionHistory'
-import { getCollegeFromId } from './TransactionHistory'
-import { getCollegeFromName } from './TransactionHistory'
+import { backToFrontTransactionHistories, getCollegeFromName } from './TransactionHistory'
 import { stripe } from './Payments'
 
 const prisma = new PrismaClient()
@@ -44,7 +42,6 @@ export async function getUser(req: Request, res: Response): Promise<void> {
 
     if (user.transaction_histories.length > 0) {
       recentOrder = user.transaction_histories[user.transaction_histories.length - 1]
-      // THIS ISN'T WORKING START BACK UP HERE
       const modifiedRecentOrder = (await backToFrontTransactionHistories([recentOrder], user.college.college))[0]
       if (recentOrder) {
         const lifetime = Math.abs(new Date().getTime() - recentOrder.order_placed.getTime()) / 36e5
