@@ -2,7 +2,10 @@
   "expo": {
     "name": "buttery-app",
     "slug": "buttery-app",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
@@ -12,11 +15,15 @@
       "backgroundColor": "#2D90DD"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/545b55a6-9a1a-4486-8846-88cecbc9c7dc"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.addisongoolsbee.butteryapp"
     },
     "android": {
       "adaptiveIcon": {
@@ -27,6 +34,14 @@
     "description": "",
     "developmentClient": {
       "silentLaunch": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "545b55a6-9a1a-4486-8846-88cecbc9c7dc"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }
