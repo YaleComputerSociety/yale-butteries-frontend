@@ -198,7 +198,7 @@ const main = async () => {
     },
     update: {},
     create: {
-      item: 'Americano',
+      item: 'Oops! Something is wrong',
       price: 156,
       limited_time: false,
       is_active: true,

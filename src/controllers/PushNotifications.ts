@@ -8,6 +8,7 @@ enum Status {
   Incomplete,
   Complete,
   Cancelled,
+  TimedOut,
 }
 
 interface NotificationMessage {
@@ -46,9 +47,11 @@ const getPaymentIntentIdFromId = async (id: number): Promise<string> => {
 
 const checkItems = (items: TransactionItem[], transactionHistory: TransactionHistory): number => {
   const transactionLifetime = Math.abs(new Date().getTime() - transactionHistory.order_placed.getTime()) / 36e5
-  if (transactionLifetime > 6 || items.every((i) => i.order_status === 'CANCELLED')) {
+  if (items.every((i) => i.order_status === 'CANCELLED')) {
     console.log('Order Cancelled :(')
     return Status.Cancelled
+  } else if (transactionLifetime > 6) {
+    return Status.TimedOut
   } else if (items.every((i) => i.order_status === 'CANCELLED' || i.order_status === 'FINISHED')) {
     console.log('order complete, sending notification!')
     return Status.Complete
@@ -139,9 +142,9 @@ export async function subscribePushNotifications(req: Request, res: Response): P
         await stripe.paymentIntents.capture(pii, {
           amount_to_capture: price,
         })
-      } else if (orderStatus === Status.Cancelled) {
+      } else if (orderStatus === Status.Cancelled || orderStatus === Status.TimedOut) {
         clearInterval(interval)
-        sendNotification(token, messageCancelled)
+        if (orderStatus === Status.Cancelled) sendNotification(token, messageCancelled) && console.log('cancelled')
         updateTransactionHistoryInner({
           body: {
             id: req.body.transactionId,
