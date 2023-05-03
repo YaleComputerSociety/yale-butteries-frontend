@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/splashScreen.png",
+        "foregroundImage": "./assets/images/logo_transparent.png",
         "backgroundColor": "#2D90DD"
       }
     },
@@ -32,6 +32,11 @@
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "de54dbe6-3119-4e4d-9b6d-dee822526dec"
+      }
     }
   }
 }
