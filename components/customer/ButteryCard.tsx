@@ -113,9 +113,6 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
           backgroundColor: pressed ? 'rgba(0, 0, 0, 0.075)' : 'rgba(0, 0, 0, 0.025)',
           marginTop: 10,
           marginHorizontal: 10,
-          shadowColor: '#222',
-          shadowOpacity: 0.3,
-          shadowRadius: 10,
         },
       ]}
     >
