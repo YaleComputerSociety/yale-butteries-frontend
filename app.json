@@ -24,7 +24,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/logo_transparent.png",
         "backgroundColor": "#2D90DD"
-      }
+      },
+      "package": "com.addisongoolsbee.butteryapp"
     },
     "description": "",
     "developmentClient": {
