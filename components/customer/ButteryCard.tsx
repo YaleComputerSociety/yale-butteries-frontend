@@ -19,19 +19,24 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   const [closeTimeHours, setCloseTimeHours] = useState(0)
   const [openTimeMinutes, setOpenTimeMinutes] = useState(0)
   const [closeTimeMinutes, setCloseTimeMinutes] = useState(0)
+  const [day, setDay] = useState(0)
   const activeText = props.active ? 'CLOSED' : 'INACTIVE'
   const days = ['S ', 'M ', 'T ', 'W ', 'T ', 'F ', 'S ']
-  const d = new Date().getDay()
+  const DAY_CUTOFF = 5
 
   // turns string input into date object. Upper indicates if this is the close time
   const setDateTime = function (str: string, upper: boolean) {
     const sp = str.split(':')
     const date = new Date()
+    const today = new Date()
     date.setHours(parseInt(sp[0]))
     date.setMinutes(parseInt(sp[1]))
     date.setSeconds(0)
-    if (upper && date.getHours() < 10) {
+    if (upper && date.getHours() <= DAY_CUTOFF) {
       date.setDate(date.getDate() + 1)
+    }
+    if (today.getHours() <= DAY_CUTOFF) {
+      date.setDate(date.getDate() - 1)
     }
     return date
   }
@@ -41,6 +46,12 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
     const today = new Date()
     const lower = setDateTime(props.openTime, false)
     const upper = setDateTime(props.closeTime, true)
+
+    if (today.getHours() <= DAY_CUTOFF) {
+      setDay((today.getDate() - 1) % 6)
+    } else {
+      setDay(today.getDate())
+    }
 
     return today < upper && today >= lower
   }
@@ -87,7 +98,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
 
   const getDayVisual = (value: boolean, index: number) => {
     return (
-      <Text style={[value ? card.dayActive : card.dayInactive, d === index ? card.underlined : null]} key={index}>
+      <Text style={[value ? card.dayActive : card.dayInactive, day === index ? card.underlined : null]} key={index}>
         {days[index]}{' '}
       </Text>
     )
