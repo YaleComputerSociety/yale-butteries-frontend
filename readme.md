@@ -14,7 +14,7 @@ This means you'll need to run prisma migrations:
 
 `yarn prisma migrate dev`
 
-If you get "command prisma not found, run `yarn add prisma` followed by the previous command
+If you get "command prisma not found, run `yarn add prisma`, followed by the previous command
 
 Then, exit the docker container with `exit`
 
