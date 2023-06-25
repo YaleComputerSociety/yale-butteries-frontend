@@ -88,9 +88,12 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
               editable={!loadingUser}
             />
             {displayError && <Text style={styles.error}>Please enter a name between 3 and 15 characters</Text>}
-            <Pressable onPress={handleStaffPress} style={styles.button} disabled={userSet}>
-              <Text style={{ color: 'lightgray', fontWeight: '500' }}>Staff Login</Text>
+            <Pressable onPress={onSubmit} style={styles.button} disabled={userSet}>
+              <Text style={{ color: 'lightgray', fontWeight: '500' }}>Login</Text>
             </Pressable>
+            <Text onPress={handleStaffPress} style={styles.staffLogin} disabled={userSet}>
+              Staff Login
+            </Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -99,6 +102,12 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  staffLogin: {
+    fontSize: 15,
+    color: '#444',
+    marginTop: 15,
+    textDecorationLine: 'underline',
+  },
   style1: {
     alignSelf: 'center',
     alignContent: 'center',
@@ -165,7 +174,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#407899',
     padding: 10,
     borderRadius: 10,
-    marginTop: 30,
+    marginTop: 20,
   },
   error: {
     color: '#bb3333',
