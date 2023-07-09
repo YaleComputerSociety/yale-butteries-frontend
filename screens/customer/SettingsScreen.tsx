@@ -6,6 +6,8 @@ import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import * as LocalStorage from './../../LocalStorage'
+import * as Animatable from 'react-native-animatable';
+import * as Haptics from 'expo-haptics'
 import EvilModal from '../../components/EvilModal'
 
 const Settings: FC<{ navigation: any }> = () => {
@@ -15,6 +17,8 @@ const Settings: FC<{ navigation: any }> = () => {
   const [newName, setNewName] = useState(currentUser.name)
   const [connection, setConnection] = useState(true)
   const [invalidName, setInvalidName] = useState(false)
+
+  const[successView, setSuccessView] = useState(false)
 
   const changeName = async (name: string) => {
     const id = await LocalStorage.getUserInfo('id')
@@ -34,6 +38,13 @@ const Settings: FC<{ navigation: any }> = () => {
       const success = await dispatch(asyncUpdateCurrentUser(updatedCurrentUser))
       if (!success) {
         setConnection(false)
+      } else {
+        setSuccessView(true)
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+        setTimeout(
+          () => {setSuccessView(false)},
+          3000
+        )
       }
     }
   }
@@ -42,7 +53,7 @@ const Settings: FC<{ navigation: any }> = () => {
     <View style={{ width: '100%', height: '100%', backgroundColor: '#eee', display: 'flex' }}>
       <EvilModal toggle={setConnection} display={!connection} />
       <ScrollView>
-        <Text style={styles.text}>Account</Text>
+        <Text style={styles.text}>Account Information</Text>
         <View style={styles.titleContainer}>
           <View style={styles.sectionContainer}>
             <Ionicon name="create-outline" size={20} color="black" />
@@ -62,6 +73,12 @@ const Settings: FC<{ navigation: any }> = () => {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      {successView == true &&
+        <Animatable.View animation="bounceInUp" iterationCount={2} direction='alternate' style={styles.success}>
+          <Text style={styles.successText}>Successfully Saved!</Text>
+          <Ionicon name="checkmark-circle" size={20} color="white" />
+        </Animatable.View>
+      }
     </View>
   )
 }
@@ -128,6 +145,24 @@ const styles = StyleSheet.create({
     marginLeft: 120,
     marginBottom: 10,
   },
+  success: {
+    margin: 20,
+    backgroundColor: '#5dc761',
+    height: 60,
+    borderRadius: 8,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  successText: {
+    fontSize: 18,
+    fontFamily: 'HindSiliguri-Bold',
+    color: '#fff',
+    margin: 8,
+  }
 })
 
 export default Settings

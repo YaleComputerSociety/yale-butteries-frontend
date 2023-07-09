@@ -98,6 +98,7 @@ export const item = StyleSheet.create({
     textAlign: 'center',
     borderRadius: 8,
     alignItems: 'center',
+    width: 150,
   },
 
   buttonText: {
@@ -106,7 +107,17 @@ export const item = StyleSheet.create({
     fontFamily: 'HindSiliguri-Bold',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 16,
+    fontSize: 17,
+    textAlignVertical: 'center',
+  },
+
+  itemCountText: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    fontFamily: 'HindSiliguri-Bold',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 17,
     textAlignVertical: 'center',
   },
 

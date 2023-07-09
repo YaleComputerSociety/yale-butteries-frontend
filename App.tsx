@@ -15,7 +15,6 @@ import { NavigationContainer } from '@react-navigation/native'
 
 import { setIsLoading } from './store/slices/Users'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import EvilModal from './components/EvilModal'
 
 // LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
@@ -27,12 +26,12 @@ const InnerApp: FC = () => {
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      Roboto: require('./assets/fonts/Roboto-Black.ttf'),
+      'Roboto': require('./assets/fonts/Roboto-Black.ttf'),
       'Roboto-Light': require('./assets/fonts/HindSiliguri-Light.ttf'),
       'Roboto-Italic': require('./assets/fonts/Roboto-LightItalic.ttf'),
       'HindSiliguri-Bold': require('./assets/fonts/HindSiliguri-SemiBold.ttf'),
       'HindSiliguri-Bolder': require('./assets/fonts/HindSiliguri-Bold.ttf'),
-      HindSiliguri: require('./assets/fonts/HindSiliguri-Regular.ttf'),
+      'HindSiliguri': require('./assets/fonts/HindSiliguri-Regular.ttf'),
     })
   }
 
@@ -113,6 +112,7 @@ const InnerApp: FC = () => {
 }
 
 // seperate outer component for redux store to work on the inner component
+
 const App: FC = () => {
   return (
     <Provider store={store}>
