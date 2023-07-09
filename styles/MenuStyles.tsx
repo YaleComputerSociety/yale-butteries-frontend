@@ -113,7 +113,7 @@ export const item = StyleSheet.create({
 
   itemCountText: {
     paddingVertical: 4,
-    paddingHorizontal: 8,
+    paddingHorizontal: 15,
     fontFamily: 'HindSiliguri-Bold',
     justifyContent: 'center',
     alignItems: 'center',
