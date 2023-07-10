@@ -46,6 +46,7 @@ const CheckoutItem: any = ({ decUpdate, checkoutItem, isDisabled }: Props) => {
   const removeItem = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     decUpdate(checkoutItem)
+    translateX.value = 0
   }
 
   const rStyle = useAnimatedStyle(() => ({
