@@ -56,7 +56,7 @@ const Settings: FC<{ navigation: any }> = () => {
         <Text style={styles.text}>Account Information</Text>
         <View style={styles.titleContainer}>
           <View style={styles.sectionContainer}>
-            <Ionicon name="create-outline" size={20} color="black" />
+            <Ionicon name="create-outline" size={25} color="black" />
             <Text style={styles.text2}>Display Name:</Text>
             <TextInput
               value={newName}
@@ -94,20 +94,20 @@ const styles = StyleSheet.create({
     width: '25%',
   },
   button_text: {
-    fontSize: 15,
+    fontSize: 18,
     color: '#FAF9F6',
     padding: 5,
     fontFamily: 'HindSiliguri-Bold',
   },
   input_text: {
-    fontSize: 15,
+    fontSize: 18,
     fontFamily: 'HindSiliguri',
     borderBottomColor: '#ddd',
     flex: 1,
     borderBottomWidth: 1,
   },
   text: {
-    fontSize: 18,
+    fontSize: 20,
     marginLeft: 18,
     marginVertical: 10,
     color: 'black',
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   text2: {
-    fontSize: 15,
+    fontSize: 18,
     marginHorizontal: 8,
     color: 'black',
     justifyContent: 'center',
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   success: {
     margin: 20,
     backgroundColor: '#5dc761',
-    height: 60,
+    height: 65,
     borderRadius: 8,
     alignItems: 'center',
     shadowColor: '#000',

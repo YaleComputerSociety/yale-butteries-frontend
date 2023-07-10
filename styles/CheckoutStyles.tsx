@@ -49,9 +49,12 @@ export const checkout = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 10,
-    //backgroundColor: 'blue',
+    height: 50,
+    backgroundColor: '#ddd',
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
+    zIndex: 1,
+    paddingRight: 10,
   },
 
   header: {
@@ -128,5 +131,23 @@ export const checkout = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     paddingLeft: '10%',
+  },
+
+  deleteContainer: {
+    alignItems: 'center',
+    paddingVertical: 10,
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    height: 50,
+    backgroundColor: 'red',
+    borderBottomColor: '#ccc',
+    width: 75,
+    position: 'absolute',
+    alignSelf: 'flex-end',
+  },
+  
+  deleteContainerText: {
+    fontFamily: 'HindSiliguri-Bold',
+    color: '#fff'
   },
 })
