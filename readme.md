@@ -6,21 +6,21 @@ This is where all the api endpoints are defined and run, and also where the data
 
 - First, make sure you have Docker installed on your machine (Docker desktop is preferred, but Docker engine will work)
 - If you don't see an `.env.local` file in this directory, contact the team lead. The file stores passwords and various other sensitive information, so it's not on GitHub. You'll need it to setup/connect to the database and use Stripe functionality
-- Run `command=initialize docker compose up backend`. It might take a few minutes, but it won't be slow next time
-- If everything worked, you should see the message `Deployed on port 3000`
-- To make sure it's working, type `http://localhost:3000/api/colleges` into the url search bar in a browser. You should see a bunch of text
+- Set up the database with `docker compose run backend bash -c "yarn initialize"`. It might take a few minutes if this is your first time
+  - If you're asked to name a migration, name it anything
+- If everything worked, you should see **"Your database is now in sync with your schema"** and **"The seed command has been executed"**
+- Now run the backend with `docker compose up backend`. You should see the message **"Deployed on port 3000"**
+- To make sure it's working, type `http://localhost:3000/api/colleges` into the url search bar in a browser. If it works, you'll see a bunch of text
 
 ## Usage
 
-- Run `docker compose up backend` to get the backend and database up and running. You will get a warning about the command variable, but ignore it
+- Run `docker compose up backend` to get the backend and database up and running
 - Run `docker exec -it yalebutteries bash` while the containers are running to enter into the backend container, or `docker compose run backend bash` to create a container and enter it
-- If you look in `package.json`, at the scripts, you'll see there are a number of ways to start the backend
-  - `yarn start` runs the backend. This is the default option if you don't specify a command
-  - `yarn migrate` runs database migrations for when you change `prisma/schema.prisma`, and then runs the backend
-  - `yarn seed` seeds the database with the values in `prisma/seed.ts`, and then runs the backend
+- To run the containers with a specific command, type `docker compose run backend bash -c "{name-of-command}"`
+  - `yarn start` runs the backend. This is basically identical to `docker compose up backend`
+  - `yarn migrate` runs database migrations, for when `prisma/schema.prisma` is altered
+  - `yarn seed` seeds the database with the values in `prisma/seed.ts`
   - `yarn initialize` combines migrate and seed
-- To run the containers with a specific command, specify the command with`command={command-name} docker compose up backend`
-  - For example, `command=seed docker compose up backend`
 
 ## Database (NEEDS TO BE REWRITTEN)
 
