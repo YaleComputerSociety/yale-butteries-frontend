@@ -1,26 +1,25 @@
 version: '3.8'
 services:
-  app:
+  backend: # This container runs the backend, which contains all the endpoints and enables the API
     build: .
-    command: bash -c "yarn start"
-    container_name: yale_college_hub
+    container_name: yalebutteries
     depends_on:
-      - db
+      - db # make sure the database is running before this runs
     env_file:
       - .env.local
     ports:
-      - '3000:3000'
+      - '3000:3000' # Open port 3000 to the outside world
     volumes:
-      - .:/app:delegated
+      - .:/app:delegated # this makes the code update dynamically, so the image doesn't have to be rebuilt
 
-  db:
+  db: # This container holds the database, which the backend interacts with
     image: postgres
-    container_name: yale-college-hub-db
+    container_name: yalebutteries-db
     env_file:
       - .env.local
     volumes:
       - .:/app
-      - dbvolume:/var/lib/postgresql/data
+      - dbvolume:/var/lib/postgresql/data` # The database is stored on a volume so that the data persists even after the container shuts down
 
 volumes:
   dbvolume:

@@ -22,11 +22,11 @@ Then, exit the docker container with `exit`
 
 To use Prisma, you must be inside of the docker container. Run `docker-copmose run app bash`
 
-`yarn prisma migrate dev`: run prisma migrations. This will set everything up the first time you use it, and you use it again whenever you make a change to the prisma schema
+`yarn prisma migrate dev`: run prisma migrations. This will set the database tables up, and you must use it again whenever you make a change to the prisma schema
 
 `yarn prisma migrate reset`: clear all entries in the database and run migrations again
 
-`yarn prisma db seed`: if you added any non-conflicting seed entries, this will add them to the database
+`yarn prisma db seed`: seed the database with the items in `prisma/seed.ts`
 
 ### Database
 
