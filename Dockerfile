@@ -1,15 +1,16 @@
 FROM node:16.3.0
 
+RUN apt-get update -qq && apt-get install -y postgresql-client
+
 RUN mkdir /app
 WORKDIR /app
 
-RUN apt-get update -qq && apt-get install -y postgresql-client
 
 COPY package.json .
 COPY yarn.lock .
 RUN yarn
 
-COPY prisma ./prisma
+COPY prisma/schema.prisma ./prisma/
 RUN yarn prisma generate
 
 COPY . .

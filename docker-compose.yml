@@ -12,7 +12,7 @@ services:
     # volumes:
     # - .:/app:delegated # this makes the code update dynamically, so the image doesn't have to be rebuilt
     command: >
-      bash -c "yarn start"
+      bash -c '([ -z "$command" ] && yarn start || yarn "$command")'
 
   db: # This container holds the database, which the backend interacts with
     image: postgres

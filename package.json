@@ -9,6 +9,9 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node src/app.ts",
+    "initialize": "yarn prisma migrate dev && yarn prisma db seed && ts-node src/app.ts",
+    "migrate": "yarn prisma migrate dev && ts-node src/app.ts",
+    "seed": "yarn prisma db seed && ts-node src/app.ts",
     "lint": "yarn eslint --max-warnings 0 'src/**/*.{js,ts,tsx}'"
   },
   "dependencies": {
