@@ -57,7 +57,7 @@ If commands like `yarn seed` aren't working, you'll need to manually configure P
 - To seed the database, type `yarn prisma db seed`
 - To reset the database, type `yarn prisma migrate reset`
 
-### TODO
+### TODO readme
 
 - Rewrite database section
 - Deploying to heroku in development and in production
