@@ -1,0 +1,13 @@
+# Important ignores
+node_modules
+.git
+.env.local
+
+**/.DS_Store
+Dockerfile
+docker-compose.yml
+.dockerignore
+.vscode
+.gitignore
+Procfile
+readme.md

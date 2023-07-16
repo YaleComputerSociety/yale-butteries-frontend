@@ -9,8 +9,10 @@ services:
       - .env.local
     ports:
       - '3000:3000' # Open port 3000 to the outside world
-    volumes:
-      - .:/app:delegated # this makes the code update dynamically, so the image doesn't have to be rebuilt
+    # volumes:
+    # - .:/app:delegated # this makes the code update dynamically, so the image doesn't have to be rebuilt
+    command: >
+      bash -c "yarn start"
 
   db: # This container holds the database, which the backend interacts with
     image: postgres

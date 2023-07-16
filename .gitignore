@@ -6,7 +6,7 @@ yarn-debug.log*
 
 /src/frontend/dist
 
-*env*.local
+.env.local
 .env
 
 **/.DS_Store
@@ -14,5 +14,3 @@ yarn-debug.log*
 # Ignore package-lock.json in case we run npm install instead of yarn install
 # Heroku doesn't let you deploy if you have a yarn.lock and package-lock.json
 package-lock.json
-
-

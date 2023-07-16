@@ -30,13 +30,13 @@ To use Prisma, you must be inside of the docker container. Run `docker-copmose r
 
 ### Database
 
-To login to the database, be inside the Docker container and run `${COMMAND}`, which is an evnironment variable defined in the .`env.local` file. If you don't have a `.env.local`, contact the team lead. This is sensitive information, so we need to keep it secure and off of GitHub. The terminal will ask for the password, this is also in the `.env.local` file by `DATABASE_PASSWORD`
+To login to the database, be inside the Docker container and run `$COMMAND`, which is an evnironment variable defined in the .`env.local` file. If you don't have a `.env.local`, contact the team lead. This is sensitive information, so we need to keep it secure and off of GitHub.
 
 Once inside the database, type `\d` to list all database tables
 
 type `\q` to quit
 
-You can directly use SQL queries to view/manipulate data. Just type your SQL query (SQL keywords are in all-caps, names are in double quotes and case-sensitive), and make sure to end your query with a semicolon
+You can directly use SQL queries to view/manipulate data. Just type your SQL query (SQL keywords are in all-caps, names must be in double quotes and are case-sensitive), and make sure to end your query with a semicolon, for example `SELECT * FROM "College";`
 
 ### Helpful SQL Queries
 

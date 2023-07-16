@@ -9,7 +9,6 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node src/app.ts",
-    "start-dev": "nodemon --watch 'src/frontend' --ignore 'src/frontend/dist' --ext 'ts,tsx,js,jsx,scss' --exec 'yarn run build-frontend-dev && ts-node src/app.ts'",
     "lint": "yarn eslint --max-warnings 0 'src/**/*.{js,ts,tsx}'"
   },
   "dependencies": {

@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    // "allowJs": true,
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -12,11 +11,6 @@
     "sourceMap": true,
     "target": "es6"
   },
-  "exclude": [
-    "**/*.spec.ts",
-    "node_modules",
-    "vendor",
-    "public"
-  ],
+  "exclude": ["**/*.spec.ts", "node_modules", "vendor", "public"],
   "compileOnSave": false
 }
