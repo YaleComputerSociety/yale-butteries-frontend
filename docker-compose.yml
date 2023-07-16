@@ -9,10 +9,10 @@ services:
       - .env.local
     ports:
       - '3000:3000' # Open port 3000 to the outside world
-    # volumes:
-    # - .:/app:delegated # this makes the code update dynamically, so the image doesn't have to be rebuilt
+    volumes:
+      - .:/app:delegated # this makes the code update dynamically, so the image doesn't have to be rebuilt
     command: >
-      bash -c '([ -z "$command" ] && yarn start || yarn "$command")'
+      bash -c "yarn start"
 
   db: # This container holds the database, which the backend interacts with
     image: postgres
@@ -20,7 +20,6 @@ services:
     env_file:
       - .env.local
     volumes:
-      - .:/app
       - dbvolume:/var/lib/postgresql/data` # The database is stored on a volume so that the data persists even after the container shuts down
 
 volumes:
