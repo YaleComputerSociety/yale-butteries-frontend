@@ -6,13 +6,12 @@ services:
     depends_on:
       - db # make sure the database is running before this runs
     env_file:
-      - .env.local
+      - .env.local # use secret environment variables in .env.local
     ports:
       - '3000:3000' # Open port 3000 to the outside world
     volumes:
-      - .:/app:delegated # this makes the code update dynamically, so the image doesn't have to be rebuilt
-    command: >
-      bash -c "yarn start"
+      - ./prisma/migrations/:/app/prisma/migrations:delegated # when the container makes a new prisma migration, your local code is updated to match
+    command: bash -c "yarn start"
 
   db: # This container holds the database, which the backend interacts with
     image: postgres
