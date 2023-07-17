@@ -83,12 +83,15 @@ export async function createUser(req: Request, res: Response): Promise<void> {
         },
       },
     })
+    console.log('asdfa')
 
-    const stripeUser = await stripe.customers.create({
-      email: req.body.email,
-      name: req.body.name,
-      metadata: { userId: newUser.id },
-    })
+    // const stripeUser = await stripe.customers.create({
+    //   email: req.body.email,
+    //   name: req.body.name,
+    //   metadata: { userId: newUser.id },
+    // })
+
+    console.log('bony')
 
     const frontUser: FrontUser = {
       email: newUser.email,
@@ -101,6 +104,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
 
     res.send(JSON.stringify(frontUser))
   } catch (e) {
+    console.log('eyeyeyey')
     console.log(e)
     res.status(400).send(e)
   }
