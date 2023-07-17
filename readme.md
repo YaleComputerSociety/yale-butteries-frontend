@@ -2,21 +2,24 @@
 
 This is where all the api endpoints are defined and run, and also where the database is. You'll need this running in order to interact with the database use Stripe funcionality on the frontend
 
+## Requirements
+
+- Docker (Docker Desktop is preferred, but Docker Engine will work)
+- If you don't see an `.env.local` file in this directory, contact the team lead. The file stores passwords and various other sensitive information, so it's not on GitHub.
+
 ## Setup
 
-- First, make sure you have Docker installed on your machine (Docker desktop is preferred, but Docker engine will work)
-- If you don't see an `.env.local` file in this directory, contact the team lead. The file stores passwords and various other sensitive information, so it's not on GitHub. You'll need it to setup/connect to the database and use Stripe functionality
 - Set up the database with `docker compose run backend bash -c "yarn initialize"`. It might take a few minutes if this is your first time
   - If you're asked to name a migration, name it anything
 - If everything worked, you should see **"Your database is now in sync with your schema"** and **"The seed command has been executed"**
-- Now run the backend with `docker compose up backend`. You should see the message **"Deployed on port 3000"**
-- To make sure it's working, type `http://localhost:3000/api/colleges` into the url search bar in a browser. If it works, you'll see a bunch of text
+- Run the backend with `docker compose up backend`. You should see the message **"Deployed on port 3000"**
+- To test it, type `http://localhost:3000/api/colleges` into the url search bar in a browser. You should see a bunch of text
 
 ## Usage
 
 - Run `docker compose up backend` to get the backend and database up and running
 - Run `docker exec -it yalebutteries bash` while the containers are running to enter into the backend container, or `docker compose run backend bash` to create a container and enter it
-- To run the containers with a specific command, type `docker compose run backend bash -c "{name-of-command}"`
+- To run the containers with a specific command, type `docker compose run backend bash -c "{name-of-command}"`. Example: `docker compose run backend bash -c "yarn initialize"`
   - `yarn start` runs the backend. This is basically identical to `docker compose up backend`
   - `yarn migrate` runs database migrations, for when `prisma/schema.prisma` is altered
   - `yarn seed` seeds the database with the values in `prisma/seed.ts`
