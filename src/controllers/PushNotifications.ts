@@ -18,7 +18,7 @@ interface NotificationMessage {
 // Create a new Expo SDK client
 // optionally providing an access token if you have enabled push security
 const prisma = new PrismaClient()
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_DEV, {
   apiVersion: '2020-08-27',
 })
 
