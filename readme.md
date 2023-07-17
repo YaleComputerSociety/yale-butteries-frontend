@@ -27,7 +27,7 @@ This is where all the api endpoints are defined and run, and also where the data
 
 ## Database (NEEDS TO BE REWRITTEN)
 
-To login to the database, be inside the Docker container and run `$COMMAND`, which is an evnironment variable defined in the .`env.local` file. If you don't have a `.env.local`, contact the team lead. This is sensitive information, so we need to keep it secure and off of GitHub.
+To login to the database, be inside the Docker container and run `$DATABASE`, which is an evnironment variable defined in the .`env.local` file. If you don't have a `.env.local`, contact the team lead. This is sensitive information, so we need to keep it secure and off of GitHub.
 
 Once inside the database, type `\d` to list all database tables
 
