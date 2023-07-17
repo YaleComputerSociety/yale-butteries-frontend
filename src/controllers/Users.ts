@@ -85,11 +85,11 @@ export async function createUser(req: Request, res: Response): Promise<void> {
     })
     console.log('asdfa')
 
-    // const stripeUser = await stripe.customers.create({
-    //   email: req.body.email,
-    //   name: req.body.name,
-    //   metadata: { userId: newUser.id },
-    // })
+    await stripe.customers.create({
+      email: req.body.email,
+      name: req.body.name,
+      metadata: { userId: newUser.id },
+    })
 
     console.log('bony')
 
