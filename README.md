@@ -4,7 +4,7 @@ Yale Butteries is a React Native + Express.js app for ordering in advance from t
 
 ## Setting up the Development Environment
 
-To run the full environment, you will also need access to the [backend repository](https://github.com/TuckerMoses/yale-college-hub), but you can do plenty without it
+To run the full app, you will also need access to the [backend repository](https://github.com/Yale-Butteries/backend), but you can still do plenty without it
 
 Install the latest version of **Node.js** and then **Yarn**. Additionally, download **XCode** if you're using a mac, and **Android Studio** otherwise (you can also use Android Studio on a Mac, but with the M1 chips it's a little tricky). 
 
