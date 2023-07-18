@@ -13,6 +13,7 @@ import { baseUrl } from '../../utils/utils'
 import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
 import { stripePK } from '../../utils/utils'
+import { FlatList } from 'react-native-gesture-handler'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const {
@@ -142,7 +143,8 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   }
 
   const removeOrder = (newItem: OrderItem) => {
-    const item = orderItems.find((item) => item.orderItem.id == newItem.orderItem.id)
+    const item = orderItems.find((item) => item.index == newItem.index)
+    //problem is they all have the same id
     if (item === undefined) {
       throw new TypeError("Couldn't find orderItem to delete")
     }
@@ -162,16 +164,13 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               <View style={checkout.header}>
                 <Text style={checkout.totalText}>Order Summary:</Text>
               </View>
-              <ScrollView style={checkout.orderList} showsVerticalScrollIndicator={false}>
-                {orderItems.map((checkoutItem, index) => (
-                  <CheckoutItem
-                    decUpdate={removeOrder}
-                    checkoutItem={checkoutItem}
-                    isDisabled={isDisabled}
-                    key={index}
-                  />
-                ))}
-              </ScrollView>
+              <FlatList
+                data={orderItems}
+                renderItem={(item) => {
+                  return <CheckoutItem decUpdate={removeOrder} checkoutItem={item.item} isDisabled={isDisabled}/>
+                }}
+                keyExtractor={item => item.index.toString()}>
+              </FlatList>
               <View style={checkout.footer}>
                 <Text style={checkout.totalText}>Total: {priceToText(price)}</Text>
               </View>

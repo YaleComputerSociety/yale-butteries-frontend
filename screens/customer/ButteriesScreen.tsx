@@ -28,8 +28,8 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     },
     {
       ne: 'Berkeley',
-      start: '00:00',
-      end: '00:00',
+      start: '10:00',
+      end: '2:30',
       daysOpen: [true, true, true, false, false, false, true],
       active: true,
     },

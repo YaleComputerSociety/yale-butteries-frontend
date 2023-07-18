@@ -53,7 +53,6 @@ export const checkout = StyleSheet.create({
     backgroundColor: '#ddd',
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
-    zIndex: 1,
     paddingRight: 10,
   },
 
@@ -142,8 +141,6 @@ export const checkout = StyleSheet.create({
     backgroundColor: 'red',
     borderBottomColor: '#ccc',
     width: 75,
-    position: 'absolute',
-    alignSelf: 'flex-end',
   },
   
   deleteContainerText: {

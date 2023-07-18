@@ -5,6 +5,7 @@ import { MenuItem } from './MenuItems'
 
 export interface OrderItem {
   orderItem: MenuItem
+  index: number
 }
 
 export interface OrderCartState {
@@ -34,8 +35,12 @@ export const orderCartSlice = createSlice({
       state.price += action.payload.orderItem.price
     },
     removeOrderItem: (state, action: PayloadAction<OrderItem>) => {
-      const deleteIndex = state.orderItems.findIndex((item) => item.orderItem.id === action.payload.orderItem.id)
+      console.log(action.payload.index)
+      
+      const deleteIndex = state.orderItems.findIndex((item) => item.index === action.payload.index)
+      
       state.orderItems = [...state.orderItems.slice(0, deleteIndex), ...state.orderItems.slice(deleteIndex + 1)]
+      
       state.price -= action.payload.orderItem.price
     },
     setIsLoading: (state, action: PayloadAction<boolean | APIError>) => {

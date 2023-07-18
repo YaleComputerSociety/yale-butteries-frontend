@@ -1,6 +1,6 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import React, { FC, useCallback, useEffect, useState } from 'react'
-import { StyleSheet, View, ScrollView, ActivityIndicator, Text, Pressable, RefreshControl } from 'react-native'
+import { StyleSheet, View, ScrollView, ActivityIndicator, Text, Pressable, RefreshControl, FlatList } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems, MenuItem } from '../../store/slices/MenuItems'
 import { addOrderItem, OrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
@@ -60,10 +60,15 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   }, [])
 
   const addOrder = (newItem: MenuItem) => {
-    const temp: OrderItem = { orderItem: newItem }
+    const index = orderItems.length + 1
+    const temp: OrderItem = { orderItem: newItem, index: index }
     dispatch(addOrderItem(temp))
     setPriceTotal(priceTotal + newItem.price)
   }
+
+  const data = menuItems.filter((menuItem) => {
+    return menuItem.college === collegeOrderCart && menuItem.isActive === true
+  })
 
   return (
     <View style={home.container}>
@@ -74,21 +79,15 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
         </View>
       ) : (
         <View style={menu.wrapper}>
-          <ScrollView
+          <FlatList
             style={menu.upperContainer}
-            showsVerticalScrollIndicator={false}
+            data={data}
+            renderItem={(item) => {
+              return <MenuItemCard incUpdate={addOrder} menuItem={item.item} items={orderItems}/>
+            }}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-          >
-            <View style={home.menuView}>
-              {menuItems
-                .filter((menuItem) => {
-                  return menuItem.college === collegeOrderCart && menuItem.isActive === true
-                })
-                .map((menuItem) => (
-                  <MenuItemCard incUpdate={addOrder} menuItem={menuItem} key={menuItem.id} items={orderItems} />
-                ))}
-            </View>
-          </ScrollView>
+            >
+          </FlatList>
           <View style={styles.footer}>
             <Pressable
               disabled={orderItems.length < 1 ? true : false}
