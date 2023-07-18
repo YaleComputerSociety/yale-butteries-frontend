@@ -1,6 +1,6 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import React, { FC, useCallback, useEffect, useState } from 'react'
-import { StyleSheet, View, ScrollView, ActivityIndicator, Text, Pressable, RefreshControl, FlatList } from 'react-native'
+import { StyleSheet, View, ScrollView, ActivityIndicator, Text, Pressable, RefreshControl, FlatList, SectionList } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems, MenuItem } from '../../store/slices/MenuItems'
 import { addOrderItem, OrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
@@ -24,6 +24,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const { menuItems } = useAppSelector((state) => state.menuItems)
   const { orderItems, college: collegeOrderCart } = useAppSelector((state) => state.orderCart)
 
+  const [index, setIndex] = useState(0)
   const [priceTotal, setPriceTotal] = useState(getPriceFromOrderItems(orderItems))
   const [refreshing, setRefreshing] = useState(false)
   const [begin, setBegin] = useState(true)
@@ -60,8 +61,9 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   }, [])
 
   const addOrder = (newItem: MenuItem) => {
-    const index = orderItems.length + 1
-    const temp: OrderItem = { orderItem: newItem, index: index }
+    const i = index
+    setIndex(i + 1)
+    const temp: OrderItem = { orderItem: newItem, index: i }
     dispatch(addOrderItem(temp))
     setPriceTotal(priceTotal + newItem.price)
   }

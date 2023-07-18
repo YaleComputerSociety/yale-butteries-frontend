@@ -140,7 +140,7 @@ export const checkout = StyleSheet.create({
     height: 50,
     backgroundColor: 'red',
     borderBottomColor: '#ccc',
-    width: 75,
+    width: 85,
   },
   
   deleteContainerText: {
