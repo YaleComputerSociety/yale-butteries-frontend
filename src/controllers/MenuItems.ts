@@ -37,6 +37,7 @@ export async function getAllMenuItems(_: Request, res: Response): Promise<void> 
         price: i.price,
         college: c.college,
         isActive: i.is_active,
+        description: i.description,
       }
       frontMenuItems.push(newItem)
     }
@@ -93,6 +94,7 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
       price: req.body.price,
       isActive: req.body.isActive,
       foodType: req.body.foodType,
+      description: req.body.description,
     }
 
     const college = await getCollegeFromName(newItem.college)
@@ -108,6 +110,7 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
             id: college.id,
           },
         },
+        description: newItem.description,
       },
     })
     res.send(JSON.stringify(newMenuItem.id))
@@ -126,7 +129,7 @@ export async function updateMenuItem(req: Request, res: Response): Promise<void>
         item: req.body.item,
         price: req.body.price,
         is_active: req.body.isActive,
-        // description: req.body.description || undefined,
+        description: req.body.description
       },
     })
 

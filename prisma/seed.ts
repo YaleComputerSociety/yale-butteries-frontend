@@ -205,6 +205,7 @@ const main = async () => {
       college: {
         connect: { id: 7 },
       },
+      description: 'help',
     },
   })
   await prisma.menuItem.upsert({
