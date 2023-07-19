@@ -68,7 +68,7 @@ export const asyncFetchMenuItems = () => {
           college: item.college,
           price: parseInt(item.price),
           isActive: item.isActive,
-          description: 'This is a test description',
+          description: item.description,
           limitedTime: false,
           foodType: 'food',
         }

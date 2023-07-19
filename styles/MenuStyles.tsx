@@ -81,7 +81,7 @@ export const item = StyleSheet.create({
   itemDescription: {
     fontFamily: 'Roboto-Italic',
     color: '#777',
-    fontSize: 11,
+    fontSize: 12,
     flex: 2,
     marginRight: 10,
   },

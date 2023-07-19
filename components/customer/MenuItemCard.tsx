@@ -28,7 +28,6 @@ export const MenuItemCard: FC<Props> = ({ menuItem, items, incUpdate }: Props) =
   const addItem = () => {
     if (count < 5) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
-      //Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
       setCount(count + 1)
       incUpdate(menuItem)
     }
