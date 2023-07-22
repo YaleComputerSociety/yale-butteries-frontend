@@ -1,6 +1,6 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import React, { FC, useCallback, useEffect, useState } from 'react'
-import { StyleSheet, View, ScrollView, ActivityIndicator, Text, Pressable, RefreshControl, FlatList, SectionList } from 'react-native'
+import { StyleSheet, View, ActivityIndicator, Text, Pressable, RefreshControl, SectionList } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems, MenuItem } from '../../store/slices/MenuItems'
 import { addOrderItem, OrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
@@ -104,6 +104,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
         <View style={menu.wrapper}>
           
           <SectionList
+            showsVerticalScrollIndicator={false}
             sections={sections}      
             keyExtractor={(item, index) => item.item + index}
             renderItem={(item) => {
@@ -111,8 +112,8 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
             }}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             renderSectionHeader={({section: {title}}) => (
-              <View style={styles.headerStyle}>
-                <Text style={{ fontSize: 25, fontFamily: 'Staat' }}>{title}</Text>
+              <View style={[styles.headerStyle, {backgroundColor: returnCollegeName(collegeOrderCart)[1]}]}>
+                <Text style={{ fontSize: 25, fontFamily: 'Staat', color: 'white' }}>{title}</Text>
               </View>
             )}
             ListFooterComponent={
@@ -155,16 +156,15 @@ const styles = StyleSheet.create({
   headerStyle: {
     alignSelf: 'center',
     margin: 10,
-    height: 60,
+    height: 50,
     padding: 8, 
     width: '95%',
     alignItems: 'center', 
     justifyContent: 'center', 
-    backgroundColor: '#ddd',
-    shadowColor: '#999',
-    shadowRadius: 10,
+    shadowColor: '#555',
+    shadowRadius: 5,
     borderRadius: 8,
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.6,
   },
   cartButton: {
     width: '60%',
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     borderRadius: 25,
     shadowColor: '#000',
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.4,
     shadowRadius: 20,
     margin: 30,
     alignItems: 'center',
@@ -185,7 +185,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     bottom: 0,
     width: '100%',
-    
   },
   cartText: {
     color: 'white',
