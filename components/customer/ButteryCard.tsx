@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FC } from 'react'
 import { View, Text, Pressable } from 'react-native'
-import { card, home } from '../../styles/ButtereiesStyles'
+import { card, home } from '../../styles/ButteriesStyles'
 import SpriteSheet from 'rn-sprite-sheet'
 
 interface butteryProps {

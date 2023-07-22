@@ -65,9 +65,9 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
           style={{ paddingLeft: 15, paddingTop: 45, fontSize: 40 }}
         />
         <View style={staffLogin.outerContainer}>
-          <Text style={{ fontSize: 30, color: '#000', fontFamily: 'HindSiliguri-Bolder' }}> Staff Sign-In</Text>
+          <Text style={{ fontSize: 30, color: '#000', fontFamily: 'HindSiliguri-Bolder' }}>Staff Sign-In</Text>
           <TextInput
-            placeholder="username"
+            placeholder="Username"
             value={username}
             style={staffLogin.input}
             onChangeText={setUser}
@@ -75,7 +75,7 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
             autoCapitalize="none"
           ></TextInput>
           <TextInput
-            placeholder="password"
+            placeholder="Password"
             style={staffLogin.input}
             onChangeText={setPassword}
             secureTextEntry={true}
@@ -84,7 +84,7 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
           ></TextInput>
           <Pressable onPress={() => checkInfo()} style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}>
             <View style={staffLogin.button}>
-              <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}> Sign in</Text>
+              <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>Sign in</Text>
             </View>
           </Pressable>
           {errorMessage && <Text> {errorMessage} </Text>}

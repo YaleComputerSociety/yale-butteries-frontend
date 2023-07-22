@@ -21,8 +21,12 @@ const EditItemScreen: React.FC = (props: any) => {
   const [price, setPrice] = useState(props.price)
   const [doEditPrice, setDoEditPrice] = useState(false)
   const [validName, setValidName] = useState(true)
+
   const [validPrice, setValidPrice] = useState(true)
   const [connection, setConnection] = useState(true)
+
+  const [description, setDescription] = useState(props.description)
+  const [doEditDescription, setDoEditDescription] = useState(false)
 
   const handleEditItem = async (text) => {
     setItem(text)
@@ -33,6 +37,11 @@ const EditItemScreen: React.FC = (props: any) => {
     const parsed_text = Number(text.replace(/[^0-9]/g, ''))
     setPrice(parsed_text)
     setDoEditPrice(false)
+  }
+
+  const handleEditDescription = (text) => {
+    setDescription(text)
+    setDoEditDescription(false)
   }
 
   const getEditItemVisual = () => {
@@ -101,6 +110,39 @@ const EditItemScreen: React.FC = (props: any) => {
     }
   }
 
+  const getEditDescriptionVisual = () => {
+    if (doEditDescription) {
+      return (
+        <TextInput
+          multiline={false}
+          style={styles.inputTitleSingle}
+          autoCorrect={false}
+          autoFocus={true}
+          onBlur={() => setDoEditDescription(false)}
+          onSubmitEditing={(event) => {
+            handleEditDescription(event.nativeEvent.text)
+          }}
+        />
+      )
+    } else {
+      return (
+        <View style={styles.inputContainer}>
+          <View style={styles.inputString}>
+            <Text style={styles.titleText}>{description}</Text>
+          </View>
+          <EditButton
+            size={LAYOUTS.getWidth(18)}
+            top={LAYOUTS.getWidth(-3.5)}
+            right={LAYOUTS.getWidth(8)}
+            action={() => {
+              setDoEditDescription(true)
+            }}
+          />
+        </View>
+      )
+    }
+  }
+
   const saveChanges = () => {
     let exitEarly = false
     if (item.length <= 2 || item.length >= 26) {
@@ -117,10 +159,14 @@ const EditItemScreen: React.FC = (props: any) => {
       setValidPrice(true)
     }
 
+    setDescription(true)
+
     if (exitEarly) return
 
-    dispatch(asyncUpdateMenuItem({ ...props, item: item, price: price })).then((success: boolean) => {
+    dispatch(asyncUpdateMenuItem({ ...props, item: item, price: price, description: description })).then((success: boolean) => {
+      console.log(success)
       setConnection(success)
+      console.log('suc')
       if (success) {
         navigation.goBack()
       } else {
@@ -144,7 +190,10 @@ const EditItemScreen: React.FC = (props: any) => {
           {getEditPriceVisual()}
         </View>
         {!validPrice && <Text style={styles.error}>Price must be at between $0.50 and $20.00</Text>}
-
+        <View style={styles.tag}>
+          <Text style={styles.labelText}>Description:</Text>
+          {getEditDescriptionVisual()}
+        </View>
         <View style={styles.buttonHolder}>
           <TouchableOpacity style={{ ...styles.saveButton, marginBottom: LAYOUTS.getWidth(30) }} onPress={saveChanges}>
             <Text style={{ ...styles.buttonText }}>Save</Text>

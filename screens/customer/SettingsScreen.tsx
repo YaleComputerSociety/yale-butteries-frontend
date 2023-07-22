@@ -72,6 +72,7 @@ const Settings: FC<{ navigation: any }> = () => {
             <Text style={styles.button_text}> Save </Text>
           </TouchableOpacity>
         </View>
+        <Text style={styles.text}>Payment Information</Text>
       </ScrollView>
       {successView == true &&
         <Animatable.View animation="bounceInUp" iterationCount={2} direction='alternate' style={styles.success}>
@@ -80,6 +81,7 @@ const Settings: FC<{ navigation: any }> = () => {
         </Animatable.View>
       }
     </View>
+    
   )
 }
 

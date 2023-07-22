@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar'
 import store, { useAppDispatch } from './store/ReduxStore'
 import { asyncFetchUser } from './store/slices/CurrentUser'
 import { Provider } from 'react-redux'
-import { home } from './styles/ButtereiesStyles'
+import { home } from './styles/ButteriesStyles'
 import { View } from 'react-native'
 import * as SplashScreen from 'expo-splash-screen'
 import AppContainer from './routes/mainStack'
@@ -14,6 +14,7 @@ import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
 
 import { setIsLoading } from './store/slices/Users'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import EvilModal from './components/EvilModal'
 

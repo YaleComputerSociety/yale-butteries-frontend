@@ -34,9 +34,7 @@ export const orderCartSlice = createSlice({
       state.orderItems = [...state.orderItems, action.payload]
       state.price += action.payload.orderItem.price
     },
-    removeOrderItem: (state, action: PayloadAction<OrderItem>) => {
-      console.log(action.payload.index)
-      
+    removeOrderItem: (state, action: PayloadAction<OrderItem>) => {      
       const deleteIndex = state.orderItems.findIndex((item) => item.index === action.payload.index)
       
       state.orderItems = [...state.orderItems.slice(0, deleteIndex), ...state.orderItems.slice(deleteIndex + 1)]

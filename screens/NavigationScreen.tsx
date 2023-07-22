@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
-import { home } from '../styles/ButtereiesStyles'
+import { home } from '../styles/ButteriesStyles'
 import { LinearGradient } from 'expo-linear-gradient'
 
 const NavigationScreen: React.FC<{ navigation: any }> = ({ navigation }) => {

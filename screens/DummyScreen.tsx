@@ -45,4 +45,10 @@ const styles = StyleSheet.create({
   },
 })
 
+Dummy['navigationOptions'] = () => {
+  return {
+    gestureEnabled: false,
+  }
+}
+
 export default Dummy

@@ -5,7 +5,7 @@ import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems, MenuItem } from '../../store/slices/MenuItems'
 import { addOrderItem, OrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
 import { MenuItemCard } from '../../components/customer/MenuItemCard'
-import { home } from '../../styles/ButtereiesStyles'
+import { home } from '../../styles/ButteriesStyles'
 import { menu } from '../../styles/MenuStyles'
 import { loading } from '../../styles/GlobalStyles'
 import { getPriceFromOrderItems, returnCollegeName } from '../../Functions'
@@ -72,6 +72,27 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
     return menuItem.college === collegeOrderCart && menuItem.isActive === true
   })
 
+  const sections = [
+    {
+      title: 'Food',
+      data: data.filter((menuItem) => {
+        return menuItem.foodType === 'FOOD'
+      })
+    },
+    {
+      title: 'Drink',
+      data: data.filter((menuItem) => {
+        return menuItem.foodType === 'DRINK'
+      })
+    },
+    {
+      title: 'Dessert',
+      data: data.filter((menuItem) => {
+        return menuItem.foodType === 'DESSERT'
+      })
+    }
+  ]
+
   return (
     <View style={home.container}>
       <EvilModal toggle={setConnection} display={!connection} />
@@ -81,7 +102,20 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
         </View>
       ) : (
         <View style={menu.wrapper}>
-          <FlatList
+          <SectionList
+            sections={sections}      
+            keyExtractor={(item, index) => item.item + index}
+            renderItem={(item) => {
+              return <MenuItemCard incUpdate={addOrder} menuItem={item.item} items={orderItems}/>
+            }}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            renderSectionHeader={({section: {title}}) => (
+              <View style={styles.headerStyle}>
+                <Text style={{ fontSize: 20, fontFamily: 'HindSiliguri-Bold' }}>{title}</Text>
+              </View>
+            )}
+          />
+          {/* <FlatList
             style={menu.upperContainer}
             data={data}
             renderItem={(item) => {
@@ -89,7 +123,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
             }}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             >
-          </FlatList>
+          </FlatList> */}
           <View style={styles.footer}>
             <Pressable
               disabled={orderItems.length < 1 ? true : false}
@@ -114,6 +148,14 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
 }
 
 const styles = StyleSheet.create({
+  headerStyle: {
+    padding: 8, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    borderColor: '#ddd', 
+    borderBottomWidth: 1,
+    backgroundColor: 'grey'
+  },
   cartButton: {
     width: '60%',
     height: 60,
@@ -133,6 +175,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     bottom: 0,
     width: '100%',
+    
   },
   cartText: {
     color: 'white',

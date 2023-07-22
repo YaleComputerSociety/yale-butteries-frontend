@@ -4,10 +4,11 @@ import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { asyncAddMenuItem, MenuItem } from '../../store/slices/MenuItems'
 import EditButton from '../../components/staff/EditButton'
 import { useNavigation } from '@react-navigation/native'
-
 import { FUNCTIONS } from '../../constants/Functions'
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
+
+import SelectDropdown from 'react-native-select-dropdown'
 
 const CreateItemScreen: React.FC = () => {
   const navigation = useNavigation()
@@ -23,11 +24,23 @@ const CreateItemScreen: React.FC = () => {
   const [validPrice, setValidPrice] = useState(true)
   const [disabled, setDisabled] = useState(false)
 
+  const [description, setDescription] = useState('')
+  const [doEditDescription, setDoEditDescription] = useState(false)
+
+  const [selected, setSelected] = useState<MenuItem['foodType']>('FOOD');
+
+  const data = ['FOOD', 'DRINK', 'DESSERT']
+
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
   const handleEditItem = (text) => {
     setItem(text)
     setDoEditItem(false)
+  }
+
+  const handleEditDescription = (text) => {
+    setDescription(text)
+    setDoEditDescription(false)
   }
 
   const handleEditPrice = (text) => {
@@ -55,19 +68,22 @@ const CreateItemScreen: React.FC = () => {
     } else {
       setValidPrice(true)
     }
-
     if (exitEarly) {
       setDisabled(false)
       return
     }
 
+    console.log(selected)
+    
     const buffer: MenuItem = {
       item: item,
       college: currentUser.college,
       price: price,
       isActive: true,
-      foodType: 'food',
+      foodType: selected,
+      description: description,
     }
+
     dispatch(asyncAddMenuItem(buffer)).then((success: boolean) => {
       if (success) {
         navigation.goBack()
@@ -144,6 +160,39 @@ const CreateItemScreen: React.FC = () => {
     }
   }
 
+  const getEditDescriptionVisual = () => {
+    if (doEditDescription) {
+      return (
+        <TextInput
+          multiline={false}
+          style={styles.inputTitleSingle}
+          autoCorrect={false}
+          autoFocus={true}
+          onBlur={() => setDoEditDescription(false)}
+          onSubmitEditing={(event) => {
+            handleEditDescription(event.nativeEvent.text)
+          }}
+        />
+      )
+    } else {
+      return (
+        <View style={styles.inputContainer}>
+          <View style={styles.inputString}>
+            <Text style={styles.titleText}>{description}</Text>
+          </View>
+          <EditButton
+            size={LAYOUTS.getWidth(18)}
+            top={LAYOUTS.getWidth(-3.5)}
+            right={LAYOUTS.getWidth(8)}
+            action={() => {
+              setDoEditDescription(true)
+            }}
+          />
+        </View>
+      )
+    }
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -157,6 +206,28 @@ const CreateItemScreen: React.FC = () => {
           {getEditPriceVisual()}
         </View>
         {!validPrice && <Text style={styles.error}>Price must be at between $0.50 and $20.00</Text>}
+        <View style={styles.tag}>
+          <Text style={styles.labelText}>Description:</Text>
+          {getEditDescriptionVisual()}
+        </View>
+        <View style={[styles.tag]}>
+          <Text style={styles.labelText}>Item Type:</Text>
+          <View style={{ marginLeft: 'auto' , borderRadius: 8 }}>
+            <SelectDropdown
+              data={data}
+              defaultValue={'FOOD'}
+              onSelect={(selectedItem, index) => {
+                setSelected(selectedItem)
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem
+              }}
+              selectedRowStyle={{ backgroundColor: '#bbb' }}
+              buttonTextStyle={styles.text}
+              buttonStyle={{ borderRadius: 8, backgroundColor: 'orange'}}
+            />
+          </View>
+        </View>
         <View style={styles.buttonHolder}>
           <TouchableOpacity
             style={{ ...styles.saveButton, marginBottom: LAYOUTS.getWidth(30) }}
@@ -174,6 +245,11 @@ const CreateItemScreen: React.FC = () => {
 export default CreateItemScreen
 
 const styles = StyleSheet.create({
+  text: {
+    color: 'white', 
+    fontFamily: 'HindSiliguri-Bold', 
+    fontSize: 18, 
+  },
   error: {
     color: '#bb3333',
     fontFamily: 'HindSiliguri',
@@ -181,12 +257,12 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     fontSize: 20,
-    width: LAYOUTS.getWidth(150),
+    width: LAYOUTS.getWidth(160),
     borderRadius: 10,
     justifyContent: 'center',
     marginBottom: LAYOUTS.getWidth(10),
-    marginTop: LAYOUTS.getWidth(5),
-    backgroundColor: 'orange',
+    marginTop: LAYOUTS.getWidth(10),
+    backgroundColor: 'green',
     padding: 15,
   },
   button: {
@@ -194,17 +270,19 @@ const styles = StyleSheet.create({
     height: LAYOUTS.getWidth(20),
     borderRadius: 5,
     justifyContent: 'center',
-    marginBottom: LAYOUTS.getWidth(10),
-    marginTop: LAYOUTS.getWidth(5),
   },
   buttonText: {
-    fontSize: TEXTS.adjust(15),
-    fontWeight: '400',
-    color: 'blue',
+    fontSize: TEXTS.adjust(16),
+    fontWeight: '300',
+    fontFamily:  'HindSiliguri-Bolder',
     textAlign: 'center',
+    color: 'white',
   },
   buttonHolder: {
     alignItems: 'center',
+    borderTopWidth: 1,
+    borderColor: '#ddd',
+    padding: 10,
   },
   container: {
     flex: 1,
@@ -340,4 +418,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 20,
   },
+  typeButton: {
+    padding: 20,
+    alignSelf: 'flex-end',
+    shadowColor: '#000',
+  },
+  pressed: {
+    backgroundColor: 'blue',
+  },
+  notPressed: {
+    backgroundColor: 'white',
+  }
 })

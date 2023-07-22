@@ -10,7 +10,7 @@ export interface MenuItem {
   description?: string
   limitedTime?: boolean
   isActive: boolean
-  foodType: 'food' | 'drink' | 'dessert'
+  foodType: 'FOOD' | 'DRINK' | 'DESSERT'
 }
 
 export interface MenuItemsState {
@@ -70,7 +70,7 @@ export const asyncFetchMenuItems = () => {
           isActive: item.isActive,
           description: item.description,
           limitedTime: false,
-          foodType: 'food',
+          foodType: item.foodType,
         }
         newData.push(newItem)
       })
@@ -89,14 +89,13 @@ export const asyncUpdateMenuItem = (menuItem: MenuItem) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(setIsLoading(true))
     try {
-      await fetch(baseUrl + 'api/menu_items', {
+      const data = await fetch(baseUrl + 'api/menu_items', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(menuItem),
       })
-
       dispatch(updateMenuItem(menuItem))
       return true
     } catch (e) {

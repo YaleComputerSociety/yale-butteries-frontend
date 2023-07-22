@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Text, View, ScrollView } from 'react-native'
-import { home } from '../../styles/ButtereiesStyles'
+import { home } from '../../styles/ButteriesStyles'
 import { ButteryCard } from '../../components/customer/ButteryCard'
 import { useAppDispatch } from '../../store/ReduxStore'
 import { setCollege } from '../../store/slices/OrderCart'

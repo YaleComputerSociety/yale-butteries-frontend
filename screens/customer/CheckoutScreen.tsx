@@ -49,7 +49,11 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       },
     })
     if (response.status === 400) {
-      Alert.alert('Sorry, an item that you ordered ran out of stock! please refresh the menu page')
+      if (orderItems.length == 0) {
+        Alert.alert('There are no items in your cart! Add items to complete your order')
+      } else {
+        Alert.alert('Sorry, an item that you ordered ran out of stock! please refresh the menu page')
+      }
       return null
     }
     const data = await response.json()
