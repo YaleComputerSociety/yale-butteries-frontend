@@ -38,6 +38,7 @@ export async function getAllMenuItems(_: Request, res: Response): Promise<void> 
         college: c.college,
         isActive: i.is_active,
         description: i.description,
+        foodType: i.item_type,
       }
       frontMenuItems.push(newItem)
     }
@@ -88,6 +89,7 @@ export async function getMenuItem(req: Request, res: Response): Promise<void> {
 
 export async function createMenuItem(req: Request, res: Response): Promise<void> {
   try {
+    console.log(req.body.foodType)
     const newItem: FrontMenuItem = {
       item: req.body.item,
       college: req.body.college,
@@ -104,7 +106,7 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
         item: newItem.item,
         price: newItem.price,
         is_active: newItem.isActive,
-        item_type: 'FOOD',
+        item_type: newItem.foodType,
         college: {
           connect: {
             id: college.id,
@@ -120,6 +122,7 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
 }
 
 export async function updateMenuItem(req: Request, res: Response): Promise<void> {
+  console.log('helloworld')
   try {
     const targetMenuItem = await prisma.menuItem.update({
       where: {
@@ -132,12 +135,8 @@ export async function updateMenuItem(req: Request, res: Response): Promise<void>
         description: req.body.description
       },
     })
-
-    const mi = await prisma.menuItem.findFirst({
-      where: {
-        id: req.body.id,
-      },
-    })
+    console.log('hello world')
+    console.log(targetMenuItem.description)
     res.send(JSON.stringify(targetMenuItem))
   } catch (e) {
     res.status(400).send(e)
