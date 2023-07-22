@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { View, ScrollView, Text, StyleSheet, Pressable } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, Pressable, Alert } from 'react-native'
 import StatusItem from '../../components/customer/StatusCard'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
@@ -133,14 +133,17 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
           unfilledColor={'#333'}
         />
         <Pressable
-          disabled={percentage == 1 ? false : true}
           style={({ pressed }) => [
             { backgroundColor: pressed ? '#32ba32' : '#32CD32', opacity: percentage == 1 ? 1 : 0.6 },
             styles.button,
           ]}
           onPress={() => {
-            back()
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+            if (percentage == 1) {
+              back()
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+            } else {
+              Alert.alert('Please wait while we complete your order before returning home!')
+            }
           }}
         >
           <Text style={styles.buttonText}>Return Home</Text>
