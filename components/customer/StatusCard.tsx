@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 12,
-    borderBottomColor: '#ccc',
+    borderBottomColor: '#555',
     borderBottomWidth: 1,
   },
   statusText: {

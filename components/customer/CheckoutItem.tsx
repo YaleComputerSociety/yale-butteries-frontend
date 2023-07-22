@@ -32,7 +32,7 @@ const CheckoutItem: any = ({ decUpdate, checkoutItem, isDisabled }: Props) => {
   return (
     <View>
       {/* <PanGestureHandler onGestureEvent={panGesture}> */}
-        <Swipeable renderRightActions={rightSwipe}>
+        <Swipeable overshootRight={false} renderRightActions={rightSwipe}>
           <View style={[checkout.item]}>
             <Pressable
               disabled={isDisabled}

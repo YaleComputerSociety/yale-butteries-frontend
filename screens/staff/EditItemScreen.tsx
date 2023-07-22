@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native'
 import { useAppDispatch } from '../../store/ReduxStore'
-import { asyncUpdateMenuItem } from '../../store/slices/MenuItems'
+import { MenuItem, asyncUpdateMenuItem } from '../../store/slices/MenuItems'
 import EditButton from '../../components/staff/EditButton'
 
 import { FUNCTIONS } from '../../constants/Functions'
@@ -9,6 +9,8 @@ import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
 import EvilModal from '../../components/EvilModal'
 import { useNavigation } from '@react-navigation/native'
+
+import SelectDropdown from 'react-native-select-dropdown'
 
 const EditItemScreen: React.FC = (props: any) => {
   props = props.route.params.data
@@ -27,6 +29,9 @@ const EditItemScreen: React.FC = (props: any) => {
 
   const [description, setDescription] = useState(props.description)
   const [doEditDescription, setDoEditDescription] = useState(false)
+
+  const [selected, setSelected] = useState<MenuItem['foodType']>(props.foodType);
+  const data = ['FOOD', 'DRINK', 'DESSERT']
 
   const handleEditItem = async (text) => {
     setItem(text)
@@ -163,10 +168,8 @@ const EditItemScreen: React.FC = (props: any) => {
 
     if (exitEarly) return
 
-    dispatch(asyncUpdateMenuItem({ ...props, item: item, price: price, description: description })).then((success: boolean) => {
-      console.log(success)
+    dispatch(asyncUpdateMenuItem({ ...props, item: item, price: price, description: description, foodType: selected })).then((success: boolean) => {
       setConnection(success)
-      console.log('suc')
       if (success) {
         navigation.goBack()
       } else {
@@ -184,7 +187,6 @@ const EditItemScreen: React.FC = (props: any) => {
           {getEditItemVisual()}
         </View>
         {!validName && <Text style={styles.error}>Name must be between 3 and 25 characters</Text>}
-
         <View style={styles.tag}>
           <Text style={styles.labelText}>Price:</Text>
           {getEditPriceVisual()}
@@ -193,6 +195,24 @@ const EditItemScreen: React.FC = (props: any) => {
         <View style={styles.tag}>
           <Text style={styles.labelText}>Description:</Text>
           {getEditDescriptionVisual()}
+        </View>
+        <View style={[styles.tag]}>
+          <Text style={styles.labelText}>Item Type:</Text>
+          <View style={{ marginLeft: 'auto' , borderRadius: 8 }}>
+            <SelectDropdown
+              data={data}
+              defaultValue={selected}
+              onSelect={(selectedItem, index) => {
+                setSelected(selectedItem)
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem
+              }}
+              selectedRowStyle={{ backgroundColor: '#bbb' }}
+              buttonTextStyle={styles.text}
+              buttonStyle={{ borderRadius: 8, backgroundColor: 'orange'}}
+            />
+          </View>
         </View>
         <View style={styles.buttonHolder}>
           <TouchableOpacity style={{ ...styles.saveButton, marginBottom: LAYOUTS.getWidth(30) }} onPress={saveChanges}>
@@ -207,6 +227,11 @@ const EditItemScreen: React.FC = (props: any) => {
 export default EditItemScreen
 
 const styles = StyleSheet.create({
+  text: {
+    color: 'white', 
+    fontFamily: 'HindSiliguri-Bold', 
+    fontSize: 18, 
+  },
   error: {
     color: '#bb3333',
     fontFamily: 'HindSiliguri',

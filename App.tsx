@@ -33,6 +33,7 @@ const InnerApp: FC = () => {
       'HindSiliguri-Bold': require('./assets/fonts/HindSiliguri-SemiBold.ttf'),
       'HindSiliguri-Bolder': require('./assets/fonts/HindSiliguri-Bold.ttf'),
       'HindSiliguri': require('./assets/fonts/HindSiliguri-Regular.ttf'),
+      'Staat': require('./assets/fonts/Staatliches-Regular.ttf'),
     })
   }
 

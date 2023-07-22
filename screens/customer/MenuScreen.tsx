@@ -102,6 +102,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
         </View>
       ) : (
         <View style={menu.wrapper}>
+          
           <SectionList
             sections={sections}      
             keyExtractor={(item, index) => item.item + index}
@@ -111,9 +112,12 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             renderSectionHeader={({section: {title}}) => (
               <View style={styles.headerStyle}>
-                <Text style={{ fontSize: 20, fontFamily: 'HindSiliguri-Bold' }}>{title}</Text>
+                <Text style={{ fontSize: 25, fontFamily: 'Staat' }}>{title}</Text>
               </View>
             )}
+            ListFooterComponent={
+              <View style={{height: 100 }}></View>
+            }
           />
           {/* <FlatList
             style={menu.upperContainer}
@@ -149,12 +153,18 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
 
 const styles = StyleSheet.create({
   headerStyle: {
+    alignSelf: 'center',
+    margin: 10,
+    height: 60,
     padding: 8, 
+    width: '95%',
     alignItems: 'center', 
     justifyContent: 'center', 
-    borderColor: '#ddd', 
-    borderBottomWidth: 1,
-    backgroundColor: 'grey'
+    backgroundColor: '#ddd',
+    shadowColor: '#999',
+    shadowRadius: 10,
+    borderRadius: 8,
+    shadowOpacity: 0.3,
   },
   cartButton: {
     width: '60%',

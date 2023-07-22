@@ -127,7 +127,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
           animated={true}
           progress={percentage}
           width={null}
-          height={20}
+          height={18}
           borderRadius={8}
           borderWidth={0}
           unfilledColor={'#333'}
