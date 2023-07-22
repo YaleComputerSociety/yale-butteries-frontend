@@ -1,5 +1,5 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, ActivityIndicator, Text, Pressable, RefreshControl, SectionList } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems, MenuItem } from '../../store/slices/MenuItems'
@@ -9,11 +9,14 @@ import { home } from '../../styles/ButteriesStyles'
 import { menu } from '../../styles/MenuStyles'
 import { loading } from '../../styles/GlobalStyles'
 import { getPriceFromOrderItems, returnCollegeName } from '../../Functions'
+
 import * as Haptics from 'expo-haptics'
+
 import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
 import { useIsFocused } from '@react-navigation/native'
 import EvilModal from '../../components/EvilModal'
+import { MenuHeader } from '../../components/customer/MenuHeader'
 
 const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
   navigation,
@@ -41,6 +44,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   useEffect(() => {
     if (menuItems) {
       setBegin(false)
+
     }
   }, [menuItems])
 
@@ -72,6 +76,8 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
     return menuItem.college === collegeOrderCart && menuItem.isActive === true
   })
 
+  const sectionListRef = useRef(null);
+
   const sections = [
     {
       title: 'Food',
@@ -102,8 +108,8 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
         </View>
       ) : (
         <View style={menu.wrapper}>
-          
           <SectionList
+            ref={sectionListRef}
             showsVerticalScrollIndicator={false}
             sections={sections}      
             keyExtractor={(item, index) => item.item + index}
@@ -119,22 +125,21 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
             ListFooterComponent={
               <View style={{height: 100 }}></View>
             }
+            ListHeaderComponent={
+              <MenuHeader 
+                toFood={() => {sectionListRef.current.scrollToLocation({sectionIndex: 0, itemIndex: 0, animated: true})}} 
+                toDrink={() => {sectionListRef.current.scrollToLocation({sectionIndex: 1, itemIndex: 0, animated: true})}} 
+                toDessert={() => {sectionListRef.current.scrollToLocation({sectionIndex: 2, itemIndex: 0, animated: true})}}
+              />
+            }
           />
-          {/* <FlatList
-            style={menu.upperContainer}
-            data={data}
-            renderItem={(item) => {
-              return <MenuItemCard incUpdate={addOrder} menuItem={item.item} items={orderItems}/>
-            }}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-            >
-          </FlatList> */}
           <View style={styles.footer}>
             <Pressable
               disabled={orderItems.length < 1 ? true : false}
-              style={[
-                { opacity: orderItems.length < 1 ? 0.6 : 1, backgroundColor: returnCollegeName(collegeOrderCart)[1] },
-                styles.cartButton,
+              style={({ pressed }) => 
+              [{ opacity: orderItems.length < 1 ? 0.6 : 1 || pressed ? 1 : 0.5, 
+                 backgroundColor: returnCollegeName(collegeOrderCart)[1] },
+                 styles.cartButton,
               ]}
               onPress={() => {
                 navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
@@ -161,10 +166,10 @@ const styles = StyleSheet.create({
     width: '95%',
     alignItems: 'center', 
     justifyContent: 'center', 
-    shadowColor: '#555',
-    shadowRadius: 5,
+    // shadowColor: '#555',
+    // shadowRadius: 5,
     borderRadius: 8,
-    shadowOpacity: 0.6,
+    // shadowOpacity: 0.6,
   },
   cartButton: {
     width: '60%',
@@ -200,8 +205,6 @@ MenuScreen['navigationOptions'] = (navData) => {
     headerStyle: {
       backgroundColor: returnCollegeName(collegeName)[1],
       borderWidth: 0,
-      shadowColor: '#111',
-      shadowRadius: 200,
     },
     headerTitle: returnCollegeName(collegeName)[0],
     headerRight: () => (

@@ -21,8 +21,8 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   const colleges: CollegeInfo[] = [
     {
       ne: 'Morse',
-      start: '10:00',
-      end: '2:30',
+      start: '9:00',
+      end: '4:00',
       daysOpen: [true, false, false, true, true, true, true],
       active: true,
     },

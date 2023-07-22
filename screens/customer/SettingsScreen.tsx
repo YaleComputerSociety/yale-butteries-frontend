@@ -14,6 +14,8 @@ const Settings: FC<{ navigation: any }> = () => {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
+  console.log(currentUser)
+
   const [newName, setNewName] = useState(currentUser.name)
   const [connection, setConnection] = useState(true)
   const [invalidName, setInvalidName] = useState(false)
