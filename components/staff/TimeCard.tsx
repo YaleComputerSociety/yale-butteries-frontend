@@ -1,0 +1,41 @@
+import React, { FC, useEffect, useState } from 'react'
+import { StyleSheet, Text, Pressable, Button, View, Switch } from 'react-native'
+
+interface Props {
+    day: String
+    action: (day) => void
+}
+
+const TimeCard: FC<Props> = (props: Props) => {
+    const [date, setDate] = useState(new Date())
+    const [open, setOpen] = useState(false)
+
+    const handleSwitch = () => {
+        props.action(props.day)
+        setOpen(!open)
+    }
+
+    return (
+        <View style={styles.sectionContainer}>
+            <Text style={styles.headerText}>{props.day}</Text>
+            <View>
+                <Switch value={open} onChange={handleSwitch}/>
+            </View>
+        </View> 
+    )
+}
+
+const styles  = StyleSheet.create({
+    headerText: {
+        color: '#000',
+        fontSize: 24,
+        fontFamily: 'HindSiliguri-Bold',
+        textAlignVertical: 'center'
+    },
+    sectionContainer: { 
+        flex: 1,
+        padding: 10,
+    },
+})
+
+export default TimeCard
