@@ -1,7 +1,5 @@
 import React, { FC } from 'react'
 import { View, StyleSheet, Pressable, Text, Image } from 'react-native'
-import Ionicon from 'react-native-vector-icons/Ionicons'
-
 
 interface Props {
     toFood: () => void
@@ -68,7 +66,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
     },
     text: {
-        fontSize: 22,
+        fontSize: 20,
         color: 'black',
         fontFamily: 'Staat',
         marginTop: 10,

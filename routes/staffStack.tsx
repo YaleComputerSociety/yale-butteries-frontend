@@ -6,6 +6,9 @@ import React from 'react'
 
 import EditItemScreen from '../screens/staff/EditItemScreen'
 import CreateItemScreen from '../screens/staff/CreateItemScreen'
+import SettingsScreen from '../screens/staff/SettingsScreen'
+
+
 import { createStackNavigator } from '@react-navigation/stack'
 
 type InventoryParamList = {
@@ -36,6 +39,13 @@ const StaffStack: React.FC = () => {
         component={InventoryNavigator}
         options={{
           tabBarIcon: ({ color }) => <AntDesignBarIcon name="table" color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          tabBarIcon: ({ color }) => <AntDesignBarIcon name="setting" color={color} />,
         }}
       />
     </Tab.Navigator>
