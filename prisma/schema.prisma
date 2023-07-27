@@ -34,6 +34,7 @@ model College {
   menu_items MenuItem[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
+  times ButteryTime[]
 }
 
 model MenuItem {
@@ -95,4 +96,14 @@ model TransactionHistory {
   payment_intent_id String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
+}
+
+model ButteryTime {
+  id Int @id @default(autoincrement())
+  day String
+  isOpen Boolean
+  openTime String
+  closeTime String
+  college College @relation(fields: [collegeId], references: [id])
+  collegeId Int
 }

@@ -27,6 +27,25 @@ export async function getCollege(req: Request, res: Response): Promise<void> {
   }
 }
 
+export async function updateCollege(req: Request, res: Response): Promise<void> {
+  try {
+    console.log('hello world')
+    const college = await prisma.college.update({
+      where: {
+        id: req.body.id,
+      },
+      data: {
+        buttery_activated: req.body.buttery_activated,
+        times: req.body.times
+      },
+    })
+    console.log('hello world')
+    res.send(JSON.stringify(college))
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
 const includeProperty = {
   include: {
     users: true,

@@ -132,6 +132,7 @@ export async function updateMenuItem(req: Request, res: Response): Promise<void>
         item: req.body.item,
         price: req.body.price,
         is_active: req.body.isActive,
+        item_type: req.body.foodType,
         description: req.body.description
       },
     })
