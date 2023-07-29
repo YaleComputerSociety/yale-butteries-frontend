@@ -10,7 +10,6 @@ import DayIcon from '../../components/staff/DayIcon'
 import TimeCard from '../../components/staff/TimeCard'
 import { College, asyncFetchColleges, asyncUpdateCollege } from '../../store/slices/Colleges'
 import { useIsFocused } from '@react-navigation/native'
-import { current } from '@reduxjs/toolkit'
 
 const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationParams> }> = ({
   navigation,
@@ -32,7 +31,7 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
 
     useEffect(() => {
         dispatch(asyncFetchColleges()).then((success: boolean) => {
-            setConnection(success) //def dont need this 
+            setConnection(success) //for evil modal, not great
         })
     }, [isFocused])
 
@@ -108,16 +107,6 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
             </View>
         )
     }
-
-    // export interface College {
-    //     id: number
-    //     name: string
-    //     buttery_activated: boolean
-    //     daysOpen: string[]
-    //     isOpen: boolean
-    //     openTime: string
-    //     closeTime: string
-    //   }
 
     const updateCollege = () => {
         const butteryTime: College = {
