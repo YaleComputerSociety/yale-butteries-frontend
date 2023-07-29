@@ -4,11 +4,12 @@ import { StyleSheet, Text, Pressable, Button, View, Switch } from 'react-native'
 interface Props {
     day: String
     action: (day) => void
+    active: boolean
 }
 
 const TimeCard: FC<Props> = (props: Props) => {
     const [date, setDate] = useState(new Date())
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(props.active)
 
     const handleSwitch = () => {
         props.action(props.day)

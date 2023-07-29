@@ -3,7 +3,7 @@ import { OrderItem } from './store/slices/OrderCart'
 import * as Device from 'expo-device'
 import { useAppSelector } from './store/ReduxStore'
 import * as Notifications from 'expo-notifications'
-import { Platform } from 'react-native'
+import { Platform, Alert } from 'react-native'
 
 export function priceToText(num: number): string {
   const cents = num % 100

@@ -1,23 +1,55 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, ScrollView, Pressable, Alert } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
+import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
+import EvilModal from '../../components/EvilModal'
+
 import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
 
 import DayIcon from '../../components/staff/DayIcon'
 import TimeCard from '../../components/staff/TimeCard'
+import { College, asyncFetchColleges, asyncUpdateCollege } from '../../store/slices/Colleges'
+import { useIsFocused } from '@react-navigation/native'
+import { current } from '@reduxjs/toolkit'
 
 const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationParams> }> = ({
   navigation,
 }) => {
+
+    const dispatch = useAppDispatch()
+    const isFocused = useIsFocused()
 
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
     const [openDays, updateOpenDays] = useState([]) //retrieve state once stored
     const [openCount, setOpenCount] = useState(0)
 
+    const [connection, setConnection] = useState(true)
+
+    const { currentUser } = useAppSelector((state) => state.currentUser)
+    const { colleges, isLoading: isLoading } = useAppSelector((state) => state.colleges)
+    const [currentCollege, setCurrentCollege] = useState(null)
+
+
     useEffect(() => {
-        console.log(openCount, openDays)
-    }, [openCount])
+        dispatch(asyncFetchColleges()).then((success: boolean) => {
+            setConnection(success) //def dont need this 
+        })
+    }, [isFocused])
+
+    useEffect(() => {
+        if (colleges && currentUser) {
+            setCurrentCollege(colleges.filter((college) => college.name == currentUser.college)[0])
+        }
+        if (currentCollege) {
+            updateOpenDays(currentCollege.daysOpen)
+            setOpenCount(currentCollege.daysOpen.length)
+        }
+    }, [currentCollege, isLoading])
+
+    const days = daysOfWeek.map((day, i) => {
+        return (<TimeCard active={openDays.includes(day)} key={i} action={(day) => handleTimeCard(day)} day={day}/>)
+    })
     
     const closeButtery = (day: String) => {
         updateOpenDays(
@@ -51,28 +83,77 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
 
     const getAllDays = () => {
         const collegeCards: JSX.Element[] = []
+        const timeCards: JSX.Element[] = []
+
         for (let i=0; i <= daysOfWeek.length-1;i++) {
             collegeCards.push(getDayIconVisual(daysOfWeek[i], i, openDays.includes(daysOfWeek[i])))
+            timeCards.push()
         }
+
         return <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>{collegeCards}</View>
     }
 
+    // export interface College {
+    //     id: number
+    //     name: string
+    //     buttery_activated: boolean
+    //     daysOpen: string[]
+    //     isOpen: boolean
+    //     openTime: string
+    //     closeTime: string
+    //   }
+
+    const updateCollege = () => {
+        const butteryTime: College = {
+            id: currentCollege.id,
+            name: currentCollege.name,
+            buttery_activated: currentCollege.buttery_activated,
+            daysOpen: openDays,
+            openTime: '02:00',
+            closeTime: '04:00',
+            isOpen: true,
+            //hard coded for now but will change these values
+        }
+        dispatch(asyncUpdateCollege(butteryTime))
+    }
+
+    const safetyCheck = () => {
+        Alert.alert(
+            'Hey There!',
+            'Are you sure you want to save these changes?',
+            [
+              {text: 'Yes, I\'m Sure', onPress: updateCollege},
+              {text: 'Cancel', onPress: () => {return}},
+            ],
+            { 
+              cancelable: true 
+            }
+        );
+    }
+
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.sectionContainer}>
-                {getAllDays()}
-                {daysOfWeek.map((day, i) => {
-                    return <TimeCard key={i} action={(day) => handleTimeCard(day)} day={day}/>
-                })}
-            </View>
-            <Pressable style={styles.button} onPress={() => console.log(openDays)}>
-                <Text style={styles.text}>Save Changes</Text>
-            </Pressable>
-            {/* <View style={styles.emergencyContainer}>
-                <Text style={styles.text}>Emergency</Text>
-                <Switch style={{ alignSelf: 'center' }} value={true} onValueChange={() => console.log('hi')} />
-            </View> */}
-        </ScrollView>
+        <View style={{ width: '100%', height: '100%' }}> 
+            {<EvilModal toggle={setConnection} display={!connection} />}
+            {isLoading ? (
+                <ScrollView style={ styles.container }>
+                    <Text style={ styles.text }>Loading menu</Text>
+                </ScrollView>
+            ) : (
+                <ScrollView style={styles.container}>
+                    <View style={styles.sectionContainer}>
+                        {getAllDays()}
+                        {days}
+                    </View>
+                    <Pressable style={styles.button} onPress={safetyCheck}>
+                        <Text style={styles.text}>Save Changes</Text>
+                    </Pressable>
+                    <View style={styles.emergencyContainer}>
+                        <Text style={styles.text}>Emergency</Text>
+                        {/* <Switch style={{ alignSelf: 'center' }} value={true} onValueChange={() => console.log('hi')} /> */}
+                    </View>
+                </ScrollView>
+            )}
+        </View>
     )
 }
 

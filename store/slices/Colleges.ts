@@ -2,16 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseUrl } from '../../utils/utils'
 import { AppDispatch } from '../ReduxStore'
 
-export interface CollegeTime {
-  day: String
-  openTime: String
-  closeTime: String
-}
-
 export interface College {
   id: number
-  buttery_activated: boolean
-  times: CollegeTime[] | null
+  name: string
+  buttery_activated?: boolean
+  daysOpen?: string[]
+  isOpen?: boolean
+  openTime?: string
+  closeTime?: string
 }
 
 export interface CollegesState {
@@ -51,19 +49,23 @@ export const asyncFetchColleges = () => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(setIsLoading(true))
     try {
-      const menuItems = await fetch(baseUrl + 'api/colleges', {
+      const colleges = await fetch(baseUrl + 'api/colleges', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      const data = await menuItems.json()
+      const data = await colleges.json()
       const newData: College[] = []
       data.forEach((item) => {
         const college: College = {
           id: item.id,
-          buttery_activated: item.buttery_activated, 
-          times: item.times,
+          name: item.college,
+          buttery_activated: item.buttery_activated,
+          daysOpen: item.daysOpen,
+          openTime: item.openTime,
+          closeTime: item.closeTime,
+          isOpen: item.isOpen,
         }
         newData.push(college)
       })
@@ -73,6 +75,7 @@ export const asyncFetchColleges = () => {
       console.log(e)
       return false
     } finally {
+      console.log('complete')
       dispatch(setIsLoading(false))
     }
   }
@@ -80,21 +83,20 @@ export const asyncFetchColleges = () => {
 
 export const asyncUpdateCollege = (college: College) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
-    dispatch(setIsLoading(true))
     try {
-      const user = await fetch(baseUrl + 'api/colleges/' + college.id, {
+      const buttery = await fetch(baseUrl + 'api/colleges/' + college.id, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify(college),
       })
-      const data = await user.json()
+      const data = await buttery.json()
+      console.log(data)
       dispatch(updateCollege(data))
     } catch (e) {
       console.log(e)
       return false
-    } finally {
-      dispatch(setIsLoading(false))
     }
   }
 }

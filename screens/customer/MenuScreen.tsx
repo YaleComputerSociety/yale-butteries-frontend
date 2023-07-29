@@ -44,7 +44,6 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   useEffect(() => {
     if (menuItems) {
       setBegin(false)
-
     }
   }, [menuItems])
 
