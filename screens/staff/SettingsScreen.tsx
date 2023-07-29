@@ -30,7 +30,6 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
     const { colleges, isLoading: isLoading } = useAppSelector((state) => state.colleges)
     const [currentCollege, setCurrentCollege] = useState(null)
 
-
     useEffect(() => {
         dispatch(asyncFetchColleges()).then((success: boolean) => {
             setConnection(success) //def dont need this 
@@ -46,10 +45,6 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
             setOpenCount(currentCollege.daysOpen.length)
         }
     }, [currentCollege, isLoading])
-
-    const days = daysOfWeek.map((day, i) => {
-        return (<TimeCard active={openDays.includes(day)} key={i} action={(day) => handleTimeCard(day)} day={day}/>)
-    })
     
     const closeButtery = (day: String) => {
         updateOpenDays(
@@ -81,16 +76,37 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
         )
     }
 
+    const getTimeCardVisual = (day: String, index: number, active: boolean) => {       
+        return (
+            <TimeCard
+                openDays={openDays}
+                active={active} 
+                key={index} 
+                action={(day) => handleTimeCard(day)} 
+                day={day}
+            />
+        )
+    }
+
     const getAllDays = () => {
         const collegeCards: JSX.Element[] = []
         const timeCards: JSX.Element[] = []
 
         for (let i=0; i <= daysOfWeek.length-1;i++) {
             collegeCards.push(getDayIconVisual(daysOfWeek[i], i, openDays.includes(daysOfWeek[i])))
-            timeCards.push()
+            timeCards.push(getTimeCardVisual(daysOfWeek[i], i, openDays.includes(daysOfWeek[i])))
         }
 
-        return <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>{collegeCards}</View>
+        return (
+            <View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                    {collegeCards}
+                </View>
+                <View>
+                    {timeCards}
+                </View>
+            </View>
+        )
     }
 
     // export interface College {
@@ -142,7 +158,6 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
                 <ScrollView style={styles.container}>
                     <View style={styles.sectionContainer}>
                         {getAllDays()}
-                        {days}
                     </View>
                     <Pressable style={styles.button} onPress={safetyCheck}>
                         <Text style={styles.text}>Save Changes</Text>
