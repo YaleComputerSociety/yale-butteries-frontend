@@ -246,10 +246,11 @@ const styles = StyleSheet.create({
     marginTop: LAYOUTS.getWidth(5),
   },
   buttonText: {
-    fontSize: TEXTS.adjust(15),
-    fontWeight: '400',
-    color: 'blue',
+    fontSize: TEXTS.adjust(16),
+    fontWeight: '300',
+    fontFamily:  'HindSiliguri-Bolder',
     textAlign: 'center',
+    color: 'white',
   },
   buttonHolder: {
     alignItems: 'center',
@@ -391,12 +392,12 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     fontSize: 20,
-    width: LAYOUTS.getWidth(150),
+    width: LAYOUTS.getWidth(160),
     borderRadius: 10,
     justifyContent: 'center',
     marginBottom: LAYOUTS.getWidth(10),
-    marginTop: LAYOUTS.getWidth(5),
-    backgroundColor: 'orange',
+    marginTop: LAYOUTS.getWidth(10),
+    backgroundColor: 'green',
     padding: 15,
   },
 })

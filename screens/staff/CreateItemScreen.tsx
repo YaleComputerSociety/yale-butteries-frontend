@@ -224,7 +224,7 @@ const CreateItemScreen: React.FC = () => {
               }}
               selectedRowStyle={{ backgroundColor: '#bbb' }}
               buttonTextStyle={styles.text}
-              buttonStyle={{ borderRadius: 8, backgroundColor: 'orange'}}
+              buttonStyle={{ borderRadius: 8, backgroundColor: 'orange' }}
             />
           </View>
         </View>

@@ -151,10 +151,6 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
                     <Pressable style={styles.button} onPress={safetyCheck}>
                         <Text style={styles.text}>Save Changes</Text>
                     </Pressable>
-                    <View style={styles.emergencyContainer}>
-                        <Text style={styles.text}>Emergency</Text>
-                        {/* <Switch style={{ alignSelf: 'center' }} value={true} onValueChange={() => console.log('hi')} /> */}
-                    </View>
                 </ScrollView>
             )}
         </View>
