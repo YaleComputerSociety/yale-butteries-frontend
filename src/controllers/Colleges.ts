@@ -29,18 +29,19 @@ export async function getCollege(req: Request, res: Response): Promise<void> {
 
 export async function updateCollege(req: Request, res: Response): Promise<void> {
   try {
-    console.log('hello world')
-    const college = await prisma.college.update({
+    console.log(req.body.daysOpen)
+    const result = await prisma.college.update({
       where: {
         id: req.body.id,
       },
       data: {
-        buttery_activated: req.body.buttery_activated,
-        times: req.body.times
+        daysOpen: req.body.daysOpen,
+        isOpen: req.body.isOpen,
+        openTime: req.body.openTime,
+        closeTime: req.body.closeTime,
       },
-    })
-    console.log('hello world')
-    res.send(JSON.stringify(college))
+    }).then(() => console.log(result.daysOpen))
+    res.send(JSON.stringify(result))
   } catch (e) {
     res.status(400).send(e)
   }
@@ -51,7 +52,5 @@ const includeProperty = {
     users: true,
     transaction_histories: true,
     menu_items: true,
-    ingredients: true,
-    availabilities: true,
   },
 }

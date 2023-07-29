@@ -71,6 +71,7 @@ const main = async () => {
     create: {
       college: 'morse',
       buttery_activated: true,
+      daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
     },
   })
   await prisma.college.upsert({

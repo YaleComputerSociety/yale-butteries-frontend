@@ -28,13 +28,16 @@ model College {
   id Int @id @default(autoincrement())
   college String @unique
   image_url String?
-  buttery_activated Boolean
+  buttery_activated Boolean?
+  daysOpen String[]
+  isOpen Boolean?
+  openTime String?
+  closeTime String?
   users User[]
   transaction_histories TransactionHistory[]
   menu_items MenuItem[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
-  times ButteryTime[]
 }
 
 model MenuItem {
@@ -96,14 +99,4 @@ model TransactionHistory {
   payment_intent_id String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt @default(now())
-}
-
-model ButteryTime {
-  id Int @id @default(autoincrement())
-  day String
-  isOpen Boolean
-  openTime String
-  closeTime String
-  college College @relation(fields: [collegeId], references: [id])
-  collegeId Int
 }
