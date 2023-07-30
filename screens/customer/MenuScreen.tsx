@@ -118,7 +118,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             renderSectionHeader={({section: {title}}) => (
               <View style={[styles.headerStyle, {backgroundColor: returnCollegeName(collegeOrderCart)[1]}]}>
-                <Text style={{ fontSize: 25, fontFamily: 'Staat', color: 'white' }}>{title}</Text>
+                <Text style={{ fontSize: 20, fontFamily: 'HindSiliguri-Bold', color: 'white' }}>{title}</Text>
               </View>
             )}
             ListFooterComponent={

@@ -4,6 +4,7 @@ import * as Device from 'expo-device'
 import { useAppSelector } from './store/ReduxStore'
 import * as Notifications from 'expo-notifications'
 import { Platform, Alert } from 'react-native'
+import { College } from './store/slices/Colleges'
 
 export function priceToText(num: number): string {
   const cents = num % 100
@@ -25,6 +26,42 @@ export function cleanTime(inputDate: Date): string {
   const meridiem = inputDate.getHours() < 12 ? 'AM' : 'PM'
   const orderTime = hours + ':' + minutes + ' ' + meridiem
   return orderTime
+}
+
+export function getDaysOpen(colleges: College[], name: string): boolean[] {
+  let initArray = [false, false, false, false, false, false, false]
+
+  const daysOpen = colleges.filter((college) => college.name == name)[0].daysOpen
+
+  for (let i=0; i <= daysOpen.length - 1; i++) { //days of week index (7-1)
+    switch (daysOpen[i]) {
+      case 'Sunday':
+        initArray[0] = true
+        break;
+      case 'Monday':
+        initArray[1] = true
+        break;
+      case 'Tuesday':
+        initArray[2] = true
+        break;
+      case 'Wednesday':
+        initArray[3] = true
+        break;
+      case 'Thursday':
+        initArray[4] = true
+        break;
+      case 'Friday':
+        initArray[5] = true
+        break;
+      case 'Saturday':
+        initArray[6] = true
+        break;
+      default:
+        break;
+    }
+  }
+  
+  return initArray
 }
 
 export function returnCollegeName(collegeName: string): string[] {

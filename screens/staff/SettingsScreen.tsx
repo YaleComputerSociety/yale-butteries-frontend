@@ -71,16 +71,6 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
                 text={day}
                 active={active}
                 openDays={openDays}
-            />
-        )
-    }
-
-    const getTimeCardVisual = (day: String, index: number, active: boolean) => {       
-        return (
-            <TimeCard
-                openDays={openDays}
-                active={active} 
-                key={index} 
                 action={(day) => handleTimeCard(day)} 
                 day={day}
             />
@@ -89,20 +79,15 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
 
     const getAllDays = () => {
         const collegeCards: JSX.Element[] = []
-        const timeCards: JSX.Element[] = []
 
         for (let i=0; i <= daysOfWeek.length-1;i++) {
             collegeCards.push(getDayIconVisual(daysOfWeek[i], i, openDays.includes(daysOfWeek[i])))
-            timeCards.push(getTimeCardVisual(daysOfWeek[i], i, openDays.includes(daysOfWeek[i])))
         }
 
         return (
             <View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                     {collegeCards}
-                </View>
-                <View>
-                    {timeCards}
                 </View>
             </View>
         )
@@ -124,8 +109,8 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
 
     const safetyCheck = () => {
         Alert.alert(
-            'Hey There!',
-            'Are you sure you want to save these changes?',
+            'Do you want to save these changes?',
+            'Any changes will take place immediately',
             [
               {text: 'Yes, I\'m Sure', onPress: updateCollege},
               {text: 'Cancel', onPress: () => {return}},
@@ -146,7 +131,12 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
             ) : (
                 <ScrollView style={styles.container}>
                     <View style={styles.sectionContainer}>
+                        <Text style={styles.headerText}>Days</Text>
                         {getAllDays()}
+                    </View>
+                    <View style={styles.sectionContainer}>
+                        <Text style={styles.headerText}>Time</Text>
+                        
                     </View>
                     <Pressable style={styles.button} onPress={safetyCheck}>
                         <Text style={styles.text}>Save Changes</Text>
@@ -164,7 +154,9 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 24,
         fontFamily: 'HindSiliguri-Bold',
-        textAlignVertical: 'center'
+        textAlignVertical: 'center',
+        alignSelf: 'center',
+        marginBottom: 10,
     },
     container: {
         flex: 1,
@@ -172,6 +164,9 @@ const styles = StyleSheet.create({
     },
     sectionContainer: { 
         flex: 1,
+        backgroundColor: '#fff',
+        marginTop: 10,
+        borderRadius: 8,
         padding: 10,
     },
     emergencyContainer: {

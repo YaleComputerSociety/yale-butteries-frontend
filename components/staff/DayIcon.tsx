@@ -5,6 +5,8 @@ interface Props {
   text: String
   active: boolean
   openDays: String[]
+  action: (day) => void
+  day: String
 }
 
 const DayIcon: FC<Props> = (props: Props) => {
@@ -17,15 +19,22 @@ const DayIcon: FC<Props> = (props: Props) => {
     }
   }, [props.openDays])
 
+  const handleSwitch = () => {
+    props.action(props.day)
+    setActive(!active)
+  }
+
   return (
-    <View style={{ alignItems: 'center' }}>
-      <View
-        style={[active ? styles.active : styles.normal, styles.icon]}
-      >
-        <Text style={styles.text}>{props.text.substring(0,3)}</Text>
+    <Pressable onPress={handleSwitch}>
+      <View style={{ alignItems: 'center' }}>
+        <View
+          style={[active ? styles.active : styles.normal, styles.icon]}
+        >
+          <Text style={styles.text}>{props.text.substring(0,3)}</Text>
+        </View>
+        <Text style={[active ? styles.normalText : styles.activeText]}>{active ? 'Open' : 'Closed'}</Text>
       </View>
-      <Text style={[active ? styles.normalText : styles.activeText]}>{active ? 'Open' : 'Closed'}</Text>
-    </View>
+    </Pressable>
   )
 }
 

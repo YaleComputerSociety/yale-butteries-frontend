@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         color: 'black',
-        fontFamily: 'Staat',
+        fontFamily: 'HindSiliguri-Bold',
         marginTop: 10,
     },
     iconWrapper: {
