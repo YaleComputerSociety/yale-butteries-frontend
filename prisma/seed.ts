@@ -59,7 +59,7 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'JE',
+      college: 'je',
       buttery_activated: true,
     },
   })
@@ -130,7 +130,7 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'TD',
+      college: 'td',
       buttery_activated: true,
     },
   })

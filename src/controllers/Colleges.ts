@@ -29,7 +29,6 @@ export async function getCollege(req: Request, res: Response): Promise<void> {
 
 export async function updateCollege(req: Request, res: Response): Promise<void> {
   try {
-    console.log(req.body.daysOpen)
     const result = await prisma.college.update({
       where: {
         id: req.body.id,
@@ -40,7 +39,7 @@ export async function updateCollege(req: Request, res: Response): Promise<void> 
         openTime: req.body.openTime,
         closeTime: req.body.closeTime,
       },
-    }).then(() => console.log(result.daysOpen))
+    })
     res.send(JSON.stringify(result))
   } catch (e) {
     res.status(400).send(e)
