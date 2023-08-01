@@ -74,7 +74,7 @@ export const item = StyleSheet.create({
   itemName: {
     fontFamily: 'HindSiliguri-Bold',
     color: '#222',
-    fontSize: 18,
+    fontSize: 16,
     //backgroundColor: 'green',
   },
 
@@ -88,7 +88,7 @@ export const item = StyleSheet.create({
 
   itemPrice: {
     color: '#222',
-    fontSize: 15,
+    fontSize: 14,
     //backgroundColor: 'blue'
   },
 
@@ -107,7 +107,7 @@ export const item = StyleSheet.create({
     fontFamily: 'HindSiliguri-Bold',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 17,
+    fontSize: 16,
     textAlignVertical: 'center',
   },
 
@@ -117,14 +117,13 @@ export const item = StyleSheet.create({
     fontFamily: 'HindSiliguri-Bold',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 17,
+    fontSize: 16,
     textAlignVertical: 'center',
   },
 
   countText: {
     fontFamily: 'Roboto',
     fontWeight: 'bold',
-    fontSize: 24,
     textAlign: 'center',
   },
 
@@ -164,14 +163,14 @@ export const item = StyleSheet.create({
   priceText: {
     fontFamily: 'HindSiliguri',
     color: '#000',
-    fontSize: 18,
+    fontSize: 16,
     padding: 10,
   },
 
   checkoutText: {
     fontFamily: 'HindSiliguri-Bold',
     color: '#fff',
-    fontSize: 25,
+    fontSize: 16,
   },
 })
 

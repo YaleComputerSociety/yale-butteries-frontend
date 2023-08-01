@@ -15,11 +15,15 @@ interface butteryProps {
 
 export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   const [isOpen, setIsOpen] = useState(true)
-  const [openTimeHours, setOpenTimeHours] = useState(0)
-  const [closeTimeHours, setCloseTimeHours] = useState(0)
-  const [openTimeMinutes, setOpenTimeMinutes] = useState(0)
-  const [closeTimeMinutes, setCloseTimeMinutes] = useState(0)
+
+  let open = props.openTime.split(" ")
+  let close = props.closeTime.split(" ")
+
+  const [openTime, setOpenTime] = useState(open[0] + ':' + open[1] + open[2])
+  const [closeTime, setCloseTime] = useState(close[0] + ':' + close[1] + close[2])
+
   const [day, setDay] = useState(0)
+
   const activeText = props.active ? 'CLOSED' : 'INACTIVE'
   const days = ['S ', 'M ', 'T ', 'W ', 'T ', 'F ', 'S ']
   const DAY_CUTOFF = 5
@@ -41,6 +45,9 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
     return date
   }
 
+  const displayTime = (): string => {
+    return openTime + ' - ' + closeTime
+  }
   // determines whether the buttery is currently open
   function currentlyOpen() {
     const today = new Date()
@@ -66,35 +73,6 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   }, [isOpen])
 
   // translate openTime/closeTime into openTimeHours etc
-  useEffect(() => {
-    setOpenTimeHours(
-      parseInt(props.openTime.substring(0, props.openTime.indexOf(':'))) +
-        (props.openTime.toString().includes('pm') ? 12 : 0)
-    )
-    setOpenTimeMinutes(parseInt(props.openTime.substring(props.openTime.indexOf(':') + 1)))
-    setCloseTimeHours(
-      parseInt(props.closeTime.substring(0, props.closeTime.indexOf(':'))) +
-        (props.closeTime.toString().includes('pm') ? 12 : 0)
-    )
-    setCloseTimeMinutes(parseInt(props.closeTime.substring(props.closeTime.indexOf(':') + 1)))
-  }, [props.openTime, props.closeTime])
-
-  // takes openTime and closeTime and puts them into clean text form. Assumes (h)h:(m)m form with optional pm/am
-  function cleanTime() {
-    const cleanOpen =
-      (openTimeHours % 12 == 0 ? 12 : openTimeHours % 12) +
-      ':' +
-      (openTimeMinutes < 10 ? '0' : '') +
-      openTimeMinutes +
-      (openTimeHours > 12 ? 'pm' : 'am')
-    const cleanClose =
-      (closeTimeHours % 12 == 0 ? 12 : closeTimeHours % 12) +
-      ':' +
-      (closeTimeMinutes < 10 ? '0' : '') +
-      closeTimeMinutes +
-      (closeTimeHours > 12 ? 'pm' : 'am')
-    return cleanOpen + ' - ' + cleanClose
-  }
 
   const getDayVisual = (value: boolean, index: number) => {
     return (
@@ -117,7 +95,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   return (
     <Pressable
       onPress={props.onPress}
-      disabled={!(isOpen && props.active)}
+      disabled={(isOpen && props.active)}
       style={({ pressed }) => [
         {
           opacity: props.active && isOpen ? 1 : 0.6,
@@ -140,7 +118,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
               {activeText}
             </Text>
           </View>
-          <Text style={card.cardText2}>{cleanTime()}</Text>
+          <Text style={card.cardText2}>{displayTime()}</Text>
           {getAllWeekDays()}
         </View>
         {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment

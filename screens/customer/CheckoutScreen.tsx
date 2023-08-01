@@ -173,8 +173,8 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 renderItem={(item) => {
                   return <CheckoutItem decUpdate={removeOrder} checkoutItem={item.item} isDisabled={isDisabled}/>
                 }}
-                keyExtractor={item => item.index.toString()}>
-              </FlatList>
+                keyExtractor={item => item.index.toString()}
+              />
               <View style={checkout.footer}>
                 <Text style={checkout.totalText}>Total: {priceToText(price)}</Text>
               </View>

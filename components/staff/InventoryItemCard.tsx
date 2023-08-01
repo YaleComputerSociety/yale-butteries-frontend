@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Switch, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { useAppDispatch } from '../../store/ReduxStore'
 
@@ -22,7 +22,6 @@ const InventoryItemCard: FC<Props> = (props: Props) => {
 
   const handleSwitch = () => {
     setItem({ ...item, isActive: !item.isActive })
-    dispatch(updateMenuItem({ ...item, isActive: !item.isActive }))
     dispatch(asyncUpdateMenuItem({ ...item, isActive: !item.isActive })).then((success: boolean) => {
       props.setConnection(success)
     })

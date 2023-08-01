@@ -2,11 +2,11 @@ import React, { FC, useEffect, useState } from 'react'
 import { StyleSheet, Text, Pressable, Alert, View } from 'react-native'
 
 interface Props {
-  text: String
+  text: string
   active: boolean
-  openDays: String[]
-  action: (day) => void
-  day: String
+  openDays: string[]
+  action: (day: string) => void
+  day: string
 }
 
 const DayIcon: FC<Props> = (props: Props) => {

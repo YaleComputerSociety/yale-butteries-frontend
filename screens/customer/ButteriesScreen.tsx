@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { setCollege } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { LinearGradient } from 'expo-linear-gradient'
-import { registerForPushNotificationsAsync, getDaysOpen } from '../../Functions'
+import { registerForPushNotificationsAsync, getDaysOpen, getHours } from '../../Functions'
 import { asyncFetchColleges } from '../../store/slices/Colleges'
 import { useIsFocused } from '@react-navigation/native'
 
@@ -38,16 +38,16 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   }, [])
 
   useEffect(() => {
-    if (colleges) {
+    if (isLoading == false && colleges) {
       setBegin(false)
     }
-  }, [])
+  }, [isLoading])
 
   const butteries: CollegeInfo[] = [
     {
       ne: 'Morse',
-      start: '9:00',
-      end: '4:00',
+      start: '0:00',
+      end: '0:00',
       daysOpen: [true, false, false, true, true, true, true],
       active: true,
     },
@@ -174,8 +174,8 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
       <ButteryCard
         onPress={() => toMenu(navigationNe)}
         college={collegeInfo.ne}
-        openTime={collegeInfo.start}
-        closeTime={collegeInfo.end}
+        openTime={getHours(colleges, collegeInfo.ne.toLowerCase())[0]}
+        closeTime={getHours(colleges, collegeInfo.ne.toLowerCase())[1]}
         offsetY={offset}
         active={collegeInfo.active}
         key={index}

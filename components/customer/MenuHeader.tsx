@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#eee',
         flex: 2,
         borderRadius: 10,
-        padding: 10,
         marginTop: 10,
         marginHorizontal: 10,
         height: 115,
@@ -66,7 +65,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
     },
     text: {
-        fontSize: 20,
+        fontSize: 18,
         color: 'black',
         fontFamily: 'HindSiliguri-Bold',
         marginTop: 10,

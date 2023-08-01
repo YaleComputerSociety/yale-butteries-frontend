@@ -87,16 +87,20 @@ export const asyncFetchMenuItems = () => {
 
 export const asyncUpdateMenuItem = (menuItem: MenuItem) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
-    dispatch(setIsLoading(true))
+    console.log(menuItem.isActive)
     try {
-      const data = await fetch(baseUrl + 'api/menu_items', {
+      const updateItem = await fetch(baseUrl + 'api/menu_items', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(menuItem),
       })
-      dispatch(updateMenuItem(menuItem))
+      const data = await updateItem.json().then(() => {
+          console.log(data)
+          dispatch(updateMenuItem(menuItem))
+        }
+      )
       return true
     } catch (e) {
       console.log(e)
@@ -119,6 +123,7 @@ export const asyncAddMenuItem = (menuItem: MenuItem) => {
         body: JSON.stringify(menuItem),
       })
       const data = await menuItems.json()
+      console.log(data)
       dispatch(addMenuItem(menuItem))
       return true
     } catch (e) {

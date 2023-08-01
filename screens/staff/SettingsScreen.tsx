@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
+import { StyleSheet, Text, View, ScrollView, Pressable, Alert, ActivityIndicator, Button } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import EvilModal from '../../components/EvilModal'
 
@@ -7,9 +7,12 @@ import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
 
 import DayIcon from '../../components/staff/DayIcon'
-import TimeCard from '../../components/staff/TimeCard'
-import { College, asyncFetchColleges, asyncUpdateCollege } from '../../store/slices/Colleges'
+import { College, asyncFetchColleges, asyncUpdateCollege, setCollegesState } from '../../store/slices/Colleges'
 import { useIsFocused } from '@react-navigation/native'
+
+import TimeCard from '../../components/staff/TimeCard'
+import { outputTime } from '../../Functions'
+
 
 const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationParams> }> = ({
   navigation,
@@ -27,7 +30,19 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
 
     const { currentUser } = useAppSelector((state) => state.currentUser)
     const { colleges, isLoading: isLoading } = useAppSelector((state) => state.colleges)
+
+    //openTime info
+    const [openTimeHour, setOpenTimeHour] = useState(null)
+    const [openTimeMinutes, setOpenTimeMinutes] = useState(null)
+    const [openTimeAM_PM, setOpenTimeAM_PM] = useState(null)
+
+    //closeTimeinfo
+    const [closeTimeHour, setCloseTimeHour] = useState(null)
+    const [closeTimeMinutes, setCloseTimeMinutes] = useState(null)
+    const [closeTimeAM_PM, setCloseTimeAM_PM] = useState(null)
+
     const [currentCollege, setCurrentCollege] = useState(null)
+    const [begin, setBegin] = useState(true)
 
     useEffect(() => {
         dispatch(asyncFetchColleges()).then((success: boolean) => {
@@ -40,8 +55,26 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
             setCurrentCollege(colleges.filter((college) => college.name == currentUser.college)[0])
         }
         if (currentCollege) {
+            const openTime = currentCollege.openTime.split(':')
+            const closeTime = currentCollege.closeTime.split(':')
+
+            console.log("CLOSE TIME : " + openTime[0])
             updateOpenDays(currentCollege.daysOpen)
             setOpenCount(currentCollege.daysOpen.length)
+
+            if (openTime[0] >= 12) {
+                setOpenTimeAM_PM('PM')
+            } else {
+                setCloseTimeAM_PM('AM')
+            }
+
+            setOpenTimeHour(openTime[0])
+            setOpenTimeMinutes(openTime[1])
+ 
+            setCloseTimeHour(closeTime[0])
+            setCloseTimeMinutes(closeTime[1])
+
+            setBegin(false)
         }
     }, [currentCollege, isLoading])
     
@@ -53,7 +86,6 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
     }
 
     const handleTimeCard = (day: String) => {
-        console.log(openDays)
         if (!openDays.includes(day)) {
             updateOpenDays([
                 ...openDays, day
@@ -64,7 +96,7 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
         }
     }
 
-    const getDayIconVisual = (day: String, index: number, active: boolean) => {       
+    const getDayIconVisual = (day: string, index: number, active: boolean) => {       
         return (
             <DayIcon
                 key={index}
@@ -94,23 +126,26 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
     }
 
     const updateCollege = () => {
+        // console.log('OPEN --> ' + outputTime(openTimeHour, openTimeMinutes, openTimeAM_PM))
+        // console.log('CLOSE --> ' + outputTime(closeTimeHour, closeTimeMinutes, closeTimeAM_PM))
         const butteryTime: College = {
             id: currentCollege.id,
             name: currentCollege.name,
             buttery_activated: currentCollege.buttery_activated,
             daysOpen: openDays,
-            openTime: '02:00',
-            closeTime: '04:00',
+            openTime: outputTime(openTimeHour, openTimeMinutes, openTimeAM_PM),
+            closeTime: outputTime(closeTimeHour, closeTimeMinutes, closeTimeAM_PM),
             isOpen: true,
-            //hard coded for now but will change these values
+            //hard coded for now but will change these values,
         }
         dispatch(asyncUpdateCollege(butteryTime))
+        Alert.alert("Your changes have been saved!")
     }
 
     const safetyCheck = () => {
         Alert.alert(
             'Do you want to save these changes?',
-            'Any changes will take place immediately',
+            'Any changes made will take place immediately',
             [
               {text: 'Yes, I\'m Sure', onPress: updateCollege},
               {text: 'Cancel', onPress: () => {return}},
@@ -122,25 +157,37 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
     }
 
     return (
-        <View style={{ width: '100%', height: '100%' }}> 
+        <View style={{ width: '100%', height: '100%'}}> 
             {<EvilModal toggle={setConnection} display={!connection} />}
-            {isLoading ? (
-                <ScrollView style={ styles.container }>
-                    <Text style={ styles.text }>Loading menu</Text>
-                </ScrollView>
+            {begin ? (
+                <View style={{ height: '100%', alignItems: 'center' }}>
+                    <ActivityIndicator color="#555" style={{ height: '100%', alignSelf: 'center'}} size="large" />
+                </View>
             ) : (
                 <ScrollView style={styles.container}>
                     <View style={styles.sectionContainer}>
                         <Text style={styles.headerText}>Days</Text>
                         {getAllDays()}
                     </View>
-                    <View style={styles.sectionContainer}>
-                        <Text style={styles.headerText}>Time</Text>
-                        
+                    <View style={[styles.sectionContainer]}>
+                        <Text style={styles.headerText}>Open Time</Text>
+                        <TimeCard 
+                            AM_PM={(am_pm) => setOpenTimeAM_PM(am_pm)} 
+                            hour={(hour) => setOpenTimeHour(hour)} 
+                            minutes={(minutes) => setOpenTimeMinutes(minutes)} 
+                            time={outputTime(openTimeHour, openTimeMinutes)} 
+                        />
+                        <Text style={styles.headerText}>Close Time</Text>
+                        <TimeCard 
+                            AM_PM={(am_pm) => setCloseTimeAM_PM(am_pm)} 
+                            hour={(hour) => setCloseTimeHour(hour)} 
+                            minutes={(minutes) => setCloseTimeMinutes(minutes)} 
+                            time={outputTime(closeTimeHour, closeTimeMinutes)} 
+                        />
                     </View>
-                    <Pressable style={styles.button} onPress={safetyCheck}>
-                        <Text style={styles.text}>Save Changes</Text>
-                    </Pressable>
+                    <View style={styles.button}>
+                        <Button title="Save Changes" onPress={safetyCheck}/>
+                    </View>
                 </ScrollView>
             )}
         </View>
@@ -168,6 +215,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         borderRadius: 8,
         padding: 10,
+        marginHorizontal: 10,
     },
     emergencyContainer: {
         flexDirection: 'row',
@@ -185,9 +233,15 @@ const styles = StyleSheet.create({
     },
     button: {
         justifyContent: 'center',
-        backgroundColor: 'green',
+        backgroundColor: 'white',
         borderRadius: 8,
-        padding: 10,
+        padding: 5,
+        alignSelf: 'center',
         width: 250,
+        margin: 10,
+    },
+    timePicker: {
+        width: '100%',
+        marginBottom: 'auto',
     }
 })

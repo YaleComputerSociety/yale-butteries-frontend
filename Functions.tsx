@@ -20,6 +20,51 @@ export function getPriceFromOrderItems(orderItems: OrderItem[]): string {
   return priceToText(sum)
 }
 
+export function outputTime(hrs: string, mins: string, am_pm?: string): string {
+
+  console.log(hrs)
+
+  let time12h = hrs + ':' + mins + ' ' + am_pm
+
+  const [time, modifier] = time12h.split(' ')
+  let [hours, minutes] = time.split(':')
+
+  if (hours === '12') {
+    hours = '00';
+  }
+
+  if (modifier === 'PM') {
+    hours = (parseInt(hours, 10) + 12).toString();
+  }
+
+  return `${hours}:${minutes}`;
+
+}
+
+export function militaryToAnalog(blah: string): string {
+  var time = blah.split(':'); // convert to array
+
+  // fetch
+  var hours = Number(time[0]);
+  var minutes = Number(time[1]);
+
+  // calculate
+  var timeValue;
+
+  if (hours > 0 && hours <= 12) {
+    timeValue= "" + hours;
+  } else if (hours > 12) {
+    timeValue= "" + (hours - 12);
+  } else if (hours == 0) {
+    timeValue= "12";
+  }
+  
+  timeValue += (minutes < 10) ? " 0" + minutes : " " + minutes;  // get minutes
+  timeValue += (hours >= 12) ? " pm" : " am";  // get AM/PM
+
+  return timeValue
+}
+
 export function cleanTime(inputDate: Date): string {
   const hours = inputDate.getHours() % 12 == 0 ? 12 : inputDate.getHours() % 12
   const minutes = inputDate.getMinutes() < 10 ? '0' + inputDate.getMinutes() : inputDate.getMinutes()
@@ -62,6 +107,16 @@ export function getDaysOpen(colleges: College[], name: string): boolean[] {
   }
   
   return initArray
+}
+
+export function getHours(colleges: College[], name: string): string[] {
+  const college = colleges.filter((college) => college.name == name)[0]
+
+  if (college.openTime && college.closeTime)  {
+    return [militaryToAnalog(college.openTime), militaryToAnalog(college.closeTime)]
+  }
+
+  return ['4 00 pm', '6 00 pm']
 }
 
 export function returnCollegeName(collegeName: string): string[] {
@@ -162,10 +217,3 @@ export async function registerForPushNotificationsAsync(): Promise<any> {
 
   return token
 }
-
-// export function getPriceTotal(items): number {
-//   let sum = 0
-//   for (let i = 0; i < items.length; i++) {
-//     sum += items[i].count * (Math.floor(items[i].price * 100) / 100)
-//   }
-//   return sum

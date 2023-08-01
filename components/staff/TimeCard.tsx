@@ -1,51 +1,100 @@
-import React, { FC, useEffect, useState } from 'react'
-import { StyleSheet, Text, Pressable, Button, View, Switch } from 'react-native'
+import React, { FC, useState } from 'react'
+import { StyleSheet, Text, Pressable, Button, View, TextInput } from 'react-native'
+import { militaryToAnalog } from '../../Functions'
 
 interface Props {
-    openDays: String[]
-    day: String
-    action: (day) => void
-    active: boolean
+    time: string
+    hour: (hour) => void
+    minutes: (minutes) => void
+    AM_PM: (am_pm) => void
 }
 
 const TimeCard: FC<Props> = (props: Props) => {
-    // const [date, setDate] = useState(new Date())
-    const [active, setActive] = useState(props.active)
+    const time = militaryToAnalog(props.time).split(' ')
 
-    useEffect(() => {
-      if (props.active) {
-        setActive(true)
-      } else {
-        setActive(false)
-      }
-    }, [props.openDays])
+    const [hour, setHour] = useState(time[0])
+    const [minute, setMinute] = useState(time[1])
 
-    const handleSwitch = () => {
-        props.action(props.day)
-        setActive(!active)
+    const [AM_PM, setAM_PM] = useState(time[2].toUpperCase())
+    
+    const handleAM_PM = (text: string) => {
+        if (text == 'PM') {
+            setAM_PM('AM')
+            props.AM_PM('AM')
+        } else {
+            setAM_PM('PM')
+            props.AM_PM('PM')
+        }
+    }
+
+    const handleHour = (text: string) => {
+        setHour(text)
+        props.hour(text)
+    }
+
+    const handleMinutes = (text: string) => {
+        setMinute(text)
+        props.minutes(text)
     }
 
     return (
         <View style={styles.sectionContainer}>
-            <Text style={styles.headerText}>{props.day}</Text>
-            <View>
-                <Switch value={active} onChange={handleSwitch}/>
-            </View>
-        </View> 
+            <TextInput
+                placeholder={hour}
+                defaultValue={hour}
+                value={hour}
+                style={styles.timeText}
+                onChangeText={handleHour}
+                keyboardType="numeric"
+                maxLength={2}
+            />
+            <Text style={styles.text}>:</Text>
+            <TextInput
+                placeholder={minute}
+                defaultValue={minute}
+                value={minute}
+                style={styles.timeText}
+                onChangeText={handleMinutes}
+                keyboardType="numeric"
+                maxLength={2}
+            />
+            <Pressable style={[styles.AM_PM, {borderWidth: 1}]} onPress={() => handleAM_PM(AM_PM)}>
+                <Text style={styles.text}>{AM_PM}</Text>
+            </Pressable>
+        </View>
     )
 }
 
 const styles  = StyleSheet.create({
-    headerText: {
-        color: '#000',
-        fontSize: 24,
-        fontFamily: 'HindSiliguri-Bold',
-        textAlignVertical: 'center'
-    },
     sectionContainer: { 
         flex: 1,
-        padding: 10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginBottom: 10,
     },
+    text: {
+        fontFamily: 'HindSiliguri-Bold',
+        fontSize: 20,        
+        textAlignVertical: 'center',
+        textAlign: 'center',
+    },
+    timeText: {
+        fontFamily: 'HindSiliguri',
+        fontSize: 20,
+        marginHorizontal: 5,
+        borderWidth: 1,
+        borderRadius: 8,
+        textAlignVertical: 'center',
+        width: '25%',
+        textAlign: 'center',
+    },
+    AM_PM: {
+        borderRadius: 8,
+        marginLeft: 10,
+        backgroundColor: '#ccc',
+        width: '25%',
+        elevation: 3,
+    }
 })
 
 export default TimeCard

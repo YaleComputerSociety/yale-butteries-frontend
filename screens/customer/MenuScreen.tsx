@@ -158,13 +158,11 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
 
 const styles = StyleSheet.create({
   headerStyle: {
-    alignSelf: 'center',
     margin: 10,
-    height: 50,
+    height: 45,
     padding: 8, 
     width: '95%',
     alignItems: 'center', 
-    justifyContent: 'center', 
     // shadowColor: '#555',
     // shadowRadius: 5,
     borderRadius: 8,
@@ -192,9 +190,9 @@ const styles = StyleSheet.create({
   },
   cartText: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: 'HindSiliguri-Bold',
-    marginHorizontal: 10,
+    textAlignVertical: 'center',
   },
 })
 
