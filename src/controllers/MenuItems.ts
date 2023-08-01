@@ -124,6 +124,7 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
 export async function updateMenuItem(req: Request, res: Response): Promise<void> {
   console.log('helloworld')
   try {
+    console.log(req.body)
     const targetMenuItem = await prisma.menuItem.update({
       where: {
         id: req.body.id,
