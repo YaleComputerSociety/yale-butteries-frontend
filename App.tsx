@@ -27,13 +27,13 @@ const InnerApp: FC = () => {
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      'Roboto': require('./assets/fonts/Roboto-Black.ttf'),
+      Roboto: require('./assets/fonts/Roboto-Black.ttf'),
       'Roboto-Light': require('./assets/fonts/HindSiliguri-Light.ttf'),
       'Roboto-Italic': require('./assets/fonts/Roboto-LightItalic.ttf'),
       'HindSiliguri-Bold': require('./assets/fonts/HindSiliguri-SemiBold.ttf'),
       'HindSiliguri-Bolder': require('./assets/fonts/HindSiliguri-Bold.ttf'),
-      'HindSiliguri': require('./assets/fonts/HindSiliguri-Regular.ttf'),
-      'Staat': require('./assets/fonts/Staatliches-Regular.ttf'),
+      HindSiliguri: require('./assets/fonts/HindSiliguri-Regular.ttf'),
+      Staat: require('./assets/fonts/Staatliches-Regular.ttf'),
     })
   }
 
@@ -41,7 +41,7 @@ const InnerApp: FC = () => {
     try {
       // Keep the splash screen visible while we fetch resources
       // check for a user token
-      // AsyncStorage.clear()
+      AsyncStorage.clear()
       const userInfo = await LocalStorage.getUserInfo('token')
       const id = await LocalStorage.getUserInfo('id')
       if (userInfo && id) {

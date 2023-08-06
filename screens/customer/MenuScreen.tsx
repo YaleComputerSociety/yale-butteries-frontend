@@ -27,6 +27,8 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const { menuItems } = useAppSelector((state) => state.menuItems)
   const { orderItems, college: collegeOrderCart } = useAppSelector((state) => state.orderCart)
 
+  const [data, setData] = useState([])
+
   const [index, setIndex] = useState(0)
   const [priceTotal, setPriceTotal] = useState(getPriceFromOrderItems(orderItems))
   const [refreshing, setRefreshing] = useState(false)
@@ -43,6 +45,11 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
 
   useEffect(() => {
     if (menuItems) {
+      setData(
+        menuItems.filter((menuItem) => {
+          return menuItem.college === collegeOrderCart && menuItem.isActive === true
+        })
+      )
       setBegin(false)
     }
   }, [menuItems])
@@ -70,10 +77,6 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
     dispatch(addOrderItem(temp))
     setPriceTotal(priceTotal + newItem.price)
   }
-
-  const data = menuItems.filter((menuItem) => {
-    return menuItem.college === collegeOrderCart && menuItem.isActive === true
-  })
 
   const sectionListRef = useRef(null)
 
@@ -103,7 +106,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
       <EvilModal toggle={setConnection} display={!connection} />
       {begin ? (
         <View style={loading.container}>
-          <ActivityIndicator size="large" />
+          <ActivityIndicator color="#fff" size="large" />
         </View>
       ) : (
         <View style={menu.wrapper}>

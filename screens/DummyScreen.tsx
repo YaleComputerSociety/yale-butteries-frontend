@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   style1: {
     height: '100%',
     width: '100%',
-    backgroundColor: '#2D90DD',
+    backgroundColor: '#121212',
   },
   logo: {
     resizeMode: 'cover',

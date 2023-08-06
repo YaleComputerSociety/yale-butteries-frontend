@@ -15,6 +15,7 @@ export const home = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: '#121212',
   },
 
   outerContainer: {
