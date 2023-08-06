@@ -65,6 +65,12 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
             if (openTime[0] >= 12) {
                 setOpenTimeAM_PM('PM')
             } else {
+                setOpenTimeAM_PM('AM')
+            }
+
+            if (closeTime[0] >= 12) {
+                setCloseTimeAM_PM('PM')
+            } else {
                 setCloseTimeAM_PM('AM')
             }
 
@@ -126,15 +132,19 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
     }
 
     const updateCollege = () => {
-        // console.log('OPEN --> ' + outputTime(openTimeHour, openTimeMinutes, openTimeAM_PM))
-        // console.log('CLOSE --> ' + outputTime(closeTimeHour, closeTimeMinutes, closeTimeAM_PM))
+        const open = outputTime(openTimeHour, openTimeMinutes, openTimeAM_PM)
+        const close = outputTime(closeTimeHour, closeTimeMinutes, closeTimeAM_PM)
+
+        console.log('CLOSE --> ' + close)
+        console.log('OPEN --> ' + open)
+
         const butteryTime: College = {
             id: currentCollege.id,
             name: currentCollege.name,
             buttery_activated: currentCollege.buttery_activated,
             daysOpen: openDays,
-            openTime: outputTime(openTimeHour, openTimeMinutes, openTimeAM_PM),
-            closeTime: outputTime(closeTimeHour, closeTimeMinutes, closeTimeAM_PM),
+            openTime: open,
+            closeTime: close,
             isOpen: true,
             //hard coded for now but will change these values,
         }

@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native'
 export const checkout = StyleSheet.create({
   wrapper: {
     flex: 2,
+    backgroundColor: '#121212',
   },
 
   upperContainer: {
@@ -10,7 +11,7 @@ export const checkout = StyleSheet.create({
     margin: 20,
     padding: 0,
     paddingHorizontal: 10,
-    backgroundColor: '#ddd',
+    backgroundColor: '#1f1f1f',
     borderRadius: 6,
     shadowColor: '#000',
     shadowOpacity: 0.15,
@@ -24,16 +25,19 @@ export const checkout = StyleSheet.create({
   itemNameText: {
     fontFamily: 'HindSiliguri-Bold',
     fontSize: 16,
+    color: 'rgba(255,255,255,0.87)',
   },
 
   totalText: {
     fontFamily: 'HindSiliguri-Bold',
     fontSize: 18,
+    color: 'rgba(255,255,255,0.87)',
   },
 
   text: {
     fontFamily: 'HindSiliguri',
     fontSize: 18,
+    color: 'rgba(255,255,255,0.68)',
   },
 
   orderList: {
@@ -50,8 +54,8 @@ export const checkout = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 10,
     height: 50,
-    backgroundColor: '#ddd',
-    borderBottomColor: '#ccc',
+    backgroundColor: '#1f1f1f',
+    borderBottomColor: '#383838',
     borderBottomWidth: 1,
     paddingRight: 10,
   },
@@ -64,9 +68,9 @@ export const checkout = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ddd',
+    backgroundColor: '#1f1f1f',
     borderBottomWidth: 1,
-    borderColor: '#bbb',
+    borderColor: '#383838',
   },
 
   footer: {
@@ -75,15 +79,15 @@ export const checkout = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
     paddingLeft: 20,
-    backgroundColor: '#ddd',
+    backgroundColor: '#1f1f1f',
     borderBottomLeftRadius: 6,
     borderBottomRightRadius: 6,
     borderTopWidth: 1,
-    borderColor: '#bbb',
+    borderColor: '#383838',
   },
 
   lowerContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: '#1f1f1f',
     height: '12%',
   },
 
@@ -96,7 +100,7 @@ export const checkout = StyleSheet.create({
   checkoutText: {
     fontFamily: 'HindSiliguri-Bold',
     fontSize: 25,
-    color: '#fff',
+    color: 'rgba(255,255,255,0.87)',
   },
 
   paymentInformation: {
@@ -138,13 +142,14 @@ export const checkout = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 10,
     height: 50,
-    backgroundColor: 'red',
+    backgroundColor: '#ff4e4e',
     borderBottomColor: '#ccc',
     width: 85,
   },
-  
+
   deleteContainerText: {
     fontFamily: 'HindSiliguri-Bold',
-    color: '#fff'
+    color: 'rgba(255,255,255,0.87)',
+    fontSize: 16,
   },
 })

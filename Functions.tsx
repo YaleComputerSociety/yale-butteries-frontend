@@ -21,46 +21,44 @@ export function getPriceFromOrderItems(orderItems: OrderItem[]): string {
 }
 
 export function outputTime(hrs: string, mins: string, am_pm?: string): string {
-
-  console.log(hrs)
-
   let time12h = hrs + ':' + mins + ' ' + am_pm
 
   const [time, modifier] = time12h.split(' ')
   let [hours, minutes] = time.split(':')
 
   if (hours === '12') {
-    hours = '00';
+    hours = '00'
   }
 
   if (modifier === 'PM') {
-    hours = (parseInt(hours, 10) + 12).toString();
+    if (parseInt(hrs) + 12 < 24) {
+      hours = (parseInt(hours, 10) + 12).toString()
+    }
   }
 
-  return `${hours}:${minutes}`;
-
+  return `${hours}:${minutes}`
 }
 
 export function militaryToAnalog(blah: string): string {
-  var time = blah.split(':'); // convert to array
+  var time = blah.split(':') // convert to array
 
   // fetch
-  var hours = Number(time[0]);
-  var minutes = Number(time[1]);
+  var hours = Number(time[0])
+  var minutes = Number(time[1])
 
   // calculate
-  var timeValue;
+  var timeValue
 
   if (hours > 0 && hours <= 12) {
-    timeValue= "" + hours;
+    timeValue = '' + hours
   } else if (hours > 12) {
-    timeValue= "" + (hours - 12);
+    timeValue = '' + (hours - 12)
   } else if (hours == 0) {
-    timeValue= "12";
+    timeValue = '12'
   }
-  
-  timeValue += (minutes < 10) ? " 0" + minutes : " " + minutes;  // get minutes
-  timeValue += (hours >= 12) ? " pm" : " am";  // get AM/PM
+
+  timeValue += minutes < 10 ? ' 0' + minutes : ' ' + minutes // get minutes
+  timeValue += hours >= 12 ? ' pm' : ' am' // get AM/PM
 
   return timeValue
 }
@@ -78,45 +76,74 @@ export function getDaysOpen(colleges: College[], name: string): boolean[] {
 
   const daysOpen = colleges.filter((college) => college.name == name)[0].daysOpen
 
-  for (let i=0; i <= daysOpen.length - 1; i++) { //days of week index (7-1)
+  for (let i = 0; i <= daysOpen.length - 1; i++) {
+    //days of week index (7-1)
     switch (daysOpen[i]) {
       case 'Sunday':
         initArray[0] = true
-        break;
+        break
       case 'Monday':
         initArray[1] = true
-        break;
+        break
       case 'Tuesday':
         initArray[2] = true
-        break;
+        break
       case 'Wednesday':
         initArray[3] = true
-        break;
+        break
       case 'Thursday':
         initArray[4] = true
-        break;
+        break
       case 'Friday':
         initArray[5] = true
-        break;
+        break
       case 'Saturday':
         initArray[6] = true
-        break;
+        break
       default:
-        break;
+        break
     }
   }
-  
+
   return initArray
 }
 
 export function getHours(colleges: College[], name: string): string[] {
   const college = colleges.filter((college) => college.name == name)[0]
 
-  if (college.openTime && college.closeTime)  {
+  if (college.openTime && college.closeTime) {
     return [militaryToAnalog(college.openTime), militaryToAnalog(college.closeTime)]
   }
 
   return ['4 00 pm', '6 00 pm']
+}
+
+export function getCollegeOpen(colleges: College[], name: string): boolean {
+  var today = new Date()
+  var hour = today.getHours()
+  var minute = today.getMinutes()
+
+  const college = colleges.filter((college) => college.name == name)[0]
+
+  console.log(college)
+
+  const openTimeHour = parseInt(college.openTime)
+  const openTimeMinute = parseInt(college.openTime.split(':')[1])
+
+  const closeTimeHour = parseInt(college.closeTime.split(':')[0])
+  const closeTimeMinute = parseInt(college.closeTime.split(':')[1])
+
+  if (hour < openTimeHour || hour > closeTimeHour) {
+    return false
+  } else {
+    if (hour == openTimeHour && minute < openTimeMinute) {
+      return false
+    } else if (hour == closeTimeHour && minute > closeTimeMinute) {
+      return false
+    }
+  }
+
+  return true
 }
 
 export function returnCollegeName(collegeName: string): string[] {
@@ -149,7 +176,7 @@ export function returnCollegeName(collegeName: string): string[] {
       break
     case 'morse':
       name = 'The Morsel'
-      headercolor = '#f54a4a'
+      headercolor = '#f65d5d'
       break
     case 'murray':
       name = 'MY Butt'

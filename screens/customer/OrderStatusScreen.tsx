@@ -127,10 +127,10 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
           animated={true}
           progress={percentage}
           width={null}
-          height={18}
+          height={15}
           borderRadius={8}
           borderWidth={0}
-          unfilledColor={'#333'}
+          unfilledColor={'#1f1f1f'}
         />
         <Pressable
           style={({ pressed }) => [
@@ -157,31 +157,32 @@ export default OrderStatusScreen
 
 const styles = StyleSheet.create({
   outerView: {
-    backgroundColor: '#333',
+    backgroundColor: '#1f1f1f',
     width: '90%',
     height: '60%',
     borderRadius: 8,
     marginBottom: 25,
-    padding: 10,
+    alignContent: 'center',
+    padding: 5,
   },
   text1: {
-    fontSize: 20,
-    color: 'white',
+    fontSize: 18,
+    color: 'rgba(255,255,255,0.87)',
     fontFamily: 'HindSiliguri',
     alignSelf: 'center',
     justifyContent: 'center',
   },
   view2: {
-    backgroundColor: '#333',
+    backgroundColor: '#1f1f1f',
     width: '90%',
-    height: '6%',
+    height: 60,
     borderRadius: 8,
     marginBottom: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
   view3: {
-    backgroundColor: '#222',
+    backgroundColor: '#121212',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -200,7 +201,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 20,
     fontFamily: 'HindSiliguri-Bold',
-    color: '#fff',
+    color: 'rgba(255,255,255,0.87)',
   },
   connectionError: {
     color: '#d44',

@@ -10,14 +10,15 @@ interface butteryProps {
   daysOpen: boolean[]
   offsetY: number
   active: boolean
+  isOpen: boolean
   onPress: () => void
 }
 
 export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(props.isOpen)
 
-  let open = props.openTime.split(" ")
-  let close = props.closeTime.split(" ")
+  let open = props.openTime.split(' ')
+  let close = props.closeTime.split(' ')
 
   const [openTime, setOpenTime] = useState(open[0] + ':' + open[1] + open[2])
   const [closeTime, setCloseTime] = useState(close[0] + ':' + close[1] + close[2])
@@ -26,53 +27,6 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
 
   const activeText = props.active ? 'CLOSED' : 'INACTIVE'
   const days = ['S ', 'M ', 'T ', 'W ', 'T ', 'F ', 'S ']
-  const DAY_CUTOFF = 5
-
-  // turns string input into date object. Upper indicates if this is the close time
-  const setDateTime = function (str: string, upper: boolean) {
-    const sp = str.split(':')
-    const date = new Date()
-    const today = new Date()
-    date.setHours(parseInt(sp[0]))
-    date.setMinutes(parseInt(sp[1]))
-    date.setSeconds(0)
-    if (upper && date.getHours() <= DAY_CUTOFF) {
-      date.setDate(date.getDate() + 1)
-    }
-    if (today.getHours() <= DAY_CUTOFF) {
-      date.setDate(date.getDate() - 1)
-    }
-    return date
-  }
-
-  const displayTime = (): string => {
-    return openTime + ' - ' + closeTime
-  }
-  // determines whether the buttery is currently open
-  function currentlyOpen() {
-    const today = new Date()
-    const lower = setDateTime(props.openTime, false)
-    const upper = setDateTime(props.closeTime, true)
-
-    if (today.getHours() <= DAY_CUTOFF) {
-      setDay((today.getDate() - 1) % 6)
-    } else {
-      setDay(today.getDate())
-    }
-
-    return today < upper && today >= lower
-  }
-
-  //check every 20 seconds whether the buttery is open
-  useEffect(() => {
-    setIsOpen(currentlyOpen())
-    const interval = setInterval(() => {
-      setIsOpen(currentlyOpen())
-    }, 20000)
-    return () => clearInterval(interval)
-  }, [isOpen])
-
-  // translate openTime/closeTime into openTimeHours etc
 
   const getDayVisual = (value: boolean, index: number) => {
     return (
@@ -81,6 +35,14 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
       </Text>
     )
   }
+
+  useEffect(() => {
+    open = props.openTime.split(' ')
+    close = props.closeTime.split(' ')
+    setOpenTime(open[0] + ':' + open[1] + open[2])
+    setCloseTime(close[0] + ':' + close[1] + close[2])
+    setIsOpen(props.isOpen)
+  }, [open, close, isOpen])
 
   const getAllWeekDays = () => {
     const weekDays: JSX.Element[] = []
@@ -95,13 +57,14 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   return (
     <Pressable
       onPress={props.onPress}
-      disabled={(isOpen && props.active)}
+      disabled={isOpen && props.active}
       style={({ pressed }) => [
         {
-          opacity: props.active && isOpen ? 1 : 0.6,
-          backgroundColor: pressed ? 'rgba(0, 0, 0, 0.075)' : 'rgba(0, 0, 0, 0.025)',
+          opacity: props.active && isOpen ? 1 : 1,
+          backgroundColor: pressed ? 'rgba(255, 255, 255, 0.075)' : 'rgba(255, 255, 255, 0.05)',
           marginTop: 10,
           marginHorizontal: 10,
+          borderRadius: 8,
         },
       ]}
     >
@@ -118,7 +81,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
               {activeText}
             </Text>
           </View>
-          <Text style={card.cardText2}>{displayTime()}</Text>
+          <Text style={card.cardText2}>{openTime + ' - ' + closeTime}</Text>
           {getAllWeekDays()}
         </View>
         {/* // eslint-disable-next-line @typescript-eslint/ban-ts-comment

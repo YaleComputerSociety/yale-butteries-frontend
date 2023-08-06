@@ -46,17 +46,17 @@ export const MenuItemCard: FC<Props> = ({ menuItem, items, incUpdate }: Props) =
         <Text style={item.itemPrice}>{priceToText(menuItem.price)}</Text>
       </View>
       <View style={item.spacer} />
-      <View style={{flexDirection:'row'}}>
+      <View style={{ flexDirection: 'row' }}>
         <Pressable
           onPress={addItem}
           disabled={count >= 5 ? true : false}
           style={({ pressed }) => [
-            { zIndex: 2, opacity: count >= 5 ? 0.5 : 1, backgroundColor: pressed ? '#bbb' : '#eee' },
+            { zIndex: 2, opacity: count >= 5 ? 0.5 : 1, backgroundColor: pressed ? '#383838' : '#2c2c2c' },
             item.button,
           ]}
         >
           <Text style={item.buttonText}>Add to Cart</Text>
-          <View style={{borderColor: '#bbb', borderLeftWidth: 1}}>
+          <View>
             <Text style={item.itemCountText}>{count}</Text>
           </View>
         </Pressable>

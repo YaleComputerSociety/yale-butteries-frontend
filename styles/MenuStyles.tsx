@@ -4,7 +4,7 @@ export const menu = StyleSheet.create({
   wrapper: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#FAF9F6',
+    backgroundColor: '#121212',
   },
 
   upperContainer: {
@@ -59,9 +59,10 @@ export const item = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 100,
-    backgroundColor: '#FAF9F6',
-    borderBottomColor: '#eee',
-    borderBottomWidth: 0.5,
+    backgroundColor: '#1f1f1f',
+    margin: 10,
+    marginBottom: 0,
+    borderRadius: 8,
     shadowRadius: 2,
   },
 
@@ -73,58 +74,50 @@ export const item = StyleSheet.create({
 
   itemName: {
     fontFamily: 'HindSiliguri-Bold',
-    color: '#222',
     fontSize: 16,
+    color: 'rgba(255,255,255, 0.87)',
     //backgroundColor: 'green',
   },
 
   itemDescription: {
-    fontFamily: 'Roboto-Italic',
-    color: '#777',
+    fontFamily: 'HindSiliguri',
+    color: 'rgba(255,255,255, 0.68)',
     fontSize: 12,
     flex: 2,
     marginRight: 10,
   },
 
   itemPrice: {
-    color: '#222',
-    fontSize: 14,
+    fontSize: 15,
+    fontFamily: 'Roboto-Italic',
+    color: 'rgba(255,255,255, 0.87)',
     //backgroundColor: 'blue'
   },
 
   button: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     textAlign: 'center',
     borderRadius: 8,
     alignItems: 'center',
-    width: 150,
+    width: 140,
   },
 
   buttonText: {
-    paddingVertical: 4,
-    paddingHorizontal: 8,
     fontFamily: 'HindSiliguri-Bold',
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: 16,
     textAlignVertical: 'center',
+    color: 'rgba(255,255,255, 0.87)',
   },
 
   itemCountText: {
-    paddingVertical: 4,
-    paddingHorizontal: 15,
+    paddingVertical: 5,
     fontFamily: 'HindSiliguri-Bold',
-    justifyContent: 'center',
-    alignItems: 'center',
     fontSize: 16,
     textAlignVertical: 'center',
-  },
-
-  countText: {
-    fontFamily: 'Roboto',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: 'rgba(255,255,255, 0.87)',
   },
 
   spacer: {
@@ -162,7 +155,7 @@ export const item = StyleSheet.create({
 
   priceText: {
     fontFamily: 'HindSiliguri',
-    color: '#000',
+    color: '#fff',
     fontSize: 16,
     padding: 10,
   },

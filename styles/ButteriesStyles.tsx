@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 export const home = StyleSheet.create({
   app: {
     flex: 1,
-    backgroundColor: '#54ade4',
+    backgroundColor: '#121212',
   },
 
   nameText: {
@@ -45,7 +45,7 @@ export const home = StyleSheet.create({
   partition: {
     height: 150,
     display: 'flex',
-    borderColor: '#ddd',
+    borderColor: '#1f1f1f',
     borderTopWidth: 2,
     borderBottomWidth: 2,
     marginTop: 10,
@@ -65,7 +65,7 @@ export const card = StyleSheet.create({
   cardText1: {
     fontFamily: 'HindSiliguri-Bold',
     fontWeight: 'bold',
-    color: '#fff',
+    color: 'rgba(255,255,255, 0.87)',
     fontSize: 20,
     marginTop: 9,
     marginBottom: 5,
@@ -75,7 +75,7 @@ export const card = StyleSheet.create({
 
   cardText2: {
     fontFamily: 'Roboto-Italic',
-    color: '#fff',
+    color: 'rgba(255,255,255, 0.68)',
     fontSize: 15,
   },
 
@@ -83,7 +83,7 @@ export const card = StyleSheet.create({
     fontFamily: 'HindSiliguri',
     fontStyle: 'normal',
     fontWeight: '100',
-    color: 'white',
+    color: 'rgba(255,255,255, 0.87)',
     marginTop: 5,
   },
 
@@ -96,9 +96,6 @@ export const card = StyleSheet.create({
     flex: 1,
     padding: 5,
     color: '#fff',
-    borderColor: 'rgba(255, 255, 255, 0.1)',
-    borderWidth: 2,
-    borderRadius: 8,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -107,16 +104,14 @@ export const card = StyleSheet.create({
 
   dayActive: {
     fontFamily: 'HindSiliguri',
-    fontStyle: 'normal',
-    color: 'white',
+    color: 'rgba(255,255,255, 0.87)',
     marginTop: 5,
   },
 
   dayInactive: {
     fontFamily: 'HindSiliguri',
     fontStyle: 'normal',
-    color: 'white',
-    opacity: 0.2,
+    color: 'rgba(255,255,255, 0.2)',
     marginTop: 5,
   },
 
@@ -131,7 +126,9 @@ export const card = StyleSheet.create({
 
   banner: {
     alignSelf: 'center',
-    color: 'white',
+    justifyContent: 'center',
+    textAlignVertical: 'center',
+    color: 'rgba(255,255,255,0.87)',
     paddingHorizontal: 8,
     marginLeft: 10,
     fontFamily: 'HindSiliguri-Bold',

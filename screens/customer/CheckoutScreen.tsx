@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
+import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert, Platform } from 'react-native'
 import { checkout } from '../../styles/CheckoutStyles'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { loading } from '../../styles/GlobalStyles'
@@ -34,6 +34,18 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     setDisabled(b)
   }
 
+  const customAppearance = {
+    colors: {
+      background: '#1f1f1f',
+      componentBackground: '#383838',
+      componentBorder: '#383838',
+      primaryText: '#ffffff',
+      secondaryText: '#ffffff',
+      componentText: '#ffffff',
+      placeholderText: '#73757b',
+    },
+  }
+
   const stripe = useStripe()
 
   const showPaymentSheet = async (): Promise<any> => {
@@ -62,6 +74,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const initSheet = await stripe.initPaymentSheet({
       paymentIntentClientSecret: clientSecret,
       merchantDisplayName: 'Yale Butteries',
+      appearance: customAppearance,
     })
     if (initSheet.error) return Alert.alert(initSheet.error.message)
     const presentSheet = await stripe.presentPaymentSheet()
@@ -171,9 +184,9 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               <FlatList
                 data={orderItems}
                 renderItem={(item) => {
-                  return <CheckoutItem decUpdate={removeOrder} checkoutItem={item.item} isDisabled={isDisabled}/>
+                  return <CheckoutItem decUpdate={removeOrder} checkoutItem={item.item} isDisabled={isDisabled} />
                 }}
-                keyExtractor={item => item.index.toString()}
+                keyExtractor={(item) => item.index.toString()}
               />
               <View style={checkout.footer}>
                 <Text style={checkout.totalText}>Total: {priceToText(price)}</Text>
@@ -183,7 +196,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               <Pressable
                 disabled={isDisabled}
                 style={({ pressed }) => [
-                  { backgroundColor: pressed ? '#222' : '#333', opacity: orderItems.length < 1 ? 0.7 : 1 },
+                  { backgroundColor: pressed ? '#383838' : '#1f1f1f', opacity: orderItems.length < 1 ? 0.7 : 1 },
                   checkout.checkoutButton,
                 ]}
                 onPress={() => {

@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { setCollege } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { LinearGradient } from 'expo-linear-gradient'
-import { registerForPushNotificationsAsync, getDaysOpen, getHours } from '../../Functions'
+import { registerForPushNotificationsAsync, getDaysOpen, getHours, getCollegeOpen } from '../../Functions'
 import { asyncFetchColleges } from '../../store/slices/Colleges'
 import { useIsFocused } from '@react-navigation/native'
 
@@ -28,7 +28,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
         setConnection(false)
       }
     })
-}, [isFocused])
+  }, [isFocused])
 
   useEffect(() => {
     const push = async () => {
@@ -46,46 +46,42 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   const butteries: CollegeInfo[] = [
     {
       ne: 'Morse',
-      start: '0:00',
-      end: '0:00',
-      daysOpen: [true, false, false, true, true, true, true],
-      active: true,
-    },
-    {
-      ne: 'Berkeley',
-      start: '10:00',
-      end: '2:30',
       daysOpen: [true, true, true, false, false, false, true],
       active: true,
     },
-    {
-      ne: 'Branford',
-      start: '10:00',
-      end: '2:30',
-      daysOpen: [true, true, false, false, false, true, false],
-      active: true,
-    },
-    {
-      ne: 'Davenport',
-      start: '5:00',
-      end: '4:00',
-      daysOpen: [false, false, false, false, false, false, false],
-      active: false,
-    },
-    {
-      ne: 'Franklin',
-      start: '22:00',
-      end: '1:00',
-      daysOpen: [false, false, false, false, false, false, false],
-      active: false,
-    },
-    {
-      ne: 'Hopper',
-      start: '22:00',
-      end: '0:30',
-      daysOpen: [false, false, false, false, false, false, false],
-      active: false,
-    },
+    // {
+    //   ne: 'Berkeley',
+    //   daysOpen: [true, true, true, false, false, false, true],
+    //   active: true,
+    // },
+    // {
+    //   ne: 'Branford',
+    //   start: '10:00',
+    //   end: '2:30',
+    //   daysOpen: [true, true, false, false, false, true, false],
+    //   active: true,
+    // },
+    // {
+    //   ne: 'Davenport',
+    //   start: '5:00',
+    //   end: '4:00',
+    //   daysOpen: [false, false, false, false, false, false, false],
+    //   active: false,
+    // },
+    // {
+    //   ne: 'Franklin',
+    //   start: '22:00',
+    //   end: '1:00',
+    //   daysOpen: [false, false, false, false, false, false, false],
+    //   active: false,
+    // },
+    // {
+    //   ne: 'Hopper',
+    //   start: '22:00',
+    //   end: '0:30',
+    //   daysOpen: [false, false, false, false, false, false, false],
+    //   active: false,
+    // },
     // {
     //   ne: 'JE',
     //   start: '21:30',
@@ -93,41 +89,41 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     //   daysOpen: [false, false, false, false, false, false, false],
     //   active: false,
     // },
-    {
-      ne: 'Murray',
-      start: '22:00',
-      end: '1:00',
-      daysOpen: [false, false, false, false, false, false, false],
-      active: false,
-    },
-    {
-      ne: 'Pierson',
-      start: '22:30',
-      end: '0:30',
-      daysOpen: [false, false, false, false, false, false, false],
-      active: false,
-    },
-    {
-      ne: 'Saybrook',
-      start: '21:00',
-      end: '0:00',
-      daysOpen: [false, false, false, false, false, false, false],
-      active: false,
-    },
-    {
-      ne: 'Silliman',
-      start: '22:00',
-      end: '1:00',
-      daysOpen: [false, false, false, false, false, false, false],
-      active: false,
-    },
-    {
-      ne: 'Stiles',
-      start: '22:00',
-      end: '0:50',
-      daysOpen: [false, false, false, false, false, false, false],
-      active: false,
-    },
+    // {
+    //   ne: 'Murray',
+    //   start: '22:00',
+    //   end: '1:00',
+    //   daysOpen: [false, false, false, false, false, false, false],
+    //   active: false,
+    // },
+    // {
+    //   ne: 'Pierson',
+    //   start: '22:30',
+    //   end: '0:30',
+    //   daysOpen: [false, false, false, false, false, false, false],
+    //   active: false,
+    // },
+    // {
+    //   ne: 'Saybrook',
+    //   start: '21:00',
+    //   end: '0:00',
+    //   daysOpen: [false, false, false, false, false, false, false],
+    //   active: false,
+    // },
+    // {
+    //   ne: 'Silliman',
+    //   start: '22:00',
+    //   end: '1:00',
+    //   daysOpen: [false, false, false, false, false, false, false],
+    //   active: false,
+    // },
+    // {
+    //   ne: 'Stiles',
+    //   start: '22:00',
+    //   end: '0:50',
+    //   daysOpen: [false, false, false, false, false, false, false],
+    //   active: false,
+    // },
     // {
     //   ne: 'TD',
     //   start: '22:00',
@@ -135,13 +131,13 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     //   daysOpen: [false, false, false, false, false, false, false],
     //   active: false,
     // },
-    {
-      ne: 'Trumbull',
-      start: '22:00',
-      end: '23:30',
-      daysOpen: [false, false, false, false, false, false, false],
-      active: false,
-    },
+    // {
+    //   ne: 'Trumbull',
+    //   start: '22:00',
+    //   end: '23:30',
+    //   daysOpen: [false, false, false, false, false, false, false],
+    //   active: false,
+    // },
   ]
 
   const toMenu = (college: string) => {
@@ -151,8 +147,6 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
   interface CollegeInfo {
     ne: string
-    start: string
-    end: string
     active: boolean
     daysOpen: boolean[]
   }
@@ -179,6 +173,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
         offsetY={offset}
         active={collegeInfo.active}
         key={index}
+        isOpen={getCollegeOpen(colleges, collegeInfo.ne.toLowerCase())}
         daysOpen={getDaysOpen(colleges, collegeInfo.ne.toLowerCase())}
       />
     )
@@ -205,24 +200,27 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   }, [])
 
   return (
-    <View style={{ width: '100%', height: '100%' }}> 
+    <View style={{ width: '100%', height: '100%' }}>
       {begin ? (
-        <LinearGradient colors={['#54ade4', '#43cea2']} locations={[0, 1]}>
-          <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} style={{ width: '100%', height: '100%' }}>
-              <View style={{ height: '100%', alignItems: 'center' }}>
-                <ActivityIndicator color="#555" style={{ height: '100%' }} size="large" />
-              </View>
+        <LinearGradient colors={['#121212', '#121212']} locations={[0, 1]}>
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+            style={{ width: '100%', height: '100%' }}
+          >
+            <View style={{ height: '100%', alignItems: 'center' }}>
+              <ActivityIndicator color="#555" style={{ height: '100%' }} size="large" />
+            </View>
           </ScrollView>
         </LinearGradient>
       ) : (
-        <ScrollView 
-          style={home.app} 
+        <ScrollView
+          style={home.app}
           showsVerticalScrollIndicator={false}
-          alwaysBounceVertical={false} 
+          alwaysBounceVertical={false}
           bounces={true}
-          refreshControl={<RefreshControl colors={["#555"]} refreshing={refreshing} onRefresh={onRefresh} />}
+          refreshControl={<RefreshControl colors={['#fff', '#fff']} refreshing={refreshing} onRefresh={onRefresh} />}
         >
-          <LinearGradient colors={['#54ade4', '#43cea2']} locations={[0, 1]}>
+          <LinearGradient colors={['#121212', '#121212']} locations={[0, 1]}>
             <View style={home.outerContainer}>
               {getCollegeVisual(butteries[0], 0)}
               <View style={home.partition}>
@@ -231,7 +229,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
               {getAllCards()}
             </View>
           </LinearGradient>
-          <View style={{ height: '20%', width: '100%', backgroundColor: '#43cea2' }}></View>
+          <View style={{ height: '20%', width: '100%', backgroundColor: '#121212' }}></View>
         </ScrollView>
       )}
     </View>
@@ -260,4 +258,3 @@ export default ButterySelectionScreen
 function useAppFocus() {
   throw new Error('Function not implemented.')
 }
-

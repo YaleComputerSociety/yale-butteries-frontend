@@ -75,27 +75,27 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
     return menuItem.college === collegeOrderCart && menuItem.isActive === true
   })
 
-  const sectionListRef = useRef(null);
+  const sectionListRef = useRef(null)
 
   const sections = [
     {
       title: 'Food',
       data: data.filter((menuItem) => {
         return menuItem.foodType === 'FOOD'
-      })
+      }),
     },
     {
       title: 'Drink',
       data: data.filter((menuItem) => {
         return menuItem.foodType === 'DRINK'
-      })
+      }),
     },
     {
       title: 'Dessert',
       data: data.filter((menuItem) => {
         return menuItem.foodType === 'DESSERT'
-      })
-    }
+      }),
+    },
   ]
 
   return (
@@ -110,35 +110,50 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
           <SectionList
             ref={sectionListRef}
             showsVerticalScrollIndicator={false}
-            sections={sections}      
+            sections={sections}
             keyExtractor={(item, index) => item.item + index}
             renderItem={(item) => {
-              return <MenuItemCard incUpdate={addOrder} menuItem={item.item} items={orderItems}/>
+              return <MenuItemCard incUpdate={addOrder} menuItem={item.item} items={orderItems} />
             }}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-            renderSectionHeader={({section: {title}}) => (
-              <View style={[styles.headerStyle, {backgroundColor: returnCollegeName(collegeOrderCart)[1]}]}>
-                <Text style={{ fontSize: 20, fontFamily: 'HindSiliguri-Bold', color: 'white' }}>{title}</Text>
+            refreshControl={<RefreshControl tintColor="#fff" refreshing={refreshing} onRefresh={onRefresh} />}
+            renderSectionHeader={({ section: { title } }) => (
+              <View style={[styles.headerStyle, { backgroundColor: '#2c2c2c' }]}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    textAlignVertical: 'center',
+                    fontFamily: 'HindSiliguri-Bold',
+                    color: 'rgba(255,255,255,0.87)',
+                  }}
+                >
+                  {title}
+                </Text>
               </View>
             )}
-            ListFooterComponent={
-              <View style={{height: 100 }}></View>
-            }
+            ListFooterComponent={<View style={{ height: 100 }}></View>}
             ListHeaderComponent={
-              <MenuHeader 
-                toFood={() => {sectionListRef.current.scrollToLocation({sectionIndex: 0, itemIndex: 0, animated: true})}} 
-                toDrink={() => {sectionListRef.current.scrollToLocation({sectionIndex: 1, itemIndex: 0, animated: true})}} 
-                toDessert={() => {sectionListRef.current.scrollToLocation({sectionIndex: 2, itemIndex: 0, animated: true})}}
+              <MenuHeader
+                toFood={() => {
+                  sectionListRef.current.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: true })
+                }}
+                toDrink={() => {
+                  sectionListRef.current.scrollToLocation({ sectionIndex: 1, itemIndex: 0, animated: true })
+                }}
+                toDessert={() => {
+                  sectionListRef.current.scrollToLocation({ sectionIndex: 2, itemIndex: 0, animated: true })
+                }}
               />
             }
           />
           <View style={styles.footer}>
             <Pressable
               disabled={orderItems.length < 1 ? true : false}
-              style={({ pressed }) => 
-              [{ opacity: orderItems.length < 1 ? 0.6 : 1 || pressed ? 1 : 0.5, 
-                 backgroundColor: returnCollegeName(collegeOrderCart)[1] },
-                 styles.cartButton,
+              style={({ pressed }) => [
+                {
+                  opacity: orderItems.length < 1 ? 0.6 : 1 || pressed ? 1 : 0.5,
+                  backgroundColor: returnCollegeName(collegeOrderCart)[1],
+                },
+                styles.cartButton,
               ]}
               onPress={() => {
                 navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
@@ -158,15 +173,15 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
 
 const styles = StyleSheet.create({
   headerStyle: {
-    margin: 10,
+    marginTop: 10,
+    alignSelf: 'center',
     height: 45,
-    padding: 8, 
+    padding: 8,
     width: '95%',
-    alignItems: 'center', 
-    // shadowColor: '#555',
-    // shadowRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 8,
-    // shadowOpacity: 0.6,
+    backgroundColor: '#383838',
   },
   cartButton: {
     width: '60%',
