@@ -15,7 +15,6 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { asyncCreateUser } from '../store/slices/Users'
 import * as Random from 'expo-random'
 import EvilModal from '../components/EvilModal'
-import { WebView } from 'react-native-webview'
 
 const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
