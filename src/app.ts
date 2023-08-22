@@ -1,5 +1,6 @@
-import express, { Application } from 'express'
+import express from 'express'
 import cors from 'cors'
+import session from 'express-session'
 
 import collegeRouter from './routes/CollegeApi'
 import menuItemRouter from './routes/MenuItemApi'
@@ -8,13 +9,22 @@ import transactionRouter from './routes/TransactionHistoryApi'
 import paymentRouter from './routes/PaymentApi'
 import notifsRouter from './routes/PushNotificationsApi'
 
-const port = process.env.PORT || 3000
+import passport from './controllers/Auth'
 
-const app: Application = express()
+const app: express.Express = express()
   .use('/stripe', express.raw({ type: '*/*' }))
   .use(express.json())
   .use(express.urlencoded({ extended: true }))
-app.use(cors()) // security vulnerability, change this before beta!
+  .use(
+    session({
+      secret: 'iw9nHenOw2andg3',
+      resave: false,
+      saveUninitialized: false,
+    })
+  )
+  .use(cors()) // security vulnerability, change this before alpha!
+
+const port = process.env.PORT || 3000
 
 // API Routes
 app.use('/api/colleges', collegeRouter)
@@ -24,6 +34,8 @@ app.use('/api/users', userRouter)
 app.use('/api/payments', paymentRouter)
 app.use('/api/notifs', notifsRouter)
 
+passport(app)
+
 app.listen(port, () => {
-  console.log(`Deployed on port ${port}.`)
+  console.log(`Deployed at localhost:${port}`)
 })
