@@ -36,7 +36,7 @@ const InnerApp: FC = () => {
 
   const establishUser = async () => {
     try {
-      // AsyncStorage.clear()
+      AsyncStorage.clear()
 
       // Check if user already exists in local storage
       const userInfo = await LocalStorage.getUserInfo('token')
