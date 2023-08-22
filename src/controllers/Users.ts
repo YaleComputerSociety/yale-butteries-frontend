@@ -86,7 +86,6 @@ export async function createUser(req: Request, res: Response): Promise<void> {
         id: existingUser.id,
       }
 
-      console.log('now, ', frontUser)
       res.send(JSON.stringify(frontUser))
       return
     }
