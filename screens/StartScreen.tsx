@@ -1,56 +1,15 @@
 import React, { useEffect, useState, FC } from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  Pressable,
-  TextInput,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ActivityIndicator,
-  Image,
-} from 'react-native'
-import { useAppDispatch, useAppSelector } from '../store/ReduxStore'
+import { StyleSheet, View, Text, Pressable, TouchableWithoutFeedback, Keyboard, Image } from 'react-native'
+import { useAppSelector } from '../store/ReduxStore'
 import { LinearGradient } from 'expo-linear-gradient'
-import { asyncCreateUser } from '../store/slices/Users'
-import * as Random from 'expo-random'
 import EvilModal from '../components/EvilModal'
 
 const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
-  const dispatch = useAppDispatch()
-  const [name, setName] = useState('')
-  const [displayError, setDisplayError] = useState(false)
-  const [loadingUser, setLoadingUser] = useState(false)
-  const [userSet, setUserSet] = useState(false) // weird edge case where user can click staff login the instant the user creation finishes, before the page finishes transitioning to butteries screen
   const [connection, setConnection] = useState(true)
-
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
   const onLogin = async () => {
     navigation.navigate('CASLoginScreen')
-
-    // if (name.length <= 2 || name.length >= 16) {
-    //   setDisplayError(true)
-    // } else {
-    //   let token = ''
-    //   token += Random.getRandomBytes(8).toString()
-
-    //   const newUser = {
-    //     email: 'betatester@gmail.edu',
-    //     netid: 'temp',
-    //     name: name,
-    //     college: 'morse',
-    //     token: token,
-    //     permissions: 'customer',
-    //   }
-    //   setLoadingUser(true)
-    //   setUserSet(true)
-    //   const success = await dispatch(asyncCreateUser(newUser, name, token))
-    //   if (!success) {
-    //     setConnection(false)
-    //   }
-    //   setLoadingUser(false)
-    // }
   }
 
   useEffect(() => {
@@ -58,10 +17,6 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
       navigation.navigate('ButteriesScreen')
     }
   }, [currentUser])
-
-  const handleStaffPress = () => {
-    navigation.navigate('StaffLoginScreen')
-  }
 
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
@@ -75,8 +30,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
                 Yale<Text style={{ color: '#344a61' }}>Butteries</Text>
               </Text>
             </View>
-            {loadingUser && <ActivityIndicator size="large" />}
-            <Pressable onPress={onLogin} style={styles.button} disabled={userSet}>
+            <Pressable onPress={onLogin} style={styles.button}>
               <Text style={styles.casText}>Login with CAS</Text>
             </Pressable>
           </View>
