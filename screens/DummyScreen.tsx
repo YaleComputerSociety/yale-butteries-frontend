@@ -17,7 +17,7 @@ const Dummy: FC<{ navigation: any }> = ({ navigation }) => {
             navigation.navigate('ButteriesScreen')
           }
         } else if (currentUser.permissions === 'staff') {
-          navigation.navigate('StaffRenderScreen')
+          navigation.navigate('NavigationScreen')
         }
       } else {
         navigation.navigate('StartScreen')
