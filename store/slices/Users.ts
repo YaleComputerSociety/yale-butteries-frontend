@@ -55,7 +55,7 @@ export const usersSlice = createSlice({
 
 export const { setUsersState, insertUser, setIsLoading } = usersSlice.actions
 
-export const asyncCreateUser = (user: NewUser, username: string, token: string) => {
+export const asyncCreateUser = (user: NewUser, token: string) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     try {
       const newUser = await fetch(baseUrl + 'api/users', {
@@ -74,13 +74,12 @@ export const asyncCreateUser = (user: NewUser, username: string, token: string) 
 
       const localStorageInfo: [string, string][] = [
         ['id', data.id.toString()],
-        ['username', username],
+        ['username', data.netid],
         ['token', token],
-        ['permissions', 'customer'],
+        ['permissions', data.permissions],
       ]
 
       LocalStorage.storeUserInfo(localStorageInfo)
-      // console.log('stored!', 'user with id ===> ' + data.id.toString() + '\n\n')
       return true
     } catch (e) {
       console.log(e)

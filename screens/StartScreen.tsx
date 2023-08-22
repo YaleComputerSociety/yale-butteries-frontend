@@ -12,12 +12,6 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
     navigation.navigate('CASLoginScreen')
   }
 
-  useEffect(() => {
-    if (currentUser) {
-      navigation.navigate('ButteriesScreen')
-    }
-  }, [currentUser])
-
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
       <EvilModal toggle={setConnection} display={!connection} />
