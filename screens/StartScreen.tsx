@@ -63,52 +63,42 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
   }
 
   return (
-    <View
-      style={{
-        overflow: 'hidden',
-        maxHeight: 0,
-        maxWidth: 0,
-        flex: 1,
-      }}
-    >
-      <WebView style={{ flex: 1 }} originWhitelist={['*']} source={{ html: '<h1><center>Hello world</center></h1>' }} />
-    </View>
-    // <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
-    //   <EvilModal toggle={setConnection} display={!connection} />
-    //   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    //     <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
-    //       <View style={styles.style1}>
-    //         <View>
-    //           <Image source={require('../assets/images/logo_transparent.png')} style={styles.logo} />
-    //           <Text style={{ fontSize: 38, color: '#fff', marginBottom: 20, fontFamily: 'HindSiliguri-Bolder' }}>
-    //             Yale<Text style={{ color: '#344a61' }}>Butteries</Text>
-    //           </Text>
-    //         </View>
-    //         {loadingUser && <ActivityIndicator size="large" />}
-    //         {/* <TextInput
-    //           style={styles.input}
-    //           placeholder="Name"
-    //           clearTextOnFocus={true}
-    //           placeholderTextColor="black"
-    //           onSubmitEditing={async () => {
-    //             await onSubmit()
-    //           }}
-    //           onChangeText={(name) => setName(name)}
-    //           onFocus={() => setDisplayError(false)}
-    //           autoCorrect={false}
-    //           editable={!loadingUser}
-    //         />
-    //         {displayError && <Text style={styles.error}>Please enter a name between 3 and 15 characters</Text>}
-    //         <Pressable onPress={onSubmit} style={styles.button} disabled={userSet}>
-    //           <Text style={{ color: 'lightgray', fontWeight: '500' }}>Login</Text>
-    //         </Pressable>
-    //         <Text onPress={handleStaffPress} style={styles.staffLogin} disabled={userSet}>
-    //           Staff Login
-    //         </Text> */}
-    //       </View>
-    //     </View>
-    //   </TouchableWithoutFeedback>
-    // </LinearGradient>
+    <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
+      <EvilModal toggle={setConnection} display={!connection} />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
+          <View style={styles.style1}>
+            <View>
+              <Image source={require('../assets/images/logo_transparent.png')} style={styles.logo} />
+              <Text style={{ fontSize: 38, color: '#fff', marginBottom: 20, fontFamily: 'HindSiliguri-Bolder' }}>
+                Yale<Text style={{ color: '#344a61' }}>Butteries</Text>
+              </Text>
+            </View>
+            {loadingUser && <ActivityIndicator size="large" />}
+            <TextInput
+              style={styles.input}
+              placeholder="Name"
+              clearTextOnFocus={true}
+              placeholderTextColor="black"
+              onSubmitEditing={async () => {
+                await onSubmit()
+              }}
+              onChangeText={(name) => setName(name)}
+              onFocus={() => setDisplayError(false)}
+              autoCorrect={false}
+              editable={!loadingUser}
+            />
+            {displayError && <Text style={styles.error}>Please enter a name between 3 and 15 characters</Text>}
+            <Pressable onPress={onSubmit} style={styles.button} disabled={userSet}>
+              <Text style={{ color: 'lightgray', fontWeight: '500' }}>Login</Text>
+            </Pressable>
+            <Text onPress={handleStaffPress} style={styles.staffLogin} disabled={userSet}>
+              Staff Login
+            </Text>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </LinearGradient>
   )
 }
 
