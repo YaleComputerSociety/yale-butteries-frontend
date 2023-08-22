@@ -13,7 +13,6 @@ passport.use(
       serverBaseURL: 'http://localhost:3000', // CHANGE THIS
     },
     function (login, done) {
-      console.log('aaaa', login)
       return done(null, {
         netId: login,
       })
@@ -22,7 +21,6 @@ passport.use(
 )
 
 passport.serializeUser<User>(function (user: any, done) {
-  console.log(user)
   done(null, user.netId)
 })
 
@@ -43,7 +41,6 @@ export default (app: express.Express): void | express.RequestHandler => {
       }
 
       if (!user) {
-        console.log(info.message)
         return res.redirect('/')
       }
 
@@ -51,7 +48,6 @@ export default (app: express.Express): void | express.RequestHandler => {
         if (err) {
           return next(err)
         }
-        console.log('heyo', user)
         res.send(JSON.stringify(user))
       })
     })(req, res, next)

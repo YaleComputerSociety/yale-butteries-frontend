@@ -6,10 +6,7 @@ const prisma = new PrismaClient()
 
 export async function getAllColleges(_: Request, res: Response): Promise<void> {
   try {
-    console.log('asldkfjaskldf')
     const colleges = await prisma.college.findMany(includeProperty)
-    console.log('asdfjasdf')
-    console.log(colleges)
     res.send(JSON.stringify(colleges))
   } catch (e) {
     console.log(e)

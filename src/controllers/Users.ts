@@ -67,6 +67,30 @@ export async function getUser(req: Request, res: Response): Promise<void> {
 
 export async function createUser(req: Request, res: Response): Promise<void> {
   try {
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        netid: req.body.netid,
+      },
+      include: {
+        college: true,
+      },
+    })
+
+    if (existingUser) {
+      const frontUser: FrontUser = {
+        email: existingUser.email,
+        netid: existingUser.netid,
+        name: existingUser.name,
+        permissions: existingUser.permissions,
+        college: existingUser.college.college,
+        id: existingUser.id,
+      }
+
+      console.log('now, ', frontUser)
+      res.send(JSON.stringify(frontUser))
+      return
+    }
+
     const college = await getCollegeFromName(req.body.college)
 
     const newUser = await prisma.user.create({
@@ -83,15 +107,12 @@ export async function createUser(req: Request, res: Response): Promise<void> {
         },
       },
     })
-    console.log('asdfa')
 
     await stripe.customers.create({
       email: req.body.email,
       name: req.body.name,
       metadata: { userId: newUser.id },
     })
-
-    console.log('bony')
 
     const frontUser: FrontUser = {
       email: newUser.email,
@@ -104,7 +125,6 @@ export async function createUser(req: Request, res: Response): Promise<void> {
 
     res.send(JSON.stringify(frontUser))
   } catch (e) {
-    console.log('eyeyeyey')
     console.log(e)
     res.status(400).send(e)
   }
