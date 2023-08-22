@@ -6,9 +6,13 @@ const prisma = new PrismaClient()
 
 export async function getAllColleges(_: Request, res: Response): Promise<void> {
   try {
+    console.log('asldkfjaskldf')
     const colleges = await prisma.college.findMany(includeProperty)
+    console.log('asdfjasdf')
+    console.log(colleges)
     res.send(JSON.stringify(colleges))
   } catch (e) {
+    console.log(e)
     res.status(400).send(e)
   }
 }
@@ -32,7 +36,5 @@ const includeProperty = {
     users: true,
     transaction_histories: true,
     menu_items: true,
-    ingredients: true,
-    availabilities: true,
   },
 }

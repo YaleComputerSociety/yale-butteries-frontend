@@ -10,8 +10,8 @@ services:
     ports:
       - '3000:3000' # Open port 3000 to the outside world
     volumes:
-      - ./prisma/migrations/:/app/prisma/migrations:delegated # when the container makes a new prisma migration, your local code is updated to match
-      - ./src:/app/src:delegated # when the code is changed in your local environment, it automatically changes in the container so you don't need to rebuild it
+      - ./prisma/:/app/prisma/ # when the container makes a new prisma migration, your local code is updated to match
+      - ./src:/app/src # when the code is changed in your local environment, it automatically changes in the container so you don't need to rebuild it
     command: bash -c "yarn start"
 
   db: # This container holds the database, which the backend interacts with
