@@ -27,29 +27,31 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
-  const onSubmit = async () => {
-    if (name.length <= 2 || name.length >= 16) {
-      setDisplayError(true)
-    } else {
-      let token = ''
-      token += Random.getRandomBytes(8).toString()
+  const onLogin = async () => {
+    navigation.navigate('CASLoginScreen')
 
-      const newUser = {
-        email: 'betatester@gmail.edu',
-        netid: 'temp',
-        name: name,
-        college: 'morse',
-        token: token,
-        permissions: 'customer',
-      }
-      setLoadingUser(true)
-      setUserSet(true)
-      const success = await dispatch(asyncCreateUser(newUser, name, token))
-      if (!success) {
-        setConnection(false)
-      }
-      setLoadingUser(false)
-    }
+    // if (name.length <= 2 || name.length >= 16) {
+    //   setDisplayError(true)
+    // } else {
+    //   let token = ''
+    //   token += Random.getRandomBytes(8).toString()
+
+    //   const newUser = {
+    //     email: 'betatester@gmail.edu',
+    //     netid: 'temp',
+    //     name: name,
+    //     college: 'morse',
+    //     token: token,
+    //     permissions: 'customer',
+    //   }
+    //   setLoadingUser(true)
+    //   setUserSet(true)
+    //   const success = await dispatch(asyncCreateUser(newUser, name, token))
+    //   if (!success) {
+    //     setConnection(false)
+    //   }
+    //   setLoadingUser(false)
+    // }
   }
 
   useEffect(() => {
@@ -75,26 +77,9 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
               </Text>
             </View>
             {loadingUser && <ActivityIndicator size="large" />}
-            <TextInput
-              style={styles.input}
-              placeholder="Name"
-              clearTextOnFocus={true}
-              placeholderTextColor="black"
-              onSubmitEditing={async () => {
-                await onSubmit()
-              }}
-              onChangeText={(name) => setName(name)}
-              onFocus={() => setDisplayError(false)}
-              autoCorrect={false}
-              editable={!loadingUser}
-            />
-            {displayError && <Text style={styles.error}>Please enter a name between 3 and 15 characters</Text>}
-            <Pressable onPress={onSubmit} style={styles.button} disabled={userSet}>
-              <Text style={{ color: 'lightgray', fontWeight: '500' }}>Login</Text>
+            <Pressable onPress={onLogin} style={styles.button} disabled={userSet}>
+              <Text style={styles.casText}>Login with CAS</Text>
             </Pressable>
-            <Text onPress={handleStaffPress} style={styles.staffLogin} disabled={userSet}>
-              Staff Login
-            </Text>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -175,10 +160,16 @@ const styles = StyleSheet.create({
     fontFamily: 'HindSiliguri',
   },
   button: {
-    backgroundColor: '#407899',
-    padding: 10,
+    backgroundColor: '#00356b',
+    padding: 7,
+    paddingHorizontal: 20,
     borderRadius: 10,
-    marginTop: 20,
+  },
+  casText: {
+    fontSize: 18,
+    color: 'white',
+    fontFamily: 'HindSiliguri-Bold',
+    letterSpacing: 0.7,
   },
   error: {
     color: '#bb3333',

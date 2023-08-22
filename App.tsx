@@ -30,9 +30,9 @@ const InnerApp: FC = () => {
       Roboto: require('./assets/fonts/Roboto-Black.ttf'),
       'Roboto-Light': require('./assets/fonts/HindSiliguri-Light.ttf'),
       'Roboto-Italic': require('./assets/fonts/Roboto-LightItalic.ttf'),
+      HindSiliguri: require('./assets/fonts/HindSiliguri-Regular.ttf'),
       'HindSiliguri-Bold': require('./assets/fonts/HindSiliguri-SemiBold.ttf'),
       'HindSiliguri-Bolder': require('./assets/fonts/HindSiliguri-Bold.ttf'),
-      HindSiliguri: require('./assets/fonts/HindSiliguri-Regular.ttf'),
     })
   }
 

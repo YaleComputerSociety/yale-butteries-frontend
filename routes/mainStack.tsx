@@ -10,6 +10,7 @@ import StaffLoginScreen from '../screens/staff/StaffLoginScreen'
 import OrderStatusScreen from '../screens/customer/OrderStatusScreen'
 import StaffRenderScreen from '../screens/staff/StaffRenderScreen'
 import DummyScreen from '../screens/DummyScreen'
+import CASLoginScreen from '../screens/CASLoginScreen'
 import React from 'react'
 
 const screens = {
@@ -79,6 +80,15 @@ const screens = {
       headerShown: false,
       gestureEnabled: false,
       title: 'Staff',
+      headerLeft: () => <></>,
+    },
+  },
+  CASLoginScreen: {
+    screen: CASLoginScreen,
+    navigationOptions: {
+      headerShown: false,
+      gestureEnabled: false,
+      title: 'Login',
       headerLeft: () => <></>,
     },
   },
