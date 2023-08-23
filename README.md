@@ -21,7 +21,7 @@ This is where all the api endpoints are defined and run, and also where the data
 - Run `docker exec -it yalebutteries bash` while the containers are running to enter into the backend container, or `docker compose run backend bash` to create a container and enter it
 - To run the containers with a specific command, type `docker compose run backend bash -c "{name-of-command}"`. Example: `docker compose run backend bash -c "yarn initialize"`
   - `yarn start` runs the backend. This is basically identical to `docker compose up backend`
-  - `yarn migrate` runs database migrations, for when `prisma/schema.prisma` is altered
+  - `yarn migrate` runs database migrations, for when `prisma/schema.prisma` is altered. You'll need to rebuild the image with `docker compose build` before you can run the container again
   - `yarn seed` seeds the database with the values in `prisma/seed.ts`
   - `yarn initialize` combines migrate and seed
 - If you change the dependencies, you must rebuild the image with `docker compose build` before you run the container again
