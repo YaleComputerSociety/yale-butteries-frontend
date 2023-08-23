@@ -2,7 +2,8 @@ version: '3.8'
 services:
   backend: # This container runs the backend, which contains all the endpoints and enables the API
     build: . # build the image for the backend container according to ./Dockerfile
-    container_name: yalebutteries
+    image: yalebutteries # set the image name
+    container_name: yalebutteries # set the container name
     depends_on:
       - db # make sure the database is running before this runs
     env_file:

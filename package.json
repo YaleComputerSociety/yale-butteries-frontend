@@ -21,6 +21,7 @@
     "@types/node": "^15.12.2",
     "@types/passport": "^1.0.12",
     "@types/sequelize": "^4.28.9",
+    "axios": "^1.4.0",
     "cors": "^2.8.5",
     "expo-server-sdk": "^3.7.0",
     "express": "^4.17.1",

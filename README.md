@@ -24,6 +24,7 @@ This is where all the api endpoints are defined and run, and also where the data
   - `yarn migrate` runs database migrations, for when `prisma/schema.prisma` is altered
   - `yarn seed` seeds the database with the values in `prisma/seed.ts`
   - `yarn initialize` combines migrate and seed
+- If you change the dependencies, you must rebuild the image with `docker compose build` before you run the container again
 
 ## Database (NEEDS TO BE REWRITTEN)
 
