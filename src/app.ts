@@ -8,8 +8,12 @@ import userRouter from './routes/UserApi'
 import transactionRouter from './routes/TransactionHistoryApi'
 import paymentRouter from './routes/PaymentApi'
 import notifsRouter from './routes/PushNotificationsApi'
-
 import passport from './controllers/Auth'
+
+const port = process.env.PORT || 3000
+export const environment = process.env.NODE_ENV || 'development'
+export const url =
+  environment === 'production' ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com` : `http://localhost:${port}`
 
 const app: express.Express = express()
   .use('/stripe', express.raw({ type: '*/*' }))
@@ -24,8 +28,6 @@ const app: express.Express = express()
   )
   .use(cors()) // security vulnerability, change this before alpha!
 
-const port = process.env.PORT || 3000
-
 // API Routes
 app.use('/api/colleges', collegeRouter)
 app.use('/api/menu_items', menuItemRouter)
@@ -37,5 +39,5 @@ app.use('/api/notifs', notifsRouter)
 passport(app)
 
 app.listen(port, () => {
-  console.log(`Deployed at localhost:${port}`)
+  console.log(`Deployed at ${url}`)
 })

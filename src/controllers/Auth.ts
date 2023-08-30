@@ -6,11 +6,16 @@ type User = {
   netId: string
 }
 
+const port = process.env.PORT || 3000
+export const environment = process.env.NODE_ENV || 'development'
+export const url =
+  environment === 'production' ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com` : `http://localhost:${port}`
+
 passport.use(
   new Strategy(
     {
       ssoBaseURL: 'https://secure.its.yale.edu/cas',
-      serverBaseURL: 'https://yale-butteries.herokuapp.com/', // TODO: figure out a way to automatically switch between https://yale-butteries.herokuapp.com/ and localhost:3000 depending on if deployed to production
+      serverBaseURL: url,
     },
     function (login, done) {
       return done(null, {
