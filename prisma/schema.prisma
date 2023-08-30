@@ -28,7 +28,11 @@ model College {
   id Int @id @default(autoincrement())
   college String @unique
   image_url String?
-  buttery_activated Boolean
+  buttery_activated Boolean?
+  daysOpen String[]
+  isOpen Boolean?
+  openTime String?
+  closeTime String?
   users User[]
   transaction_histories TransactionHistory[]
   menu_items MenuItem[]
