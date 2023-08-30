@@ -3,7 +3,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, ActivityIndicator, Text, Pressable, RefreshControl, SectionList } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems, MenuItem } from '../../store/slices/MenuItems'
-import { addOrderItem, OrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
+import { addOrderItem, OrderItem, removeOrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
 import { MenuItemCard } from '../../components/customer/MenuItemCard'
 import { home } from '../../styles/ButteriesStyles'
 import { menu } from '../../styles/MenuStyles'
@@ -78,6 +78,15 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
     setPriceTotal(priceTotal + newItem.price)
   }
 
+  const removeOrder = (newItem: MenuItem) => {
+    const item = orderItems.find((item) => item.orderItem.item == newItem.item)
+    //problem is they all have the same id
+    if (item === undefined) {
+      throw new TypeError("Couldn't find orderItem to delete")
+    }
+    dispatch(removeOrderItem(item))
+  }
+
   const sectionListRef = useRef(null)
 
   const sections = [
@@ -116,7 +125,9 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
             sections={sections}
             keyExtractor={(item, index) => item.item + index}
             renderItem={(item) => {
-              return <MenuItemCard incUpdate={addOrder} menuItem={item.item} items={orderItems} />
+              return (
+                <MenuItemCard incUpdate={addOrder} decUpdate={removeOrder} menuItem={item.item} items={orderItems} />
+              )
             }}
             refreshControl={<RefreshControl tintColor="#fff" refreshing={refreshing} onRefresh={onRefresh} />}
             renderSectionHeader={({ section: { title } }) => (

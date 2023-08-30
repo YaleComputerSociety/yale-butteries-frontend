@@ -73,7 +73,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
                 Yale<Text style={{ color: '#344a61' }}>Butteries</Text>
               </Text>
             </View>
-            {loadingUser && <ActivityIndicator color="#fff" size="large" />}
+            {loadingUser && <ActivityIndicator color="rgba(255,255,255,0.7)" size="large" />}
             <TextInput
               style={styles.input}
               placeholder="Name"

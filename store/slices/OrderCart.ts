@@ -34,11 +34,9 @@ export const orderCartSlice = createSlice({
       state.orderItems = [...state.orderItems, action.payload]
       state.price += action.payload.orderItem.price
     },
-    removeOrderItem: (state, action: PayloadAction<OrderItem>) => {      
+    removeOrderItem: (state, action: PayloadAction<OrderItem>) => {
       const deleteIndex = state.orderItems.findIndex((item) => item.index === action.payload.index)
-      
       state.orderItems = [...state.orderItems.slice(0, deleteIndex), ...state.orderItems.slice(deleteIndex + 1)]
-      
       state.price -= action.payload.orderItem.price
     },
     setIsLoading: (state, action: PayloadAction<boolean | APIError>) => {

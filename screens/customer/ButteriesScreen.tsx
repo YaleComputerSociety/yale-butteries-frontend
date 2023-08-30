@@ -46,98 +46,60 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   const butteries: CollegeInfo[] = [
     {
       ne: 'Morse',
-      daysOpen: [true, true, true, false, false, false, true],
       active: true,
     },
-    // {
-    //   ne: 'Berkeley',
-    //   daysOpen: [true, true, true, false, false, false, true],
-    //   active: true,
-    // },
-    // {
-    //   ne: 'Branford',
-    //   start: '10:00',
-    //   end: '2:30',
-    //   daysOpen: [true, true, false, false, false, true, false],
-    //   active: true,
-    // },
-    // {
-    //   ne: 'Davenport',
-    //   start: '5:00',
-    //   end: '4:00',
-    //   daysOpen: [false, false, false, false, false, false, false],
-    //   active: false,
-    // },
-    // {
-    //   ne: 'Franklin',
-    //   start: '22:00',
-    //   end: '1:00',
-    //   daysOpen: [false, false, false, false, false, false, false],
-    //   active: false,
-    // },
-    // {
-    //   ne: 'Hopper',
-    //   start: '22:00',
-    //   end: '0:30',
-    //   daysOpen: [false, false, false, false, false, false, false],
-    //   active: false,
-    // },
-    // {
-    //   ne: 'JE',
-    //   start: '21:30',
-    //   end: '0:30',
-    //   daysOpen: [false, false, false, false, false, false, false],
-    //   active: false,
-    // },
-    // {
-    //   ne: 'Murray',
-    //   start: '22:00',
-    //   end: '1:00',
-    //   daysOpen: [false, false, false, false, false, false, false],
-    //   active: false,
-    // },
-    // {
-    //   ne: 'Pierson',
-    //   start: '22:30',
-    //   end: '0:30',
-    //   daysOpen: [false, false, false, false, false, false, false],
-    //   active: false,
-    // },
-    // {
-    //   ne: 'Saybrook',
-    //   start: '21:00',
-    //   end: '0:00',
-    //   daysOpen: [false, false, false, false, false, false, false],
-    //   active: false,
-    // },
-    // {
-    //   ne: 'Silliman',
-    //   start: '22:00',
-    //   end: '1:00',
-    //   daysOpen: [false, false, false, false, false, false, false],
-    //   active: false,
-    // },
-    // {
-    //   ne: 'Stiles',
-    //   start: '22:00',
-    //   end: '0:50',
-    //   daysOpen: [false, false, false, false, false, false, false],
-    //   active: false,
-    // },
-    // {
-    //   ne: 'TD',
-    //   start: '22:00',
-    //   end: '1:00',
-    //   daysOpen: [false, false, false, false, false, false, false],
-    //   active: false,
-    // },
-    // {
-    //   ne: 'Trumbull',
-    //   start: '22:00',
-    //   end: '23:30',
-    //   daysOpen: [false, false, false, false, false, false, false],
-    //   active: false,
-    // },
+    {
+      ne: 'Berkeley',
+      active: false,
+    },
+    {
+      ne: 'Branford',
+      active: false,
+    },
+    {
+      ne: 'Davenport',
+      active: false,
+    },
+    {
+      ne: 'Franklin',
+      active: false,
+    },
+    {
+      ne: 'Hopper',
+      active: false,
+    },
+    {
+      ne: 'JE',
+      active: false,
+    },
+    {
+      ne: 'Murray',
+      active: false,
+    },
+    {
+      ne: 'Pierson',
+      active: false,
+    },
+    {
+      ne: 'Saybrook',
+      active: false,
+    },
+    {
+      ne: 'Silliman',
+      active: false,
+    },
+    {
+      ne: 'Stiles',
+      active: false,
+    },
+    {
+      ne: 'TD',
+      active: false,
+    },
+    {
+      ne: 'Trumbull',
+      active: false,
+    },
   ]
 
   const toMenu = (college: string) => {
@@ -148,7 +110,6 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   interface CollegeInfo {
     ne: string
     active: boolean
-    daysOpen: boolean[]
   }
 
   const getCollegeVisual = (collegeInfo: CollegeInfo, index: number) => {

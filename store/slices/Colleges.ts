@@ -19,7 +19,7 @@ export interface CollegesState {
 
 const collegesInitialState: CollegesState = {
   isLoading: false,
-  colleges: null
+  colleges: null,
 }
 
 export const collegesSlice = createSlice({
@@ -43,7 +43,6 @@ export const collegesSlice = createSlice({
 })
 
 export const { setCollegesState, setIsLoading, updateCollege } = collegesSlice.actions
-
 
 export const asyncFetchColleges = () => {
   return async (dispatch: AppDispatch): Promise<boolean> => {

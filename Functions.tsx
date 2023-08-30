@@ -110,7 +110,6 @@ export function getDaysOpen(colleges: College[], name: string): boolean[] {
 
 export function getHours(colleges: College[], name: string): string[] {
   const college = colleges.filter((college) => college.name == name)[0]
-
   if (college.openTime && college.closeTime) {
     return [militaryToAnalog(college.openTime), militaryToAnalog(college.closeTime)]
   }
@@ -124,9 +123,6 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
   var minute = today.getMinutes()
 
   const college = colleges.filter((college) => college.name == name)[0]
-
-  console.log(college)
-
   const openTimeHour = parseInt(college.openTime)
   const openTimeMinute = parseInt(college.openTime.split(':')[1])
 

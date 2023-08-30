@@ -96,11 +96,15 @@ export const item = StyleSheet.create({
 
   button: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    textAlign: 'center',
-    borderRadius: 8,
+    justifyContent: 'center',
     alignItems: 'center',
-    width: 140,
+    borderRadius: 8,
+    width: 30,
+    height: 30,
+  },
+
+  addrem: {
+    marginLeft: 1,
   },
 
   buttonText: {
