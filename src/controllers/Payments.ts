@@ -7,9 +7,14 @@ export interface TypedRequestBody<T> extends Request {
   body: T
 }
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY_DEV, {
-  apiVersion: '2020-08-27',
-})
+const environment = process.env.NODE_ENV || 'development'
+
+export const stripe = new Stripe(
+  environment === 'development' ? process.env.STRIPE_SECRET_KEY_DEV : process.env.STRIPE_SECRET_KEY_PROD,
+  {
+    apiVersion: '2020-08-27',
+  }
+)
 
 const prisma = new PrismaClient()
 
