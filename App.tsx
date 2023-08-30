@@ -98,6 +98,7 @@ const InnerApp: FC = () => {
 }
 
 // seperate outer component for redux store to work on the inner component
+
 const App: FC = () => {
   return (
     <Provider store={store}>

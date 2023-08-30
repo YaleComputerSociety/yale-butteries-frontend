@@ -8,9 +8,9 @@
     "icon": "./assets/images/logo.png",
     "splash": {
       "image": "./assets/images/splashScreen.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#2D90DD"
+      "resizeMode": "cover"
     },
+    "backgroundColor": "#2D90DD",
     "updates": {
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/de54dbe6-3119-4e4d-9b6d-dee822526dec"
@@ -39,7 +39,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "de54dbe6-3119-4e4d-9b6d-dee822526dec"
+        "projectId": "44c42506-7da1-4872-89f2-dba808a1789d"
       }
     }
   }
