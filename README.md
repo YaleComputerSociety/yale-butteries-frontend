@@ -26,6 +26,32 @@ This is where all the api endpoints are defined and run, and also where the data
   - `yarn initialize` combines migrate and seed
 - If you change the dependencies, you must rebuild the image with `docker compose build` before you run the container again
 
+## Heroku Deployment
+
+_Currently the backend is hosted on Heroku, under my account (addison.goolsbee@yale.edu) becuase we were having some difficulties with the ycs account, so for now, I (Addison) will need to sort out deployment_
+
+The production code runs on a heroku instance, not Docker. Similar to Docker, there are two components: the code portion of the backend, and the Postgres database.
+
+#### Setting up Heroku
+
+- Install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+- Login to the yale butteries account with `heroku login`. TBD how we will share these...
+- The Heroku git URL is `https://git.heroku.com/yale-butteries.git`. Add this to your git remote with `git remote add heroku https://git.heroku.com/yale-butteries.git`
+
+#### Configuration
+
+- Under the settings menu, in the config vars section, there are two variables that matter: `STRIPE_SECRET_KEY` and `POSTGRES_URL_FULL`. This is the Heroku equivalent of our `env.local`
+- In order for the stripe payments to be working, you'll need to input `STRIPE_SECRET_KEY` as a config variable. It should be in `env.local`, or you can regenerate it in the Stripe dashboard
+- In order to connect to the database, you'll need to get the Heroku-generated URL
+  - Go to Resources -> Heroku Postgres -> Settings -> Database Credentials (view) and copy the URI value into the value for `POSTGRES_URL_FULL`
+
+#### Updating the Production Backend
+
+- You'll need to have finished **Setting up Heroku** for this part
+- Type `git push heroku` from the branch you want to upload (hopefully master!)
+- Heroku should try to redeploy automatically from here, you can see the logs with the command `heroku logs -t -n 1000`
+- You can also see the status through the Heroku dashboard
+
 ## Database (NEEDS TO BE REWRITTEN)
 
 To login to the database, be inside the Docker container and run `$DATABASE`, which is an evnironment variable defined in the .`env.local` file. If you don't have a `.env.local`, contact the team lead. This is sensitive information, so we need to keep it secure and off of GitHub.
