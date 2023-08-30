@@ -10,7 +10,7 @@ passport.use(
   new Strategy(
     {
       ssoBaseURL: 'https://secure.its.yale.edu/cas',
-      serverBaseURL: 'http://localhost:3000', // CHANGE THIS
+      serverBaseURL: 'https://yale-butteries.herokuapp.com/', // TODO: figure out a way to automatically switch between https://yale-butteries.herokuapp.com/ and localhost:3000 depending on if deployed to production
     },
     function (login, done) {
       return done(null, {
