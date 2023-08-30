@@ -11,6 +11,9 @@ const main = async () => {
     create: {
       college: 'berkeley',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
+      daysOpen: ['Monday'],
     },
   })
   await prisma.college.upsert({
@@ -21,6 +24,9 @@ const main = async () => {
     create: {
       college: 'branford',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
+      daysOpen: ['Tuesday'],
     },
   })
   await prisma.college.upsert({
@@ -31,6 +37,9 @@ const main = async () => {
     create: {
       college: 'davenport',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
+      daysOpen: ['Wednesday'],
     },
   })
   await prisma.college.upsert({
@@ -41,6 +50,9 @@ const main = async () => {
     create: {
       college: 'franklin',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
+      daysOpen: ['Thursday'],
     },
   })
   await prisma.college.upsert({
@@ -51,6 +63,9 @@ const main = async () => {
     create: {
       college: 'hopper',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
+      daysOpen: ['Friday'],
     },
   })
   await prisma.college.upsert({
@@ -61,6 +76,9 @@ const main = async () => {
     create: {
       college: 'je',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
+      daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
     },
   })
   await prisma.college.upsert({
@@ -71,6 +89,8 @@ const main = async () => {
     create: {
       college: 'morse',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
       daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
     },
   })
@@ -82,6 +102,9 @@ const main = async () => {
     create: {
       college: 'murray',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
+      daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
     },
   })
   await prisma.college.upsert({
@@ -92,6 +115,9 @@ const main = async () => {
     create: {
       college: 'pierson',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
+      daysOpen: ['Monday', 'Wednesday'],
     },
   })
   await prisma.college.upsert({
@@ -102,6 +128,9 @@ const main = async () => {
     create: {
       college: 'saybrook',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
+      daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
     },
   })
   await prisma.college.upsert({
@@ -112,6 +141,9 @@ const main = async () => {
     create: {
       college: 'silliman',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
+      daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
     },
   })
   await prisma.college.upsert({
@@ -122,6 +154,9 @@ const main = async () => {
     create: {
       college: 'stiles',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
+      daysOpen: ['Saturday', 'Tuesday', 'Thursday'],
     },
   })
   await prisma.college.upsert({
@@ -132,6 +167,9 @@ const main = async () => {
     create: {
       college: 'td',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
+      daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
     },
   })
   await prisma.college.upsert({
@@ -142,6 +180,9 @@ const main = async () => {
     create: {
       college: 'trumbull',
       buttery_activated: true,
+      closeTime: '23:00',
+      openTime: '21:00',
+      daysOpen: ['Wednesday'],
     },
   })
 
