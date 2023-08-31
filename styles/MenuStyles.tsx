@@ -74,7 +74,7 @@ export const item = StyleSheet.create({
 
   itemName: {
     fontFamily: 'HindSiliguri-Bold',
-    fontSize: 16,
+    fontSize: 17,
     color: 'rgba(255,255,255, 0.87)',
     //backgroundColor: 'green',
   },
@@ -99,19 +99,19 @@ export const item = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
-    width: 30,
-    height: 30,
+    width: 32,
+    height: 32,
   },
 
   addrem: {
-    marginLeft: 1,
+    marginLeft: 1.5,
   },
 
   buttonText: {
     fontFamily: 'HindSiliguri-Bold',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 17,
+    fontSize: 18,
     textAlignVertical: 'center',
   },
 
@@ -121,7 +121,7 @@ export const item = StyleSheet.create({
     fontFamily: 'HindSiliguri-Bold',
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 17,
+    fontSize: 18,
     textAlignVertical: 'center',
     color: 'rgba(255,255,255, 0.87)',
   },

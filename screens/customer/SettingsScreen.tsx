@@ -1,6 +1,6 @@
 //import * as React from 'react'
 import React, { FC, useState } from 'react'
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
@@ -13,8 +13,6 @@ import EvilModal from '../../components/EvilModal'
 const Settings: FC<{ navigation: any }> = () => {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector((state) => state.currentUser)
-
-  console.log(currentUser)
 
   const [newName, setNewName] = useState(currentUser.name)
   const [connection, setConnection] = useState(true)
@@ -43,6 +41,7 @@ const Settings: FC<{ navigation: any }> = () => {
       } else {
         setSuccessView(true)
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+        Alert.alert('Successfully Saved!')
         setTimeout(() => {
           setSuccessView(false)
         }, 3000)
@@ -73,7 +72,7 @@ const Settings: FC<{ navigation: any }> = () => {
             <Text style={styles.button_text}> Save </Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.text}>Payment Information</Text>
+        {/* <Text style={styles.text}>Payment Information</Text> */}
       </ScrollView>
       {successView == true && (
         <Animatable.View animation="bounceInUp" iterationCount={2} direction="alternate" style={styles.success}>
@@ -93,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#54a1e4',
     borderRadius: 8,
     alignItems: 'center',
-    width: '25%',
+    width: '30%',
   },
   button_text: {
     fontSize: 18,
@@ -132,6 +131,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1f1f1f',
     flexDirection: 'row',
     borderBottomColor: 'black',
+    alignItems: 'center',
   },
   titleContainer: {
     marginHorizontal: 18,
@@ -143,10 +143,10 @@ const styles = StyleSheet.create({
   },
   error: {
     color: '#bb3333',
-    fontFamily: 'HindSiliguri',
-    fontSize: 11,
-    marginLeft: 120,
+    fontFamily: 'HindSiliguri-Bold',
+    fontSize: 13,
     marginBottom: 10,
+    textAlign: 'center',
   },
   success: {
     margin: 20,

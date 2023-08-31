@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { WebView } from 'react-native-webview'
-import * as Random from 'expo-random'
+import * as Random from 'expo-crypto'
 import { useAppDispatch, useAppSelector } from '../store/ReduxStore'
 import { asyncCreateUser } from '../store/slices/Users'
 import { ActivityIndicator, View, Text, StyleSheet } from 'react-native'

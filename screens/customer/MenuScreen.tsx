@@ -174,9 +174,11 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
               }}
             >
-              <Text style={[styles.cartText, { marginRight: 30 }]}>Go to Cart</Text>
+              <Text style={[styles.cartText, { marginRight: 25 }]}>Go to Cart</Text>
               <Ionicon name="cart" size={25} color="#fff" />
-              <Text style={styles.cartText}>{orderItems.length}</Text>
+              <View style={{ width: 20 }}>
+                <Text style={styles.cartText}>{orderItems.length}</Text>
+              </View>
             </Pressable>
           </View>
         </View>
@@ -220,6 +222,7 @@ const styles = StyleSheet.create({
   cartText: {
     color: 'white',
     fontSize: 18,
+    marginLeft: 5,
     fontFamily: 'HindSiliguri-Bold',
     textAlignVertical: 'center',
   },

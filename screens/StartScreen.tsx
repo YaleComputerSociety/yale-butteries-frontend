@@ -19,7 +19,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
             <View>
               <Image source={require('../assets/images/logo_transparent.png')} style={styles.logo} />
               <Text style={styles.logoText}>
-                Yale<Text style={{ color: '#344a61' }}>Butteries</Text>
+                Yale<Text style={{ color: '#00356b' }}>Butteries</Text>
               </Text>
             </View>
             <Pressable onPress={onLogin} style={styles.button}>
@@ -49,9 +49,9 @@ const styles = StyleSheet.create({
     height: '60%',
   },
   button: {
-    backgroundColor: '#00356b',
+    backgroundColor: '#0e7df0',
     padding: 7,
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     borderRadius: 10,
   },
   casText: {
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     letterSpacing: 0.7,
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 125,
+    height: 125,
     alignSelf: 'center',
   },
 })
