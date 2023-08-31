@@ -11,12 +11,13 @@ export const staffLogin = StyleSheet.create({
   },
   input: {
     margin: 5,
-    width: '50%',
+    width: '60%',
     borderRadius: 5,
     paddingTop: 5,
     paddingLeft: 8,
     paddingBottom: 5,
     borderWidth: 1,
+    height: 40,
   },
   button: {
     backgroundColor: '#344a61',

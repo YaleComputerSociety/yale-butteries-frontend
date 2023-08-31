@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { View, ScrollView, Text, StyleSheet, Pressable } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, Pressable, Alert } from 'react-native'
 import StatusItem from '../../components/customer/StatusCard'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
@@ -127,20 +127,23 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
           animated={true}
           progress={percentage}
           width={null}
-          height={20}
+          height={15}
           borderRadius={8}
           borderWidth={0}
-          unfilledColor={'#333'}
+          unfilledColor={'#1f1f1f'}
         />
         <Pressable
-          disabled={percentage == 1 ? false : true}
           style={({ pressed }) => [
             { backgroundColor: pressed ? '#32ba32' : '#32CD32', opacity: percentage == 1 ? 1 : 0.6 },
             styles.button,
           ]}
           onPress={() => {
-            back()
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+            if (percentage == 1) {
+              back()
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+            } else {
+              Alert.alert('Please wait while we complete your order before returning home!')
+            }
           }}
         >
           <Text style={styles.buttonText}>Return Home</Text>
@@ -154,31 +157,32 @@ export default OrderStatusScreen
 
 const styles = StyleSheet.create({
   outerView: {
-    backgroundColor: '#333',
+    backgroundColor: '#1f1f1f',
     width: '90%',
     height: '60%',
     borderRadius: 8,
     marginBottom: 25,
-    padding: 10,
+    alignContent: 'center',
+    padding: 5,
   },
   text1: {
-    fontSize: 20,
-    color: 'white',
+    fontSize: 18,
+    color: 'rgba(255,255,255,0.87)',
     fontFamily: 'HindSiliguri',
     alignSelf: 'center',
     justifyContent: 'center',
   },
   view2: {
-    backgroundColor: '#333',
+    backgroundColor: '#1f1f1f',
     width: '90%',
-    height: '6%',
+    height: 60,
     borderRadius: 8,
     marginBottom: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
   view3: {
-    backgroundColor: '#222',
+    backgroundColor: '#121212',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -197,7 +201,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 20,
     fontFamily: 'HindSiliguri-Bold',
-    color: '#fff',
+    color: 'rgba(255,255,255,0.87)',
   },
   connectionError: {
     color: '#d44',

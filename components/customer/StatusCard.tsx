@@ -13,8 +13,7 @@ const StatusItem: FC<Props> = ({ name, status }: Props) => {
       case 'PENDING':
         return (
           <View style={styles.pendingView}>
-            <Ionicon name="timer-outline" size={23} color="white" />
-            <Text style={styles.statusText}>Pending </Text>
+            <Text style={styles.statusText}>Pending...</Text>
           </View>
         )
       case 'CANCELLED':
@@ -27,8 +26,8 @@ const StatusItem: FC<Props> = ({ name, status }: Props) => {
       case 'IN_PROGRESS':
         return (
           <View style={styles.progressView}>
-            <ActivityIndicator color={'orange'} size="small" />
-            <Text style={styles.statusText}>Cooking...</Text>
+            <ActivityIndicator color={'white'} size="small" />
+            <Text style={styles.statusText}>Cooking</Text>
           </View>
         )
       case 'FINISHED':
@@ -45,8 +44,8 @@ const StatusItem: FC<Props> = ({ name, status }: Props) => {
     <View style={styles.view1}>
       <View style={styles.view2}>
         <Text style={styles.text}>{name}</Text>
-        {getIconVisual()}
       </View>
+      {getIconVisual()}
     </View>
   )
 }
@@ -55,30 +54,28 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: 'HindSiliguri-Bold',
     fontSize: 16,
-    color: 'white',
-    width: '65%',
+    color: 'rgba(255,255,255,0.87)',
   },
   view2: {
     flex: 2,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 10,
-    paddingRight: 18,
-    justifyContent: 'space-between',
+    marginr: 10,
   },
   view1: {
     flex: 4,
+    padding: 10,
+    paddingLeft: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    borderBottomColor: '#ccc',
+    borderBottomColor: '#555',
     borderBottomWidth: 1,
+    justifyContent: 'center',
   },
   statusText: {
     fontFamily: 'HindSiliguri-Bold',
     fontSize: 16,
-    color: 'white',
-    marginLeft: 10,
+    color: 'rgba(255,255,255,0.87)',
+    marginHorizontal: 10,
   },
   successView: {
     flexDirection: 'row',
@@ -89,14 +86,17 @@ const styles = StyleSheet.create({
     opacity: 1,
     paddingHorizontal: 8,
     paddingVertical: 4,
+    width: 150,
   },
   progressView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    backgroundColor: '#fda172',
     alignItems: 'center',
     borderRadius: 6,
     opacity: 1,
     paddingHorizontal: 8,
+    width: 150,
     paddingVertical: 4,
   },
   cancelledView: {
@@ -108,15 +108,18 @@ const styles = StyleSheet.create({
     opacity: 1,
     paddingHorizontal: 8,
     paddingVertical: 4,
+    width: 150,
   },
   pendingView: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    backgroundColor: '#2c2c2c',
     alignItems: 'center',
     borderRadius: 6,
-    opacity: 1,
     paddingHorizontal: 8,
     paddingVertical: 4,
+    opacity: 1,
+    width: 150,
   },
 })
 

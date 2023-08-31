@@ -6,7 +6,7 @@ import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import * as LocalStorage from './../../LocalStorage'
-import * as Animatable from 'react-native-animatable';
+import * as Animatable from 'react-native-animatable'
 import * as Haptics from 'expo-haptics'
 import EvilModal from '../../components/EvilModal'
 
@@ -14,11 +14,13 @@ const Settings: FC<{ navigation: any }> = () => {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
+  console.log(currentUser)
+
   const [newName, setNewName] = useState(currentUser.name)
   const [connection, setConnection] = useState(true)
   const [invalidName, setInvalidName] = useState(false)
 
-  const[successView, setSuccessView] = useState(false)
+  const [successView, setSuccessView] = useState(false)
 
   const changeName = async (name: string) => {
     const id = await LocalStorage.getUserInfo('id')
@@ -41,26 +43,25 @@ const Settings: FC<{ navigation: any }> = () => {
       } else {
         setSuccessView(true)
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
-        setTimeout(
-          () => {setSuccessView(false)},
-          3000
-        )
+        setTimeout(() => {
+          setSuccessView(false)
+        }, 3000)
       }
     }
   }
 
   return (
-    <View style={{ width: '100%', height: '100%', backgroundColor: '#eee', display: 'flex' }}>
+    <View style={{ width: '100%', height: '100%', backgroundColor: '#121212', display: 'flex' }}>
       <EvilModal toggle={setConnection} display={!connection} />
       <ScrollView>
         <Text style={styles.text}>Account Information</Text>
         <View style={styles.titleContainer}>
           <View style={styles.sectionContainer}>
-            <Ionicon name="create-outline" size={20} color="black" />
+            <Ionicon name="create-outline" size={20} color="rgba(255,255,255,0.81)" />
             <Text style={styles.text2}>Display Name:</Text>
             <TextInput
               value={newName}
-              placeholderTextColor="#000"
+              placeholderTextColor="rgba(255,255,255, 0.78)"
               placeholder={newName}
               style={styles.input_text}
               onChangeText={setNewName}
@@ -72,13 +73,14 @@ const Settings: FC<{ navigation: any }> = () => {
             <Text style={styles.button_text}> Save </Text>
           </TouchableOpacity>
         </View>
+        <Text style={styles.text}>Payment Information</Text>
       </ScrollView>
-      {successView == true &&
-        <Animatable.View animation="bounceInUp" iterationCount={2} direction='alternate' style={styles.success}>
+      {successView == true && (
+        <Animatable.View animation="bounceInUp" iterationCount={2} direction="alternate" style={styles.success}>
           <Text style={styles.successText}>Successfully Saved!</Text>
           <Ionicon name="checkmark-circle" size={20} color="white" />
         </Animatable.View>
-      }
+      )}
     </View>
   )
 }
@@ -94,31 +96,32 @@ const styles = StyleSheet.create({
     width: '25%',
   },
   button_text: {
-    fontSize: 15,
+    fontSize: 18,
     color: '#FAF9F6',
     padding: 5,
     fontFamily: 'HindSiliguri-Bold',
   },
   input_text: {
-    fontSize: 15,
+    fontSize: 18,
     fontFamily: 'HindSiliguri',
     borderBottomColor: '#ddd',
     flex: 1,
+    color: 'rgba(255,255,255,0.81)',
     borderBottomWidth: 1,
   },
   text: {
-    fontSize: 18,
+    fontSize: 20,
     marginLeft: 18,
     marginVertical: 10,
-    color: 'black',
+    color: 'rgba(255,255,255,0.81)',
     justifyContent: 'center',
     fontFamily: 'HindSiliguri-Bold',
     textAlignVertical: 'center',
   },
   text2: {
-    fontSize: 15,
+    fontSize: 18,
     marginHorizontal: 8,
-    color: 'black',
+    color: 'rgba(255,255,255,0.81)',
     justifyContent: 'center',
     fontFamily: 'HindSiliguri-Bold',
     textAlignVertical: 'center',
@@ -126,13 +129,13 @@ const styles = StyleSheet.create({
   sectionContainer: {
     margin: 10,
     borderRadius: 8,
-    backgroundColor: '#FAF9F6',
+    backgroundColor: '#1f1f1f',
     flexDirection: 'row',
     borderBottomColor: 'black',
   },
   titleContainer: {
     marginHorizontal: 18,
-    backgroundColor: '#FAF9F6',
+    backgroundColor: '#1f1f1f',
     borderRadius: 8,
     shadowColor: '#000',
     shadowOpacity: 0.05,
@@ -162,7 +165,7 @@ const styles = StyleSheet.create({
     fontFamily: 'HindSiliguri-Bold',
     color: '#fff',
     margin: 8,
-  }
+  },
 })
 
 export default Settings

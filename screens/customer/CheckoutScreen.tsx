@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert } from 'react-native'
+import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert, Platform } from 'react-native'
 import { checkout } from '../../styles/CheckoutStyles'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { loading } from '../../styles/GlobalStyles'
@@ -13,6 +13,7 @@ import { baseUrl } from '../../utils/utils'
 import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
 import { stripePK } from '../../utils/utils'
+import { FlatList } from 'react-native-gesture-handler'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const {
@@ -33,6 +34,18 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     setDisabled(b)
   }
 
+  const customAppearance = {
+    colors: {
+      background: '#1f1f1f',
+      componentBackground: '#383838',
+      componentBorder: '#383838',
+      primaryText: '#ffffff',
+      secondaryText: '#ffffff',
+      componentText: '#ffffff',
+      placeholderText: '#73757b',
+    },
+  }
+
   const stripe = useStripe()
 
   const showPaymentSheet = async (): Promise<any> => {
@@ -48,7 +61,11 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       },
     })
     if (response.status === 400) {
-      Alert.alert('Sorry, an item that you ordered ran out of stock! please refresh the menu page')
+      if (orderItems.length == 0) {
+        Alert.alert('There are no items in your cart! Add items to complete your order')
+      } else {
+        Alert.alert('Sorry, an item that you ordered ran out of stock! please refresh the menu page')
+      }
       return null
     }
     const data = await response.json()
@@ -57,6 +74,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     const initSheet = await stripe.initPaymentSheet({
       paymentIntentClientSecret: clientSecret,
       merchantDisplayName: 'Yale Butteries',
+      appearance: customAppearance,
     })
     if (initSheet.error) return Alert.alert(initSheet.error.message)
     const presentSheet = await stripe.presentPaymentSheet()
@@ -142,7 +160,8 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   }
 
   const removeOrder = (newItem: OrderItem) => {
-    const item = orderItems.find((item) => item.orderItem.id == newItem.orderItem.id)
+    const item = orderItems.find((item) => item.index == newItem.index)
+    //problem is they all have the same id
     if (item === undefined) {
       throw new TypeError("Couldn't find orderItem to delete")
     }
@@ -162,16 +181,13 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               <View style={checkout.header}>
                 <Text style={checkout.totalText}>Order Summary:</Text>
               </View>
-              <ScrollView style={checkout.orderList} showsVerticalScrollIndicator={false}>
-                {orderItems.map((checkoutItem, index) => (
-                  <CheckoutItem
-                    decUpdate={removeOrder}
-                    checkoutItem={checkoutItem}
-                    isDisabled={isDisabled}
-                    key={index}
-                  />
-                ))}
-              </ScrollView>
+              <FlatList
+                data={orderItems}
+                renderItem={(item) => {
+                  return <CheckoutItem decUpdate={removeOrder} checkoutItem={item.item} isDisabled={isDisabled} />
+                }}
+                keyExtractor={(item) => item.index.toString()}
+              />
               <View style={checkout.footer}>
                 <Text style={checkout.totalText}>Total: {priceToText(price)}</Text>
               </View>
@@ -180,7 +196,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               <Pressable
                 disabled={isDisabled}
                 style={({ pressed }) => [
-                  { backgroundColor: pressed ? '#222' : '#333', opacity: orderItems.length < 1 ? 0.7 : 1 },
+                  { backgroundColor: pressed ? '#383838' : '#1f1f1f', opacity: orderItems.length < 1 ? 0.7 : 1 },
                   checkout.checkoutButton,
                 ]}
                 onPress={() => {

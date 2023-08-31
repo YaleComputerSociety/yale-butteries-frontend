@@ -6,6 +6,8 @@ import menuItemsReducer from './slices/MenuItems'
 import transactionHistoryReducer from './slices/TransactionHistory'
 import transactionItemsReducer from './slices/TransactionItems'
 import orderCartReducer from './slices/OrderCart'
+import collegesReducer from './slices/Colleges'
+
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 export interface APIError {
@@ -22,6 +24,7 @@ const store = configureStore({
     transactionHistory: transactionHistoryReducer,
     transactionItems: transactionItemsReducer,
     orderCart: orderCartReducer,
+    colleges: collegesReducer,
   },
 })
 

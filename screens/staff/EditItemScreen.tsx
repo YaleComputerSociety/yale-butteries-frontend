@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native'
 import { useAppDispatch } from '../../store/ReduxStore'
-import { asyncUpdateMenuItem } from '../../store/slices/MenuItems'
+import { MenuItem, asyncUpdateMenuItem } from '../../store/slices/MenuItems'
 import EditButton from '../../components/staff/EditButton'
 
 import { FUNCTIONS } from '../../constants/Functions'
@@ -9,6 +9,8 @@ import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
 import EvilModal from '../../components/EvilModal'
 import { useNavigation } from '@react-navigation/native'
+
+import SelectDropdown from 'react-native-select-dropdown'
 
 const EditItemScreen: React.FC = (props: any) => {
   props = props.route.params.data
@@ -21,8 +23,15 @@ const EditItemScreen: React.FC = (props: any) => {
   const [price, setPrice] = useState(props.price)
   const [doEditPrice, setDoEditPrice] = useState(false)
   const [validName, setValidName] = useState(true)
+
   const [validPrice, setValidPrice] = useState(true)
   const [connection, setConnection] = useState(true)
+
+  const [description, setDescription] = useState(props.description)
+  const [doEditDescription, setDoEditDescription] = useState(false)
+
+  const [selected, setSelected] = useState<MenuItem['foodType']>(props.foodType);
+  const data = ['FOOD', 'DRINK', 'DESSERT']
 
   const handleEditItem = async (text) => {
     setItem(text)
@@ -33,6 +42,11 @@ const EditItemScreen: React.FC = (props: any) => {
     const parsed_text = Number(text.replace(/[^0-9]/g, ''))
     setPrice(parsed_text)
     setDoEditPrice(false)
+  }
+
+  const handleEditDescription = (text) => {
+    setDescription(text)
+    setDoEditDescription(false)
   }
 
   const getEditItemVisual = () => {
@@ -101,6 +115,39 @@ const EditItemScreen: React.FC = (props: any) => {
     }
   }
 
+  const getEditDescriptionVisual = () => {
+    if (doEditDescription) {
+      return (
+        <TextInput
+          multiline={false}
+          style={styles.inputTitleSingle}
+          autoCorrect={false}
+          autoFocus={true}
+          onBlur={() => setDoEditDescription(false)}
+          onSubmitEditing={(event) => {
+            handleEditDescription(event.nativeEvent.text)
+          }}
+        />
+      )
+    } else {
+      return (
+        <View style={styles.inputContainer}>
+          <View style={styles.inputString}>
+            <Text style={styles.titleText}>{description}</Text>
+          </View>
+          <EditButton
+            size={LAYOUTS.getWidth(18)}
+            top={LAYOUTS.getWidth(-3.5)}
+            right={LAYOUTS.getWidth(8)}
+            action={() => {
+              setDoEditDescription(true)
+            }}
+          />
+        </View>
+      )
+    }
+  }
+
   const saveChanges = () => {
     let exitEarly = false
     if (item.length <= 2 || item.length >= 26) {
@@ -117,9 +164,11 @@ const EditItemScreen: React.FC = (props: any) => {
       setValidPrice(true)
     }
 
+    setDescription(true)
+
     if (exitEarly) return
 
-    dispatch(asyncUpdateMenuItem({ ...props, item: item, price: price })).then((success: boolean) => {
+    dispatch(asyncUpdateMenuItem({ ...props, item: item, price: price, description: description, foodType: selected })).then((success: boolean) => {
       setConnection(success)
       if (success) {
         navigation.goBack()
@@ -138,13 +187,33 @@ const EditItemScreen: React.FC = (props: any) => {
           {getEditItemVisual()}
         </View>
         {!validName && <Text style={styles.error}>Name must be between 3 and 25 characters</Text>}
-
         <View style={styles.tag}>
           <Text style={styles.labelText}>Price:</Text>
           {getEditPriceVisual()}
         </View>
         {!validPrice && <Text style={styles.error}>Price must be at between $0.50 and $20.00</Text>}
-
+        <View style={styles.tag}>
+          <Text style={styles.labelText}>Description:</Text>
+          {getEditDescriptionVisual()}
+        </View>
+        <View style={[styles.tag]}>
+          <Text style={styles.labelText}>Item Type:</Text>
+          <View style={{ marginLeft: 'auto' , borderRadius: 8 }}>
+            <SelectDropdown
+              data={data}
+              defaultValue={selected}
+              onSelect={(selectedItem, index) => {
+                setSelected(selectedItem)
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                return selectedItem
+              }}
+              selectedRowStyle={{ backgroundColor: '#bbb' }}
+              buttonTextStyle={styles.text}
+              buttonStyle={{ borderRadius: 8, backgroundColor: 'orange'}}
+            />
+          </View>
+        </View>
         <View style={styles.buttonHolder}>
           <TouchableOpacity style={{ ...styles.saveButton, marginBottom: LAYOUTS.getWidth(30) }} onPress={saveChanges}>
             <Text style={{ ...styles.buttonText }}>Save</Text>
@@ -158,6 +227,11 @@ const EditItemScreen: React.FC = (props: any) => {
 export default EditItemScreen
 
 const styles = StyleSheet.create({
+  text: {
+    color: 'white', 
+    fontFamily: 'HindSiliguri-Bold', 
+    fontSize: 18, 
+  },
   error: {
     color: '#bb3333',
     fontFamily: 'HindSiliguri',
@@ -172,10 +246,11 @@ const styles = StyleSheet.create({
     marginTop: LAYOUTS.getWidth(5),
   },
   buttonText: {
-    fontSize: TEXTS.adjust(15),
-    fontWeight: '400',
-    color: 'blue',
+    fontSize: TEXTS.adjust(16),
+    fontWeight: '300',
+    fontFamily:  'HindSiliguri-Bolder',
     textAlign: 'center',
+    color: 'white',
   },
   buttonHolder: {
     alignItems: 'center',
@@ -317,12 +392,12 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     fontSize: 20,
-    width: LAYOUTS.getWidth(150),
+    width: LAYOUTS.getWidth(160),
     borderRadius: 10,
     justifyContent: 'center',
     marginBottom: LAYOUTS.getWidth(10),
-    marginTop: LAYOUTS.getWidth(5),
-    backgroundColor: 'orange',
+    marginTop: LAYOUTS.getWidth(10),
+    backgroundColor: 'green',
     padding: 15,
   },
 })

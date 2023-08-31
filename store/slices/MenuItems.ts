@@ -10,7 +10,7 @@ export interface MenuItem {
   description?: string
   limitedTime?: boolean
   isActive: boolean
-  foodType: 'food' | 'drink' | 'dessert'
+  foodType: 'FOOD' | 'DRINK' | 'DESSERT'
 }
 
 export interface MenuItemsState {
@@ -68,9 +68,9 @@ export const asyncFetchMenuItems = () => {
           college: item.college,
           price: parseInt(item.price),
           isActive: item.isActive,
-          description: 'This is a test description',
+          description: item.description,
           limitedTime: false,
-          foodType: 'food',
+          foodType: item.foodType,
         }
         newData.push(newItem)
       })
@@ -87,17 +87,20 @@ export const asyncFetchMenuItems = () => {
 
 export const asyncUpdateMenuItem = (menuItem: MenuItem) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
-    dispatch(setIsLoading(true))
+    console.log(menuItem.isActive)
     try {
-      await fetch(baseUrl + 'api/menu_items', {
+      const updateItem = await fetch(baseUrl + 'api/menu_items', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(menuItem),
       })
-
-      dispatch(updateMenuItem(menuItem))
+      const data = await updateItem.json().then(() => {
+          console.log(data)
+          dispatch(updateMenuItem(menuItem))
+        }
+      )
       return true
     } catch (e) {
       console.log(e)
@@ -120,6 +123,7 @@ export const asyncAddMenuItem = (menuItem: MenuItem) => {
         body: JSON.stringify(menuItem),
       })
       const data = await menuItems.json()
+      console.log(data)
       dispatch(addMenuItem(menuItem))
       return true
     } catch (e) {
