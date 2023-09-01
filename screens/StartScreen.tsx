@@ -22,7 +22,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
                 Yale<Text style={{ color: '#00356b' }}>Butteries</Text>
               </Text>
             </View>
-            <Pressable onPress={onLogin} style={styles.button}>
+            <Pressable onPress={onLogin} style={({ pressed }) => [styles.button, { opacity: pressed ? 0.85 : 1 }]}>
               <Text style={styles.casText}>Login with CAS</Text>
             </Pressable>
           </View>
@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#0e7df0',
     padding: 7,
-    paddingHorizontal: 30,
+    paddingHorizontal: 35,
     borderRadius: 10,
   },
   casText: {
-    fontSize: 18,
+    fontSize: 17,
     color: 'white',
     fontFamily: 'HindSiliguri-Bold',
     letterSpacing: 0.7,

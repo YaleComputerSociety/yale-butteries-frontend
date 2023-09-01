@@ -134,8 +134,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       Alert.alert('Payment complete, thank you!')
       updateDisabled(false)
 
-      //send push notification
-      const push = await Notifications.getExpoPushTokenAsync()
       // console.log(push)
       const token = (await Notifications.getExpoPushTokenAsync()).data
       const subscribeNotification = await fetch(baseUrl + 'api/notifs', {

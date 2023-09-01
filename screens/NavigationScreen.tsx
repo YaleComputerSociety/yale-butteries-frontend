@@ -5,20 +5,10 @@ import { LinearGradient } from 'expo-linear-gradient'
 
 const NavigationScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
-    <LinearGradient colors={['#7C98B3', '#637081']} locations={[0, 1]}>
+    <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
       <View style={styles.view1}>
         <View style={home.outerContainer}>
           <View style={styles.view2}>
-            <Pressable
-              onPress={() => {
-                navigation.navigate('ButteriesScreen')
-              }}
-              style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
-            >
-              <View style={styles.view3}>
-                <Text style={styles.text}>Customer</Text>
-              </View>
-            </Pressable>
             <Pressable
               onPress={() => {
                 navigation.navigate('StaffRenderScreen')
@@ -27,6 +17,16 @@ const NavigationScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             >
               <View style={styles.view4}>
                 <Text style={styles.text}>Staff</Text>
+              </View>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('ButteriesScreen')
+              }}
+              style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
+            >
+              <View style={styles.view3}>
+                <Text style={styles.text}>Customer</Text>
               </View>
             </Pressable>
           </View>
@@ -46,7 +46,7 @@ export default NavigationScreen
 
 const styles = StyleSheet.create({
   view1: { height: '100%', width: '100%', backgroundColor: 'transparent' },
-  text: { color: '#fff', fontFamily: 'HindSiliguri-Bolder' },
+  text: { color: '#fff', fontFamily: 'HindSiliguri-Bold', fontSize: 17, letterSpacing: 0.7 },
   view2: {
     alignSelf: 'center',
     alignContent: 'center',
@@ -59,11 +59,11 @@ const styles = StyleSheet.create({
   },
   view3: {
     backgroundColor: '#1084ff',
-    paddingHorizontal: 24,
+    paddingHorizontal: 40,
     paddingVertical: 8,
     borderRadius: 10,
     margin: 5,
-    width: 160,
+    width: 200,
     alignItems: 'center',
   },
   view4: {
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 10,
     margin: 10,
-    width: 160,
+    width: 200,
     alignItems: 'center',
   },
 })
