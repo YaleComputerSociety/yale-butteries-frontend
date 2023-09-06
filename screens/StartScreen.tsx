@@ -25,6 +25,9 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
             <Pressable onPress={onLogin} style={({ pressed }) => [styles.button, { opacity: pressed ? 0.85 : 1 }]}>
               <Text style={styles.casText}>Login with CAS</Text>
             </Pressable>
+            <Pressable>
+              <Text style={{ textDecorationLine: 'underline', color: '#344a61' }}> About </Text>
+            </Pressable>
           </View>
         </View>
       </TouchableWithoutFeedback>

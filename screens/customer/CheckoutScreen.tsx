@@ -50,7 +50,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const showPaymentSheet = async (): Promise<any> => {
     console.log(price)
-    // console.log(currentUser)
     // return { id: 'temp' } // uncomment this line out to skip the credit card entry screen
 
     const obj = { userId: currentUser.id, price: price, items: orderItems, college: collegeOrderCart }
@@ -204,9 +203,9 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 }}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>
-                <Text style={checkout.paymentInformation}>
+                {/* <Text style={checkout.paymentInformation}>
                   Because we are in beta, we will not save your card information
-                </Text>
+                </Text> */}
               </Pressable>
             </View>
           </View>

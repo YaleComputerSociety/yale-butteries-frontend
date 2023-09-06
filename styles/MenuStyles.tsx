@@ -83,12 +83,15 @@ export const item = StyleSheet.create({
     fontFamily: 'HindSiliguri',
     color: 'rgba(255,255,255, 0.68)',
     fontSize: 12,
+    textAlignVertical: 'top',
+    marginBottom: 5,
+
     flex: 2,
     marginRight: 10,
   },
 
   itemPrice: {
-    fontSize: 15,
+    fontSize: 13,
     fontFamily: 'Roboto-Italic',
     color: 'rgba(255,255,255, 0.87)',
     //backgroundColor: 'blue'

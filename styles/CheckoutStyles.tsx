@@ -36,7 +36,7 @@ export const checkout = StyleSheet.create({
 
   text: {
     fontFamily: 'HindSiliguri',
-    fontSize: 18,
+    fontSize: 16,
     color: 'rgba(255,255,255,0.68)',
   },
 

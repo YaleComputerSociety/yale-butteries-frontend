@@ -39,7 +39,7 @@ const CheckoutItem: any = ({ decUpdate, checkoutItem, isDisabled }: Props) => {
             onPress={removeItem}
             style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }, checkout.icon]}
           >
-            <Ionicon name="trash" size={20} color="rgba(255,255,255,0.69)" />
+            <Ionicon name="trash" size={18} color="rgba(255,255,255,0.69)" />
           </Pressable>
           <View style={checkout.NAME}>
             <Text style={checkout.itemNameText}>{checkoutItem.orderItem.item}</Text>

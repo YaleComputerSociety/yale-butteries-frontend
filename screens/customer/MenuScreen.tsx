@@ -193,8 +193,8 @@ const styles = StyleSheet.create({
   headerStyle: {
     marginTop: 10,
     alignSelf: 'center',
-    height: 45,
-    padding: 8,
+    height: 40,
+    padding: 6,
     width: '95%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -203,9 +203,9 @@ const styles = StyleSheet.create({
   },
   cartButton: {
     width: '60%',
-    height: 60,
+    height: 55,
     bottom: 0,
-    borderRadius: 25,
+    borderRadius: 15,
     shadowColor: '#000',
     shadowOpacity: 0.4,
     shadowRadius: 20,
