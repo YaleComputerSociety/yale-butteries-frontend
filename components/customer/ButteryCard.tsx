@@ -74,16 +74,26 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
     >
       <View style={card.cardContent}>
         <View style={home.textContent}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <Text style={card.cardText1}>{props.college}</Text>
-            <Text
+            <View
               style={[
-                { opacity: props.active && isOpen ? 0 : 1, backgroundColor: props.active ? '#ee3930' : '#ff9600' },
+                {
+                  opacity: props.active && isOpen ? 0 : 1,
+                  backgroundColor: props.active ? '#ee3930' : '#ff9600',
+                },
                 card.banner,
               ]}
             >
-              {activeText}
-            </Text>
+              <Text
+                style={{
+                  fontFamily: 'HindSiliguri-Bold',
+                  color: 'rgba(255,255,255,0.87)',
+                }}
+              >
+                {activeText}
+              </Text>
+            </View>
           </View>
           <Text style={card.cardText2}>{openTime + ' - ' + closeTime}</Text>
           {getAllWeekDays()}

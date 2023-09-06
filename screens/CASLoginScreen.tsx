@@ -85,7 +85,7 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         <WebView
           source={{ uri: 'http://localhost:3000/cas' }}
           injectedJavaScript={getHtmlContent}
-          style={{ marginTop: 50, flex: 1 }}
+          style={{ flex: 1, marginTop: 60, marginBottom: 20 }}
           onMessage={handleLogin}
         />
       )}

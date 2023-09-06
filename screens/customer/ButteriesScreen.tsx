@@ -169,7 +169,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
             style={{ width: '100%', height: '100%' }}
           >
             <View style={{ height: '100%', alignItems: 'center' }}>
-              <ActivityIndicator color="#555" style={{ height: '100%' }} size="large" />
+              <ActivityIndicator color="rgba(255,255,255,0.72)" style={{ height: '100%' }} size="large" />
             </View>
           </ScrollView>
         </LinearGradient>
@@ -179,7 +179,9 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
           showsVerticalScrollIndicator={false}
           alwaysBounceVertical={false}
           bounces={true}
-          refreshControl={<RefreshControl colors={['#fff', '#fff']} refreshing={refreshing} onRefresh={onRefresh} />}
+          refreshControl={
+            <RefreshControl tintColor="rgba(255,255,255,0.72)" refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
           <LinearGradient colors={['#121212', '#121212']} locations={[0, 1]}>
             <View style={home.outerContainer}>

@@ -27,9 +27,8 @@ export const home = StyleSheet.create({
   },
 
   textContent: {
-    justifyContent: 'flex-end',
-    marginBottom: 15,
     marginLeft: 10,
+    margin: 5,
   },
 
   menuView: {
@@ -65,11 +64,8 @@ export const home = StyleSheet.create({
 export const card = StyleSheet.create({
   cardText1: {
     fontFamily: 'HindSiliguri-Bold',
-    fontWeight: 'bold',
     color: 'rgba(255,255,255, 0.87)',
     fontSize: 20,
-    marginTop: 9,
-    marginBottom: 5,
     alignContent: 'center',
     justifyContent: 'flex-start',
   },
@@ -128,10 +124,9 @@ export const card = StyleSheet.create({
   banner: {
     alignSelf: 'center',
     justifyContent: 'center',
-    textAlignVertical: 'center',
-    color: 'rgba(255,255,255,0.87)',
-    paddingHorizontal: 8,
-    marginLeft: 10,
-    fontFamily: 'HindSiliguri-Bold',
+    paddingHorizontal: 10,
+    paddingVertical: 1,
+    marginLeft: 8,
+    borderRadius: 6,
   },
 })

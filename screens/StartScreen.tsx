@@ -11,7 +11,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
   }
 
   return (
-    <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
+    <LinearGradient colors={['#4E65FF', '#0bcaca']} locations={[0, 1]}>
       <EvilModal toggle={setConnection} display={!connection} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
@@ -49,10 +49,17 @@ const styles = StyleSheet.create({
     height: '60%',
   },
   button: {
+    flexDirection: 'row',
     backgroundColor: '#0e7df0',
     padding: 7,
     paddingHorizontal: 35,
-    borderRadius: 10,
+    width: 200,
+    justifyContent: 'center',
+    borderRadius: 8,
+    marginBottom: 10,
+    shadowColor: '#111',
+    shadowRadius: 10,
+    shadowOpacity: 0.1,
   },
   casText: {
     fontSize: 17,

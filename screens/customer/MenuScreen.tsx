@@ -129,7 +129,9 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
                 <MenuItemCard incUpdate={addOrder} decUpdate={removeOrder} menuItem={item.item} items={orderItems} />
               )
             }}
-            refreshControl={<RefreshControl tintColor="#fff" refreshing={refreshing} onRefresh={onRefresh} />}
+            refreshControl={
+              <RefreshControl tintColor="rgba(255,255,255,0.72)" refreshing={refreshing} onRefresh={onRefresh} />
+            }
             renderSectionHeader={({ section: { title } }) => (
               <View style={[styles.headerStyle, { backgroundColor: '#2c2c2c' }]}>
                 <Text

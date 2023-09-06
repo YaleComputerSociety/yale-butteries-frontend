@@ -49,6 +49,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const stripe = useStripe()
 
   const showPaymentSheet = async (): Promise<any> => {
+    console.log(price)
     // console.log(currentUser)
     // return { id: 'temp' } // uncomment this line out to skip the credit card entry screen
 

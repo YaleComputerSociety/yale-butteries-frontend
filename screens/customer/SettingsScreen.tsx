@@ -6,7 +6,7 @@ import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import * as LocalStorage from './../../LocalStorage'
-import * as Animatable from 'react-native-animatable'
+// import * as Animatable from 'react-native-animatable'
 import * as Haptics from 'expo-haptics'
 import EvilModal from '../../components/EvilModal'
 
@@ -74,12 +74,12 @@ const Settings: FC<{ navigation: any }> = () => {
         </View>
         {/* <Text style={styles.text}>Payment Information</Text> */}
       </ScrollView>
-      {successView == true && (
+      {/* {successView == true && (
         <Animatable.View animation="bounceInUp" iterationCount={2} direction="alternate" style={styles.success}>
           <Text style={styles.successText}>Successfully Saved!</Text>
           <Ionicon name="checkmark-circle" size={20} color="white" />
         </Animatable.View>
-      )}
+      )} */}
     </View>
   )
 }
