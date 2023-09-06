@@ -192,7 +192,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
               {getAllCards()}
             </View>
           </LinearGradient>
-          <View style={{ height: '20%', width: '100%', backgroundColor: '#121212' }}></View>
+          <View style={{ height: 25, opacity: 1 }}></View>
         </ScrollView>
       )}
     </View>

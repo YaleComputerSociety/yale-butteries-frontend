@@ -59,7 +59,7 @@ export const MenuItemCard: FC<Props> = ({ menuItem, items, incUpdate, decUpdate 
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Pressable
           onPress={removeItem}
-          disabled={count >= 5 ? true : false}
+          disabled={count < 1 ? true : false}
           style={({ pressed }) => [
             { zIndex: 2, opacity: count < 1 ? 0.5 : 1, backgroundColor: pressed ? '#383838' : '#2c2c2c' },
             item.button,

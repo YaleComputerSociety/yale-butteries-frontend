@@ -91,6 +91,7 @@ export const card = StyleSheet.create({
 
   cardContent: {
     flex: 1,
+    paddingRight: 0,
     padding: 5,
     color: '#fff',
     flexDirection: 'row',

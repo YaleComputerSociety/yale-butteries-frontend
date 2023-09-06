@@ -61,7 +61,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   return (
     <Pressable
       onPress={props.onPress}
-      disabled={!isOpen || !props.active}
+      disabled={isOpen || !props.active}
       style={({ pressed }) => [
         {
           opacity: props.active && isOpen ? 1 : 0.5,
