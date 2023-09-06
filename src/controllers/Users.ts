@@ -66,6 +66,7 @@ export async function getUser(req: Request, res: Response): Promise<void> {
 }
 
 export async function createUser(req: Request, res: Response): Promise<void> {
+  console.log('hello')
   try {
     const existingUser = await prisma.user.findFirst({
       where: {
@@ -122,6 +123,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
       id: newUser.id,
     }
 
+    console.log(frontUser)
     res.send(JSON.stringify(frontUser))
   } catch (e) {
     console.log(e)

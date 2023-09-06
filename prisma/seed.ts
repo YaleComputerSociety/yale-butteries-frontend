@@ -185,39 +185,6 @@ const main = async () => {
       daysOpen: ['Wednesday'],
     },
   })
-
-  await prisma.user.upsert({
-    where: {
-      id: 1,
-    },
-    update: {},
-    create: {
-      netid: 'awg32',
-      email: 'addison.goolsbee@yale.edu',
-      name: 'Addison',
-      permissions: 'staff',
-      token: 'abcd',
-      college: {
-        connect: { id: 1 },
-      },
-    },
-  })
-  await prisma.user.upsert({
-    where: {
-      id: 2,
-    },
-    update: {},
-    create: {
-      netid: 'app43',
-      email: 'aidan.palmer@yale.edu',
-      name: 'Aidan',
-      token: 'abdc',
-      permissions: 'customer',
-      college: {
-        connect: { id: 1 },
-      },
-    },
-  })
   await prisma.user.upsert({
     where: {
       id: 3,
