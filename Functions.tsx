@@ -121,6 +121,7 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
   var minute = today.getMinutes()
 
   const college = colleges.filter((college) => college.name == name)[0]
+  console.log(college)
   const openTimeHour = parseInt(college.openTime)
   const openTimeMinute = parseInt(college.openTime.split(':')[1])
 
