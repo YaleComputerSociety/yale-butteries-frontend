@@ -35,6 +35,7 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
       query: "metadata['userId']:'" + req.body.userId + "'",
     })
 
+    console.log(customerQuery)
     if (!customerQuery.data[0]?.id) {
       res.status(403).json({
         message:
