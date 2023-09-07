@@ -166,7 +166,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
               disabled={orderItems.length < 1 ? true : false}
               style={({ pressed }) => [
                 {
-                  opacity: orderItems.length < 1 ? 0.6 : 1 || pressed ? 1 : 0.5,
+                  opacity: orderItems.length < 1 || pressed ? 0.7 : 1,
                   backgroundColor: returnCollegeName(collegeOrderCart)[1],
                 },
                 styles.cartButton,

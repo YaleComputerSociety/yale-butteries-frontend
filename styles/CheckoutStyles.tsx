@@ -9,6 +9,7 @@ export const checkout = StyleSheet.create({
   upperContainer: {
     flex: 7,
     margin: 20,
+    marginBottom: 20,
     padding: 0,
     paddingHorizontal: 10,
     backgroundColor: '#1f1f1f',
@@ -86,20 +87,32 @@ export const checkout = StyleSheet.create({
     borderColor: '#383838',
   },
 
-  lowerContainer: {
-    backgroundColor: '#1f1f1f',
-    height: '12%',
+  foot: {
+    alignItems: 'center',
+    width: '100%',
+    borderTopWidth: 1,
+    borderColor: '#2c2c2c',
   },
 
   checkoutButton: {
-    flex: 1,
-    justifyContent: 'center',
+    width: '65%',
+    height: 55,
+    borderRadius: 15,
+    backgroundColor: '#2eb135',
+    shadowColor: '#000',
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
+    margin: 20,
+    marginBottom: 30,
     alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'row',
   },
 
   checkoutText: {
     fontFamily: 'HindSiliguri-Bold',
-    fontSize: 25,
+    fontSize: 20,
     color: 'rgba(255,255,255,0.87)',
   },
 

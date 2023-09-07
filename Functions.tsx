@@ -121,13 +121,14 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
   var minute = today.getMinutes()
 
   const college = colleges.filter((college) => college.name == name)[0]
-  console.log(college)
   const openTimeHour = parseInt(college.openTime)
   const openTimeMinute = parseInt(college.openTime.split(':')[1])
 
   const closeTimeHour = parseInt(college.closeTime.split(':')[0])
   const closeTimeMinute = parseInt(college.closeTime.split(':')[1])
-
+  // write some code that basically says up until 2am of the next day counts as the same day
+  // for example, if its 1am on a wednesday nd the buttery is open on a wednesday, but closed on thursday
+  // it should still remain open because it's (for all intents and purposes) still actually wednesday
   if (hour < openTimeHour || hour > closeTimeHour) {
     return false
   } else {
