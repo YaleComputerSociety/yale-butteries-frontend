@@ -89,9 +89,11 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       paymentIntentClientSecret: clientSecret,
       merchantDisplayName: 'Yale Butteries',
       appearance: customAppearance,
-      applePay: {
-        merchantCountryCode: 'US',
-      },
+      applePay: isApplePaySupported
+        ? {
+            merchantCountryCode: 'US',
+          }
+        : null,
     })
     if (initSheet.error) return Alert.alert(initSheet.error.message)
     const presentSheet = await stripe.presentPaymentSheet()
