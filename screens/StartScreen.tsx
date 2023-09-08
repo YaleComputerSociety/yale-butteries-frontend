@@ -25,7 +25,10 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
             <Pressable onPress={onLogin} style={({ pressed }) => [styles.button, { opacity: pressed ? 0.85 : 1 }]}>
               <Text style={styles.casText}>Login with CAS</Text>
             </Pressable>
-            <Pressable>
+            <Pressable
+              onPress={() => navigation.navigate('AboutScreen')}
+              style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+            >
               <Text style={{ textDecorationLine: 'underline', color: '#344a61' }}> About </Text>
             </Pressable>
           </View>
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
     width: 200,
     justifyContent: 'center',
     borderRadius: 8,
-    marginBottom: 10,
+    marginBottom: 15,
     shadowColor: '#111',
     shadowRadius: 10,
     shadowOpacity: 0.1,

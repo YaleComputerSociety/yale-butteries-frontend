@@ -11,6 +11,7 @@ import StaffRenderScreen from '../screens/staff/StaffRenderScreen'
 import DummyScreen from '../screens/DummyScreen'
 import CASLoginScreen from '../screens/CASLoginScreen'
 import React from 'react'
+import AboutScreen from '../screens/AboutScreen'
 
 const screens = {
   DummyScreen: {
@@ -81,6 +82,13 @@ const screens = {
       headerShown: false,
       gestureEnabled: false,
       title: 'Login',
+      headerLeft: () => <></>,
+    },
+  },
+  AboutScreen: {
+    screen: AboutScreen,
+    navigationOptions: {
+      title: 'About Us',
       headerLeft: () => <></>,
     },
   },
