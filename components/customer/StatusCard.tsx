@@ -27,14 +27,14 @@ const StatusItem: FC<Props> = ({ name, status }: Props) => {
         return (
           <View style={styles.progressView}>
             <ActivityIndicator color={'white'} size="small" />
-            <Text style={styles.statusText}>Cooking</Text>
+            <Text style={styles.statusText}>In Progress</Text>
           </View>
         )
       case 'FINISHED':
         return (
           <View style={styles.successView}>
             <Ionicon name="checkmark-circle" size={23} color="white" />
-            <Text style={styles.statusText}>Finished!{'  '}</Text>
+            <Text style={styles.statusText}>Finished!</Text>
           </View>
         )
     }
@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     flex: 2,
     flexDirection: 'row',
     alignItems: 'center',
-    marginr: 10,
   },
   view1: {
     flex: 4,
@@ -79,19 +78,18 @@ const styles = StyleSheet.create({
   },
   successView: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#1eb71e',
     borderRadius: 6,
     opacity: 1,
-    paddingHorizontal: 8,
     paddingVertical: 4,
     width: 150,
   },
   progressView: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: '#fda172',
+    justifyContent: 'center',
+    backgroundColor: '#fe8548',
     alignItems: 'center',
     borderRadius: 6,
     opacity: 1,
@@ -101,7 +99,7 @@ const styles = StyleSheet.create({
   },
   cancelledView: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ff3a3a',
     borderRadius: 6,

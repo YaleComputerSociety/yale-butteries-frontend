@@ -19,6 +19,9 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const { currentTransactionHistory } = useAppSelector((state) => state.transactionHistory)
   const { menuItems } = useAppSelector((state) => state.menuItems)
 
+  const { currentUser } = useAppSelector((state) => state.currentUser)
+  const [name] = useState(currentUser.name)
+
   // every 5 seconds, fetchTransaction
   useEffect(() => {
     fetchTransaction().catch(console.log)
@@ -76,7 +79,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
     if (progress == 'true') {
       return 'In Progress'
     } else if (progress == 'false') {
-      return 'Done'
+      return 'Complete!'
     } else {
       return 'Loading...'
     }
@@ -100,6 +103,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <View style={styles.view3}>
+      <View style={{ height: 30 }}></View>
       <View style={styles.view2}>
         <Text style={styles.text1}>
           Order Status:
@@ -111,6 +115,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
           </Text>
         )}
       </View>
+      <Text style={styles.name}>{name}</Text>
       <View style={styles.outerView}>
         <ScrollView>
           {currentTransactionHistory?.transactionItems.map((transactionItem, index) => (
@@ -165,6 +170,14 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     padding: 5,
   },
+  name: {
+    fontSize: 24,
+    color: 'rgba(255,255,255,0.87)',
+    fontFamily: 'HindSiliguri-Bold',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
   text1: {
     fontSize: 18,
     color: 'rgba(255,255,255,0.87)',
@@ -177,7 +190,7 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 60,
     borderRadius: 8,
-    marginBottom: 25,
+    marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -185,13 +198,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#121212',
     flex: 1,
     alignItems: 'center',
+
     justifyContent: 'center',
-    height: '100%',
-    width: '100%',
   },
   button: {
-    width: '100%',
+    width: '60%',
     backgroundColor: '#1eb71e',
+    alignSelf: 'center',
     marginTop: 25,
     height: 50,
     justifyContent: 'center',
