@@ -1,11 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert, Platform } from 'react-native'
 import { checkout } from '../../styles/CheckoutStyles'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { loading } from '../../styles/GlobalStyles'
 import CheckoutItem from '../../components/customer/CheckoutItem'
 import { priceToText, returnCollegeName } from '../../Functions'
-import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
+import {
+  StripeProvider,
+  useStripe,
+  PlatformPayButton,
+  isPlatformPaySupported,
+  PlatformPay,
+} from '@stripe/stripe-react-native'
 import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
 import { removeOrderItem, OrderItem } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
@@ -33,6 +39,14 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     })
     setDisabled(b)
   }
+
+  const [isApplePaySupported, setIsApplePaySupported] = useState(false)
+
+  useEffect(() => {
+    ;(async function () {
+      setIsApplePaySupported(await isPlatformPaySupported())
+    })()
+  }, [isPlatformPaySupported])
 
   const customAppearance = {
     colors: {
@@ -75,6 +89,11 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       paymentIntentClientSecret: clientSecret,
       merchantDisplayName: 'Yale Butteries',
       appearance: customAppearance,
+      applePay: isApplePaySupported
+        ? {
+            merchantCountryCode: 'US',
+          }
+        : null,
     })
     if (initSheet.error) return Alert.alert(initSheet.error.message)
     const presentSheet = await stripe.presentPaymentSheet()
@@ -173,7 +192,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           <ActivityIndicator size="large" />
         </View>
       ) : (
-        <StripeProvider publishableKey={stripePK}>
+        <StripeProvider publishableKey={stripePK} merchantIdentifier="merchant.com.yalebutteries">
           <View style={{ flex: 1 }}>
             <View style={checkout.upperContainer}>
               <View style={checkout.header}>
@@ -190,11 +209,14 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 <Text style={checkout.totalText}>Total: {priceToText(price)}</Text>
               </View>
             </View>
-            <View style={checkout.lowerContainer}>
+            <View style={checkout.foot}>
               <Pressable
                 disabled={isDisabled}
                 style={({ pressed }) => [
-                  { backgroundColor: pressed ? '#383838' : '#1f1f1f', opacity: orderItems.length < 1 ? 0.7 : 1 },
+                  {
+                    backgroundColor: pressed ? '#383838' : '#1f1f1f',
+                    opacity: orderItems.length < 1 || pressed ? 0.7 : 1,
+                  },
                   checkout.checkoutButton,
                 ]}
                 onPress={() => {
