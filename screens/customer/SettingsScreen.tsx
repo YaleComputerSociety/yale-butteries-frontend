@@ -57,7 +57,7 @@ const Settings: FC<{ navigation: any }> = ({ navigation }) => {
         <View style={styles.titleContainer}>
           <View style={styles.sectionContainer}>
             <Ionicon name="create-outline" size={20} color="rgba(255,255,255,0.81)" />
-            <Text style={styles.text2}>Display Name:</Text>
+            <Text style={styles.text2}>Order Display Name:</Text>
             <TextInput
               value={newName}
               placeholderTextColor="rgba(255,255,255, 0.78)"
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   text2: {
-    fontSize: 18,
+    fontSize: 16,
     marginHorizontal: 8,
     color: 'rgba(255,255,255,0.81)',
     justifyContent: 'center',
