@@ -18,7 +18,7 @@ export const MenuHeader: FC<Props> = ({ toDessert, toDrink, toFood, name }: Prop
   return (
     <View>
       <LinearGradient
-        colors={['rgba(18,18,18,0.3)', 'rgba(55, 48, 48, 0.5)', 'rgba(18,18,18,0.3)']}
+        colors={['rgba(18,18,18,0.3)', 'rgba(80, 80, 80, 0.3)', 'rgba(18,18,18,0.3)']}
         locations={[0, 0.5, 1]}
       >
         {getImage(name)}
