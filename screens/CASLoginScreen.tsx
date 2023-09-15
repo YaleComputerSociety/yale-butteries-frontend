@@ -6,6 +6,7 @@ import { asyncCreateUser } from '../store/slices/Users'
 import { ActivityIndicator, View, Text, StyleSheet } from 'react-native'
 import EvilModal from '../components/EvilModal'
 import { useIsFocused } from '@react-navigation/native'
+import { baseUrl } from '../utils/utils'
 
 const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
@@ -47,8 +48,9 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         token: token,
         permissions: 'customer',
       }
-
+      console.log('asdfasdf')
       const success = await dispatch(asyncCreateUser(newUser, token))
+      console.log('bont')
       if (!success) {
         setConnection(false)
       }
@@ -83,7 +85,7 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         </View>
       ) : (
         <WebView
-          source={{ uri: 'http://localhost:3000/cas' }}
+          source={{ uri: baseUrl + 'cas' }}
           injectedJavaScript={getHtmlContent}
           style={{ flex: 1, marginTop: 60, marginBottom: 20 }}
           onMessage={handleLogin}

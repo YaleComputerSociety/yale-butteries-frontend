@@ -28,3 +28,12 @@ After pressing the play button to open an Android simulation, on **Expo** press 
 
 
 With the frontend running, you'll be able to see the app and interact with it, but any backend functionality won't work, which means, for example, that you won't be able to make payments or retrieve data from the database. Look at the [backend repository](https://github.com/TuckerMoses/yale-college-hub) to sort out the rest
+
+## Building and Deploying the App
+
+#### iOS
+- First, make sure that you increment the version number in **app.json** by some amount, otherwise the apple submit will throw an error
+- Build the app binary using Expo. You'll want to first make a simulator build to run on your simulator: `eas build -p ios --profile preview`. It should take about 10 minutes
+- With the new build finished, run `eas build:run -p ios --latest`
+- If that worked, you can make a real build with `eas build --platform ios`
+- Now you'll want to submit the build to the app store. Run `eas submit --platform ios`
