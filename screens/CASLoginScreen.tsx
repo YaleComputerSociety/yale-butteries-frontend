@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
 import * as Random from 'expo-crypto'
 import { useAppDispatch, useAppSelector } from '../store/ReduxStore'
 import { asyncCreateUser } from '../store/slices/Users'
-import { ActivityIndicator, View, Text, StyleSheet } from 'react-native'
+import { ActivityIndicator, View, StyleSheet, AppState } from 'react-native'
 import EvilModal from '../components/EvilModal'
 import { useIsFocused } from '@react-navigation/native'
 import { baseUrl } from '../utils/utils'
@@ -12,12 +12,58 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
 
-  console.log('hihihihi')
-
   const { currentUser } = useAppSelector((state) => state.currentUser)
   const [connection, setConnection] = useState(true)
   const [loadingUser, setLoadingUser] = useState(false)
   const [initial, setInitial] = useState(true)
+  const [netid, setNetid] = useState('')
+
+  const appState = useRef(AppState.currentState)
+  const [appStateVisible, setAppStateVisible] = useState(appState.current)
+
+  // Find out if the user is currently in the app, for duo push glitches
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+        console.log('App has come to the foreground!')
+      }
+
+      appState.current = nextAppState
+      setAppStateVisible(appState.current)
+      console.log('AppState', appState.current)
+    })
+
+    return () => {
+      subscription.remove()
+    }
+  }, [])
+
+  // Only try to create the user once the user has successfully logged in AND they're inside the app. Otherwise, duo push will sometimes crash the app
+  useEffect(() => {
+    // console.log('here', loadingUser, appStateVisible)
+    if (loadingUser && appStateVisible==='active') {
+    
+      let token = ''
+      token += Random.getRandomBytes(8).toString()
+
+      const newUser = {
+        email: 'alphatester@gmail.com',
+        netid: netid,
+        name: netid,
+        college: 'morse',
+        token: token,
+        permissions: 'customer',
+      }
+
+      dispatch(asyncCreateUser(newUser, token)).then((success) => {
+        if (!success) {
+          setConnection(false)
+        }
+        setLoadingUser(false)
+      })
+    
+    }
+  }, [loadingUser, appStateVisible])
 
   // This prevents the injected javascript from running twice
   useEffect(() => {
@@ -37,28 +83,9 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   // Once the user logs in with CAS, use the netid to either create a new user, or reference the existing user
   const handleLogin = async (event) => {
     if (initial) {
-      setLoadingUser(true)
       const netID = event.nativeEvent.data
-      let token = ''
-      token += Random.getRandomBytes(8).toString()
-
-      const newUser = {
-        email: 'alphatester@gmail.com',
-        netid: netID,
-        name: netID,
-        college: 'morse',
-        token: token,
-        permissions: 'customer',
-      }
-
-      console.log('HELLO')
-
-      const success = await dispatch(asyncCreateUser(newUser, token))
-      console.log('SUCCCESSSS')
-      if (!success) {
-        setConnection(false)
-      }
-      setLoadingUser(false)
+      setNetid(netID)
+      setLoadingUser(true)
     }
     setInitial(false)
   }
