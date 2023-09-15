@@ -25,6 +25,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
 
   const d = new Date()
   let currentDay = d.getDay()
+  let currentHour = d.getHours()
 
   const activeText = props.active ? 'CLOSED' : 'INACTIVE'
   const days = ['S ', 'M ', 'T ', 'W ', 'T ', 'F ', 'S ']
@@ -32,7 +33,10 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   const getDayVisual = (value: boolean, index: number) => {
     return (
       <Text
-        style={[value ? card.dayActive : card.dayInactive, currentDay === index ? card.underlined : null]}
+        style={[
+          value ? card.dayActive : card.dayInactive,
+          currentDay === index && currentHour > 2 ? card.underlined : null,
+        ]}
         key={index}
       >
         {days[index]}{' '}
@@ -61,7 +65,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   return (
     <Pressable
       onPress={props.onPress}
-      disabled={isOpen || !props.active}
+      disabled={!isOpen || !props.active}
       style={({ pressed }) => [
         {
           opacity: props.active && isOpen ? 1 : 0.5,

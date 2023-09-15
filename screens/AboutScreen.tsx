@@ -9,7 +9,7 @@ const AboutScreen: FC<{ navigation: any }> = ({ navigation }) => {
           Late-night study grind? Returning from a rowdy weekend gathering? Simply ravenous?{'\n'}
         </Text>
         <Text style={[styles.text2, { fontFamily: 'Roboto', color: '#0e7df0' }]}>
-          Don't fret. We've got you covered. {'\n'}
+          Don't fret. We've got you covered. &#x1F924; {'\n'}
         </Text>
         <Text style={[styles.text2, { marginTop: 5 }]}>
           <Text style={[styles.text2, { marginTop: 5 }]}>YaleButteries offers a quick and easy way for Yale</Text>{' '}
@@ -17,33 +17,6 @@ const AboutScreen: FC<{ navigation: any }> = ({ navigation }) => {
           and drinks to you safely and securely, without having to wait in line.
         </Text>
       </View>
-      <View style={[styles.container2, { marginTop: 15 }]}>
-        <Text style={styles.text}>Meet the Team</Text>
-      </View>
-      <View style={styles.imageContainer}>
-        <View style={{ alignItems: 'center', width: 180, height: 280 }}>
-          <Image style={styles.image} source={require('../assets/images/aidan.jpeg')} />
-          <Text style={styles.name}>Aidan Palmer</Text>
-          <Text style={[styles.text2, { fontSize: 14 }]}>Co-Founder,{'\n'}Lead Developer</Text>
-        </View>
-        <View style={{ alignItems: 'center', width: 180, height: 280 }}>
-          <Image style={styles.image} source={require('../assets/images/addison.jpeg')} />
-          <Text style={styles.name}>Addison Goolsbee</Text>
-          <Text style={[styles.text2, { fontSize: 14 }]}>Co-Founder,{'\n'}Developer</Text>
-        </View>
-      </View>
-      {/* <View style={styles.imageContainer}>
-        <View style={{ alignItems: 'center', width: 180, height: 280 }}>
-          <Image style={styles.image} source={require('../assets/images/burton.jpeg')} />
-          <Text style={styles.name}>Burton Lyng-Olsen</Text>
-          <Text style={[styles.text2, { fontSize: 14 }]}>Developer, Outreach</Text>
-        </View>
-        <View style={{ alignItems: 'center', width: 180, height: 280 }}>
-          <Image style={styles.image} source={require('../assets/images/addison.jpeg')} />
-          <Text style={styles.name}>Deja Dunlap</Text>
-          <Text style={[styles.text2, { fontSize: 14 }]}>Developer</Text>
-        </View>
-      </View> */}
       <View style={[styles.container2]}>
         <Text style={styles.text}>FAQ</Text>
       </View>
@@ -61,8 +34,8 @@ const AboutScreen: FC<{ navigation: any }> = ({ navigation }) => {
         <Text style={styles.text3}>What if a buttery can’t complete my order?</Text>
         <Text style={styles.text2}>
           We understand that Butteries may sometimes not be able to fulfill your order completely {'('}e.g. one of the
-          items you ordered is out of stock{')'}. For this reason, we have implemented a unique refund system that
-          ensures{' '}
+          items you ordered is actually out of stock{')'}. For this reason, we have implemented a unique refund system
+          that ensures{' '}
           <Text style={{ textDecorationLine: 'underline', fontFamily: 'Roboto' }}>you only pay for what you get</Text>.{' '}
           {'\n\n'} If a Buttery cannot complete your entire order for any reason, the payment will be cancelled, and you
           will be issued a full refund. {'\n'}
@@ -73,15 +46,25 @@ const AboutScreen: FC<{ navigation: any }> = ({ navigation }) => {
           Yale Butteries is maintained by a small group of developers within the
           <Text style={{ color: '#0e7df0', fontFamily: 'Roboto' }}> Yale Computer Society</Text>.{'\n'}
         </Text>
-
         <Text style={styles.text3}>How can I get involved?</Text>
         <Text style={styles.text2}>
           We are always looking for more help! If you are interested in joining the team you can email{' '}
-          <Text style={{ fontFamily: 'Roboto', textDecorationLine: 'underline' }}>aidan.palmer@yale.edu</Text>
+          <Text style={{ fontFamily: 'Roboto', textDecorationLine: 'underline' }}>yalecomputersociety@gmail.com</Text>
           {'\n'}
+          <Text style={{ color: 'rgba(255,255,255,0.82)', fontFamily: 'Roboto' }}>
+            {'\n'}
+            Applications for this semester are currently closed.
+          </Text>
         </Text>
-        <View style={styles.footer}></View>
       </View>
+      <View style={[styles.container2, { marginTop: 15 }]}>
+        <Text style={[styles.text2, { fontSize: 12, width: '80%', fontFamily: 'Roboto-Italic' }]}>
+          This app was developed by Aidan Palmer and Addison Goolsbee with help from Burton Lyng-Olsen, Deja Dunlap, and
+          Tucker Moses.
+        </Text>
+      </View>
+
+      <View style={{ height: 40, width: '100%' }}></View>
     </ScrollView>
   )
 }
@@ -95,6 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
+    marginTop: 15,
     // borderBottomWidth: 1,
     // borderColor: '#999',
   },
@@ -108,7 +92,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'rgba(255,255,255,0.82)',
     fontSize: 14,
-    lineHeight: 16,
   },
   text3: {
     textAlign: 'center',
@@ -123,24 +106,29 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: 'rgba(255,255,255,0.82)',
     textAlign: 'center',
-    marginBottom: 3,
+    marginBottom: 10,
   },
-  about: { paddingHorizontal: 25 },
+  about: { paddingHorizontal: 25, marginTop: 15 },
   imageContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
+    marginBottom: 70,
   },
   image: {
-    height: 180,
-    width: 180,
+    height: 150,
+    width: 150,
     marginBottom: 10,
+    borderRadius: 10,
   },
   faq: {
     paddingHorizontal: 20,
   },
-  footer: {
-    height: 50,
+  size: {
+    alignItems: 'center',
+    width: 165,
+    height: 100,
+    marginBottom: 20,
   },
 })
 

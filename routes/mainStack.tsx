@@ -89,7 +89,6 @@ const screens = {
     screen: AboutScreen,
     navigationOptions: {
       title: 'About Us',
-      headerLeft: () => <></>,
     },
   },
 }

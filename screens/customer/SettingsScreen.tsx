@@ -1,6 +1,6 @@
 //import * as React from 'react'
 import React, { FC, useState } from 'react'
-import { View, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Text, Alert, Pressable } from 'react-native'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
@@ -10,7 +10,7 @@ import * as LocalStorage from './../../LocalStorage'
 import * as Haptics from 'expo-haptics'
 import EvilModal from '../../components/EvilModal'
 
-const Settings: FC<{ navigation: any }> = () => {
+const Settings: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
@@ -74,6 +74,23 @@ const Settings: FC<{ navigation: any }> = () => {
         </View>
         {/* <Text style={styles.text}>Payment Information</Text> */}
       </ScrollView>
+      <View style={{ marginBottom: 35, alignItems: 'center' }}>
+        <Pressable
+          onPress={() => navigation.navigate('AboutScreen')}
+          style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+        >
+          <Text
+            style={{
+              fontFamily: 'Roboto',
+              textDecorationLine: 'underline',
+              color: 'rgba(255,255,255,0.7)',
+              fontSize: 16,
+            }}
+          >
+            About
+          </Text>
+        </Pressable>
+      </View>
       {/* {successView == true && (
         <Animatable.View animation="bounceInUp" iterationCount={2} direction="alternate" style={styles.success}>
           <Text style={styles.successText}>Successfully Saved!</Text>
