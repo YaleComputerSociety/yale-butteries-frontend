@@ -58,6 +58,7 @@ export const { setUsersState, insertUser, setIsLoading } = usersSlice.actions
 export const asyncCreateUser = (user: NewUser, token: string) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     try {
+      // setIsLoading(true)
       const newUser = await fetch(baseUrl + 'api/users', {
         method: 'POST',
         headers: {
