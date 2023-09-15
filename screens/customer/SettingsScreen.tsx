@@ -81,7 +81,7 @@ const Settings: FC<{ navigation: any }> = ({ navigation }) => {
         >
           <Text
             style={{
-              fontFamily: 'Roboto',
+              fontFamily: 'HindSiliguri',
               textDecorationLine: 'underline',
               color: 'rgba(255,255,255,0.7)',
               fontSize: 16,
