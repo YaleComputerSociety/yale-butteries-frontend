@@ -1,10 +1,12 @@
 import React, { useState, FC } from 'react'
-import { StyleSheet, View, Text, Pressable, TouchableWithoutFeedback, Keyboard, Image } from 'react-native'
+import { StyleSheet, View, Text, Pressable, TouchableWithoutFeedback, Keyboard, Image, Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import EvilModal from '../components/EvilModal'
 
 const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [connection, setConnection] = useState(true)
+
+  const windowWidth = Dimensions.get('window').width
 
   const onLogin = async () => {
     navigation.navigate('CASLoginScreen')
@@ -18,18 +20,12 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
           <View style={styles.style1}>
             <View>
               <Image source={require('../assets/images/logo_transparent.png')} style={styles.logo} />
-              <Text style={styles.logoText}>
+              <Text style={[styles.logoText, { fontSize: windowWidth * 0.098 }]}>
                 Yale<Text style={{ color: '#00356b' }}>Butteries</Text>
               </Text>
             </View>
             <Pressable onPress={onLogin} style={({ pressed }) => [styles.button, { opacity: pressed ? 0.85 : 1 }]}>
               <Text style={styles.casText}>Login with CAS</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => navigation.navigate('AboutScreen')}
-              style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
-            >
-              <Text style={{ textDecorationLine: 'underline', color: '#344a61' }}> About </Text>
             </Pressable>
           </View>
         </View>

@@ -149,6 +149,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
             ListFooterComponent={<View style={{ height: 100 }}></View>}
             ListHeaderComponent={
               <MenuHeader
+                name={navigation.getParam('collegeName')}
                 toFood={() => {
                   sectionListRef.current.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: true })
                 }}

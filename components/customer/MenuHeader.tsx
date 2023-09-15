@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo-linear-gradient'
 import React, { FC } from 'react'
 import { View, StyleSheet, Pressable, Text, Image } from 'react-native'
 
@@ -5,38 +6,52 @@ interface Props {
   toFood: () => void
   toDrink: () => void
   toDessert: () => void
+  name: string
 }
 
-export const MenuHeader: FC<Props> = ({ toDessert, toDrink, toFood }: Props) => {
+export const MenuHeader: FC<Props> = ({ toDessert, toDrink, toFood, name }: Props) => {
+  function getImage(collegeName: string) {
+    if (collegeName == 'morse') {
+      return <Image source={require('../../assets/images/TheMorsel.png')} style={styles.imageHeader} />
+    }
+  }
   return (
-    <View style={styles.wrapper}>
-      <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#2c2c2c' : '#1f1f1f' }, styles.button]}
-        onPress={toFood}
+    <View>
+      <LinearGradient
+        colors={['rgba(18,18,18,0.3)', 'rgba(55, 48, 48, 0.5)', 'rgba(18,18,18,0.3)']}
+        locations={[0, 0.5, 1]}
       >
-        <View style={styles.iconWrapper}>
-          <Image source={require('../../assets/images/icons8-french-fries-48.png')} style={styles.image} />
-        </View>
-        <Text style={styles.text}>Food</Text>
-      </Pressable>
-      <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#2c2c2c' : '#1f1f1f' }, styles.button]}
-        onPress={toDrink}
-      >
-        <View style={styles.iconWrapper}>
-          <Image source={require('../../assets/images/icons8-drink-48.png')} style={styles.image} />
-        </View>
-        <Text style={styles.text}>Drink</Text>
-      </Pressable>
-      <Pressable
-        style={({ pressed }) => [{ backgroundColor: pressed ? '#2c2c2c' : '#1f1f1f' }, styles.button]}
-        onPress={toDessert}
-      >
-        <View style={styles.iconWrapper}>
-          <Image source={require('../../assets/images/icons8-cupcake-48.png')} style={styles.image} />
-        </View>
-        <Text style={styles.text}>Dessert</Text>
-      </Pressable>
+        {getImage(name)}
+      </LinearGradient>
+      <View style={styles.wrapper}>
+        <Pressable
+          style={({ pressed }) => [{ backgroundColor: pressed ? '#2c2c2c' : '#1f1f1f' }, styles.button]}
+          onPress={toFood}
+        >
+          <View style={styles.iconWrapper}>
+            <Image source={require('../../assets/images/icons8-french-fries-48.png')} style={styles.image} />
+          </View>
+          <Text style={styles.text}>Food</Text>
+        </Pressable>
+        <Pressable
+          style={({ pressed }) => [{ backgroundColor: pressed ? '#2c2c2c' : '#1f1f1f' }, styles.button]}
+          onPress={toDrink}
+        >
+          <View style={styles.iconWrapper}>
+            <Image source={require('../../assets/images/icons8-drink-48.png')} style={styles.image} />
+          </View>
+          <Text style={styles.text}>Drink</Text>
+        </Pressable>
+        <Pressable
+          style={({ pressed }) => [{ backgroundColor: pressed ? '#2c2c2c' : '#1f1f1f' }, styles.button]}
+          onPress={toDessert}
+        >
+          <View style={styles.iconWrapper}>
+            <Image source={require('../../assets/images/icons8-cupcake-48.png')} style={styles.image} />
+          </View>
+          <Text style={styles.text}>Dessert</Text>
+        </Pressable>
+      </View>
     </View>
   )
 }
@@ -72,5 +87,10 @@ const styles = StyleSheet.create({
   image: {
     height: 30,
     width: 30,
+  },
+  imageHeader: {
+    height: 200,
+    width: '100%',
+    marginTop: 10,
   },
 })

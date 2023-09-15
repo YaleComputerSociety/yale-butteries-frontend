@@ -117,25 +117,43 @@ export function getHours(colleges: College[], name: string): string[] {
 
 export function getCollegeOpen(colleges: College[], name: string): boolean {
   var today = new Date()
-  var hour = today.getHours()
+  var hour = 2
   var minute = today.getMinutes()
 
   const college = colleges.filter((college) => college.name == name)[0]
   const openTimeHour = parseInt(college.openTime)
   const openTimeMinute = parseInt(college.openTime.split(':')[1])
 
+  const dayCutoff = 3
+
   const closeTimeHour = parseInt(college.closeTime.split(':')[0])
   const closeTimeMinute = parseInt(college.closeTime.split(':')[1])
+
   // write some code that basically says up until 2am of the next day counts as the same day
   // for example, if its 1am on a wednesday nd the buttery is open on a wednesday, but closed on thursday
   // it should still remain open because it's (for all intents and purposes) still actually wednesday
-  if (hour < openTimeHour || hour > closeTimeHour) {
-    return false
+
+  if (closeTimeHour < dayCutoff) {
+    // aka closes at or past midnight
+    if (hour < closeTimeHour) {
+      return true
+    } else if (hour > closeTimeHour && hour <= dayCutoff) {
+      return false
+    }
   } else {
+    if (getDaysOpen(colleges, name)[today.getDay()] == false) {
+      // else if Buttery is closed on that day
+      return false
+    }
+    if (hour < openTimeHour) {
+      return false
+    } else if (hour > closeTimeHour) {
+      return false
+    }
     if (hour == openTimeHour && minute < openTimeMinute) {
       return false
     } else if (hour == closeTimeHour && minute > closeTimeMinute) {
-      return false
+      return true
     }
   }
 
@@ -171,7 +189,7 @@ export function returnCollegeName(collegeName: string): string[] {
       headercolor = '#78aa63'
       break
     case 'morse':
-      name = 'The Morsel'
+      name = 'Morse'
       headercolor = '#f65d5d'
       break
     case 'murray':

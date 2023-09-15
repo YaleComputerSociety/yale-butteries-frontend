@@ -31,7 +31,6 @@ const EvilModal: React.FC<Props> = ({ display, toggle }: Props) => {
             <Text style={styles.text}>
               There was a network error. Please connect to internet and restart the app to continue.
             </Text>
-            <Text style={styles.text}>If the problem persists, please call 312-788-0722</Text>
           </View>
         </View>
       </Modal>
