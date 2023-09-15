@@ -11,6 +11,8 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
 
+  console.log('hihihihi')
+
   const { currentUser } = useAppSelector((state) => state.currentUser)
   const [connection, setConnection] = useState(true)
   const [loadingUser, setLoadingUser] = useState(false)
@@ -48,7 +50,10 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         permissions: 'customer',
       }
 
+      console.log('HELLO')
+
       const success = await dispatch(asyncCreateUser(newUser, token))
+      console.log('SUCCCESSSS')
       if (!success) {
         setConnection(false)
       }

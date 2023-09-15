@@ -76,4 +76,10 @@ const styles = StyleSheet.create({
   },
 })
 
+StartScreen['navigationOptions'] = () => {
+  return {
+    gestureEnabled: false,
+  }
+}
+
 export default StartScreen
