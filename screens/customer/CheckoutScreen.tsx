@@ -63,7 +63,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const stripe = useStripe()
 
   const showPaymentSheet = async (): Promise<any> => {
-    console.log(price)
     // return { id: 'temp' } // uncomment this line out to skip the credit card entry screen
     if (price > 2000) {
       Alert.alert('Your current total is over $20, please remove some items from your cart.')
