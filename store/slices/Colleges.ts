@@ -74,7 +74,6 @@ export const asyncFetchColleges = () => {
       console.log(e)
       return false
     } finally {
-      console.log('complete')
       dispatch(setIsLoading(false))
     }
   }

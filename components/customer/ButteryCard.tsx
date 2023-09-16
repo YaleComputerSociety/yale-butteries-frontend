@@ -33,10 +33,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   const getDayVisual = (value: boolean, index: number) => {
     return (
       <Text
-        style={[
-          value ? card.dayActive : card.dayInactive,
-          currentDay === index && currentHour > 2 ? card.underlined : null,
-        ]}
+        style={[value ? card.dayActive : card.dayInactive, currentDay === index ? card.underlined : null]}
         key={index}
       >
         {days[index]}{' '}
@@ -73,6 +70,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
           marginTop: 10,
           marginHorizontal: 10,
           borderRadius: 8,
+          height: 110,
         },
       ]}
     >

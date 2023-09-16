@@ -10,6 +10,7 @@ import * as Font from 'expo-font'
 import { NavigationContainer } from '@react-navigation/native'
 import 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as ScreenOrientation from 'expo-screen-orientation'
 
 import AppContainer from './routes/mainStack'
 import * as LocalStorage from './LocalStorage'
@@ -43,9 +44,11 @@ const InnerApp: FC = () => {
       const id = await LocalStorage.getUserInfo('id')
       if (userInfo && id) {
         // sets the current user state to a user, if it can't connect to the database then show evil modal
-        await dispatch(asyncFetchUser(parseInt(id))).then((success: boolean) => {
-          if (!success) {
+        await dispatch(asyncFetchUser(parseInt(id))).then((result: 'good' | 'error' | 'missing') => {
+          if (result === 'error') {
             setConnection(false)
+          } else if (result === 'missing') {
+            AsyncStorage.clear()
           }
         })
       } else {
@@ -61,6 +64,7 @@ const InnerApp: FC = () => {
       try {
         // Keep the splash screen visible while we fetch resources
         await SplashScreen.preventAutoHideAsync()
+        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
         await loadFonts()
         await establishUser()
       } catch (e) {

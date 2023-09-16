@@ -49,6 +49,7 @@ export const home = StyleSheet.create({
     borderTopWidth: 2,
     borderBottomWidth: 2,
     marginTop: 10,
+    alignContent: 'center',
   },
 
   announcement: {

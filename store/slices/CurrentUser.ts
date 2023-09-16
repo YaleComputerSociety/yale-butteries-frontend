@@ -4,6 +4,7 @@ import { AppDispatch } from '../../store/ReduxStore'
 import { User } from './Users'
 import { setTransactionHistoryState } from './TransactionHistory'
 import { asyncFetchMenuItems } from './MenuItems'
+import { isObject } from 'util'
 
 export interface CurrentUserState {
   currentUser: User | null
@@ -36,7 +37,7 @@ export const currentUserSlice = createSlice({
 export const { setCurrentUserState, setIsLoading, setCurrentUserId } = currentUserSlice.actions
 
 export const asyncFetchUser = (id: number) => {
-  return async (dispatch: AppDispatch): Promise<boolean> => {
+  return async (dispatch: AppDispatch): Promise<'good' | 'error' | 'missing'> => {
     dispatch(setIsLoading(true))
     try {
       const user = await fetch(baseUrl + 'api/users/' + id, {
@@ -46,13 +47,18 @@ export const asyncFetchUser = (id: number) => {
         },
       })
       const data = await user.json()
+
+      if (Object.keys(data).length === 0) {
+        return 'missing'
+      }
+
       dispatch(setCurrentUserState(data))
       dispatch(setTransactionHistoryState(data.currentOrder))
       dispatch(asyncFetchMenuItems())
-      return true
+      return 'good'
     } catch (e) {
       console.log(e)
-      return false
+      return 'error'
     } finally {
       dispatch(setIsLoading(false))
     }
