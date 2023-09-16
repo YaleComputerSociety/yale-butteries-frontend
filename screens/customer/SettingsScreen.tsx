@@ -74,7 +74,7 @@ const Settings: FC<{ navigation: any }> = ({ navigation }) => {
         </View>
         {/* <Text style={styles.text}>Payment Information</Text> */}
       </ScrollView>
-      <View style={{ marginBottom: 35, alignItems: 'center' }}>
+      <View style={{ marginBottom: 30, alignItems: 'center' }}>
         <Pressable
           onPress={() => navigation.navigate('AboutScreen')}
           style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
