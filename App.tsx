@@ -10,6 +10,7 @@ import * as Font from 'expo-font'
 import { NavigationContainer } from '@react-navigation/native'
 import 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as ScreenOrientation from 'expo-screen-orientation'
 
 import AppContainer from './routes/mainStack'
 import * as LocalStorage from './LocalStorage'
@@ -47,7 +48,7 @@ const InnerApp: FC = () => {
           if (result === 'error') {
             setConnection(false)
           } else if (result === 'missing') {
-            AsyncStorage.clear();
+            AsyncStorage.clear()
           }
         })
       } else {
@@ -63,6 +64,7 @@ const InnerApp: FC = () => {
       try {
         // Keep the splash screen visible while we fetch resources
         await SplashScreen.preventAutoHideAsync()
+        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
         await loadFonts()
         await establishUser()
       } catch (e) {
