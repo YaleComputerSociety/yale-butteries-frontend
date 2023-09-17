@@ -147,15 +147,17 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
     // else if Buttery is closed on that day
     return false
   }
+
   if (hour < openTimeHour) {
     return false
-  } else if (hour > closeTimeHour) {
+  } else if (hour > closeTimeHour && closeTimeHour > dayCutoff) {
     return false
   }
+
   if (hour == openTimeHour && minute < openTimeMinute) {
     return false
   } else if (hour == closeTimeHour && minute > closeTimeMinute) {
-    return true
+    return false
   }
 
   return true
