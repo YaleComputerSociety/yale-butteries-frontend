@@ -124,9 +124,6 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
     const open = outputTime(openTimeHour, openTimeMinutes, openTimeAM_PM)
     const close = outputTime(closeTimeHour, closeTimeMinutes, closeTimeAM_PM)
 
-    console.log('CLOSE --> ' + close)
-    console.log('OPEN --> ' + open)
-
     const butteryTime: College = {
       id: currentCollege.id,
       name: currentCollege.name,
