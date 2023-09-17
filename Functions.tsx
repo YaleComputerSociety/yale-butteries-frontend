@@ -136,7 +136,7 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
   // console.log(name, '--> ', openTimeHour, hour)
   if (closeTimeHour < dayCutoff) {
     // aka closes at or past midnight
-    if (hour <= closeTimeHour) {
+    if (hour <= closeTimeHour && minute <= closeTimeMinute) {
       return true
     } else if (hour >= closeTimeHour && hour <= dayCutoff) {
       return false

@@ -5,13 +5,7 @@ import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { loading } from '../../styles/GlobalStyles'
 import CheckoutItem from '../../components/customer/CheckoutItem'
 import { priceToText, returnCollegeName } from '../../Functions'
-import {
-  StripeProvider,
-  useStripe,
-  PlatformPayButton,
-  isPlatformPaySupported,
-  PlatformPay,
-} from '@stripe/stripe-react-native'
+import { StripeProvider, useStripe, isPlatformPaySupported, PlatformPay } from '@stripe/stripe-react-native'
 import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
 import { removeOrderItem, OrderItem } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
@@ -20,8 +14,7 @@ import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
 import { stripePK } from '../../utils/utils'
 import { FlatList } from 'react-native-gesture-handler'
-import * as Device from 'expo-device';
-
+import * as Device from 'expo-device'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const {
@@ -47,6 +40,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   useEffect(() => {
     ;(async function () {
       setIsApplePaySupported(await isPlatformPaySupported())
+      console.log(isApplePaySupported)
     })()
   }, [isPlatformPaySupported])
 
@@ -157,9 +151,9 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       Alert.alert('Payment complete, thank you!')
       updateDisabled(false)
-   
+
       let token = ''
-      if (Device.isDevice ) {
+      if (Device.isDevice) {
         token = (await Notifications.getExpoPushTokenAsync()).data
       } else {
         console.log('not a device')
