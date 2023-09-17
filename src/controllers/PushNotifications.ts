@@ -132,7 +132,11 @@ export async function subscribePushNotifications(req: Request, res: Response): P
         })
 
         clearInterval(interval)
-        sendNotification(token, messageComplete)
+
+        if (token) {
+          sendNotification(token, messageComplete)
+        }
+
         updateTransactionHistoryInner({
           body: {
             id: req.body.transactionId,
@@ -147,7 +151,9 @@ export async function subscribePushNotifications(req: Request, res: Response): P
         })
       } else if (orderStatus === Status.Cancelled || orderStatus === Status.TimedOut) {
         clearInterval(interval)
-        if (orderStatus === Status.Cancelled) sendNotification(token, messageCancelled)
+        if (orderStatus === Status.Cancelled && token) {
+          sendNotification(token, messageCancelled)
+        }
         updateTransactionHistoryInner({
           body: {
             id: req.body.transactionId,
