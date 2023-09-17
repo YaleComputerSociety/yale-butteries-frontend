@@ -90,7 +90,6 @@ export const asyncUpdateCollege = (college: College) => {
         body: JSON.stringify(college),
       })
       const data = await buttery.json()
-      console.log(data)
       dispatch(updateCollege(data))
     } catch (e) {
       console.log(e)

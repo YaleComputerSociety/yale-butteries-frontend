@@ -20,6 +20,8 @@ import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
 import { stripePK } from '../../utils/utils'
 import { FlatList } from 'react-native-gesture-handler'
+import * as Device from 'expo-device';
+
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const {
@@ -155,9 +157,13 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       Alert.alert('Payment complete, thank you!')
       updateDisabled(false)
-
-      // console.log(push)
-      const token = (await Notifications.getExpoPushTokenAsync()).data
+   
+      let token = ''
+      if (Device.isDevice ) {
+        token = (await Notifications.getExpoPushTokenAsync()).data
+      } else {
+        console.log('not a device')
+      }
       const subscribeNotification = await fetch(baseUrl + 'api/notifs', {
         method: 'POST',
         body: JSON.stringify({
@@ -168,8 +174,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           'Content-Type': 'application/json',
         },
       })
-      const subscribeNotificationResponse = await subscribeNotification.json()
-      // console.log(subscribeNotificationResponse)
       navigation.navigate('OrderStatusScreen')
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch (err) {

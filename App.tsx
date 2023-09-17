@@ -64,7 +64,7 @@ const InnerApp: FC = () => {
       try {
         // Keep the splash screen visible while we fetch resources
         await SplashScreen.preventAutoHideAsync()
-        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
+        // ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
         await loadFonts()
         await establishUser()
       } catch (e) {
