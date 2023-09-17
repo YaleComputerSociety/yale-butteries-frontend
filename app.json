@@ -1,9 +1,10 @@
 {
   "expo": {
     "name": "Yale Butteries",
-    "slug": "yale-butteries",
+    "slug": "buttery-app",
     "platforms": ["ios", "android"],
-    "version": "1.2.4",
+    "version": "1.2.8",
+    "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "splash": {
@@ -13,7 +14,7 @@
     "backgroundColor": "#2D90DD",
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/de54dbe6-3119-4e4d-9b6d-dee822526dec"
+      "url": "https://u.expo.dev/545b55a6-9a1a-4486-8846-88cecbc9c7dc"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -39,7 +40,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "de54dbe6-3119-4e4d-9b6d-dee822526dec"
+        "projectId": "545b55a6-9a1a-4486-8846-88cecbc9c7dc"
       }
     },
     "plugins": ["expo-build-properties"]

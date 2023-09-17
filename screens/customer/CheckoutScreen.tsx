@@ -42,13 +42,14 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     setDisabled(b)
   }
 
-  const [isApplePaySupported, setIsApplePaySupported] = useState(false)
+  // const [isApplePaySupported, setIsApplePaySupported] = useState(false)
 
-  useEffect(() => {
-    ;(async function () {
-      setIsApplePaySupported(await isPlatformPaySupported())
-    })()
-  }, [isPlatformPaySupported])
+  // useEffect(() => {
+  //   (async function () {
+  //     console.log(await isPlatformPaySupported())
+  //     setIsApplePaySupported(await isPlatformPaySupported())
+  //   })()
+  // }, [isPlatformPaySupported])
 
   const customAppearance = {
     colors: {
@@ -94,11 +95,11 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       paymentIntentClientSecret: clientSecret,
       merchantDisplayName: 'Yale Butteries',
       appearance: customAppearance,
-      applePay: isApplePaySupported
-        ? {
-            merchantCountryCode: 'US',
-          }
-        : null,
+      // applePay: isApplePaySupported
+      //   ? {
+      //       merchantCountryCode: 'US',
+      //     }
+      //   : null,
     })
     if (initSheet.error) return Alert.alert(initSheet.error.message)
     const presentSheet = await stripe.presentPaymentSheet()
@@ -178,7 +179,8 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch (err) {
       console.error(err)
-      Alert.alert('Something went wrong, check your internet connection')
+      Alert.alert(err)
+      // Alert.alert('Something went wrong, check your internet connection')
       updateDisabled(false)
     }
   }
