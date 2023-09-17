@@ -245,7 +245,7 @@ export async function registerForPushNotificationsAsync(): Promise<any> {
     if (finalStatus !== 'granted') {
       return
     }
-    token = (await Notifications.getExpoPushTokenAsync()).data
+    token = (await Notifications.getDevicePushTokenAsync()).data
   } else {
     alert('Must use physical device for Push Notifications')
   }
