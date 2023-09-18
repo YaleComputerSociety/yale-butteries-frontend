@@ -154,10 +154,11 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       let token = ''
       if (Device.isDevice) {
-        token = (await Notifications.getExpoPushTokenAsync()).data
+        token = (await Notifications.getDevicePushTokenAsync()).data
       } else {
         console.log('not a device')
       }
+
       const subscribeNotification = await fetch(baseUrl + 'api/notifs', {
         method: 'POST',
         body: JSON.stringify({
@@ -168,6 +169,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           'Content-Type': 'application/json',
         },
       })
+
       navigation.navigate('OrderStatusScreen')
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch (err) {
