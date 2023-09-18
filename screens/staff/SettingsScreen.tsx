@@ -47,6 +47,7 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
   }, [isFocused])
 
   useEffect(() => {
+    console.log('hey')
     if (colleges && currentUser) {
       setCurrentCollege(colleges.filter((college) => college.name == currentUser.college)[0])
     }
@@ -121,8 +122,10 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
   }
 
   const updateCollege = () => {
+    console.log(openTimeAM_PM, closeTimeAM_PM)
     const open = outputTime(openTimeHour, openTimeMinutes, openTimeAM_PM)
     const close = outputTime(closeTimeHour, closeTimeMinutes, closeTimeAM_PM)
+    console.log(open, close)
 
     const butteryTime: College = {
       id: currentCollege.id,

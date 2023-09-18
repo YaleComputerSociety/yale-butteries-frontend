@@ -19,7 +19,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.addisongoolsbee.yalebutteries",
+      "bundleIdentifier": "com.addisongoolsbee.butteryapp",
       "infoPlist": {
         "NSCameraUsageDescription": "Yale Butteries would like to access the camera to scan your card"
       }
