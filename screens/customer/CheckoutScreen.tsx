@@ -35,14 +35,14 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     setDisabled(b)
   }
 
-  // const [isApplePaySupported, setIsApplePaySupported] = useState(false)
+  const [isApplePaySupported, setIsApplePaySupported] = useState(false)
 
-  // useEffect(() => {
-  //   (async function () {
-  //     console.log(await isPlatformPaySupported())
-  //     setIsApplePaySupported(await isPlatformPaySupported())
-  //   })()
-  // }, [isPlatformPaySupported])
+  useEffect(() => {
+    (async function () {
+      console.log(await isPlatformPaySupported())
+      setIsApplePaySupported(await isPlatformPaySupported())
+    })()
+  }, [isPlatformPaySupported])
 
   const customAppearance = {
     colors: {
@@ -88,11 +88,11 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       paymentIntentClientSecret: clientSecret,
       merchantDisplayName: 'Yale Butteries',
       appearance: customAppearance,
-      // applePay: isApplePaySupported
-      //   ? {
-      //       merchantCountryCode: 'US',
-      //     }
-      //   : null,
+      applePay: isApplePaySupported
+        ? {
+            merchantCountryCode: 'US',
+          }
+        : null,
     })
     if (initSheet.error) return Alert.alert(initSheet.error.message)
     const presentSheet = await stripe.presentPaymentSheet()
