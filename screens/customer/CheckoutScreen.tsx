@@ -38,8 +38,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [isApplePaySupported, setIsApplePaySupported] = useState(false)
 
   useEffect(() => {
-    (async function () {
-      console.log(await isPlatformPaySupported())
+    ;(async function () {
       setIsApplePaySupported(await isPlatformPaySupported())
     })()
   }, [isPlatformPaySupported])

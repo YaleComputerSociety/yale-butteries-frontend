@@ -3,8 +3,7 @@
     "name": "Yale Butteries",
     "slug": "yale-butteries",
     "platforms": ["ios", "android"],
-    "version": "1.2.10",
-    "jsEngine": "hermes",
+    "version": "1.2.4",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "splash": {
@@ -43,7 +42,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "de54dbe6-3119-4e4d-9b6d-dee822526dec"
+        "projectId": "44c42506-7da1-4872-89f2-dba808a1789d"
       }
     },
     "plugins": ["expo-build-properties"]
