@@ -121,12 +121,13 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
     )
   }
 
-  const updateCollege = () => {
+  const updateCollege = (openTimeAM_PM: string, closeTimeAM_PM: string) => {
     console.log(openTimeAM_PM, closeTimeAM_PM)
     const open = outputTime(openTimeHour, openTimeMinutes, openTimeAM_PM)
     const close = outputTime(closeTimeHour, closeTimeMinutes, closeTimeAM_PM)
     console.log(open, close)
 
+    console.log(open, close)
     const butteryTime: College = {
       id: currentCollege.id,
       name: currentCollege.name,
@@ -146,7 +147,7 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
       'Do you want to save these changes?',
       'Any changes made will take place immediately',
       [
-        { text: "Yes, I'm Sure", onPress: updateCollege },
+        { text: "Yes, I'm Sure", onPress: () => updateCollege(openTimeAM_PM, closeTimeAM_PM) },
         {
           text: 'Cancel',
           onPress: () => {
