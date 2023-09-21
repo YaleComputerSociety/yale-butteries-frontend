@@ -32,7 +32,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
               <Text style={styles.casText}>Login with CAS</Text>
             </Pressable>
           </View>
-          <Pressable onPress={onGuest} style={({ pressed }) => [styles.button, { opacity: pressed ? 0.85 : 1 }]}>
+          <Pressable onPress={onGuest} style={({ pressed }) => [{ opacity: pressed ? 0.85 : 1 }]}>
             <Text style={{ textDecorationLine: 'underline', alignSelf: 'center', color: '#444', marginBottom: 30 }}>
               Login as Guest
             </Text>
