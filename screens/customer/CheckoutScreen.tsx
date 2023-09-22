@@ -38,7 +38,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const [isApplePaySupported, setIsApplePaySupported] = useState(false)
 
   useEffect(() => {
-    (async function () {
+    ;(async function () {
       console.log(await isPlatformPaySupported())
       setIsApplePaySupported(await isPlatformPaySupported())
     })()
@@ -63,6 +63,13 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     if (price > 2000) {
       Alert.alert('Your current total is over $20, please remove some items from your cart.')
       return null
+    }
+
+    console.log(currentUser.permissions)
+
+    if (currentUser.permissions === 'dev') {
+      Alert.alert('You are currently in developer mode. You cannot place an order.')
+      return
     }
 
     const obj = { userId: currentUser.id, price: price, items: orderItems, college: collegeOrderCart }
