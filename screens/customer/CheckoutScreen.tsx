@@ -39,6 +39,10 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   useEffect(() => {
     ;(async function () {
+<<<<<<< HEAD
+=======
+      console.log(await isPlatformPaySupported())
+>>>>>>> guestLogin
       setIsApplePaySupported(await isPlatformPaySupported())
     })()
   }, [isPlatformPaySupported])
@@ -65,9 +69,10 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
 
     console.log(currentUser.permissions)
+
     if (currentUser.permissions === 'dev') {
       Alert.alert('You are currently in developer mode. You cannot place an order.')
-      return null
+      return
     }
 
     const obj = { userId: currentUser.id, price: price, items: orderItems, college: collegeOrderCart }

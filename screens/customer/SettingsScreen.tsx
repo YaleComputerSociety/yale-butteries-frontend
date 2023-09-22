@@ -21,10 +21,14 @@ const Settings: FC<{ navigation: any }> = ({ navigation }) => {
   const [successView, setSuccessView] = useState(false)
 
   const changeName = async (name: string) => {
+    console.log(currentUser.permissions)
+    console.log('hi')
+
     if (currentUser.permissions == 'dev') {
-      Alert.alert('In developer mode, you cannot change your name.')
-      return null
+      Alert.alert('You are currently in developer mode. You cannot change your name.')
+      return
     }
+
     const id = await LocalStorage.getUserInfo('id')
     if (name.length <= 2 || name.length >= 16) {
       setInvalidName(true)

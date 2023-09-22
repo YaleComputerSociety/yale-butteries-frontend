@@ -45,6 +45,7 @@ const InnerApp: FC = () => {
       if (userInfo && id) {
         // sets the current user state to a user, if it can't connect to the database then show evil modal
         await dispatch(asyncFetchUser(parseInt(id))).then((result: 'good' | 'error' | 'missing') => {
+          console.log(id)
           if (result === 'error') {
             setConnection(false)
           } else if (result === 'missing') {

@@ -95,8 +95,8 @@ const screens = {
   GuestLoginScreen: {
     screen: GuestLoginScreen,
     navigationOptions: {
-      title: 'Guest Login',
       headerShown: false,
+      title: 'Guest Login',
     },
   },
 }

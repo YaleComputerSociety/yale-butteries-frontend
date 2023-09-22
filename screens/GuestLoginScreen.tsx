@@ -7,9 +7,6 @@ import { asyncCreateUser } from '../store/slices/Users'
 
 const GuestLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
-  const onGuest = () => {
-    navigation.navigate('GuestLoginScreen')
-  }
   const [username, setUser] = useState('')
   const [password, setPassword] = useState('')
 
