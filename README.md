@@ -8,7 +8,7 @@ To run the full app, you will also need access to the [backend repository](https
 
 Install the latest version of **Node.js** and then **Yarn**. Additionally, download **XCode** if you're using a mac, and **Android Studio** otherwise (you can also use Android Studio on a Mac, but with the M1 chips it's a little tricky).
 
-In the root of `buttery-app`, run `yarn` to install all of the dependencies. Whenever someone adds a new package you'll need to run this command again (it'll be quicker the next time)
+In the root of `frontend`, run `yarn` to install all of the dependencies. Whenever someone adds a new package you'll need to run this command again (it'll be quicker the next time)
 
 Now run `yarn start` to run the app with expo
 - To run in production mode, run `yarn start --no-dev`
