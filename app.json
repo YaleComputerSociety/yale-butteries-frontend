@@ -2,11 +2,9 @@
   "expo": {
     "name": "Yale Butteries",
     "slug": "yale-butteries",
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "version": "1.2.11",
+    "platforms": ["ios", "android"],
+    "version": "1.2.12",
+    "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "splash": {
@@ -18,9 +16,7 @@
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/de54dbe6-3119-4e4d-9b6d-dee822526dec"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.addisongoolsbee.butteryapp",
@@ -43,18 +39,14 @@
       "policy": "sdkVersion"
     },
     "entitlements": {
-      "com.apple.developer.in-app-payments": [
-        "merchant.com.yalebutteries"
-      ]
+      "com.apple.developer.in-app-payments": ["merchant.com.yalebutteries"]
     },
     "extra": {
       "eas": {
         "projectId": "de54dbe6-3119-4e4d-9b6d-dee822526dec"
       }
     },
-    "plugins": [
-      "expo-build-properties"
-    ],
+    "plugins": ["expo-build-properties"],
     "owner": "yale_butteries"
   }
 }
