@@ -8,7 +8,7 @@ To run the full app, you will also need access to the [backend repository](https
 
 Install the latest version of **Node.js** and then **Yarn**. Additionally, download **XCode** if you're using a mac, and **Android Studio** otherwise (you can also use Android Studio on a Mac, but with the M1 chips it's a little tricky).
 
-In the root of `buttery-app`, run `yarn` to install all of the dependencies. Whenever someone adds a new package you'll need to run this command again (it'll be quicker the next time)
+In the root of `frontend`, run `yarn` to install all of the dependencies. Whenever someone adds a new package you'll need to run this command again (it'll be quicker the next time)
 
 Now run `yarn start` to run the app with expo
 - To run in production mode, run `yarn start --no-dev`
@@ -38,12 +38,18 @@ With the frontend running, you'll be able to see the app and interact with it, b
 ## Building and Deploying the App
 
 #### iOS
+We use [Expo](https://expo.dev/accounts/yale_butteries) to turn the frontend code into a compiled binary, which we can then submit to app stores. To start, you'll need to have `eas-cli` installed, and will need to login to the yale_butteries Expo organization. Follow [this guide](https://docs.expo.dev/build/setup/)
 
-- First, make sure that you increment the version number in **app.json** by some amount, otherwise the apple submit will throw an error
-- Build the app binary using Expo. You'll want to first make a simulator build to run on your simulator: `eas build -p ios --profile preview`. It should take about 10 minutes
-- With the new build finished, run `eas build:run -p ios --latest`
-- If that worked, you can make a real build with `eas build --platform ios`
-- Now you'll want to submit the build to the app store. Run `eas submit --platform ios`
+- There are a few ways to build the app, but the most important distinction is between a simulator build and a Testflight build
+    - A simulator build takes ~10 minutes and will run on either your iPhone simulator or on Expo within your phone. Any bug that appears here will probably appear in a testflight build, but things tend to work better for these
+        - Make a simulator build using Expo with `eas build -p ios --profile preview`
+        - With the new build finished, run `eas build:run -p ios --latest` to start it on your iPhone simulator
+        - TODO: add running on physical phone
+    - A Testflight build takes ~10 minutes to build, and ~5 minutes to submit to the Apple developer account. It should be identical to what the real app will look like, though because of this there will likely be more errors than in the simulator build
+        - *A Testflight build requires access to the Apple developer account, which is currently owned by* ***Addison Goolsbee***
+        - First, increment **version** in **app.json**. If you forget, then after 15 minutes you'll be thrown an error and have to rebuild
+        - Make a real build with `eas build --platform ios`
+        - Submit the build to the app store. Run `eas submit --platform ios`
 
 ## Version Control
 

@@ -50,7 +50,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     },
     {
       ne: 'Berkeley',
-      active: true,
+      active: false,
     },
     {
       ne: 'Branford',

@@ -21,6 +21,14 @@ const Settings: FC<{ navigation: any }> = ({ navigation }) => {
   const [successView, setSuccessView] = useState(false)
 
   const changeName = async (name: string) => {
+    console.log(currentUser.permissions)
+    console.log('hi')
+
+    if (currentUser.permissions == 'dev') {
+      Alert.alert('You are currently in developer mode. You cannot change your name.')
+      return
+    }
+
     const id = await LocalStorage.getUserInfo('id')
     if (name.length <= 2 || name.length >= 16) {
       setInvalidName(true)
@@ -74,7 +82,7 @@ const Settings: FC<{ navigation: any }> = ({ navigation }) => {
         </View>
         {/* <Text style={styles.text}>Payment Information</Text> */}
       </ScrollView>
-      <View style={{ marginBottom: 35, alignItems: 'center' }}>
+      <View style={{ marginBottom: 30, alignItems: 'center' }}>
         <Pressable
           onPress={() => navigation.navigate('AboutScreen')}
           style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
