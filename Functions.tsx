@@ -117,7 +117,7 @@ export function getHours(colleges: College[], name: string): string[] {
 
 export function getCollegeOpen(colleges: College[], name: string): boolean {
   var today = new Date()
-  var hour = 2
+  var hour = today.getHours()
   var minute = today.getMinutes()
 
   const college = colleges.filter((college) => college.name == name)[0]
@@ -133,28 +133,31 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
   // for example, if its 1am on a wednesday nd the buttery is open on a wednesday, but closed on thursday
   // it should still remain open because it's (for all intents and purposes) still actually wednesday
 
+  // console.log(name, '--> ', openTimeHour, hour)
   if (closeTimeHour < dayCutoff) {
     // aka closes at or past midnight
-    if (hour <= closeTimeHour) {
+    if (hour <= closeTimeHour && minute <= closeTimeMinute) {
       return true
     } else if (hour >= closeTimeHour && hour <= dayCutoff) {
       return false
     }
-  } else {
-    if (getDaysOpen(colleges, name)[today.getDay()] == false) {
-      // else if Buttery is closed on that day
-      return false
-    }
-    if (hour < openTimeHour) {
-      return false
-    } else if (hour > closeTimeHour) {
-      return false
-    }
-    if (hour == openTimeHour && minute < openTimeMinute) {
-      return false
-    } else if (hour == closeTimeHour && minute > closeTimeMinute) {
-      return true
-    }
+  }
+
+  if (getDaysOpen(colleges, name)[today.getDay()] == false) {
+    // else if Buttery is closed on that day
+    return false
+  }
+
+  if (hour < openTimeHour) {
+    return false
+  } else if (hour > closeTimeHour && closeTimeHour > dayCutoff) {
+    return false
+  }
+
+  if (hour == openTimeHour && minute < openTimeMinute) {
+    return false
+  } else if (hour == closeTimeHour && minute > closeTimeMinute) {
+    return false
   }
 
   return true
@@ -242,7 +245,7 @@ export async function registerForPushNotificationsAsync(): Promise<any> {
     if (finalStatus !== 'granted') {
       return
     }
-    token = (await Notifications.getExpoPushTokenAsync()).data
+    token = (await Notifications.getDevicePushTokenAsync()).data
   } else {
     alert('Must use physical device for Push Notifications')
   }

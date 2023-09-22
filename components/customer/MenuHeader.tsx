@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     width: 30,
   },
   imageHeader: {
-    height: 200,
+    height: 220,
     width: '100%',
     marginTop: 10,
   },

@@ -12,6 +12,10 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
     navigation.navigate('CASLoginScreen')
   }
 
+  const onGuest = () => {
+    navigation.navigate('GuestLoginScreen')
+  }
+
   return (
     <LinearGradient colors={['#4E65FF', '#0bcaca']} locations={[0, 1]}>
       <EvilModal toggle={setConnection} display={!connection} />
@@ -28,6 +32,11 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
               <Text style={styles.casText}>Login with CAS</Text>
             </Pressable>
           </View>
+          <Pressable onPress={onGuest} style={({ pressed }) => [{ opacity: pressed ? 0.85 : 1 }]}>
+            <Text style={{ textDecorationLine: 'underline', alignSelf: 'center', color: '#444', marginBottom: 30 }}>
+              Login as Guest
+            </Text>
+          </Pressable>
         </View>
       </TouchableWithoutFeedback>
     </LinearGradient>
@@ -55,19 +64,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#0e7df0',
     padding: 7,
     paddingHorizontal: 35,
-    width: 200,
+    width: '95%',
     justifyContent: 'center',
     borderRadius: 8,
-    marginBottom: 15,
     shadowColor: '#111',
     shadowRadius: 10,
     shadowOpacity: 0.1,
+    height: 45,
   },
   casText: {
     fontSize: 17,
     color: 'white',
     fontFamily: 'HindSiliguri-Bold',
     letterSpacing: 0.7,
+    alignSelf: 'center',
   },
   logo: {
     width: 125,

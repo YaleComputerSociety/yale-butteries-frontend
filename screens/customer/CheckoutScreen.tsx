@@ -5,13 +5,7 @@ import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { loading } from '../../styles/GlobalStyles'
 import CheckoutItem from '../../components/customer/CheckoutItem'
 import { priceToText, returnCollegeName } from '../../Functions'
-import {
-  StripeProvider,
-  useStripe,
-  PlatformPayButton,
-  isPlatformPaySupported,
-  PlatformPay,
-} from '@stripe/stripe-react-native'
+import { StripeProvider, useStripe, isPlatformPaySupported, PlatformPay } from '@stripe/stripe-react-native'
 import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
 import { removeOrderItem, OrderItem } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
@@ -20,6 +14,7 @@ import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
 import { stripePK } from '../../utils/utils'
 import { FlatList } from 'react-native-gesture-handler'
+import * as Device from 'expo-device'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const {
@@ -63,8 +58,18 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const stripe = useStripe()
 
   const showPaymentSheet = async (): Promise<any> => {
-    console.log(price)
     // return { id: 'temp' } // uncomment this line out to skip the credit card entry screen
+    if (price > 2000) {
+      Alert.alert('Your current total is over $20, please remove some items from your cart.')
+      return null
+    }
+
+    console.log(currentUser.permissions)
+
+    if (currentUser.permissions === 'dev') {
+      Alert.alert('You are currently in developer mode. You cannot place an order.')
+      return
+    }
 
     const obj = { userId: currentUser.id, price: price, items: orderItems, college: collegeOrderCart }
     const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
@@ -153,8 +158,13 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       Alert.alert('Payment complete, thank you!')
       updateDisabled(false)
 
-      // console.log(push)
-      const token = (await Notifications.getExpoPushTokenAsync()).data
+      let token = ''
+      if (Device.isDevice) {
+        token = (await Notifications.getDevicePushTokenAsync()).data
+      } else {
+        console.log('not a device')
+      }
+
       const subscribeNotification = await fetch(baseUrl + 'api/notifs', {
         method: 'POST',
         body: JSON.stringify({
@@ -165,13 +175,13 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           'Content-Type': 'application/json',
         },
       })
-      const subscribeNotificationResponse = await subscribeNotification.json()
-      // console.log(subscribeNotificationResponse)
+
       navigation.navigate('OrderStatusScreen')
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch (err) {
       console.error(err)
-      Alert.alert('Something went wrong, check your internet connection')
+      Alert.alert(err)
+      // Alert.alert('Something went wrong, check your internet connection')
       updateDisabled(false)
     }
   }

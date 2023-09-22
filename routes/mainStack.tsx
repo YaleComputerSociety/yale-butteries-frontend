@@ -12,6 +12,7 @@ import DummyScreen from '../screens/DummyScreen'
 import CASLoginScreen from '../screens/CASLoginScreen'
 import React from 'react'
 import AboutScreen from '../screens/AboutScreen'
+import GuestLoginScreen from '../screens/GuestLoginScreen'
 
 const screens = {
   DummyScreen: {
@@ -89,6 +90,13 @@ const screens = {
     screen: AboutScreen,
     navigationOptions: {
       title: 'About Us',
+    },
+  },
+  GuestLoginScreen: {
+    screen: GuestLoginScreen,
+    navigationOptions: {
+      headerShown: false,
+      title: 'Guest Login',
     },
   },
 }
