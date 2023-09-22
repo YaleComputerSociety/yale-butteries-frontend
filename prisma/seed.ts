@@ -195,7 +195,7 @@ const main = async () => {
       email: 'addison.goolsbee@yale.edu',
       name: 'MorselChef',
       token: 'itswalrustime',
-      permissions: 'staff',
+      permissions: 'dev',
       college: {
         connect: { id: 7 },
       },
