@@ -2,12 +2,12 @@
 // These are the frontend object types, which we need to know when receiving and sending data
 
 export interface UserDto {
+  id: string
   email: string
   netid: string
   name: string
   college: string
   permissions: string
-  id: number
   currentOrder?: unknown
 }
 
@@ -25,7 +25,7 @@ export interface OrderDto {
   college: string
   inProgress: string
   price: number
-  userId: number
+  userId: string
   paymentIntentId: string
   transactionItems: OrderItemDto[]
   creationTime: Date

@@ -1,28 +1,28 @@
 import { Request, Response } from 'express'
 
-import { College, PrismaClient, User, TransactionItem, TransactionHistory, MenuItem } from '@prisma/client'
+import { College, PrismaClient, User, OrderItem, Order, MenuItem } from '@prisma/client'
 import { OrderItemDto, OrderDto } from '../utils/dtos'
 
 const prisma = new PrismaClient()
 
 export const backToFrontTransactionHistories = async (
-  transactionHistories: TransactionHistory[],
+  transactionHistories: Order[],
   college: string
 ): Promise<OrderDto[]> => {
   const res: OrderDto[] = []
   for (const item of transactionHistories) {
     const user: User = await getUserFromId(item.userId)
-    const th: TransactionHistory & { transaction_items: TransactionItem[] } = await getTransactionHistoryFromId(item.id)
+    const th: Order & { orderItems: OrderItem[] } = await getTransactionHistoryFromId(item.id)
     const tis: OrderItemDto[] = await backToFrontTransactionItems(th)
     if (item) {
       const newItem: OrderDto = {
         id: item.id,
         college: college,
-        inProgress: item.in_progress,
-        price: item.total_price,
+        inProgress: item.status,
+        price: item.price,
         userId: user.id,
-        paymentIntentId: item.payment_intent_id,
-        creationTime: item.created_at,
+        paymentIntentId: item.paymentIntentId,
+        creationTime: item.createdAt,
         transactionItems: tis,
       }
       res.push(newItem)
@@ -37,21 +37,21 @@ export async function getRecentCollegeTransactionHistories(req: Request, res: Re
     const college = await getCollegeFromName(req.params.college)
     const date = new Date(Date.now() - 36e5 * 6) // select only transactions from after 6 hours before this moment
 
-    const validTransactionHistories = await prisma.transactionHistory.findMany({
+    const validTransactionHistories = await prisma.order.findMany({
       where: {
         collegeId: college.id,
-        created_at: {
+        createdAt: {
           gte: date,
         },
       },
       include: {
-        transaction_items: true,
+        orderItems: true,
       },
     })
 
     const frontValidTransactionHisotries = await backToFrontTransactionHistories(
       validTransactionHistories,
-      college.college
+      college.name
     )
 
     const ret = {
@@ -72,18 +72,18 @@ export async function getAllCollegeTransactionHistories(req: Request, res: Respo
   try {
     const college = await getCollegeFromName(req.params.college)
 
-    const validTransactionHistories = await prisma.transactionHistory.findMany({
+    const validTransactionHistories = await prisma.order.findMany({
       where: {
         collegeId: college.id,
       },
       include: {
-        transaction_items: true,
+        orderItems: true,
       },
     })
 
     const frontValidTransactionHisotries = await backToFrontTransactionHistories(
       validTransactionHistories,
-      college.college
+      college.name
     )
 
     const ret = {
@@ -109,13 +109,13 @@ export const getCollegeFromId = async (id: number): Promise<College> => {
 export const getCollegeFromName = async (name: string): Promise<College> => {
   const college = await prisma.college.findFirst({
     where: {
-      college: name,
+      name: name,
     },
   })
   return college
 }
 
-export const getUserFromId = async (id: number): Promise<User> => {
+export const getUserFromId = async (id: string): Promise<User> => {
   const user = await prisma.user.findUnique({
     where: {
       id: id,
@@ -133,12 +133,10 @@ const getMenuItemFromId = async (id: number): Promise<MenuItem> => {
   return item
 }
 
-const getTransactionHistoryFromId = async (
-  id: number
-): Promise<TransactionHistory & { transaction_items: TransactionItem[] }> => {
-  const res = await prisma.transactionHistory.findUnique({
+const getTransactionHistoryFromId = async (id: number): Promise<Order & { orderItems: OrderItem[] }> => {
+  const res = await prisma.order.findUnique({
     include: {
-      transaction_items: true,
+      orderItems: true,
     },
     where: {
       id: id,
@@ -148,18 +146,18 @@ const getTransactionHistoryFromId = async (
 }
 
 const backToFrontTransactionItems = async (
-  transactionHistory: TransactionHistory & { transaction_items: TransactionItem[] }
+  transactionHistory: Order & { orderItems: OrderItem[] }
 ): Promise<OrderItemDto[]> => {
   const transactionItems: OrderItemDto[] = []
-  for (const item of transactionHistory.transaction_items) {
+  for (const item of transactionHistory.orderItems) {
     const menuItem = await getMenuItemFromId(item.menuItemId)
     const user = await getUserFromId(transactionHistory.userId)
     if (item) {
       const newItem: OrderItemDto = {
-        itemCost: item.item_cost,
-        orderStatus: item.order_status,
+        itemCost: item.price,
+        orderStatus: item.status,
         menuItemId: item.menuItemId,
-        name: menuItem.item,
+        name: menuItem.name,
         id: item.id,
         user: user.name,
       }
@@ -178,9 +176,9 @@ export async function getTransactionHistory(req: Request, res: Response): Promis
 
     const ret = {
       id: transactionHistory.id,
-      college: college.college,
-      inProgress: transactionHistory.in_progress,
-      price: transactionHistory.total_price,
+      college: college.name,
+      inProgress: transactionHistory.status,
+      price: transactionHistory.price,
       userId: user.id,
       transactionItems: transactionItems,
     }
@@ -218,15 +216,14 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
     }
 
     // store the transaction in the database
-    const newTransaction = await prisma.transactionHistory.create({
+    const newTransaction = await prisma.order.create({
       data: {
-        order_complete: null,
-        order_placed: order_placed,
-        queue_size_on_complete: null,
-        queue_size_on_placement: queue_size_on_placement,
-        in_progress: in_progress,
-        total_price: total_price,
-        payment_intent_id: payment_intent_id,
+        status: 'QUEUED',
+        placedAt: order_placed,
+        endQueueSize: null,
+        initialQueueSize: queue_size_on_placement,
+        price: total_price,
+        paymentIntentId: payment_intent_id,
         college: {
           connect: {
             id: college_id,
@@ -237,7 +234,7 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
             id: req.body.userId,
           },
         },
-        transaction_items: {
+        orderItems: {
           createMany: {
             data: transactionItems,
           },
@@ -260,22 +257,17 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
   }
 }
 
-export async function updateTransactionHistoryInner(req: any): Promise<TransactionHistory> {
+export async function updateTransactionHistoryInner(req: any): Promise<Order> {
   try {
-    const transactionHistory = await prisma.transactionHistory.update({
+    const transactionHistory = await prisma.order.update({
       where: {
         id: req.body.id,
       },
       data: {
-        order_complete: req.body.order_complete || undefined,
-        order_placed: req.body.order_placed || undefined,
-        queue_size_on_complete: req.body.queue_size_on_complete || undefined,
-        queue_size_on_placement: req.body.queue_size_on_placement || undefined,
-        in_progress: req.body.in_progress || undefined,
-        total_price: req.body.total_price || undefined,
-        charged_price: req.body.charged_price || undefined,
-        stripe_fee: req.body.stripe_fee || undefined,
-        reimbursed: req.body.reimbursed || undefined,
+        placedAt: req.body.order_placed || undefined,
+        status: req.body.in_progress || undefined,
+        price: req.body.total_price || undefined,
+        stripeFee: req.body.stripe_fee || undefined,
       },
     })
     return transactionHistory
@@ -286,18 +278,15 @@ export async function updateTransactionHistoryInner(req: any): Promise<Transacti
 
 export async function updateTransactionHistory(req: Request, res: Response): Promise<void> {
   try {
-    const transactionHistory = await prisma.transactionHistory.update({
+    const transactionHistory = await prisma.order.update({
       where: {
         id: req.body.id,
       },
       data: {
-        order_complete: req.body.order_complete || undefined,
-        order_placed: req.body.order_placed || undefined,
-        queue_size_on_complete: req.body.queue_size_on_complete || undefined,
-        queue_size_on_placement: req.body.queue_size_on_placement || undefined,
-        in_progress: req.body.in_progress || undefined,
-        total_price: req.body.total_price || undefined,
-        charged_price: req.body.charged_price || undefined,
+        placedAt: req.body.order_placed || undefined,
+        status: req.body.in_progress || undefined,
+        price: req.body.total_price || undefined,
+        stripeFee: req.body.stripe_fee || undefined,
       },
     })
     res.send(JSON.stringify(transactionHistory))
@@ -308,12 +297,12 @@ export async function updateTransactionHistory(req: Request, res: Response): Pro
 
 export async function updateTransactionItem(req: Request, res: Response): Promise<void> {
   try {
-    const transactionItem = await prisma.transactionItem.update({
+    const transactionItem = await prisma.orderItem.update({
       where: {
         id: req.body.id,
       },
       data: {
-        order_status: req.body.orderStatus,
+        status: req.body.orderStatus,
       },
     })
     res.send(JSON.stringify(transactionItem))
@@ -321,12 +310,4 @@ export async function updateTransactionItem(req: Request, res: Response): Promis
     console.log(e)
     res.status(400).send(e)
   }
-}
-
-const includeProperty = {
-  include: {
-    transaction_items: true,
-    college: true,
-    user: true,
-  },
 }
