@@ -28,9 +28,10 @@ export async function getCollege(req: Request, res: Response): Promise<void> {
 
 export async function updateCollege(req: Request, res: Response): Promise<void> {
   try {
+    console.log(req.body)
     const result = await prisma.college.update({
       where: {
-        id: req.body.id,
+        id: parseInt(req.params.collegeId),
       },
       data: {
         daysOpen: req.body.daysOpen,
@@ -39,16 +40,16 @@ export async function updateCollege(req: Request, res: Response): Promise<void> 
         closeTime: req.body.closeTime,
       },
     })
+    console.log(result)
     res.send(JSON.stringify(result))
   } catch (e) {
+    console.log(e)
     res.status(400).send(e)
   }
 }
 
 const includeProperty = {
   include: {
-    users: true,
-    orders: true,
     menuItems: true,
   },
 }
