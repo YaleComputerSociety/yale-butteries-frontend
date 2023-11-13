@@ -50,7 +50,7 @@ export async function updateCollege(req: Request, res: Response): Promise<void> 
 const includeProperty = {
   include: {
     users: true,
-    transaction_histories: true,
-    menu_items: true,
+    orders: true,
+    menuItems: true,
   },
 }

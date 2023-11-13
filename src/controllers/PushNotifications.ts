@@ -1,7 +1,7 @@
 import { PrismaClient, OrderItem, Order } from '@prisma/client'
 import { Request, Response } from 'express'
 import { Expo } from 'expo-server-sdk'
-import { updateTransactionHistoryInner } from './TransactionHistory'
+import { updateOrderInner } from './Orders'
 import Stripe from 'stripe'
 
 enum Status {
@@ -27,7 +27,7 @@ export const stripe = new Stripe(
   }
 )
 
-const getTransactionHistoryFromId = async (id: number): Promise<Order & { orderItems: OrderItem[] }> => {
+const getOrderFromId = async (id: number): Promise<Order & { orderItems: OrderItem[] }> => {
   const res = await prisma.order.findUnique({
     include: {
       orderItems: true,
@@ -49,11 +49,11 @@ const getPaymentIntentIdFromId = async (id: number): Promise<string> => {
 }
 
 const checkItems = (items: OrderItem[], order: Order): number => {
-  const transactionLifetime = Math.abs(new Date().getTime() - order.placedAt.getTime()) / 36e5
+  const orderLifetime = Math.abs(new Date().getTime() - order.placedAt.getTime()) / 36e5
   if (items.every((i) => i.status === 'CANCELLED')) {
     console.log('Order cancelled :(')
     return Status.Cancelled
-  } else if (transactionLifetime > 6) {
+  } else if (orderLifetime > 6) {
     console.log('Order timed out')
     return Status.TimedOut
   } else if (items.every((i) => i.status === 'CANCELLED' || i.status === 'READY')) {
@@ -64,7 +64,7 @@ const checkItems = (items: OrderItem[], order: Order): number => {
   }
 }
 async function getItems(id: string) {
-  return (await getTransactionHistoryFromId(parseInt(id))).orderItems
+  return (await getOrderFromId(parseInt(id))).orderItems
 }
 
 const sendNotification = async (expoPushToken: string, data: NotificationMessage) => {
@@ -119,7 +119,7 @@ export async function subscribePushNotifications(req: Request, res: Response): P
 
     const interval = setInterval(async () => {
       const items = await getItems(req.body.transactionId)
-      const orderStatus = checkItems(items, await getTransactionHistoryFromId(req.body.transactionId))
+      const orderStatus = checkItems(items, await getOrderFromId(req.body.transactionId))
 
       if (orderStatus === Status.Complete) {
         let price = 0
@@ -135,7 +135,7 @@ export async function subscribePushNotifications(req: Request, res: Response): P
           sendNotification(token, messageComplete)
         }
 
-        updateTransactionHistoryInner({
+        updateOrderInner({
           body: {
             id: req.body.transactionId,
             order_complete: new Date(),
@@ -152,7 +152,7 @@ export async function subscribePushNotifications(req: Request, res: Response): P
         if (orderStatus === Status.Cancelled && token) {
           sendNotification(token, messageCancelled)
         }
-        updateTransactionHistoryInner({
+        updateOrderInner({
           body: {
             id: req.body.transactionId,
             order_complete: new Date(),

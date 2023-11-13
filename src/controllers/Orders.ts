@@ -5,15 +5,12 @@ import { OrderItemDto, OrderDto } from '../utils/dtos'
 
 const prisma = new PrismaClient()
 
-export const backToFrontTransactionHistories = async (
-  transactionHistories: Order[],
-  college: string
-): Promise<OrderDto[]> => {
+export const backToFrontOrders = async (orders: Order[], college: string): Promise<OrderDto[]> => {
   const res: OrderDto[] = []
-  for (const item of transactionHistories) {
+  for (const item of orders) {
     const user: User = await getUserFromId(item.userId)
-    const th: Order & { orderItems: OrderItem[] } = await getTransactionHistoryFromId(item.id)
-    const tis: OrderItemDto[] = await backToFrontTransactionItems(th)
+    const th: Order & { orderItems: OrderItem[] } = await getOrderFromId(item.id)
+    const tis: OrderItemDto[] = await backToFrontOrderItems(th)
     if (item) {
       const newItem: OrderDto = {
         id: item.id,
@@ -31,13 +28,13 @@ export const backToFrontTransactionHistories = async (
   return res
 }
 
-// returns all transactionHistories of a specific college within the last 6 hours
-export async function getRecentCollegeTransactionHistories(req: Request, res: Response): Promise<void> {
+// returns all orders of a specific college within the last 6 hours
+export async function getRecentOrdersFromCollege(req: Request, res: Response): Promise<void> {
   try {
     const college = await getCollegeFromName(req.params.college)
     const date = new Date(Date.now() - 36e5 * 6) // select only transactions from after 6 hours before this moment
 
-    const validTransactionHistories = await prisma.order.findMany({
+    const validOrders = await prisma.order.findMany({
       where: {
         collegeId: college.id,
         createdAt: {
@@ -49,13 +46,10 @@ export async function getRecentCollegeTransactionHistories(req: Request, res: Re
       },
     })
 
-    const frontValidTransactionHisotries = await backToFrontTransactionHistories(
-      validTransactionHistories,
-      college.name
-    )
+    const frontValidOrders = await backToFrontOrders(validOrders, college.name)
 
     const ret = {
-      transactionHistories: frontValidTransactionHisotries,
+      transactionHistories: frontValidOrders,
     }
 
     res.send(JSON.stringify(ret))
@@ -65,14 +59,14 @@ export async function getRecentCollegeTransactionHistories(req: Request, res: Re
   }
 }
 
-// returns all of the transaction histories along with their items
+// returns all of the orders along with their items
 // used for the staff payments screen
 // will probably not be able to do this once there are enough orders...
-export async function getAllCollegeTransactionHistories(req: Request, res: Response): Promise<void> {
+export async function getAllOrdersFromCollege(req: Request, res: Response): Promise<void> {
   try {
     const college = await getCollegeFromName(req.params.college)
 
-    const validTransactionHistories = await prisma.order.findMany({
+    const validOrders = await prisma.order.findMany({
       where: {
         collegeId: college.id,
       },
@@ -81,13 +75,10 @@ export async function getAllCollegeTransactionHistories(req: Request, res: Respo
       },
     })
 
-    const frontValidTransactionHisotries = await backToFrontTransactionHistories(
-      validTransactionHistories,
-      college.name
-    )
+    const frontValidOrders = await backToFrontOrders(validOrders, college.name)
 
     const ret = {
-      transactionHistories: frontValidTransactionHisotries,
+      transactionHistories: frontValidOrders,
     }
 
     res.send(JSON.stringify(ret))
@@ -133,7 +124,7 @@ const getMenuItemFromId = async (id: number): Promise<MenuItem> => {
   return item
 }
 
-const getTransactionHistoryFromId = async (id: number): Promise<Order & { orderItems: OrderItem[] }> => {
+const getOrderFromId = async (id: number): Promise<Order & { orderItems: OrderItem[] }> => {
   const res = await prisma.order.findUnique({
     include: {
       orderItems: true,
@@ -145,13 +136,11 @@ const getTransactionHistoryFromId = async (id: number): Promise<Order & { orderI
   return res
 }
 
-const backToFrontTransactionItems = async (
-  transactionHistory: Order & { orderItems: OrderItem[] }
-): Promise<OrderItemDto[]> => {
-  const transactionItems: OrderItemDto[] = []
-  for (const item of transactionHistory.orderItems) {
+const backToFrontOrderItems = async (order: Order & { orderItems: OrderItem[] }): Promise<OrderItemDto[]> => {
+  const orderItems: OrderItemDto[] = []
+  for (const item of order.orderItems) {
     const menuItem = await getMenuItemFromId(item.menuItemId)
-    const user = await getUserFromId(transactionHistory.userId)
+    const user = await getUserFromId(order.userId)
     if (item) {
       const newItem: OrderItemDto = {
         itemCost: item.price,
@@ -161,26 +150,26 @@ const backToFrontTransactionItems = async (
         id: item.id,
         user: user.name,
       }
-      transactionItems.push(newItem)
+      orderItems.push(newItem)
     }
   }
-  return transactionItems
+  return orderItems
 }
 
-export async function getTransactionHistory(req: Request, res: Response): Promise<void> {
+export async function getOrder(req: Request, res: Response): Promise<void> {
   try {
-    const transactionHistory = await getTransactionHistoryFromId(parseInt(req.params.transactionId))
-    const college = await getCollegeFromId(transactionHistory.collegeId)
-    const user = await getUserFromId(transactionHistory.userId)
-    const transactionItems = await backToFrontTransactionItems(transactionHistory)
+    const order = await getOrderFromId(parseInt(req.params.transactionId))
+    const college = await getCollegeFromId(order.collegeId)
+    const user = await getUserFromId(order.userId)
+    const orderItems = await backToFrontOrderItems(order)
 
     const ret = {
-      id: transactionHistory.id,
+      id: order.id,
       college: college.name,
-      inProgress: transactionHistory.status,
-      price: transactionHistory.price,
+      inProgress: order.status,
+      price: order.price,
       userId: user.id,
-      transactionItems: transactionItems,
+      transactionItems: orderItems,
     }
 
     res.send(JSON.stringify(ret))
@@ -190,10 +179,10 @@ export async function getTransactionHistory(req: Request, res: Response): Promis
   }
 }
 
-export async function createTransactionHistory(req: Request, res: Response): Promise<void> {
+export async function createOrder(req: Request, res: Response): Promise<void> {
   try {
     const order_placed = new Date()
-    const in_progress = req.body.inProgress
+    // const in_progress = req.body.inProgress
     const total_price = parseInt(req.body.price)
     const payment_intent_id = req.body.paymentIntentId
     const college = await getCollegeFromName(req.body.college)
@@ -201,22 +190,21 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
     const college_id = college.id
     const queue_size_on_placement = 0 // change later, not super necessary
 
-    // make array of transaction items
-    const transaction_items: OrderItemDto[] = req.body.transactionItems
-    const transactionItems = []
-    for (const item of transaction_items) {
+    const inputOrderItems: OrderItemDto[] = req.body.transactionItems
+    const orderItems = []
+    for (const item of inputOrderItems) {
       if (item) {
         const newItem = {
           item_cost: item.itemCost,
           order_status: item.orderStatus,
           menuItemId: item.menuItemId,
         }
-        transactionItems.push(newItem)
+        orderItems.push(newItem)
       }
     }
 
     // store the transaction in the database
-    const newTransaction = await prisma.order.create({
+    const newOrder = await prisma.order.create({
       data: {
         status: 'QUEUED',
         placedAt: order_placed,
@@ -236,30 +224,30 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
         },
         orderItems: {
           createMany: {
-            data: transactionItems,
+            data: orderItems,
           },
         },
       },
     })
 
-    const sendTransaction = {
-      id: newTransaction.id,
+    const sendOrder = {
+      id: newOrder.id,
       college: req.body.college,
       inProgress: req.body.inProgress,
       price: req.body.price,
       userId: req.body.userId,
-      transactionItems: transactionItems,
+      transactionItems: orderItems,
     }
-    res.send(JSON.stringify(sendTransaction))
+    res.send(JSON.stringify(sendOrder))
   } catch (e) {
     console.log(e)
     res.status(400).send(e)
   }
 }
 
-export async function updateTransactionHistoryInner(req: any): Promise<Order> {
+export async function updateOrderInner(req: any): Promise<Order> {
   try {
-    const transactionHistory = await prisma.order.update({
+    const order = await prisma.order.update({
       where: {
         id: req.body.id,
       },
@@ -270,15 +258,15 @@ export async function updateTransactionHistoryInner(req: any): Promise<Order> {
         stripeFee: req.body.stripe_fee || undefined,
       },
     })
-    return transactionHistory
+    return order
   } catch (e) {
     console.log(e)
   }
 }
 
-export async function updateTransactionHistory(req: Request, res: Response): Promise<void> {
+export async function updateOrder(req: Request, res: Response): Promise<void> {
   try {
-    const transactionHistory = await prisma.order.update({
+    const order = await prisma.order.update({
       where: {
         id: req.body.id,
       },
@@ -289,15 +277,15 @@ export async function updateTransactionHistory(req: Request, res: Response): Pro
         stripeFee: req.body.stripe_fee || undefined,
       },
     })
-    res.send(JSON.stringify(transactionHistory))
+    res.send(JSON.stringify(order))
   } catch (e) {
     res.status(400).send(e)
   }
 }
 
-export async function updateTransactionItem(req: Request, res: Response): Promise<void> {
+export async function updateOrderItem(req: Request, res: Response): Promise<void> {
   try {
-    const transactionItem = await prisma.orderItem.update({
+    const orderItem = await prisma.orderItem.update({
       where: {
         id: req.body.id,
       },
@@ -305,7 +293,7 @@ export async function updateTransactionItem(req: Request, res: Response): Promis
         status: req.body.orderStatus,
       },
     })
-    res.send(JSON.stringify(transactionItem))
+    res.send(JSON.stringify(orderItem))
   } catch (e) {
     console.log(e)
     res.status(400).send(e)

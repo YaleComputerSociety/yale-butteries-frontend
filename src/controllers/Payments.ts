@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 import Stripe from 'stripe'
-import { getCollegeFromName } from './TransactionHistory'
+import { getCollegeFromName } from './Orders'
 
 export interface TypedRequestBody<T> extends Request {
   body: T

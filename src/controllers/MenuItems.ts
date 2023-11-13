@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { Request, Response } from 'express'
-import { getCollegeFromName } from './TransactionHistory'
+import { getCollegeFromName } from './Orders'
 import { MenuItemDto } from '../utils/dtos'
 
 const prisma = new PrismaClient()

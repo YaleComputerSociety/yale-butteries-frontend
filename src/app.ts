@@ -5,7 +5,7 @@ import session from 'express-session'
 import collegeRouter from './routes/CollegeApi'
 import menuItemRouter from './routes/MenuItemApi'
 import userRouter from './routes/UserApi'
-import transactionRouter from './routes/TransactionHistoryApi'
+import orderRouter from './routes/OrderApi'
 import paymentRouter from './routes/PaymentApi'
 import notifsRouter from './routes/PushNotificationsApi'
 import passport from './controllers/Auth'
@@ -30,7 +30,7 @@ const app: express.Express = express()
 // API Routes
 app.use('/api/colleges', collegeRouter)
 app.use('/api/menu_items', menuItemRouter)
-app.use('/api/transactions', transactionRouter)
+app.use('/api/transactions', orderRouter)
 app.use('/api/users', userRouter)
 app.use('/api/payments', paymentRouter)
 app.use('/api/notifs', notifsRouter)
