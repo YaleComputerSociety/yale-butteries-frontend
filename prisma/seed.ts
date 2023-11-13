@@ -301,6 +301,7 @@ const main = async () => {
     create: {
       name: "Stephen Slade's Microwavable Lunch",
       price: 100,
+      limited_time: false,
       college: {
         connect: { id: 1 },
       },

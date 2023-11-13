@@ -1,4 +1,4 @@
-import { PrismaClient, TransactionItem, TransactionHistory } from '@prisma/client'
+import { PrismaClient, OrderItem, Order } from '@prisma/client'
 import { Request, Response } from 'express'
 import { Expo } from 'expo-server-sdk'
 import { updateTransactionHistoryInner } from './TransactionHistory'
@@ -27,12 +27,10 @@ export const stripe = new Stripe(
   }
 )
 
-const getTransactionHistoryFromId = async (
-  id: number
-): Promise<TransactionHistory & { transaction_items: TransactionItem[] }> => {
-  const res = await prisma.transactionHistory.findUnique({
+const getTransactionHistoryFromId = async (id: number): Promise<Order & { orderItems: OrderItem[] }> => {
+  const res = await prisma.order.findUnique({
     include: {
-      transaction_items: true,
+      orderItems: true,
     },
     where: {
       id: id,
@@ -42,23 +40,23 @@ const getTransactionHistoryFromId = async (
 }
 
 const getPaymentIntentIdFromId = async (id: number): Promise<string> => {
-  const res = await prisma.transactionHistory.findUnique({
+  const res = await prisma.order.findUnique({
     where: {
       id: id,
     },
   })
-  return res.payment_intent_id
+  return res.paymentIntentId
 }
 
-const checkItems = (items: TransactionItem[], transactionHistory: TransactionHistory): number => {
-  const transactionLifetime = Math.abs(new Date().getTime() - transactionHistory.order_placed.getTime()) / 36e5
-  if (items.every((i) => i.order_status === 'CANCELLED')) {
+const checkItems = (items: OrderItem[], order: Order): number => {
+  const transactionLifetime = Math.abs(new Date().getTime() - order.placedAt.getTime()) / 36e5
+  if (items.every((i) => i.status === 'CANCELLED')) {
     console.log('Order cancelled :(')
     return Status.Cancelled
   } else if (transactionLifetime > 6) {
     console.log('Order timed out')
     return Status.TimedOut
-  } else if (items.every((i) => i.order_status === 'CANCELLED' || i.order_status === 'FINISHED')) {
+  } else if (items.every((i) => i.status === 'CANCELLED' || i.status === 'READY')) {
     console.log('order complete')
     return Status.Complete
   } else {
@@ -66,7 +64,7 @@ const checkItems = (items: TransactionItem[], transactionHistory: TransactionHis
   }
 }
 async function getItems(id: string) {
-  return (await getTransactionHistoryFromId(parseInt(id))).transaction_items
+  return (await getTransactionHistoryFromId(parseInt(id))).orderItems
 }
 
 const sendNotification = async (expoPushToken: string, data: NotificationMessage) => {
@@ -126,8 +124,8 @@ export async function subscribePushNotifications(req: Request, res: Response): P
       if (orderStatus === Status.Complete) {
         let price = 0
         items.forEach((i) => {
-          if (i.order_status === 'FINISHED') {
-            price += i.item_cost
+          if (i.status === 'READY') {
+            price += i.price
           }
         })
 
