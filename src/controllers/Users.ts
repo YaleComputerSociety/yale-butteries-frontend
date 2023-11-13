@@ -1,9 +1,12 @@
 import { Request, Response } from 'express'
 
+import { UserRole } from '@prisma/client'
 import prisma from '../prismaClient'
-import { backToFrontOrders, getCollegeFromName } from './Orders'
+import { backToFrontOrders } from './Orders'
 import { stripe } from './Payments'
 import { UserDto } from '../utils/dtos'
+import { findUserByNetId, getCollegeFromName, isUserRole } from '../utils/prismaUtils'
+import { formatUserDto } from '../utils/dtoConverters'
 
 export async function getAllUsers(_req: Request, res: Response): Promise<void> {
   try {
@@ -55,76 +58,76 @@ export async function getUser(req: Request, res: Response): Promise<void> {
   }
 }
 
+interface CreateUserRequestBody {
+  netid: string
+  college?: string
+  name?: string
+  permissions?: string
+  email?: string
+  token?: string
+}
+
+interface NewUserData {
+  netId: string
+  name: string
+  college: {
+    connect: {
+      id: number
+    }
+  }
+  role?: UserRole
+  token?: string
+  email?: string
+}
+
+async function createUserRecord(data: CreateUserRequestBody) {
+  const collegeData = await getCollegeFromName(data.name)
+
+  const userData: NewUserData = {
+    netId: data.netid,
+    name: data.name ? data.name : data.netid,
+    college: {
+      connect: {
+        id: collegeData.id,
+      },
+    },
+  }
+
+  if (data.permissions && isUserRole(data.permissions)) userData.role = data.permissions
+  if (data.email) userData.email = data.email
+  if (data.token) userData.token = data.token
+
+  return await prisma.user.create({ data: userData })
+}
+
 export async function createUser(req: Request, res: Response): Promise<void> {
   try {
-    const { netid, email, name, token, permissions, college } = req.body
+    const { netid } = req.body
 
     if (!netid) {
       res.status(400).send('Required fields are missing')
       return
     }
 
-    const existingUser = await prisma.user.findFirst({
-      where: {
-        netId: req.body.netid,
-      },
-      include: {
-        college: true,
-      },
-    })
-    console.log(existingUser)
-
+    // In case the user already exists
+    const existingUser = await findUserByNetId(netid)
     if (existingUser) {
-      const frontUser: UserDto = {
-        email: existingUser.email,
-        netid: existingUser.netId,
-        name: existingUser.name,
-        permissions: existingUser.role,
-        college: existingUser.college.name,
-        id: existingUser.id,
-      }
-
-      res.send(JSON.stringify(frontUser))
+      res.send(JSON.stringify(await formatUserDto(existingUser)))
       return
     }
 
-    const collegeData = await getCollegeFromName(req.body.college)
+    const newUser = await createUserRecord(req.body)
 
-    const newUser = await prisma.user.create({
-      data: {
-        netId: req.body.netid || undefined,
-        email: req.body.email || undefined,
-        name: req.body.name,
-        token: req.body.token || undefined,
-        role: req.body.permissions || 'customer',
-        college: {
-          connect: {
-            id: collegeData.id || 1,
-          },
-        },
-      },
-    })
+    // await stripe.customers.create({
+    //   email: req.body.email,
+    //   name: req.body.name,
+    //   metadata: { userId: newUser.id },
+    // })
 
-    await stripe.customers.create({
-      email: req.body.email,
-      name: req.body.name,
-      metadata: { userId: newUser.id },
-    })
-
-    const frontUser: UserDto = {
-      email: newUser.email,
-      netid: newUser.netId,
-      name: newUser.name,
-      permissions: 'customer',
-      college: req.body.college,
-      id: newUser.id,
-    }
-
-    console.log(frontUser)
-    res.send(JSON.stringify(frontUser))
+    res.send(JSON.stringify(formatUserDto(newUser)))
   } catch (e) {
     console.log(e)
-    res.status(400).send(e)
+    res.status(500).send(e)
   }
 }
 

@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { College, User, OrderItem, Order, MenuItem } from '@prisma/client'
 import { OrderItemDto, OrderDto } from '../utils/dtos'
 import prisma from '../prismaClient'
+import { getCollegeFromName } from '../utils/prismaUtils'
 
 export const backToFrontOrders = async (orders: Order[], college: string): Promise<OrderDto[]> => {
   const res: OrderDto[] = []
@@ -91,15 +92,6 @@ export const getCollegeFromId = async (id: number): Promise<College> => {
   const college = await prisma.college.findUnique({
     where: {
       id: id,
-    },
-  })
-  return college
-}
-
-export const getCollegeFromName = async (name: string): Promise<College> => {
-  const college = await prisma.college.findFirst({
-    where: {
-      name: name,
     },
   })
   return college
