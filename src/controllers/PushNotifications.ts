@@ -1,8 +1,9 @@
-import { PrismaClient, OrderItem, Order } from '@prisma/client'
+import { OrderItem, Order } from '@prisma/client'
 import { Request, Response } from 'express'
 import { Expo } from 'expo-server-sdk'
 import { updateOrderInner } from './Orders'
 import Stripe from 'stripe'
+import prisma from '../prismaClient'
 
 enum Status {
   Incomplete,
@@ -19,7 +20,6 @@ interface NotificationMessage {
 // optionally providing an access token if you have enabled push security
 const environment = process.env.NODE_ENV || 'development'
 
-const prisma = new PrismaClient()
 export const stripe = new Stripe(
   environment === 'development' ? process.env.STRIPE_SECRET_KEY_DEV : process.env.STRIPE_SECRET_KEY_PROD,
   {

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
 import Stripe from 'stripe'
 import { getCollegeFromName } from './Orders'
+import prisma from '../prismaClient'
 
 export interface TypedRequestBody<T> extends Request {
   body: T
@@ -15,8 +15,6 @@ export const stripe = new Stripe(
     apiVersion: '2020-08-27',
   }
 )
-
-const prisma = new PrismaClient()
 
 export async function createPaymentIntent(req: Request, res: Response): Promise<void> {
   try {

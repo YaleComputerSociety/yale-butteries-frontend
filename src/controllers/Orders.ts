@@ -1,9 +1,8 @@
 import { Request, Response } from 'express'
 
-import { College, PrismaClient, User, OrderItem, Order, MenuItem } from '@prisma/client'
+import { College, User, OrderItem, Order, MenuItem } from '@prisma/client'
 import { OrderItemDto, OrderDto } from '../utils/dtos'
-
-const prisma = new PrismaClient()
+import prisma from '../prismaClient'
 
 export const backToFrontOrders = async (orders: Order[], college: string): Promise<OrderDto[]> => {
   const res: OrderDto[] = []

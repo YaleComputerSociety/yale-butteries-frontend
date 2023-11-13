@@ -1,11 +1,9 @@
 import { Request, Response } from 'express'
 
-import { PrismaClient } from '@prisma/client'
+import prisma from '../prismaClient'
 import { backToFrontOrders, getCollegeFromName } from './Orders'
 import { stripe } from './Payments'
 import { UserDto } from '../utils/dtos'
-
-const prisma = new PrismaClient()
 
 export async function getAllUsers(_req: Request, res: Response): Promise<void> {
   try {
@@ -58,8 +56,14 @@ export async function getUser(req: Request, res: Response): Promise<void> {
 }
 
 export async function createUser(req: Request, res: Response): Promise<void> {
-  console.log('hello')
   try {
+    const { netid, email, name, token, permissions, college } = req.body
+
+    if (!netid) {
+      res.status(400).send('Required fields are missing')
+      return
+    }
+
     const existingUser = await prisma.user.findFirst({
       where: {
         netId: req.body.netid,
@@ -68,6 +72,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
         college: true,
       },
     })
+    console.log(existingUser)
 
     if (existingUser) {
       const frontUser: UserDto = {
@@ -83,7 +88,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
       return
     }
 
-    const college = await getCollegeFromName(req.body.college)
+    const collegeData = await getCollegeFromName(req.body.college)
 
     const newUser = await prisma.user.create({
       data: {
@@ -94,7 +99,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
         role: req.body.permissions || 'customer',
         college: {
           connect: {
-            id: college.id || 1,
+            id: collegeData.id || 1,
           },
         },
       },

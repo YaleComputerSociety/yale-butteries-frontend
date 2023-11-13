@@ -1,9 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from '../prismaClient'
 import { Request, Response } from 'express'
 import { getCollegeFromName } from './Orders'
 import { MenuItemDto } from '../utils/dtos'
-
-const prisma = new PrismaClient()
 
 export async function getAllMenuItems(_: Request, res: Response): Promise<void> {
   try {
