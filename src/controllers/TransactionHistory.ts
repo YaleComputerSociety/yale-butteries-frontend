@@ -1,40 +1,21 @@
-import { College, PrismaClient, User, TransactionItem, TransactionHistory, MenuItem } from '@prisma/client'
-
 import { Request, Response } from 'express'
 
-interface FrontTransactionItem {
-  itemCost: number
-  orderStatus: string
-  menuItemId: number
-  name: string
-  id: number
-  user: string
-}
-
-interface FrontTransactionHistory {
-  id: number
-  college: string
-  inProgress: string
-  price: number
-  userId: number
-  paymentIntentId: string
-  transactionItems: FrontTransactionItem[]
-  creationTime: Date
-}
+import { College, PrismaClient, User, TransactionItem, TransactionHistory, MenuItem } from '@prisma/client'
+import { OrderItemDto, OrderDto } from '../utils/dtos'
 
 const prisma = new PrismaClient()
 
 export const backToFrontTransactionHistories = async (
   transactionHistories: TransactionHistory[],
   college: string
-): Promise<FrontTransactionHistory[]> => {
-  const res: FrontTransactionHistory[] = []
+): Promise<OrderDto[]> => {
+  const res: OrderDto[] = []
   for (const item of transactionHistories) {
     const user: User = await getUserFromId(item.userId)
     const th: TransactionHistory & { transaction_items: TransactionItem[] } = await getTransactionHistoryFromId(item.id)
-    const tis: FrontTransactionItem[] = await backToFrontTransactionItems(th)
+    const tis: OrderItemDto[] = await backToFrontTransactionItems(th)
     if (item) {
-      const newItem: FrontTransactionHistory = {
+      const newItem: OrderDto = {
         id: item.id,
         college: college,
         inProgress: item.in_progress,
@@ -168,13 +149,13 @@ const getTransactionHistoryFromId = async (
 
 const backToFrontTransactionItems = async (
   transactionHistory: TransactionHistory & { transaction_items: TransactionItem[] }
-): Promise<FrontTransactionItem[]> => {
-  const transactionItems: FrontTransactionItem[] = []
+): Promise<OrderItemDto[]> => {
+  const transactionItems: OrderItemDto[] = []
   for (const item of transactionHistory.transaction_items) {
     const menuItem = await getMenuItemFromId(item.menuItemId)
     const user = await getUserFromId(transactionHistory.userId)
     if (item) {
-      const newItem: FrontTransactionItem = {
+      const newItem: OrderItemDto = {
         itemCost: item.item_cost,
         orderStatus: item.order_status,
         menuItemId: item.menuItemId,
@@ -223,7 +204,7 @@ export async function createTransactionHistory(req: Request, res: Response): Pro
     const queue_size_on_placement = 0 // change later, not super necessary
 
     // make array of transaction items
-    const transaction_items: FrontTransactionItem[] = req.body.transactionItems
+    const transaction_items: OrderItemDto[] = req.body.transactionItems
     const transactionItems = []
     for (const item of transaction_items) {
       if (item) {

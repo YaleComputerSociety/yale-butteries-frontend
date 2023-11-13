@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { College, PrismaClient, User, TransactionItem, TransactionHistory, MenuItem } from '@prisma/client'
+import { PrismaClient, College, User, OrderItem, Order, MenuItem } from '@prisma/client'
 import Stripe from 'stripe'
 import { getCollegeFromName } from './TransactionHistory'
 

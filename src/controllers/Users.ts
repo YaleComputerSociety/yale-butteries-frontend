@@ -1,19 +1,11 @@
 import { Request, Response } from 'express'
+
 import { PrismaClient } from '@prisma/client'
 import { backToFrontTransactionHistories, getCollegeFromName } from './TransactionHistory'
 import { stripe } from './Payments'
+import { UserDto } from '../utils/dtos'
 
 const prisma = new PrismaClient()
-
-export interface FrontUser {
-  email: string
-  netid: string
-  name: string
-  college: string
-  permissions: string
-  id: number
-  currentOrder?: unknown
-}
 
 export async function getAllUsers(_req: Request, res: Response): Promise<void> {
   try {
@@ -78,7 +70,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
     })
 
     if (existingUser) {
-      const frontUser: FrontUser = {
+      const frontUser: UserDto = {
         email: existingUser.email,
         netid: existingUser.netid,
         name: existingUser.name,
@@ -114,7 +106,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
       metadata: { userId: newUser.id },
     })
 
-    const frontUser: FrontUser = {
+    const frontUser: UserDto = {
       email: newUser.email,
       netid: newUser.netid,
       name: newUser.name,

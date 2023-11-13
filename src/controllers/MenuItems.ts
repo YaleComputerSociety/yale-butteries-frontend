@@ -1,19 +1,9 @@
 import { PrismaClient } from '@prisma/client'
 import { Request, Response } from 'express'
 import { getCollegeFromName } from './TransactionHistory'
+import { MenuItemDto } from '../utils/dtos'
 
 const prisma = new PrismaClient()
-
-interface FrontMenuItem {
-  id?: number
-  item: string
-  college: string
-  price: number
-  description?: string
-  limitedTime?: boolean
-  isActive: boolean
-  foodType: 'FOOD' | 'DRINK' | 'DESSERT'
-}
 
 export async function getAllMenuItems(_: Request, res: Response): Promise<void> {
   try {
@@ -23,53 +13,35 @@ export async function getAllMenuItems(_: Request, res: Response): Promise<void> 
       },
     })
 
-    // need to translate to front end version of MenuItems
-    const frontMenuItems = []
-    for (const i of menuItems) {
-      const c = await prisma.college.findUnique({
-        where: {
-          id: i.collegeId,
+    const collegeIds = [...new Set(menuItems.map((item) => item.collegeId))]
+
+    const colleges = await prisma.college.findMany({
+      where: {
+        id: {
+          in: collegeIds,
         },
-      })
-      const newItem = {
-        id: i.id,
-        item: i.item,
-        price: i.price,
-        college: c.college,
-        isActive: i.is_active,
-        description: i.description,
-        foodType: i.item_type,
-      }
-      frontMenuItems.push(newItem)
-    }
-    res.send(JSON.stringify(frontMenuItems))
+      },
+    })
+
+    const collegeMap = colleges.reduce((map, college) => {
+      map[college.id] = college.name
+      return map
+    }, {})
+
+    const frontMenuItems = menuItems.map((item) => ({
+      id: item.id,
+      item: item.name,
+      price: item.price,
+      college: collegeMap[item.collegeId],
+      isActive: item.isActive,
+      description: item.description,
+      foodType: item.type,
+    }))
+    res.send(frontMenuItems)
   } catch (e) {
-    res.status(400).send(e)
+    res.status(400).send(e.message)
   }
 }
-
-// export async function getCollegeMenuItems(req: Request, res: Response): Promise<void> {
-//   try {
-//     console.log('eep')
-//     const getCollege = await prisma.college.findUnique({
-//       where: {
-//         college: req.params.college,
-//       },
-//     })
-//     if (!getCollege) throw 'invalid college'
-
-//     const menuItems = await prisma.menuItem.findMany({
-//       where: {
-//         collegeId: getCollege.id,
-//       },
-//     })
-//     console.log(menuItems, getCollege.id)
-//     res.send(JSON.stringify(menuItems))
-//   } catch (e) {
-//     console.log(e)
-//     res.status(400).send(e)
-//   }
-// }
 
 export async function getMenuItem(req: Request, res: Response): Promise<void> {
   try {
@@ -89,7 +61,7 @@ export async function getMenuItem(req: Request, res: Response): Promise<void> {
 
 export async function createMenuItem(req: Request, res: Response): Promise<void> {
   try {
-    const newItem: FrontMenuItem = {
+    const newItem: MenuItemDto = {
       item: req.body.item,
       college: req.body.college,
       price: req.body.price,
@@ -102,10 +74,10 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
 
     const newMenuItem = await prisma.menuItem.create({
       data: {
-        item: newItem.item,
+        name: newItem.item,
         price: newItem.price,
-        is_active: newItem.isActive,
-        item_type: newItem.foodType,
+        isActive: true,
+        type: newItem.foodType,
         college: {
           connect: {
             id: college.id,
@@ -114,7 +86,7 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
         description: newItem.description,
       },
     })
-    res.send(JSON.stringify(newMenuItem.id))
+    res.send(newMenuItem.id)
   } catch (e) {
     res.status(400).send(e)
   }
@@ -127,10 +99,10 @@ export async function updateMenuItem(req: Request, res: Response): Promise<void>
         id: req.body.id,
       },
       data: {
-        item: req.body.item,
+        name: req.body.item,
         price: req.body.price,
-        is_active: req.body.isActive,
-        item_type: req.body.foodType,
+        isActive: req.body.isActive,
+        type: req.body.foodType,
         description: req.body.description,
       },
     })
