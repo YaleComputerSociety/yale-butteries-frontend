@@ -22,19 +22,19 @@ export async function getUser(req: Request, res: Response): Promise<void> {
     const user = await prisma.user.findUnique({
       include: {
         college: true,
-        transaction_histories: true,
+        orders: true,
       },
       where: {
-        id: parseInt(req.params.userId),
+        id: req.params.userId,
       },
     })
 
     let recentOrder = null
     let currentOrder = null
 
-    if (user.transaction_histories.length > 0) {
-      recentOrder = user.transaction_histories[user.transaction_histories.length - 1]
-      const modifiedRecentOrder = (await backToFrontTransactionHistories([recentOrder], user.college.college))[0]
+    if (user.orders.length > 0) {
+      recentOrder = user.orders[user.orders.length - 1]
+      const modifiedRecentOrder = (await backToFrontTransactionHistories([recentOrder], user.college.name))[0]
       if (recentOrder) {
         const lifetime = Math.abs(new Date().getTime() - recentOrder.order_placed.getTime()) / 36e5
         currentOrder = lifetime < 6 ? modifiedRecentOrder : null
@@ -42,9 +42,9 @@ export async function getUser(req: Request, res: Response): Promise<void> {
     }
 
     const frontUser = {
-      college: user.college.college,
+      college: user.college.name,
       id: user.id,
-      permissions: user.permissions,
+      permissions: user.role,
       token: user.token,
       name: user.name,
       email: user.email,
@@ -62,7 +62,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
   try {
     const existingUser = await prisma.user.findFirst({
       where: {
-        netid: req.body.netid,
+        netId: req.body.netid,
       },
       include: {
         college: true,
@@ -72,10 +72,10 @@ export async function createUser(req: Request, res: Response): Promise<void> {
     if (existingUser) {
       const frontUser: UserDto = {
         email: existingUser.email,
-        netid: existingUser.netid,
+        netid: existingUser.netId,
         name: existingUser.name,
-        permissions: existingUser.permissions,
-        college: existingUser.college.college,
+        permissions: existingUser.role,
+        college: existingUser.college.name,
         id: existingUser.id,
       }
 
@@ -87,11 +87,11 @@ export async function createUser(req: Request, res: Response): Promise<void> {
 
     const newUser = await prisma.user.create({
       data: {
-        netid: req.body.netid || undefined,
+        netId: req.body.netid || undefined,
         email: req.body.email || undefined,
         name: req.body.name,
         token: req.body.token || undefined,
-        permissions: req.body.permissions || 'customer',
+        role: req.body.permissions || 'customer',
         college: {
           connect: {
             id: college.id || 1,
@@ -108,7 +108,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
 
     const frontUser: UserDto = {
       email: newUser.email,
-      netid: newUser.netid,
+      netid: newUser.netId,
       name: newUser.name,
       permissions: 'customer',
       college: req.body.college,
@@ -130,7 +130,7 @@ export async function updateUser(req: Request, res: Response): Promise<void> {
         id: req.body.id,
       },
       data: {
-        netid: req.body.netid || undefined,
+        netId: req.body.netid || undefined,
         email: req.body.email || undefined,
         name: req.body.name || undefined,
       },
@@ -151,7 +151,7 @@ export async function verifyStaffLogin(req: Request, res: Response): Promise<voi
   try {
     const user = await prisma.user.findUnique({
       where: {
-        id: 3,
+        id: '3',
       },
     })
     let ret = false
