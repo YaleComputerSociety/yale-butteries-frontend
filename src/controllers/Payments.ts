@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { PrismaClient, College, User, OrderItem, Order, MenuItem } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 import Stripe from 'stripe'
 import { getCollegeFromName } from './TransactionHistory'
 
@@ -58,7 +58,7 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
     const backendItems = await prisma.menuItem.findMany({
       where: {
         collegeId: college.id,
-        is_active: true,
+        isActive: true,
       },
     })
 
