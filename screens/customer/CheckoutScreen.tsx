@@ -4,6 +4,7 @@ import { checkout } from '../../styles/CheckoutStyles'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { loading } from '../../styles/GlobalStyles'
 import CheckoutItem from '../../components/customer/CheckoutItem'
+import * as Device from 'expo-device'
 import { priceToText, returnCollegeName } from '../../Functions'
 import {
   StripeProvider,
@@ -71,6 +72,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
 
     const obj = { userId: currentUser.id, price: price, items: orderItems, college: collegeOrderCart }
+    console.log('hello3')
     const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
       method: 'POST',
       body: JSON.stringify(obj),
@@ -105,21 +107,42 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     return data.paymentIntent
   }
 
+  const safetyCheck = () => {
+    Alert.alert(
+      'Are you sure you would like to place this order?',
+      'This action cannot be undone',
+      [
+        { text: "Yes, I'm Sure", onPress: makePayment },
+        {
+          text: 'Cancel',
+          onPress: () => {
+            updateDisabled(false)
+            return
+          },
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    )
+  }
+
   const makePayment = async () => {
     try {
-      const paymentIntent = await showPaymentSheet()
+      // const paymentIntent = await showPaymentSheet()
 
       // user cancelled or there was an error
-      if (!paymentIntent) {
-        updateDisabled(false)
-        return
-      }
+      // if (!paymentIntent) {
+      //   updateDisabled(false)
+      //   return
+      // }
 
       interface tempItem {
         itemCost: number
         orderStatus: string
         menuItemId: number
       }
+      console.log('hello1')
 
       const transaction_items: tempItem[] = []
       orderItems.forEach((item) => {
@@ -141,7 +164,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           price: price,
           userId: currentUser.id,
           college: collegeOrderCart,
-          paymentIntentId: paymentIntent.id,
+          paymentIntentId: 'no payment', //currently not accepting payments
           transactionItems: transaction_items,
         }),
         headers: {
@@ -154,11 +177,19 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       // console.log('transaction created: ', uploadTransactionResponse.id)
       dispatch(setTransactionHistoryState(uploadTransactionResponse))
 
-      Alert.alert('Payment complete, thank you!')
+      Alert.alert('Order placed! Thank you.')
       updateDisabled(false)
 
       // console.log(push)
-      const token = (await Notifications.getExpoPushTokenAsync()).data
+
+      let token = ''
+
+      if (Device.isDevice) {
+        token = (await Notifications.getDevicePushTokenAsync()).data
+      } else {
+        console.log('not a device')
+      }
+
       const subscribeNotification = await fetch(baseUrl + 'api/notifs', {
         method: 'POST',
         body: JSON.stringify({
@@ -169,8 +200,10 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           'Content-Type': 'application/json',
         },
       })
+
       const subscribeNotificationResponse = await subscribeNotification.json()
-      // console.log(subscribeNotificationResponse)
+      console.log(subscribeNotificationResponse)
+
       navigation.navigate('OrderStatusScreen')
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch (err) {
@@ -225,7 +258,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 ]}
                 onPress={() => {
                   updateDisabled(true)
-                  makePayment()
+                  safetyCheck()
                 }}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>
