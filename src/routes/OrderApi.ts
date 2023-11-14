@@ -12,9 +12,9 @@ const router = express.Router()
 
 router.get('/recent/college/:college', getRecentOrdersFromCollege)
 router.get('/college/:college', getAllOrdersFromCollege)
-router.get('/:transactionId', getOrder)
+router.get('/:orderId', getOrder)
 router.put('/', updateOrder)
-router.put('/:itemId', updateOrderItem)
+router.put('/:orderItemId', updateOrderItem)
 router.post('/', createOrder)
 
 export default router

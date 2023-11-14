@@ -149,7 +149,12 @@ const backToFrontOrderItems = async (order: Order & { orderItems: OrderItem[] })
 
 export async function getOrder(req: Request, res: Response): Promise<void> {
   try {
-    const order = await getOrderFromId(parseInt(req.params.transactionId))
+    const order = await getOrderFromId(parseInt(req.params.orderId))
+    if (!order) {
+      res.status(400).send('Order not found')
+      return
+    }
+
     const college = await getCollegeFromId(order.collegeId)
     const user = await getUserFromId(order.userId)
     const orderItems = await backToFrontOrderItems(order)
@@ -166,7 +171,7 @@ export async function getOrder(req: Request, res: Response): Promise<void> {
     res.send(JSON.stringify(ret))
   } catch (e) {
     console.log(e)
-    res.status(400).send(e)
+    res.status(500).send(e)
   }
 }
 

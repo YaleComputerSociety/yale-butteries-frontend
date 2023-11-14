@@ -29,8 +29,8 @@ const app: express.Express = express()
 
 // API Routes
 app.use('/api/colleges', collegeRouter)
-app.use('/api/menu_items', menuItemRouter)
-app.use('/api/transactions', orderRouter)
+app.use('/api/menu-items', menuItemRouter)
+app.use('/api/orders', orderRouter)
 app.use('/api/users', userRouter)
 app.use('/api/payments', paymentRouter)
 app.use('/api/notifs', notifsRouter)

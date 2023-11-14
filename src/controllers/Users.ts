@@ -30,6 +30,8 @@ export async function getUser(req: Request, res: Response): Promise<void> {
       },
     })
 
+    console.log(user)
+
     let recentOrder = null
     let currentOrder = null
 
@@ -124,7 +126,7 @@ export async function createUser(req: Request, res: Response): Promise<void> {
     //   metadata: { userId: newUser.id },
     // })
 
-    res.send(JSON.stringify(formatUserDto(newUser)))
+    res.send(JSON.stringify(await formatUserDto(newUser)))
   } catch (e) {
     console.log(e)
     res.status(500).send(e)
@@ -133,15 +135,25 @@ export async function createUser(req: Request, res: Response): Promise<void> {
 
 export async function updateUser(req: Request, res: Response): Promise<void> {
   try {
+    interface userUpdateData {
+      name?: string
+      email?: string
+    }
+
+    if (!req.params.userId) {
+      res.status(400).send('Required fields are missing')
+      return
+    }
+
+    const userData: userUpdateData = {}
+    if (req.body.name) userData.name = req.body.name
+    if (req.body.email) userData.email = req.body.email
+
     const user = await prisma.user.update({
       where: {
-        id: req.body.id,
+        id: req.params.userId,
       },
-      data: {
-        netId: req.body.netid || undefined,
-        email: req.body.email || undefined,
-        name: req.body.name || undefined,
-      },
+      data: userData,
     })
     res.send(JSON.stringify(user))
   } catch (e) {
@@ -157,9 +169,10 @@ const includeProperty = {
 
 export async function verifyStaffLogin(req: Request, res: Response): Promise<void> {
   try {
+    // this needs to be fixed but we also wont use this in the future
     const user = await prisma.user.findUnique({
       where: {
-        id: '3',
+        id: '89839659-e7b1-4e3d-ad6e-fd30fca49a75',
       },
     })
     let ret = false

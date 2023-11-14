@@ -205,12 +205,12 @@ const main = async () => {
     },
     update: {},
     create: {
-      netId: 'awg32',
-      name: 'Trumbullman',
+      netId: 'guest',
+      name: 'appletester',
       token: 'jugglemaster',
       role: 'STAFF',
       college: {
-        connect: { id: 7 },
+        connect: { id: 14 },
       },
     },
   })
