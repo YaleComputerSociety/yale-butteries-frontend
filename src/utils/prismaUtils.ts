@@ -1,6 +1,6 @@
 // This file contains general functions relating to the prisma database
 
-import { User, College, UserRole } from '@prisma/client'
+import { User, College, UserRole, MenuItemType } from '@prisma/client'
 import prisma from '../prismaClient'
 
 export async function findUserByNetId(netId: string): Promise<(User & { college: College }) | null> {
@@ -46,4 +46,8 @@ export const getCollegeNameFromId = async (id: number): Promise<string | null> =
 
 export function isUserRole(value: string): value is UserRole {
   return Object.values(UserRole).includes(value as UserRole)
+}
+
+export function isMenuItemType(value: string): value is MenuItemType {
+  return Object.values(MenuItemType).includes(value as MenuItemType)
 }

@@ -1,7 +1,8 @@
 import prisma from '../prismaClient'
 import { Request, Response } from 'express'
-import { getCollegeFromName } from '../utils/prismaUtils'
+import { getCollegeFromName, isMenuItemType } from '../utils/prismaUtils'
 import { MenuItemDto } from '../utils/dtos'
+import { MenuItemType } from '@prisma/client'
 
 export async function getAllMenuItems(_: Request, res: Response): Promise<void> {
   try {
@@ -58,34 +59,44 @@ export async function getMenuItem(req: Request, res: Response): Promise<void> {
 }
 
 export async function createMenuItem(req: Request, res: Response): Promise<void> {
+  interface NewMenuItem {
+    name: string
+    price: number
+    college: {
+      connect: {
+        id: number
+      }
+    }
+    description?: string
+    isActive?: boolean
+    type?: MenuItemType
+  }
   try {
-    const newItem: MenuItemDto = {
-      item: req.body.item,
-      college: req.body.college,
-      price: req.body.price,
-      isActive: req.body.isActive,
-      foodType: req.body.foodType,
-      description: req.body.description,
+    if (!req.body.item || !req.body.price || !req.body.college) {
+      res.status(400).send('Required fields are missing')
+      return
     }
 
-    const college = await getCollegeFromName(newItem.college)
+    const collegeData = await getCollegeFromName(req.body.college)
 
-    const newMenuItem = await prisma.menuItem.create({
-      data: {
-        name: newItem.item,
-        price: newItem.price,
-        isActive: true,
-        type: newItem.foodType,
-        college: {
-          connect: {
-            id: college.id,
-          },
+    const menuItemData: NewMenuItem = {
+      name: req.body.item,
+      price: parseInt(req.body.price),
+      college: {
+        connect: {
+          id: collegeData.id,
         },
-        description: newItem.description,
       },
-    })
-    res.send(newMenuItem.id)
+    }
+
+    if (req.body.type && isMenuItemType(req.body.type)) menuItemData.type = req.body.type
+    if (req.body.isActive) menuItemData.isActive = req.body.email
+    menuItemData.description = req.body.description ? req.body.description : 'No description provided'
+
+    const newMenuItem = await prisma.menuItem.create({ data: menuItemData })
+    res.send(JSON.stringify(newMenuItem.id))
   } catch (e) {
+    console.log(e)
     res.status(400).send(e)
   }
 }
