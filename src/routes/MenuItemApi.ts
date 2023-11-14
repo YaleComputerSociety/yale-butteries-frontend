@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.get('/', getAllMenuItems)
 router.get('/:menuItemId', getMenuItem)
-router.put('/', updateMenuItem)
+router.put('/:menuItemId', updateMenuItem)
 router.post('/', createMenuItem)
 
 export default router

@@ -102,21 +102,47 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
 }
 
 export async function updateMenuItem(req: Request, res: Response): Promise<void> {
+  interface MenuItemUpdateData {
+    name?: string
+    price?: number
+    isActive?: boolean
+    description?: string
+    type?: MenuItemType
+  }
+
   try {
-    const targetMenuItem = await prisma.menuItem.update({
+    if (Number.isInteger(req.params.menuItemId)) {
+      res.status(400).send('Invalid menu item ID')
+      return
+    }
+
+    const menuItem = await prisma.menuItem.findUnique({
       where: {
-        id: req.body.id,
-      },
-      data: {
-        name: req.body.item,
-        price: req.body.price,
-        isActive: req.body.isActive,
-        type: req.body.foodType,
-        description: req.body.description,
+        id: parseInt(req.params.menuItemId),
       },
     })
-    res.send(JSON.stringify(targetMenuItem))
+
+    if (!menuItem) {
+      res.status(400).send('No menu item found at specified ID')
+      return
+    }
+
+    const menuItemData: MenuItemUpdateData = {}
+    if (req.body.name) menuItemData.name = req.body.name
+    if (req.body.price && Number.isInteger(parseInt(req.body.price))) menuItemData.price = parseInt(req.body.price)
+    if (req.body.isActive) menuItemData.isActive = req.body.isActive !== 'false'
+    if (req.body.description) menuItemData.description = req.body.description
+    if (req.body.type && isMenuItemType(req.body.type)) menuItemData.type = req.body.type
+
+    const newMenuItem = await prisma.menuItem.update({
+      where: {
+        id: parseInt(req.params.menuItemId),
+      },
+      data: menuItemData,
+    })
+    res.send(JSON.stringify(newMenuItem))
   } catch (e) {
+    console.log(e)
     res.status(400).send(e)
   }
 }
