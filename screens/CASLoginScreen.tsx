@@ -24,13 +24,8 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   // Find out if the user is currently in the app, for duo push glitches
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
-      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
-        console.log('App has come to the foreground!')
-      }
-
       appState.current = nextAppState
       setAppStateVisible(appState.current)
-      console.log('AppState', appState.current)
     })
 
     return () => {
@@ -72,7 +67,7 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   useEffect(() => {
     if (isFocused && currentUser) {
-      if (currentUser.permissions === 'staff') {
+      if (currentUser.permissions === 'STAFF') {
         navigation.navigate('NavigationScreen')
       } else {
         navigation.navigate('ButteriesScreen')

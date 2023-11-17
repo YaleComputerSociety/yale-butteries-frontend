@@ -53,7 +53,7 @@ export const asyncFetchMenuItems = () => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(setIsLoading(true))
     try {
-      const menuItems = await fetch(baseUrl + 'api/menu_items', {
+      const menuItems = await fetch(baseUrl + 'api/menu-items', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -87,8 +87,9 @@ export const asyncFetchMenuItems = () => {
 
 export const asyncUpdateMenuItem = (menuItem: MenuItem) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
+    console.log(menuItem)
     try {
-      const updateItem = await fetch(baseUrl + 'api/menu_items', {
+      const updateItem = await fetch(baseUrl + 'api/menu-items/' + menuItem.id, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -96,7 +97,6 @@ export const asyncUpdateMenuItem = (menuItem: MenuItem) => {
         body: JSON.stringify(menuItem),
       })
       const data = await updateItem.json().then(() => {
-        console.log(data)
         dispatch(updateMenuItem(menuItem))
       })
       return true
@@ -113,7 +113,7 @@ export const asyncAddMenuItem = (menuItem: MenuItem) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(setIsLoading(true))
     try {
-      const menuItems = await fetch(baseUrl + 'api/menu_items', {
+      const menuItems = await fetch(baseUrl + 'api/menu-items', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +121,6 @@ export const asyncAddMenuItem = (menuItem: MenuItem) => {
         body: JSON.stringify(menuItem),
       })
       const data = await menuItems.json()
-      console.log(data)
       dispatch(addMenuItem(menuItem))
       return true
     } catch (e) {

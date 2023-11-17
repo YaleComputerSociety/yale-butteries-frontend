@@ -6,13 +6,7 @@ import { loading } from '../../styles/GlobalStyles'
 import CheckoutItem from '../../components/customer/CheckoutItem'
 import * as Device from 'expo-device'
 import { priceToText, returnCollegeName } from '../../Functions'
-import {
-  StripeProvider,
-  useStripe,
-  PlatformPayButton,
-  isPlatformPaySupported,
-  PlatformPay,
-} from '@stripe/stripe-react-native'
+import { StripeProvider, useStripe, isPlatformPaySupported, PlatformPay } from '@stripe/stripe-react-native'
 import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
 import { removeOrderItem, OrderItem } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
@@ -41,14 +35,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     setDisabled(b)
   }
 
-  const [isApplePaySupported, setIsApplePaySupported] = useState(false)
-
-  useEffect(() => {
-    ;(async function () {
-      setIsApplePaySupported(await isPlatformPaySupported())
-    })()
-  }, [isPlatformPaySupported])
-
   const customAppearance = {
     colors: {
       background: '#1f1f1f',
@@ -64,11 +50,17 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const stripe = useStripe()
 
   const showPaymentSheet = async (): Promise<any> => {
-    console.log(price)
     // return { id: 'temp' } // uncomment this line out to skip the credit card entry screen
     if (price > 2000) {
       Alert.alert('Your current total is over $20, please remove some items from your cart.')
       return null
+    }
+
+    console.log(currentUser.permissions)
+
+    if (currentUser.permissions === 'dev') {
+      Alert.alert('You are currently in developer mode. You cannot place an order.')
+      return
     }
 
     const obj = { userId: currentUser.id, price: price, items: orderItems, college: collegeOrderCart }
@@ -95,11 +87,9 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       paymentIntentClientSecret: clientSecret,
       merchantDisplayName: 'Yale Butteries',
       appearance: customAppearance,
-      applePay: isApplePaySupported
-        ? {
-            merchantCountryCode: 'US',
-          }
-        : null,
+      applePay: {
+        merchantCountryCode: 'US',
+      },
     })
     if (initSheet.error) return Alert.alert(initSheet.error.message)
     const presentSheet = await stripe.presentPaymentSheet()
@@ -139,7 +129,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       interface tempItem {
         itemCost: number
-        orderStatus: string
+        orderStatus: 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED'
         menuItemId: number
       }
       console.log('hello1')
@@ -151,20 +141,18 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         }
         const newItem: tempItem = {
           itemCost: item.orderItem.price,
-          orderStatus: 'PENDING',
+          orderStatus: 'QUEUED',
           menuItemId: item.orderItem.id,
         }
         transaction_items.push(newItem)
       })
 
-      const uploadTransaction = await fetch(baseUrl + 'api/transactions', {
+      const uploadTransaction = await fetch(baseUrl + 'api/orders', {
         method: 'POST',
         body: JSON.stringify({
-          inProgress: 'true',
           price: price,
           userId: currentUser.id,
           college: collegeOrderCart,
-          paymentIntentId: 'no payment', //currently not accepting payments
           transactionItems: transaction_items,
         }),
         headers: {
@@ -177,13 +165,10 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       // console.log('transaction created: ', uploadTransactionResponse.id)
       dispatch(setTransactionHistoryState(uploadTransactionResponse))
 
-      Alert.alert('Order placed! Thank you.')
+      Alert.alert('Order sent, thank you!')
       updateDisabled(false)
 
-      // console.log(push)
-
       let token = ''
-
       if (Device.isDevice) {
         token = (await Notifications.getDevicePushTokenAsync()).data
       } else {
@@ -208,7 +193,8 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch (err) {
       console.error(err)
-      Alert.alert('Something went wrong, check your internet connection')
+      Alert.alert(err)
+      // Alert.alert('Something went wrong, check your internet connection')
       updateDisabled(false)
     }
   }

@@ -72,8 +72,6 @@ const CreateItemScreen: React.FC = () => {
       setDisabled(false)
       return
     }
-
-    console.log(selected)
     
     const buffer: MenuItem = {
       item: item,

@@ -4,13 +4,13 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 
 interface Props {
   name: string
-  status: string
+  status: 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED'
 }
 
 const StatusItem: FC<Props> = ({ name, status }: Props) => {
   const getIconVisual = () => {
     switch (status) {
-      case 'PENDING':
+      case 'QUEUED':
         return (
           <View style={styles.pendingView}>
             <Text style={styles.statusText}>Pending...</Text>
@@ -23,14 +23,14 @@ const StatusItem: FC<Props> = ({ name, status }: Props) => {
             <Text style={styles.statusText}>Cancelled</Text>
           </View>
         )
-      case 'IN_PROGRESS':
+      case 'ONGOING':
         return (
           <View style={styles.progressView}>
             <ActivityIndicator color={'white'} size="small" />
             <Text style={styles.statusText}>In Progress</Text>
           </View>
         )
-      case 'FINISHED':
+      case 'READY':
         return (
           <View style={styles.successView}>
             <Ionicon name="checkmark-circle" size={23} color="white" />

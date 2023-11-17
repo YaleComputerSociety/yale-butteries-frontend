@@ -72,7 +72,7 @@ export function cleanTime(inputDate: Date): string {
 export function getDaysOpen(colleges: College[], name: string): boolean[] {
   let initArray = [false, false, false, false, false, false, false]
 
-  const daysOpen = colleges.filter((college) => college.name == name)[0].daysOpen
+  const daysOpen = colleges.filter((college) => college.name.toLowerCase() == name.toLowerCase())[0].daysOpen
 
   for (let i = 0; i <= daysOpen.length - 1; i++) {
     //days of week index (7-1)
@@ -107,12 +107,12 @@ export function getDaysOpen(colleges: College[], name: string): boolean[] {
 }
 
 export function getHours(colleges: College[], name: string): string[] {
-  const college = colleges.filter((college) => college.name == name)[0]
+  const college = colleges.filter((college) => college.name.toLowerCase() == name.toLowerCase())[0]
   if (college.openTime && college.closeTime) {
     return [militaryToAnalog(college.openTime), militaryToAnalog(college.closeTime)]
   }
 
-  return ['4 00 pm', '6 00 pm']
+  return ['4:00 pm', '6:00 pm']
 }
 
 export function getCollegeOpen(colleges: College[], name: string): boolean {
@@ -120,7 +120,7 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
   var hour = today.getHours()
   var minute = today.getMinutes()
 
-  const college = colleges.filter((college) => college.name == name)[0]
+  const college = colleges.filter((college) => college.name.toLowerCase() == name.toLowerCase())[0]
   const openTimeHour = parseInt(college.openTime)
   const openTimeMinute = parseInt(college.openTime.split(':')[1])
 
@@ -136,7 +136,7 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
   // console.log(name, '--> ', openTimeHour, hour)
   if (closeTimeHour < dayCutoff) {
     // aka closes at or past midnight
-    if (hour <= closeTimeHour) {
+    if (hour <= closeTimeHour && minute <= closeTimeMinute) {
       return true
     } else if (hour >= closeTimeHour && hour <= dayCutoff) {
       return false
@@ -147,15 +147,17 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
     // else if Buttery is closed on that day
     return false
   }
+
   if (hour < openTimeHour) {
     return false
-  } else if (hour > closeTimeHour) {
+  } else if (hour > closeTimeHour && closeTimeHour > dayCutoff) {
     return false
   }
+
   if (hour == openTimeHour && minute < openTimeMinute) {
     return false
   } else if (hour == closeTimeHour && minute > closeTimeMinute) {
-    return true
+    return false
   }
 
   return true
@@ -243,7 +245,7 @@ export async function registerForPushNotificationsAsync(): Promise<any> {
     if (finalStatus !== 'granted') {
       return
     }
-    token = (await Notifications.getExpoPushTokenAsync()).data
+    token = (await Notifications.getDevicePushTokenAsync()).data
   } else {
     alert('Must use physical device for Push Notifications')
   }
