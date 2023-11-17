@@ -47,7 +47,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
     if (menuItems) {
       setData(
         menuItems.filter((menuItem) => {
-          return menuItem.college === collegeOrderCart && menuItem.isActive === true
+          return menuItem.college.toLowerCase() === collegeOrderCart.toLowerCase() && menuItem.isActive === true
         })
       )
       setBegin(false)

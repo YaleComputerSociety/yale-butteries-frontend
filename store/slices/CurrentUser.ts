@@ -36,9 +36,10 @@ export const currentUserSlice = createSlice({
 
 export const { setCurrentUserState, setIsLoading, setCurrentUserId } = currentUserSlice.actions
 
-export const asyncFetchUser = (id: number) => {
+export const asyncFetchUser = (id: string) => {
   return async (dispatch: AppDispatch): Promise<'good' | 'error' | 'missing'> => {
     dispatch(setIsLoading(true))
+    console.log(id)
     try {
       const user = await fetch(baseUrl + 'api/users/' + id, {
         method: 'GET',

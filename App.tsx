@@ -37,14 +37,14 @@ const InnerApp: FC = () => {
 
   const establishUser = async () => {
     try {
-      // AsyncStorage.clear()
+      AsyncStorage.clear()
 
       // Check if user already exists in local storage
       const userInfo = await LocalStorage.getUserInfo('token')
       const id = await LocalStorage.getUserInfo('id')
       if (userInfo && id) {
         // sets the current user state to a user, if it can't connect to the database then show evil modal
-        await dispatch(asyncFetchUser(parseInt(id))).then((result: 'good' | 'error' | 'missing') => {
+        await dispatch(asyncFetchUser(id)).then((result: 'good' | 'error' | 'missing') => {
           console.log(id)
           if (result === 'error') {
             setConnection(false)

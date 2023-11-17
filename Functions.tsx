@@ -72,7 +72,7 @@ export function cleanTime(inputDate: Date): string {
 export function getDaysOpen(colleges: College[], name: string): boolean[] {
   let initArray = [false, false, false, false, false, false, false]
 
-  const daysOpen = colleges.filter((college) => college.name == name)[0].daysOpen
+  const daysOpen = colleges.filter((college) => college.name.toLowerCase() == name.toLowerCase())[0].daysOpen
 
   for (let i = 0; i <= daysOpen.length - 1; i++) {
     //days of week index (7-1)
@@ -107,12 +107,12 @@ export function getDaysOpen(colleges: College[], name: string): boolean[] {
 }
 
 export function getHours(colleges: College[], name: string): string[] {
-  const college = colleges.filter((college) => college.name == name)[0]
+  const college = colleges.filter((college) => college.name.toLowerCase() == name.toLowerCase())[0]
   if (college.openTime && college.closeTime) {
     return [militaryToAnalog(college.openTime), militaryToAnalog(college.closeTime)]
   }
 
-  return ['4 00 pm', '6 00 pm']
+  return ['4:00 pm', '6:00 pm']
 }
 
 export function getCollegeOpen(colleges: College[], name: string): boolean {
@@ -120,7 +120,7 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
   var hour = today.getHours()
   var minute = today.getMinutes()
 
-  const college = colleges.filter((college) => college.name == name)[0]
+  const college = colleges.filter((college) => college.name.toLowerCase() == name.toLowerCase())[0]
   const openTimeHour = parseInt(college.openTime)
   const openTimeMinute = parseInt(college.openTime.split(':')[1])
 
