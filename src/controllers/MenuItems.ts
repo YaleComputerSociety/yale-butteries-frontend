@@ -2,6 +2,7 @@ import prisma from '../prismaClient'
 import { Request, Response } from 'express'
 import { getCollegeFromName, isMenuItemType } from '../utils/prismaUtils'
 import { MenuItemType } from '@prisma/client'
+import { MenuItemDto } from '../utils/dtos'
 
 export async function getAllMenuItems(_: Request, res: Response): Promise<void> {
   try {
@@ -126,12 +127,14 @@ export async function updateMenuItem(req: Request, res: Response): Promise<void>
       return
     }
 
+    const menuItemInput: MenuItemDto = { ...req.body }
+
     const menuItemData: MenuItemUpdateData = {}
-    if (req.body.name) menuItemData.name = req.body.name
-    if (req.body.price && Number.isInteger(parseInt(req.body.price))) menuItemData.price = parseInt(req.body.price)
-    if (req.body.isActive) menuItemData.isActive = req.body.isActive !== 'false'
-    if (req.body.description) menuItemData.description = req.body.description
-    if (req.body.type && isMenuItemType(req.body.type)) menuItemData.type = req.body.type
+    if (menuItemInput.item) menuItemData.name = menuItemInput.item
+    if (menuItemInput.price && Number.isInteger(menuItemInput.price)) menuItemData.price = menuItemInput.price
+    if (menuItemInput.isActive != null) menuItemData.isActive = menuItemInput.isActive !== false
+    if (menuItemInput.description) menuItemData.description = menuItemInput.description
+    if (menuItemInput.foodType && isMenuItemType(menuItemInput.foodType)) menuItemData.type = menuItemInput.foodType
 
     const newMenuItem = await prisma.menuItem.update({
       where: {
