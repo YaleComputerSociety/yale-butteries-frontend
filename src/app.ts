@@ -15,17 +15,17 @@ export const environment = process.env.NODE_ENV || 'development'
 export const url = environment === 'production' ? `https://yale-butteries.herokuapp.com` : `http://localhost:${port}`
 
 const app: express.Express = express()
-  .use('/stripe', express.raw({ type: '*/*' }))
+  // .use('/stripe', express.raw({ type: '*/*' }))
   .use(express.json())
   .use(express.urlencoded({ extended: true }))
   .use(
     session({
-      secret: 'iw9nHenOw2andg3',
+      secret: process.env.SESSION_SECRET_KEY,
       resave: false,
       saveUninitialized: false,
     })
   )
-  .use(cors()) // security vulnerability, change this before alpha!
+  .use(cors()) // need to change this
 
 // API Routes
 app.use('/api/colleges', collegeRouter)
