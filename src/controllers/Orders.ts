@@ -54,6 +54,9 @@ export async function getAllOrdersFromCollege(req: Request, res: Response): Prom
       include: {
         orderItems: true,
       },
+      orderBy: {
+        id: 'asc',
+      },
     })
 
     const frontValidOrders = await formatOrdersDto(validOrders, college.name)
@@ -81,6 +84,9 @@ export async function getRecentOrdersFromCollege(req: Request, res: Response): P
         createdAt: {
           gte: date,
         },
+      },
+      orderBy: {
+        id: 'asc',
       },
       include: {
         orderItems: true,
