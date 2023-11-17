@@ -13,6 +13,8 @@ export const MenuHeader: FC<Props> = ({ toDessert, toDrink, toFood, name }: Prop
   function getImage(collegeName: string) {
     if (collegeName == 'morse') {
       return <Image source={require('../../assets/images/TheMorsel.png')} style={styles.imageHeader} />
+    } else if (collegeName == 'trumbull') {
+      return <Image source={require('../../assets/images/TheTrumbutt.png')} style={styles.imageHeader} />
     }
   }
   return (

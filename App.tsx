@@ -24,6 +24,8 @@ const InnerApp: FC = () => {
   const [connection, setConnection] = useState(true)
   const dispatch = useAppDispatch()
 
+  SplashScreen.preventAutoHideAsync()
+
   const loadFonts = async () => {
     await Font.loadAsync({
       Roboto: require('./assets/fonts/Roboto-Black.ttf'),
@@ -63,10 +65,10 @@ const InnerApp: FC = () => {
     async function prepare() {
       try {
         // Keep the splash screen visible while we fetch resources
-        await SplashScreen.preventAutoHideAsync()
-        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
         await loadFonts()
         await establishUser()
+
+        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
       } catch (e) {
         console.warn(e)
       } finally {
