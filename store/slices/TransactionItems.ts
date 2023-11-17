@@ -50,9 +50,8 @@ export const { setTransactionItemsState, addTransactionItem, updateTransactionIt
 export const asyncUpdateTransactionItem = (transactionItem: TransactionItem) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(updateTransactionItem(transactionItem))
-    // dispatch(setIsLoading(true))
     try {
-      await fetch(baseUrl + 'api/orders/item', {
+      await fetch(baseUrl + 'api/orders/item/' + transactionItem.id, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -64,7 +63,6 @@ export const asyncUpdateTransactionItem = (transactionItem: TransactionItem) => 
       console.log(e)
       return false
     } finally {
-      // dispatch(setIsLoading(false))
     }
   }
 }

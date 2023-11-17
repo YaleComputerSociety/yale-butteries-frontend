@@ -30,7 +30,6 @@ const OrdersScreen: React.FC = () => {
   useEffect(() => {
     const fetchItems = async () => {
       if (currentUser.college) {
-        // should fetch only recent to save time, but for a while this will be fine
         await dispatch(asyncFetchRecentTransactionHistories(currentUser.college)).then((success: boolean) => {
           setConnection(success)
         })

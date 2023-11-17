@@ -19,8 +19,8 @@ interface Props {
   setConnection: (necessaryConnection: boolean) => void
 }
 
-type Status = 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED'
-const statuses: Status[] = ['QUEUED', 'ONGOING', 'READY', 'CANCELLED']
+type Status = 'CANCELLED' | 'QUEUED' | 'ONGOING' | 'READY' 
+const statuses: Status[] = ['CANCELLED', 'QUEUED', 'ONGOING', 'READY',]
 
 const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props) => {
   const dispatch = useAppDispatch()
