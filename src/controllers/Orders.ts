@@ -45,7 +45,7 @@ export async function getOrder(req: Request, res: Response): Promise<void> {
 // will probably not be able to do this once there are enough orders...
 export async function getAllOrdersFromCollege(req: Request, res: Response): Promise<void> {
   try {
-    const college = await getCollegeFromId(parseInt(req.params.collegeId))
+    const college = await getCollegeFromName(req.params.collegeName)
 
     const validOrders = await prisma.order.findMany({
       where: {
@@ -55,8 +55,6 @@ export async function getAllOrdersFromCollege(req: Request, res: Response): Prom
         orderItems: true,
       },
     })
-
-    console.log(validOrders)
 
     const frontValidOrders = await formatOrdersDto(validOrders, college.name)
 
@@ -74,7 +72,7 @@ export async function getAllOrdersFromCollege(req: Request, res: Response): Prom
 // returns all orders of a specific college within the last 6 hours
 export async function getRecentOrdersFromCollege(req: Request, res: Response): Promise<void> {
   try {
-    const college = await getCollegeFromId(parseInt(req.params.collegeId))
+    const college = await getCollegeFromName(req.params.collegeName)
     const date = new Date(Date.now() - 36e5 * 6) // select only transactions from after 6 hours before this moment
 
     const validOrders = await prisma.order.findMany({

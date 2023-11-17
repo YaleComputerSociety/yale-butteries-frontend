@@ -16,10 +16,14 @@ export async function findUserByNetId(netId: string): Promise<(User & { college:
 
 export const getCollegeFromName = async (name: string): Promise<College> => {
   let college: College
+
   if (name) {
     college = await prisma.college.findFirst({
       where: {
-        name: name,
+        name: {
+          equals: name.toLowerCase(),
+          mode: 'insensitive',
+        },
       },
     })
   }
