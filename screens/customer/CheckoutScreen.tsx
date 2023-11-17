@@ -108,7 +108,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       interface tempItem {
         itemCost: number
-        orderStatus: string
+        orderStatus: 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED'
         menuItemId: number
       }
 
@@ -119,20 +119,18 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         }
         const newItem: tempItem = {
           itemCost: item.orderItem.price,
-          orderStatus: 'PENDING',
+          orderStatus: 'QUEUED',
           menuItemId: item.orderItem.id,
         }
         transaction_items.push(newItem)
       })
 
-      const uploadTransaction = await fetch(baseUrl + 'api/transactions', {
+      const uploadTransaction = await fetch(baseUrl + 'api/orders', {
         method: 'POST',
         body: JSON.stringify({
-          inProgress: 'true',
           price: price,
           userId: currentUser.id,
           college: collegeOrderCart,
-          paymentIntentId: paymentIntent.id,
           transactionItems: transaction_items,
         }),
         headers: {

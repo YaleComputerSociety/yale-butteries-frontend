@@ -46,7 +46,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
     let numerator = 0
     for (let i = 0; i < denom; i++) {
       const item_status = items[i].orderStatus
-      if (item_status == 'FINISHED' || item_status == 'CANCELLED') {
+      if (item_status == 'READY' || item_status == 'CANCELLED') {
         numerator += 1
       }
     }
@@ -57,7 +57,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   // pull from database to update status
   const fetchTransaction = async () => {
     try {
-      const currentTransaction = await fetch(baseUrl + 'api/transactions/' + currentTransactionHistory.id, {
+      const currentTransaction = await fetch(baseUrl + 'api/orders/' + currentTransactionHistory.id, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

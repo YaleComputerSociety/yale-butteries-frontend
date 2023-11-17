@@ -45,7 +45,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
   const butteries: CollegeInfo[] = [
     {
-      ne: 'Morse',
+      ne: 'Trumbull',
       active: true,
     },
     {
@@ -73,6 +73,10 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
       active: false,
     },
     {
+      ne: 'Morse',
+      active: false,
+    },
+    {
       ne: 'Murray',
       active: false,
     },
@@ -94,10 +98,6 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     },
     {
       ne: 'TD',
-      active: false,
-    },
-    {
-      ne: 'Trumbull',
       active: false,
     },
   ]

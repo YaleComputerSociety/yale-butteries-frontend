@@ -19,8 +19,8 @@ interface Props {
   setConnection: (necessaryConnection: boolean) => void
 }
 
-type Status = 'CANCELLED' | 'PENDING' | 'IN_PROGRESS' | 'FINISHED' | 'PICKED_UP'
-const statuses: Status[] = ['CANCELLED', 'PENDING', 'IN_PROGRESS', 'FINISHED', 'PICKED_UP']
+type Status = 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED'
+const statuses: Status[] = ['QUEUED', 'ONGOING', 'READY', 'CANCELLED']
 
 const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props) => {
   const dispatch = useAppDispatch()
@@ -41,27 +41,23 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
         setStartingIndex(0)
         setTagActive(0)
         break
-      case 'PENDING':
+      case 'QUEUED':
         setStartingIndex(1)
         setTagActive(1)
         break
-      case 'IN_PROGRESS':
+      case 'ONGOING':
         setStartingIndex(2)
         setTagActive(2)
         break
-      case 'FINISHED':
+      case 'READY':
         setStartingIndex(3)
         setTagActive(3)
-        break
-      case 'PICKED_UP':
-        setStartingIndex(4)
-        setTagActive(4)
         break
     }
   }, [orderStatus])
 
   useEffect(() => {
-    if (orderStatus != 'PENDING') {
+    if (orderStatus != 'QUEUED') {
       setIsStarted(true)
     }
   }, [orderStatus])
@@ -88,19 +84,19 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
         {
           text: 'Go Back',
           onPress: () => {
-            setOrderStatus('PENDING')
+            setOrderStatus('QUEUED')
             setTagActive(1)
             setStartingIndex(1)
             dispatch(
               updateTransactionItem({
                 ...item,
-                orderStatus: 'PENDING',
+                orderStatus: 'QUEUED',
               })
             )
           },
         },
       ])
-    } else if (tempStatus == 'FINISHED') {
+    } else if (tempStatus == 'READY') {
       Alert.alert('Notice', 'Are you sure you want to mark this order as finished? This cannot be undone', [
         {
           text: 'Yes',
@@ -119,13 +115,13 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
         {
           text: 'Go Back',
           onPress: () => {
-            setOrderStatus('IN_PROGRESS')
+            setOrderStatus('ONGOING')
             setTagActive(2)
             setStartingIndex(2)
             dispatch(
               updateTransactionItem({
                 ...item,
-                orderStatus: 'IN_PROGRESS',
+                orderStatus: 'ONGOING',
               })
             )
           },

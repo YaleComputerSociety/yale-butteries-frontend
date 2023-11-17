@@ -13,7 +13,7 @@ export interface User {
   name: string
   college: string
   permissions: string
-  id: number
+  id: string
   currentOrder?: TransactionItem
 }
 

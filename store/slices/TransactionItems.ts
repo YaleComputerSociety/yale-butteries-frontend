@@ -7,7 +7,7 @@ import { AppDispatch } from '../../store/ReduxStore'
 export interface TransactionItem {
   id: number
   itemCost: number
-  orderStatus: 'CANCELLED' | 'PENDING' | 'IN_PROGRESS' | 'FINISHED' | 'PICKED_UP'
+  orderStatus: 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED'
   menuItemId: number
   name: string
   user: string
@@ -52,7 +52,7 @@ export const asyncUpdateTransactionItem = (transactionItem: TransactionItem) => 
     dispatch(updateTransactionItem(transactionItem))
     // dispatch(setIsLoading(true))
     try {
-      await fetch(baseUrl + 'api/transactions/item', {
+      await fetch(baseUrl + 'api/orders/item', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
