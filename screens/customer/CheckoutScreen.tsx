@@ -98,13 +98,13 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const makePayment = async () => {
     try {
-      const paymentIntent = await showPaymentSheet()
+      // const paymentIntent = await showPaymentSheet()
 
-      // user cancelled or there was an error
-      if (!paymentIntent) {
-        updateDisabled(false)
-        return
-      }
+      // // user cancelled or there was an error
+      // if (!paymentIntent) {
+      //   updateDisabled(false)
+      //   return
+      // }
 
       interface tempItem {
         itemCost: number
@@ -143,7 +143,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       // console.log('transaction created: ', uploadTransactionResponse.id)
       dispatch(setTransactionHistoryState(uploadTransactionResponse))
 
-      Alert.alert('Payment complete, thank you!')
+      Alert.alert('Order sent, thank you!')
       updateDisabled(false)
 
       let token = ''
