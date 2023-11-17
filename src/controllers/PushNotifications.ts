@@ -49,7 +49,7 @@ const getPaymentIntentIdFromId = async (id: number): Promise<string> => {
 }
 
 const checkItems = (items: OrderItem[], order: Order): number => {
-  const orderLifetime = Math.abs(new Date().getTime() - order.placedAt.getTime()) / 36e5
+  const orderLifetime = Math.abs(new Date().getTime() - order.createdAt.getTime()) / 36e5
   if (items.every((i) => i.status === 'CANCELLED')) {
     console.log('Order cancelled :(')
     return Status.Cancelled

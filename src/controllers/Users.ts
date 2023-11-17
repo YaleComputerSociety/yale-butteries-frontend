@@ -2,11 +2,8 @@ import { Request, Response } from 'express'
 
 import { UserRole } from '@prisma/client'
 import prisma from '../prismaClient'
-import { backToFrontOrders } from './Orders'
-import { stripe } from './Payments'
-import { UserDto } from '../utils/dtos'
 import { findUserByNetId, getCollegeFromName, isUserRole } from '../utils/prismaUtils'
-import { formatUserDto } from '../utils/dtoConverters'
+import { formatUserDto, formatOrdersDto } from '../utils/dtoConverters'
 
 export async function getAllUsers(_req: Request, res: Response): Promise<void> {
   try {
@@ -37,7 +34,7 @@ export async function getUser(req: Request, res: Response): Promise<void> {
 
     if (user.orders.length > 0) {
       recentOrder = user.orders[user.orders.length - 1]
-      const modifiedRecentOrder = (await backToFrontOrders([recentOrder], user.college.name))[0]
+      const modifiedRecentOrder = (await formatOrdersDto([recentOrder], user.college.name))[0]
       if (recentOrder) {
         const lifetime = Math.abs(new Date().getTime() - recentOrder.order_placed.getTime()) / 36e5
         currentOrder = lifetime < 6 ? modifiedRecentOrder : null

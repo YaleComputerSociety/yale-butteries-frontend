@@ -97,7 +97,6 @@ model Order {
   paymentIntentId  String? // the id of the payment method to charge later; requires stripe secret key to work
   initialQueueSize Int?
   endQueueSize     Int?
-  placedAt         DateTime
   endedAt          DateTime?
   paidAt           DateTime?
   createdAt        DateTime    @default(now())
@@ -117,7 +116,7 @@ enum OrderItemStatus {
 model OrderItem {
   id         Int             @id @default(autoincrement())
   price      Int // in cents (130 = $1.30)
-  status     OrderItemStatus @default(QUEUED)
+  status     OrderItemStatus
   order      Order           @relation(fields: [orderId], references: [id])
   orderId    Int
   menuItem   MenuItem        @relation(fields: [menuItemId], references: [id])

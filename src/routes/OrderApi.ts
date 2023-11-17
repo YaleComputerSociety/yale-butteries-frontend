@@ -10,11 +10,11 @@ import {
 
 const router = express.Router()
 
-router.get('/recent/college/:college', getRecentOrdersFromCollege)
-router.get('/college/:college', getAllOrdersFromCollege)
 router.get('/:orderId', getOrder)
-router.put('/', updateOrder)
-router.put('/:orderItemId', updateOrderItem)
+router.get('/college/:collegeId', getAllOrdersFromCollege)
+router.get('/college/recent/:collegeId', getRecentOrdersFromCollege)
 router.post('/', createOrder)
+router.put('/:orderId', updateOrder) // unused
+router.put('/item/:orderItemId', updateOrderItem)
 
 export default router
