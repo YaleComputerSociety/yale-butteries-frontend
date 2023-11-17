@@ -1,6 +1,6 @@
 // This is where the fronttoback and backtofront functions will go
-import { OrderDto, OrderItemDto, UserDto } from './dtos'
-import { Order, OrderItem, User } from '@prisma/client'
+import { CollegeDto, OrderDto, OrderItemDto, UserDto } from './dtos'
+import { College, Order, OrderItem, User } from '@prisma/client'
 import { getUserFromId, getOrderFromId, getCollegeNameFromId, getMenuItemFromId } from './prismaUtils'
 
 export async function formatUserDto(user: User): Promise<UserDto> {
@@ -56,4 +56,18 @@ export const formatOrderItems = async (order: Order & { orderItems: OrderItem[] 
     }
   }
   return orderItems
+}
+
+export const formatCollege = (college: College): CollegeDto => {
+  const res: CollegeDto = {
+    id: college.id,
+    college: college.name,
+    buttery_activated: college.isButteryIntegrated,
+    daysOpen: college.daysOpen,
+    openTime: college.openTime,
+    closeTime: college.closeTime,
+    isOpen: college.isOpen,
+  }
+
+  return res
 }

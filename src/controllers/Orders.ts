@@ -171,7 +171,7 @@ export async function updateOrderInner(req: any): Promise<Order> {
         id: req.body.id,
       },
       data: {
-        status: req.body.in_progress || undefined,
+        status: req.body.status || undefined,
         price: req.body.total_price || undefined,
         stripeFee: req.body.stripe_fee || undefined,
       },

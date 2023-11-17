@@ -44,14 +44,10 @@ export interface MenuItemDto {
 
 export interface CollegeDto {
   id: number
-  name: string
-  butteryName: string
-  isButteryIntegrated: boolean
+  college: string
+  buttery_activated: boolean
   isOpen: boolean
   daysOpen: string[]
   openTime: string
   closeTime: string
-  users: UserDto[]
-  orders: OrderDto[]
-  menuItems: MenuItemDto[]
 }

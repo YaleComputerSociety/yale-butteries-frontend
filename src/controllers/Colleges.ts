@@ -1,11 +1,13 @@
 import { Request, Response } from 'express'
 
 import prisma from '../prismaClient'
+import { formatCollege } from '../utils/dtoConverters'
 
 export async function getAllColleges(_: Request, res: Response): Promise<void> {
   try {
     const colleges = await prisma.college.findMany(includeProperty)
-    res.send(JSON.stringify(colleges))
+    const frontendColleges = colleges.map((college) => formatCollege(college))
+    res.send(JSON.stringify(frontendColleges))
   } catch (e) {
     console.log(e)
     res.status(400).send(e)

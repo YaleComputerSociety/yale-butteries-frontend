@@ -20,12 +20,12 @@ interface NotificationMessage {
 // optionally providing an access token if you have enabled push security
 const environment = process.env.NODE_ENV || 'development'
 
-export const stripe = new Stripe(
-  environment === 'development' ? process.env.STRIPE_SECRET_KEY_DEV : process.env.STRIPE_SECRET_KEY_PROD,
-  {
-    apiVersion: '2020-08-27',
-  }
-)
+// export const stripe = new Stripe(
+//   environment === 'development' ? process.env.STRIPE_SECRET_KEY_DEV : process.env.STRIPE_SECRET_KEY_PROD,
+//   {
+//     apiVersion: '2020-08-27',
+//   }
+// )
 
 const getOrderFromId = async (id: number): Promise<Order & { orderItems: OrderItem[] }> => {
   const res = await prisma.order.findUnique({
@@ -39,14 +39,14 @@ const getOrderFromId = async (id: number): Promise<Order & { orderItems: OrderIt
   return res
 }
 
-const getPaymentIntentIdFromId = async (id: number): Promise<string> => {
-  const res = await prisma.order.findUnique({
-    where: {
-      id: id,
-    },
-  })
-  return res.paymentIntentId
-}
+// const getPaymentIntentIdFromId = async (id: number): Promise<string> => {
+//   const res = await prisma.order.findUnique({
+//     where: {
+//       id: id,
+//     },
+//   })
+//   return res.paymentIntentId
+// }
 
 const checkItems = (items: OrderItem[], order: Order): number => {
   const orderLifetime = Math.abs(new Date().getTime() - order.createdAt.getTime()) / 36e5
@@ -139,14 +139,14 @@ export async function subscribePushNotifications(req: Request, res: Response): P
           body: {
             id: req.body.transactionId,
             order_complete: new Date(),
-            in_progress: 'false',
+            status: 'READY',
             charged_price: price,
           },
         })
-        const pii = await getPaymentIntentIdFromId(req.body.transactionId)
-        await stripe.paymentIntents.capture(pii, {
-          amount_to_capture: price,
-        })
+        // const pii = await getPaymentIntentIdFromId(req.body.transactionId)
+        // await stripe.paymentIntents.capture(pii, {
+        //   amount_to_capture: price,
+        // })
       } else if (orderStatus === Status.Cancelled || orderStatus === Status.TimedOut) {
         clearInterval(interval)
         if (orderStatus === Status.Cancelled && token) {
@@ -156,11 +156,11 @@ export async function subscribePushNotifications(req: Request, res: Response): P
           body: {
             id: req.body.transactionId,
             order_complete: new Date(),
-            in_progress: 'cancelled',
+            status: 'CANCELLED',
             charged_price: 0,
           },
         })
-        stripe.paymentIntents.cancel(await getPaymentIntentIdFromId(req.body.transactionId))
+        // stripe.paymentIntents.cancel(await getPaymentIntentIdFromId(req.body.transactionId))
       }
     }, 5000)
     res.send(JSON.stringify('exited order function'))

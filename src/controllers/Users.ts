@@ -27,8 +27,6 @@ export async function getUser(req: Request, res: Response): Promise<void> {
       },
     })
 
-    console.log(user)
-
     let recentOrder = null
     let currentOrder = null
 
