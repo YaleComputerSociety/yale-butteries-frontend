@@ -30,7 +30,6 @@ const OrdersScreen: React.FC = () => {
   useEffect(() => {
     const fetchItems = async () => {
       if (currentUser.college) {
-        // should fetch only recent to save time, but for a while this will be fine
         await dispatch(asyncFetchRecentTransactionHistories(currentUser.college)).then((success: boolean) => {
           setConnection(success)
         })
@@ -51,12 +50,12 @@ const OrdersScreen: React.FC = () => {
         if (newTransactionItems != null) {
           setCurrentOrders(
             newTransactionItems.filter(
-              (element) => element.orderStatus != 'FINISHED' && element.orderStatus != 'CANCELLED'
+              (element) => element.orderStatus != 'READY' && element.orderStatus != 'CANCELLED'
             )
           )
           setPastOrders(
             newTransactionItems.filter(
-              (element) => element.orderStatus == 'FINISHED' || element.orderStatus == 'CANCELLED'
+              (element) => element.orderStatus == 'READY' || element.orderStatus == 'CANCELLED'
             )
           )
         }
@@ -79,10 +78,10 @@ const OrdersScreen: React.FC = () => {
 
     if (transactionItems != null) {
       setCurrentOrders(
-        transactionItems.filter((element) => element.orderStatus != 'FINISHED' && element.orderStatus != 'CANCELLED')
+        transactionItems.filter((element) => element.orderStatus != 'READY' && element.orderStatus != 'CANCELLED')
       )
       setPastOrders(
-        transactionItems.filter((element) => element.orderStatus == 'FINISHED' || element.orderStatus == 'CANCELLED')
+        transactionItems.filter((element) => element.orderStatus == 'READY' || element.orderStatus == 'CANCELLED')
       )
     }
   }, [transactionItems])

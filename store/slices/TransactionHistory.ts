@@ -64,7 +64,7 @@ export const asyncFetchRecentTransactionHistories = (college: string) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(setIsLoading(true))
     try {
-      const transactions = await fetch(baseUrl + 'api/transactions/recent/college/' + college, {
+      const transactions = await fetch(baseUrl + 'api/orders/college/recent/' + college, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ export const asyncFetchAllTransactionHistories = (college: string) => {
   return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
-      const transactions = await fetch(baseUrl + 'api/transactions/college/' + college, {
+      const transactions = await fetch(baseUrl + 'api/orders/college/' + college, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
