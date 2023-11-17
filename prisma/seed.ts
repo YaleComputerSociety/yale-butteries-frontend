@@ -9,8 +9,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'berkeley',
-      buttery_activated: true,
+      name: 'Berkeley',
+      butteryName: "Marvin's",
+      isButteryIntegrated: true,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Monday'],
@@ -22,8 +23,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'branford',
-      buttery_activated: true,
+      name: 'Branford',
+      butteryName: 'Nuttery',
+      isButteryIntegrated: true,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Tuesday'],
@@ -35,8 +37,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'davenport',
-      buttery_activated: true,
+      name: 'Davenport',
+      butteryName: 'The Dive',
+      isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Wednesday'],
@@ -48,8 +51,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'franklin',
-      buttery_activated: true,
+      name: 'Franklin',
+      butteryName: "Ben's Butt",
+      isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Thursday'],
@@ -61,8 +65,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'hopper',
-      buttery_activated: true,
+      name: 'Hopper',
+      butteryName: 'Trolley Stop',
+      isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Friday'],
@@ -74,8 +79,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'je',
-      buttery_activated: true,
+      name: 'JE',
+      butteryName: 'JE Butt',
+      isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
@@ -87,8 +93,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'morse',
-      buttery_activated: true,
+      name: 'Morse',
+      butteryName: 'The Morsel',
+      isButteryIntegrated: true,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
@@ -100,8 +107,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'murray',
-      buttery_activated: true,
+      name: 'Murray',
+      butteryName: 'MY Butt',
+      isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
@@ -113,8 +121,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'pierson',
-      buttery_activated: true,
+      name: 'Pierson',
+      butteryName: 'Knight Club',
+      isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Monday', 'Wednesday'],
@@ -126,8 +135,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'saybrook',
-      buttery_activated: true,
+      name: 'Saybrook',
+      butteryName: 'Squiche',
+      isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
@@ -139,8 +149,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'silliman',
-      buttery_activated: true,
+      name: 'Silliman',
+      butteryName: 'SilliCafe',
+      isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
@@ -152,8 +163,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'stiles',
-      buttery_activated: true,
+      name: 'Stiles',
+      butteryName: 'Moose Butt',
+      isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Saturday', 'Tuesday', 'Thursday'],
@@ -165,8 +177,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'td',
-      buttery_activated: true,
+      name: 'TD',
+      butteryName: 'TD Butt',
+      isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
@@ -178,8 +191,9 @@ const main = async () => {
     },
     update: {},
     create: {
-      college: 'trumbull',
-      buttery_activated: true,
+      name: 'Trumbull',
+      butteryName: 'Trumbutt',
+      isButteryIntegrated: true,
       closeTime: '23:00',
       openTime: '21:00',
       daysOpen: ['Wednesday'],
@@ -187,17 +201,16 @@ const main = async () => {
   })
   await prisma.user.upsert({
     where: {
-      id: 3,
+      id: '3',
     },
     update: {},
     create: {
-      netid: 'staff',
-      email: 'addison.goolsbee@yale.edu',
-      name: 'MorselChef',
-      token: 'itswalrustime',
-      permissions: 'dev',
+      netId: 'guest',
+      name: 'appletester',
+      token: 'jugglemaster',
+      role: 'STAFF',
       college: {
-        connect: { id: 7 },
+        connect: { id: 14 },
       },
     },
   })
@@ -207,10 +220,8 @@ const main = async () => {
     },
     update: {},
     create: {
-      item: 'Oops! Something is wrong',
+      name: 'Oops! Something is wrong',
       price: 156,
-      limited_time: false,
-      is_active: true,
       college: {
         connect: { id: 7 },
       },
@@ -223,10 +234,8 @@ const main = async () => {
     },
     update: {},
     create: {
-      item: 'Bony Bony Burger',
+      name: 'Bony Bony Burger',
       price: 348,
-      limited_time: false,
-      is_active: true,
       college: {
         connect: { id: 1 },
       },
@@ -238,10 +247,8 @@ const main = async () => {
     },
     update: {},
     create: {
-      item: 'Large Bean',
+      name: 'Large Bean',
       price: 555,
-      limited_time: false,
-      is_active: true,
       college: {
         connect: { id: 1 },
       },
@@ -253,10 +260,8 @@ const main = async () => {
     },
     update: {},
     create: {
-      item: 'Burton',
+      name: 'Burton',
       price: 3,
-      limited_time: false,
-      is_active: true,
       college: {
         connect: { id: 1 },
       },
@@ -268,10 +273,8 @@ const main = async () => {
     },
     update: {},
     create: {
-      item: 'The Yale Butteries App',
-      price: 40000,
-      limited_time: false,
-      is_active: true,
+      name: 'The Yale Butteries App',
+      price: 400000,
       college: {
         connect: { id: 1 },
       },
@@ -283,10 +286,8 @@ const main = async () => {
     },
     update: {},
     create: {
-      item: 'Chicken Nuggets',
+      name: 'Chicken Nuggets',
       price: 150,
-      limited_time: false,
-      is_active: false,
       college: {
         connect: { id: 1 },
       },
@@ -298,10 +299,8 @@ const main = async () => {
     },
     update: {},
     create: {
-      item: "Stephen Slade's Microwavable Lunch",
+      name: "Stephen Slade's Microwavable Lunch",
       price: 100,
-      limited_time: false,
-      is_active: true,
       college: {
         connect: { id: 1 },
       },

@@ -39,7 +39,7 @@ export default (app: express.Express): void | express.RequestHandler => {
   app.use(passport.session())
 
   app.get('/cas', function (req, res, next) {
-    passport.authenticate('cas', function (err, user, info) {
+    passport.authenticate('cas', function (err, user) {
       if (err) {
         return next(err)
       }
