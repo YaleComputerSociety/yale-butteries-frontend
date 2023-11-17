@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import prisma from '../prismaClient'
+import { formatCollege } from '../utils/dtoConverters'
 
 export async function getAllColleges(_: Request, res: Response): Promise<void> {
   try {
     const colleges = await prisma.college.findMany(includeProperty)
-    res.send(JSON.stringify(colleges))
+    const frontendColleges = colleges.map((college) => formatCollege(college))
+    res.send(JSON.stringify(frontendColleges))
   } catch (e) {
     console.log(e)
     res.status(400).send(e)
@@ -30,9 +30,10 @@ export async function getCollege(req: Request, res: Response): Promise<void> {
 
 export async function updateCollege(req: Request, res: Response): Promise<void> {
   try {
+    console.log(req.body)
     const result = await prisma.college.update({
       where: {
-        id: req.body.id,
+        id: parseInt(req.params.collegeId),
       },
       data: {
         daysOpen: req.body.daysOpen,
@@ -41,16 +42,16 @@ export async function updateCollege(req: Request, res: Response): Promise<void> 
         closeTime: req.body.closeTime,
       },
     })
+    console.log(result)
     res.send(JSON.stringify(result))
   } catch (e) {
+    console.log(e)
     res.status(400).send(e)
   }
 }
 
 const includeProperty = {
   include: {
-    users: true,
-    transaction_histories: true,
-    menu_items: true,
+    menuItems: true,
   },
 }

@@ -10,93 +10,119 @@ datasource db {
   url      = env("POSTGRES_URL_FULL")
 }
 
+enum UserRole {
+  CUSTOMER
+  STAFF
+}
+
 model User {
-  id               Int      @id @default(autoincrement())
-  netid            String   
-  email            String
-  name             String
-  token            String?
-  permissions      String?
-  college   College @relation(fields: [collegeId], references: [id])
+  id        String   @id @default(uuid())
+  netId     String   @unique
+  name      String
+  role      UserRole @default(CUSTOMER)
+  college   College  @relation(fields: [collegeId], references: [id])
   collegeId Int
-  transaction_histories TransactionHistory[]
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
+  orders    Order[]
+  email     String?
+  token     String? // May be used for security
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("user")
 }
 
+// college represents a college and its buttery
 model College {
-  id Int @id @default(autoincrement())
-  college String @unique
-  image_url String?
-  buttery_activated Boolean?
-  daysOpen String[]
-  isOpen Boolean?
-  openTime String?
-  closeTime String?
-  users User[]
-  transaction_histories TransactionHistory[]
-  menu_items MenuItem[]
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
+  id                  Int        @id @default(autoincrement())
+  name                String     @unique // e.g. Morse
+  butteryName         String     @unique // e.g. The Morsel
+  isButteryIntegrated Boolean    @default(false) // whether this buttery is integrated into Yale Butteries
+  isOpen              Boolean    @default(true) // set to false if the buttery closes early or wants to stop taking in orders from Yale Butteries for a period of tiem
+  daysOpen            String[]
+  openTime            String     @default("22:00")
+  closeTime           String     @default("0:00")
+  users               User[]
+  orders              Order[]
+  menuItems           MenuItem[]
+  imageUrl            String?
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @default(now()) @updatedAt
+
+  @@map("college")
 }
 
-model MenuItem {
-  id Int @id @default(autoincrement())
-  item String
-  price Int
-  description String?
-  limited_time Boolean?
-  is_active Boolean
-  item_type ItemType @default(FOOD)
-  college College @relation(fields: [collegeId], references: [id])
-  collegeId Int
-  transaction_item TransactionItem[]
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
-}
-
-model TransactionItem {
-  id Int @id @default(autoincrement())
-  item_cost Int
-  order_status OrderStatus @default(PENDING)
-  transaction_history TransactionHistory @relation(fields: [transactionHistoryId], references: [id])
-  transactionHistoryId Int
-  menu_item MenuItem @relation(fields: [menuItemId], references: [id])
-  menuItemId Int
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
-}
-
-enum OrderStatus {
-  PENDING
-  CANCELLED
-  IN_PROGRESS
-  FINISHED
-}
-
-enum ItemType {
+enum MenuItemType {
   FOOD
   DRINK
   DESSERT
 }
 
-model TransactionHistory {
-  id Int @id @default(autoincrement())
-  order_placed DateTime
-  order_complete DateTime?
-  queue_size_on_placement Int
-  queue_size_on_complete Int?
-  in_progress String
-  total_price Int
-  charged_price Int?
-  stripe_fee Int?
-  reimbursed Boolean?
-  college College @relation(fields: [collegeId], references: [id])
-  collegeId Int
-  user User @relation(fields: [userId], references: [id])
-  userId Int
-  transaction_items TransactionItem[]
-  payment_intent_id String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt @default(now())
+// The items that make up the menu of any given college
+model MenuItem {
+  id          Int          @id @default(autoincrement())
+  name        String
+  price       Int // measured in cents (130 = $1.30)
+  description String       @default("No description provided")
+  isActive    Boolean      @default(true)
+  type        MenuItemType @default(FOOD)
+  college     College      @relation(fields: [collegeId], references: [id])
+  collegeId   Int
+  orderItems  OrderItem[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now()) @updatedAt
+
+  @@map("menu_item")
+}
+
+enum OrderStatus {
+  QUEUED
+  ONGOING
+  READY
+  PAID
+  CANCELLED
+  TIMEOUT
+}
+
+// A user makes an order that contains one ore more order items
+model Order {
+  id               Int         @id @default(autoincrement())
+  price            Int // the price in cents (130 = $1.30) of all completed order items: cancelled items are ignored
+  status           OrderStatus
+  college          College     @relation(fields: [collegeId], references: [id])
+  collegeId        Int
+  user             User        @relation(fields: [userId], references: [id])
+  userId           String
+  orderItems       OrderItem[]
+  stripeFee        Int? // the amount taken by stripe, which the buttery does not receive
+  paymentIntentId  String? // the id of the payment method to charge later; requires stripe secret key to work
+  initialQueueSize Int?
+  endQueueSize     Int?
+  endedAt          DateTime?
+  paidAt           DateTime?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @default(now()) @updatedAt
+
+  @@map("order")
+}
+
+enum OrderItemStatus {
+  QUEUED
+  ONGOING
+  READY
+  CANCELLED
+}
+
+// order items are the individual menu items ordered in an order; they reference menu items but are different from menu items
+model OrderItem {
+  id         Int             @id @default(autoincrement())
+  price      Int // in cents (130 = $1.30)
+  status     OrderItemStatus
+  order      Order           @relation(fields: [orderId], references: [id])
+  orderId    Int
+  menuItem   MenuItem        @relation(fields: [menuItemId], references: [id])
+  menuItemId Int
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @default(now()) @updatedAt
+
+  @@map("order_item")
 }

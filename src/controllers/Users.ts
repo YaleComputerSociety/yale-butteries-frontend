@@ -1,19 +1,9 @@
 import { Request, Response } from 'express'
-import { PrismaClient } from '@prisma/client'
-import { backToFrontTransactionHistories, getCollegeFromName } from './TransactionHistory'
-import { stripe } from './Payments'
 
-const prisma = new PrismaClient()
-
-export interface FrontUser {
-  email: string
-  netid: string
-  name: string
-  college: string
-  permissions: string
-  id: number
-  currentOrder?: unknown
-}
+import { UserRole } from '@prisma/client'
+import prisma from '../prismaClient'
+import { findUserByNetId, getCollegeFromName, isUserRole } from '../utils/prismaUtils'
+import { formatUserDto, formatOrdersDto } from '../utils/dtoConverters'
 
 export async function getAllUsers(_req: Request, res: Response): Promise<void> {
   try {
@@ -30,19 +20,19 @@ export async function getUser(req: Request, res: Response): Promise<void> {
     const user = await prisma.user.findUnique({
       include: {
         college: true,
-        transaction_histories: true,
+        orders: true,
       },
       where: {
-        id: parseInt(req.params.userId),
+        id: req.params.userId,
       },
     })
 
     let recentOrder = null
     let currentOrder = null
 
-    if (user.transaction_histories.length > 0) {
-      recentOrder = user.transaction_histories[user.transaction_histories.length - 1]
-      const modifiedRecentOrder = (await backToFrontTransactionHistories([recentOrder], user.college.college))[0]
+    if (user.orders.length > 0) {
+      recentOrder = user.orders[user.orders.length - 1]
+      const modifiedRecentOrder = (await formatOrdersDto([recentOrder], user.college.name))[0]
       if (recentOrder) {
         const lifetime = Math.abs(new Date().getTime() - recentOrder.order_placed.getTime()) / 36e5
         currentOrder = lifetime < 6 ? modifiedRecentOrder : null
@@ -50,9 +40,9 @@ export async function getUser(req: Request, res: Response): Promise<void> {
     }
 
     const frontUser = {
-      college: user.college.college,
+      college: user.college.name,
       id: user.id,
-      permissions: user.permissions,
+      permissions: user.role,
       token: user.token,
       name: user.name,
       email: user.email,
@@ -65,83 +55,100 @@ export async function getUser(req: Request, res: Response): Promise<void> {
   }
 }
 
+interface CreateUserRequestBody {
+  netid: string
+  college?: string
+  name?: string
+  permissions?: string
+  email?: string
+  token?: string
+}
+
+interface NewUserData {
+  netId: string
+  name: string
+  college: {
+    connect: {
+      id: number
+    }
+  }
+  role?: UserRole
+  token?: string
+  email?: string
+}
+
+async function createUserRecord(data: CreateUserRequestBody) {
+  const collegeData = await getCollegeFromName(data.name)
+
+  const userData: NewUserData = {
+    netId: data.netid,
+    name: data.name ? data.name : data.netid,
+    college: {
+      connect: {
+        id: collegeData.id,
+      },
+    },
+  }
+
+  if (data.permissions && isUserRole(data.permissions)) userData.role = data.permissions
+  if (data.email) userData.email = data.email
+  if (data.token) userData.token = data.token
+
+  return await prisma.user.create({ data: userData })
+}
+
 export async function createUser(req: Request, res: Response): Promise<void> {
-  console.log('hello')
   try {
-    const existingUser = await prisma.user.findFirst({
-      where: {
-        netid: req.body.netid,
-      },
-      include: {
-        college: true,
-      },
-    })
+    const { netid } = req.body
 
-    if (existingUser) {
-      const frontUser: FrontUser = {
-        email: existingUser.email,
-        netid: existingUser.netid,
-        name: existingUser.name,
-        permissions: existingUser.permissions,
-        college: existingUser.college.college,
-        id: existingUser.id,
-      }
-
-      res.send(JSON.stringify(frontUser))
+    if (!netid) {
+      res.status(400).send('Required fields are missing')
       return
     }
 
-    const college = await getCollegeFromName(req.body.college)
-
-    const newUser = await prisma.user.create({
-      data: {
-        netid: req.body.netid || undefined,
-        email: req.body.email || undefined,
-        name: req.body.name,
-        token: req.body.token || undefined,
-        permissions: req.body.permissions || 'customer',
-        college: {
-          connect: {
-            id: college.id || 1,
-          },
-        },
-      },
-    })
-
-    await stripe.customers.create({
-      email: req.body.email,
-      name: req.body.name,
-      metadata: { userId: newUser.id },
-    })
-
-    const frontUser: FrontUser = {
-      email: newUser.email,
-      netid: newUser.netid,
-      name: newUser.name,
-      permissions: 'customer',
-      college: req.body.college,
-      id: newUser.id,
+    // In case the user already exists
+    const existingUser = await findUserByNetId(netid)
+    if (existingUser) {
+      res.send(JSON.stringify(await formatUserDto(existingUser)))
+      return
     }
 
-    console.log(frontUser)
-    res.send(JSON.stringify(frontUser))
+    const newUser = await createUserRecord(req.body)
+
+    // await stripe.customers.create({
+    //   email: req.body.email,
+    //   name: req.body.name,
+    //   metadata: { userId: newUser.id },
+    // })
+
+    res.send(JSON.stringify(await formatUserDto(newUser)))
   } catch (e) {
     console.log(e)
-    res.status(400).send(e)
+    res.status(500).send(e)
   }
 }
 
 export async function updateUser(req: Request, res: Response): Promise<void> {
   try {
+    interface userUpdateData {
+      name?: string
+      email?: string
+    }
+
+    if (!req.params.userId) {
+      res.status(400).send('Required fields are missing')
+      return
+    }
+
+    const userData: userUpdateData = {}
+    if (req.body.name) userData.name = req.body.name
+    if (req.body.email) userData.email = req.body.email
+
     const user = await prisma.user.update({
       where: {
-        id: req.body.id,
+        id: req.params.userId,
       },
-      data: {
-        netid: req.body.netid || undefined,
-        email: req.body.email || undefined,
-        name: req.body.name || undefined,
-      },
+      data: userData,
     })
     res.send(JSON.stringify(user))
   } catch (e) {
@@ -157,9 +164,10 @@ const includeProperty = {
 
 export async function verifyStaffLogin(req: Request, res: Response): Promise<void> {
   try {
+    // this needs to be fixed but we also wont use this in the future
     const user = await prisma.user.findUnique({
       where: {
-        id: 3,
+        id: '89839659-e7b1-4e3d-ad6e-fd30fca49a75',
       },
     })
     let ret = false
