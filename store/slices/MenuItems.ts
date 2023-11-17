@@ -87,8 +87,9 @@ export const asyncFetchMenuItems = () => {
 
 export const asyncUpdateMenuItem = (menuItem: MenuItem) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
+    console.log(menuItem)
     try {
-      const updateItem = await fetch(baseUrl + 'api/menu-items', {
+      const updateItem = await fetch(baseUrl + 'api/menu-items/' + menuItem.id, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
