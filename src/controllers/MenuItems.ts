@@ -89,7 +89,8 @@ export async function createMenuItem(req: Request, res: Response): Promise<void>
       },
     }
 
-    if (req.body.type && isMenuItemType(req.body.type)) menuItemData.type = req.body.type
+    console.log(req.body.foodType, isMenuItemType(req.body.foodType))
+    if (req.body.foodType && isMenuItemType(req.body.foodType)) menuItemData.type = req.body.foodType
     if (req.body.isActive) menuItemData.isActive = req.body.email
     menuItemData.description = req.body.description ? req.body.description : 'No description provided'
 
