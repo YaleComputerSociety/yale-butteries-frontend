@@ -24,7 +24,7 @@
     "passport-cas": "^0.0.3",
     "stripe": "^8.219.0",
     "ts-node": "^10.0.0",
-    "typescript": "*"
+    "typescript": "^5.2.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",

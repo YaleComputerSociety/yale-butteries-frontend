@@ -9,13 +9,15 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "target": "es6",
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
-      "@utils/*": ["utils/*"],
+      "@utils/*": ["src/utils/*"],
       
     },
     "strictNullChecks": true,
+    "outDir": "./dist",
   },
+  "include": ["src/**/*", "prisma"],
   "exclude": ["**/*.spec.ts", "node_modules", "vendor", "public"],
   "compileOnSave": false
 }

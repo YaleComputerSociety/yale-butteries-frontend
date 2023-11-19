@@ -3,6 +3,7 @@
 yarn-debug.log*
 .yarn-integrity
 /private
+/dist
 
 /src/frontend/dist
 
