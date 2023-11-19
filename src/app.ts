@@ -9,6 +9,7 @@ import orderRouter from './routes/OrderApi'
 import paymentRouter from './routes/PaymentApi'
 import notifsRouter from './routes/PushNotificationsApi'
 import passport from './controllers/Auth'
+import errorHandler from './middlewares/errorHandler'
 
 const port = process.env.PORT || 3000
 export const environment = process.env.NODE_ENV || 'development'
@@ -34,6 +35,8 @@ app.use('/api/orders', orderRouter)
 app.use('/api/users', userRouter)
 app.use('/api/payments', paymentRouter)
 app.use('/api/notifs', notifsRouter)
+
+app.use(errorHandler)
 
 passport(app)
 

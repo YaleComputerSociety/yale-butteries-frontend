@@ -7,9 +7,14 @@
     "esModuleInterop": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "baseUrl": ".",
     "sourceMap": true,
-    "target": "es6"
+    "target": "es6",
+    "baseUrl": "src",
+    "paths": {
+      "@utils/*": ["utils/*"],
+      
+    },
+    "strictNullChecks": true,
   },
   "exclude": ["**/*.spec.ts", "node_modules", "vendor", "public"],
   "compileOnSave": false
