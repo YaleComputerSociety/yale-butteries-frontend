@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 
 import { UserRole } from '@prisma/client'
-import prisma from '../prismaClient'
-import { findUserByNetId, getCollegeFromName, isUserRole } from '../utils/prismaUtils'
-import { formatUserDto, formatOrdersDto } from '../utils/dtoConverters'
+import prisma from '@src/prismaClient'
+import { findUserByNetId, getCollegeFromName, isUserRole } from '@utils/prismaUtils'
+import { formatUserDto, formatOrdersDto } from '@utils/dtoConverters'
 
 export async function getAllUsers(_req: Request, res: Response): Promise<void> {
   try {

@@ -1,5 +1,5 @@
 import express from 'express'
-import { subscribePushNotifications } from '../controllers/PushNotifications'
+import { subscribePushNotifications } from '@controllers/PushNotifications'
 
 const router = express.Router()
 

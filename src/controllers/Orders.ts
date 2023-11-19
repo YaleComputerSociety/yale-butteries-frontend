@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 
 import { Order, OrderItemStatus } from '@prisma/client'
-import { OrderItemDto } from '../utils/dtos'
-import prisma from '../prismaClient'
+import { OrderItemDto } from '@utils/dtos'
+import prisma from '@src/prismaClient'
 import {
   getCollegeFromId,
   getCollegeFromName,

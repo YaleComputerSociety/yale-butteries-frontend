@@ -6,7 +6,7 @@ import {
   getOrder,
   updateOrder,
   updateOrderItem,
-} from '../controllers/Orders'
+} from '@controllers/Orders'
 
 const router = express.Router()
 

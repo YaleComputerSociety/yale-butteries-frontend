@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import Stripe from 'stripe'
-import { getCollegeFromName } from '../utils/prismaUtils'
-import prisma from '../prismaClient'
+import { getCollegeFromName } from '@utils/prismaUtils'
+import prisma from '@src/prismaClient'
 
 export interface TypedRequestBody<T> extends Request {
   body: T

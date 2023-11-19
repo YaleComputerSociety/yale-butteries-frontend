@@ -1,6 +1,6 @@
 import express from 'express'
-import { getAllColleges, getCollege, updateCollege } from '../controllers/Colleges'
-import asyncHandler from '../middlewares/asyncHandler'
+import { getAllColleges, getCollege, updateCollege } from '@controllers/Colleges'
+import asyncHandler from '@middlewares/asyncHandler'
 
 const router = express.Router()
 

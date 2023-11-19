@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import { Expo } from 'expo-server-sdk'
 import { updateOrderInner } from './Orders'
 import Stripe from 'stripe'
-import prisma from '../prismaClient'
+import prisma from '@src/prismaClient'
 
 enum Status {
   Incomplete,

@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
-import prisma from '../prismaClient'
-import { formatCollege } from '../utils/dtoConverters'
+import prisma from '@src/prismaClient'
+import { formatCollege } from '@utils/dtoConverters'
 
 export interface TypedRequest<Params, Body> extends Express.Request {
   params: Params

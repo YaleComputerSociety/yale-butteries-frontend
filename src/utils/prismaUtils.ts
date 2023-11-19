@@ -1,7 +1,7 @@
 // This file contains general functions relating to the prisma database
 
 import { User, College, UserRole, MenuItemType, MenuItem, Order, OrderItem, OrderItemStatus } from '@prisma/client'
-import prisma from '../prismaClient'
+import prisma from '@src/prismaClient'
 
 export async function findUserByNetId(netId: string): Promise<(User & { college: College }) | null> {
   if (!netId) {

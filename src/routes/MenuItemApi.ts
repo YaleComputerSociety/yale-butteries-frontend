@@ -1,5 +1,5 @@
 import express from 'express'
-import { createMenuItem, getAllMenuItems, getMenuItem, updateMenuItem } from '../controllers/MenuItems'
+import { createMenuItem, getAllMenuItems, getMenuItem, updateMenuItem } from '@controllers/MenuItems'
 
 const router = express.Router()
 
