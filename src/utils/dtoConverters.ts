@@ -42,18 +42,18 @@ export const formatOrderItems = async (order: Order & { orderItems: OrderItem[] 
   for (const item of order.orderItems) {
     const menuItem = await getMenuItemFromId(item.menuItemId)
     const user = await getUserFromId(order.userId)
-    if (item) {
-      const newItem: OrderItemDto = {
-        itemCost: item.price,
-        orderStatus: item.status,
-        menuItemId: item.menuItemId,
-        name: menuItem.name,
-        id: item.id,
-        user: user.name
-      }
-      orderItems.push(newItem)
+
+    const newItem: OrderItemDto = {
+      itemCost: item.price,
+      orderStatus: item.status,
+      menuItemId: item.menuItemId,
+      name: menuItem.name,
+      id: item.id,
+      user: user.name
     }
+    orderItems.push(newItem)
   }
+
   return orderItems
 }
 
