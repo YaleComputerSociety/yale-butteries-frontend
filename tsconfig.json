@@ -15,10 +15,10 @@
       "@controllers/*": ["src/controllers/*"],
       "@routes/*": ["src/routes/*"],
       "@middlewares/*": ["src/middlewares/*"],
-      "@utils/*": ["src/utils/*"],
+      "@utils/*": ["src/utils/*"]
     },
     "strictNullChecks": true,
-    "outDir": "./dist",
+    "outDir": "./dist"
   },
   "include": ["src/**/*", "prisma"],
   "exclude": ["**/*.spec.ts", "node_modules", "vendor", "public"],

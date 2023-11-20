@@ -11,9 +11,10 @@ import notifsRouter from './routes/PushNotificationsApi'
 import passport from './controllers/Auth'
 import errorHandler from './middlewares/errorHandler'
 
-const port = process.env.PORT || 3000
-export const environment = process.env.NODE_ENV || 'development'
-export const url = environment === 'production' ? `https://yale-butteries.herokuapp.com` : `http://localhost:${port}`
+const port = process.env.PORT ?? 3000
+export const environment = process.env.NODE_ENV ?? 'development'
+export const url = environment === 'production' ? 'https://yale-butteries.herokuapp.com' : `http://localhost:${port}`
+const sessionSecret: string = process.env.SESSION_SECRET_KEY ?? 'default_secret'
 
 const app: express.Express = express()
   // .use('/stripe', express.raw({ type: '*/*' }))
@@ -21,9 +22,9 @@ const app: express.Express = express()
   .use(express.urlencoded({ extended: true }))
   .use(
     session({
-      secret: process.env.SESSION_SECRET_KEY,
+      secret: sessionSecret,
       resave: false,
-      saveUninitialized: false,
+      saveUninitialized: false
     })
   )
   .use(cors()) // need to change this
