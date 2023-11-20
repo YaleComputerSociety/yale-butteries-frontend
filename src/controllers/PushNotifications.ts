@@ -1,7 +1,6 @@
 import { OrderItem, Order } from '@prisma/client'
 import { Request, Response } from 'express'
 import { Expo } from 'expo-server-sdk'
-import { updateOrderInner } from './Orders'
 import Stripe from 'stripe'
 import prisma from '@src/prismaClient'
 
@@ -26,6 +25,24 @@ const environment = process.env.NODE_ENV || 'development'
 //     apiVersion: '2020-08-27',
 //   }
 // )
+
+async function updateOrderInner (req: Request): Promise<Order> {
+  try {
+    const order = await prisma.order.update({
+      where: {
+        id: req.body.id
+      },
+      data: {
+        status: req.body.status || undefined,
+        price: req.body.total_price || undefined,
+        stripeFee: req.body.stripe_fee || undefined
+      }
+    })
+    return order
+  } catch (e) {
+    console.log(e)
+  }
+}
 
 const getOrderFromId = async (id: number): Promise<Order & { orderItems: OrderItem[] }> => {
   const res = await prisma.order.findUnique({
