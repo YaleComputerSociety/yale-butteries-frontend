@@ -5,10 +5,6 @@ import { UserRole, MenuItemType, OrderItemStatus } from '@prisma/client'
 import prisma from '@src/prismaClient'
 
 export async function findUserByNetId (netId: string): Promise<(User & { college: College }) | null> {
-  if (!netId) {
-    throw new Error('missing netId')
-  }
-
   return await prisma.user.findFirst({
     where: { netId },
     include: { college: true }
@@ -16,26 +12,16 @@ export async function findUserByNetId (netId: string): Promise<(User & { college
 }
 
 export const getCollegeFromName = async (name: string): Promise<College> => {
-  let college: College
-
-  if (name) {
-    college = await prisma.college.findFirst({
-      where: {
-        name: {
-          equals: name.toLowerCase(),
-          mode: 'insensitive'
-        }
+  const college: College | null = await prisma.college.findFirst({
+    where: {
+      name: {
+        equals: name.toLowerCase(),
+        mode: 'insensitive'
       }
-    })
-  }
+    }
+  })
 
-  if (!college) {
-    college = await prisma.college.findFirst({
-      where: {
-        id: 1
-      }
-    })
-  }
+  if (college === null) throw new Error(`College not found for name: ${name}`)
 
   return college
 }
@@ -46,6 +32,9 @@ export const getCollegeNameFromId = async (id: number): Promise<string> => {
       id
     }
   })
+
+  if (college === null) throw new Error(`College not found for id: ${id}`)
+
   return college.name
 }
 
@@ -55,6 +44,9 @@ export const getCollegeFromId = async (id: number): Promise<College> => {
       id
     }
   })
+
+  if (college === null) throw new Error(`College not found for id: ${id}`)
+
   return college
 }
 
@@ -76,6 +68,9 @@ export const getUserFromId = async (id: string): Promise<User> => {
       id
     }
   })
+
+  if (user === null) throw new Error(`User not found for id: ${id}`)
+
   return user
 }
 
@@ -85,11 +80,14 @@ export const getMenuItemFromId = async (id: number): Promise<MenuItem> => {
       id
     }
   })
+
+  if (item === null) throw new Error(`Menu Item not found for id: ${id}`)
+
   return item
 }
 
 export const getOrderFromId = async (id: number): Promise<Order & { orderItems: OrderItem[] }> => {
-  const res = await prisma.order.findUnique({
+  const order = await prisma.order.findUnique({
     include: {
       orderItems: true
     },
@@ -97,5 +95,8 @@ export const getOrderFromId = async (id: number): Promise<Order & { orderItems: 
       id
     }
   })
-  return res
+
+  if (order === null) throw new Error(`Order not found for id: ${id}`)
+
+  return order
 }
