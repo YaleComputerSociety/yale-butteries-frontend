@@ -7,23 +7,23 @@ export interface TypedRequestBody<T> extends Request {
   body: T
 }
 
-const environment = process.env.NODE_ENV ?? 'development'
+// const environment = process.env.NODE_ENV ?? 'development'
 
-function getStripeSecretKey (): string {
-  if (environment === 'development') {
-    if (process.env.STRIPE_SECRET_KEY_DEV === undefined) {
-      throw new Error('Stripe secret key for development is not set')
-    }
-    return process.env.STRIPE_SECRET_KEY_DEV
-  } else {
-    if (process.env.STRIPE_SECRET_KEY_PROD === undefined) {
-      throw new Error('Stripe secret key for production is not set')
-    }
-    return process.env.STRIPE_SECRET_KEY_PROD
-  }
-}
+// function getStripeSecretKey (): string {
+//   if (environment === 'development') {
+//     if (process.env.STRIPE_SECRET_KEY_DEV === undefined) {
+//       throw new Error('Stripe secret key for development is not set')
+//     }
+//     return process.env.STRIPE_SECRET_KEY_DEV
+//   } else {
+//     if (process.env.STRIPE_SECRET_KEY_PROD === undefined) {
+//       throw new Error('Stripe secret key for production is not set')
+//     }
+//     return process.env.STRIPE_SECRET_KEY_PROD
+//   }
+// }
 
-export const stripe = new Stripe(getStripeSecretKey(), {
+export const stripe = new Stripe(/* getStripeSecretKey() */'temporary', {
   apiVersion: '2020-08-27'
 })
 
