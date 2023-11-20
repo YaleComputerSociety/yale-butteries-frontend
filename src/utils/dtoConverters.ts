@@ -1,18 +1,18 @@
 // This is where the fronttoback and backtofront functions will go
-import { CollegeDto, OrderDto, OrderItemDto, UserDto } from './dtos'
-import { College, Order, OrderItem, User } from '@prisma/client'
+import type { CollegeDto, OrderDto, OrderItemDto, UserDto } from './dtos'
+import type { College, Order, OrderItem, User } from '@prisma/client'
 import { getUserFromId, getOrderFromId, getCollegeNameFromId, getMenuItemFromId } from './prismaUtils'
 
-export async function formatUserDto(user: User): Promise<UserDto> {
+export async function formatUserDto (user: User): Promise<UserDto> {
   const collegeName = await getCollegeNameFromId(user.collegeId)
 
   return {
-    email: user.email,
+    email: user.email ?? 'noemail',
     netid: user.netId,
     name: user.name,
     permissions: user.role,
     college: collegeName,
-    id: user.id,
+    id: user.id
   }
 }
 export const formatOrdersDto = async (orders: Order[], college: string): Promise<OrderDto[]> => {
@@ -21,19 +21,18 @@ export const formatOrdersDto = async (orders: Order[], college: string): Promise
     const user: User = await getUserFromId(item.userId)
     const th: Order & { orderItems: OrderItem[] } = await getOrderFromId(item.id)
     const tis: OrderItemDto[] = await formatOrderItems(th)
-    if (item) {
-      const newItem: OrderDto = {
-        id: item.id,
-        college: college,
-        inProgress: item.status,
-        price: item.price,
-        userId: user.id,
-        paymentIntentId: item.paymentIntentId,
-        creationTime: item.createdAt,
-        transactionItems: tis,
-      }
-      res.push(newItem)
+
+    const newItem: OrderDto = {
+      id: item.id,
+      college,
+      inProgress: item.status,
+      price: item.price,
+      userId: user.id,
+      paymentIntentId: item.paymentIntentId ?? 'none',
+      creationTime: item.createdAt,
+      transactionItems: tis
     }
+    res.push(newItem)
   }
   return res
 }
@@ -50,7 +49,7 @@ export const formatOrderItems = async (order: Order & { orderItems: OrderItem[] 
         menuItemId: item.menuItemId,
         name: menuItem.name,
         id: item.id,
-        user: user.name,
+        user: user.name
       }
       orderItems.push(newItem)
     }
@@ -66,7 +65,7 @@ export const formatCollege = (college: College): CollegeDto => {
     daysOpen: college.daysOpen,
     openTime: college.openTime,
     closeTime: college.closeTime,
-    isOpen: college.isOpen,
+    isOpen: college.isOpen
   }
 
   return res

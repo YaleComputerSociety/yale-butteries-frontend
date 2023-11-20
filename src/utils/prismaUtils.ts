@@ -1,16 +1,17 @@
 // This file contains general functions relating to the prisma database
 
-import { User, College, UserRole, MenuItemType, MenuItem, Order, OrderItem, OrderItemStatus } from '@prisma/client'
+import type { User, College, MenuItem, Order, OrderItem } from '@prisma/client'
+import { UserRole, MenuItemType, OrderItemStatus } from '@prisma/client'
 import prisma from '@src/prismaClient'
 
-export async function findUserByNetId(netId: string): Promise<(User & { college: College }) | null> {
+export async function findUserByNetId (netId: string): Promise<(User & { college: College }) | null> {
   if (!netId) {
     throw new Error('missing netId')
   }
 
   return await prisma.user.findFirst({
     where: { netId },
-    include: { college: true },
+    include: { college: true }
   })
 }
 
@@ -22,58 +23,58 @@ export const getCollegeFromName = async (name: string): Promise<College> => {
       where: {
         name: {
           equals: name.toLowerCase(),
-          mode: 'insensitive',
-        },
-      },
+          mode: 'insensitive'
+        }
+      }
     })
   }
 
   if (!college) {
     college = await prisma.college.findFirst({
       where: {
-        id: 1,
-      },
+        id: 1
+      }
     })
   }
 
   return college
 }
 
-export const getCollegeNameFromId = async (id: number): Promise<string | null> => {
+export const getCollegeNameFromId = async (id: number): Promise<string> => {
   const college = await prisma.college.findFirst({
     where: {
-      id: id,
-    },
+      id
+    }
   })
-  return college ? college.name : null
+  return college.name
 }
 
 export const getCollegeFromId = async (id: number): Promise<College> => {
   const college = await prisma.college.findUnique({
     where: {
-      id: id,
-    },
+      id
+    }
   })
   return college
 }
 
-export function isUserRole(value: string): value is UserRole {
+export function isUserRole (value: string): value is UserRole {
   return Object.values(UserRole).includes(value as UserRole)
 }
 
-export function isMenuItemType(value: string): value is MenuItemType {
+export function isMenuItemType (value: string): value is MenuItemType {
   return Object.values(MenuItemType).includes(value as MenuItemType)
 }
 
-export function isOrderItemStatus(value: string): value is OrderItemStatus {
+export function isOrderItemStatus (value: string): value is OrderItemStatus {
   return Object.values(OrderItemStatus).includes(value as OrderItemStatus)
 }
 
 export const getUserFromId = async (id: string): Promise<User> => {
   const user = await prisma.user.findUnique({
     where: {
-      id: id,
-    },
+      id
+    }
   })
   return user
 }
@@ -81,8 +82,8 @@ export const getUserFromId = async (id: string): Promise<User> => {
 export const getMenuItemFromId = async (id: number): Promise<MenuItem> => {
   const item = await prisma.menuItem.findUnique({
     where: {
-      id: id,
-    },
+      id
+    }
   })
   return item
 }
@@ -90,11 +91,11 @@ export const getMenuItemFromId = async (id: number): Promise<MenuItem> => {
 export const getOrderFromId = async (id: number): Promise<Order & { orderItems: OrderItem[] }> => {
   const res = await prisma.order.findUnique({
     include: {
-      orderItems: true,
+      orderItems: true
     },
     where: {
-      id: id,
-    },
+      id
+    }
   })
   return res
 }
