@@ -17,6 +17,7 @@
   "dependencies": {
     "@prisma/client": "^5.0.0",
     "cors": "^2.8.5",
+    "dotenv-cli": "^7.3.0",
     "expo-server-sdk": "^3.7.0",
     "express": "^4.17.1",
     "express-session": "^1.17.3",
@@ -35,6 +36,7 @@
     "@types/passport": "^1.0.12",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.11.0",
+    "dotenv": "^16.3.1",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard-with-typescript": "^40.0.0",

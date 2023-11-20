@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import type { Request, Response } from 'express'
 import Stripe from 'stripe'
 import { getCollegeFromName } from '@utils/prismaUtils'
 import prisma from '@src/prismaClient'
@@ -7,37 +7,48 @@ export interface TypedRequestBody<T> extends Request {
   body: T
 }
 
-const environment = process.env.NODE_ENV || 'development'
+const environment = process.env.NODE_ENV ?? 'development'
 
-export const stripe = new Stripe(
-  environment === 'development' ? process.env.STRIPE_SECRET_KEY_DEV : process.env.STRIPE_SECRET_KEY_PROD,
-  {
-    apiVersion: '2020-08-27',
+function getStripeSecretKey (): string {
+  if (environment === 'development') {
+    if (process.env.STRIPE_SECRET_KEY_DEV === undefined) {
+      throw new Error('Stripe secret key for development is not set')
+    }
+    return process.env.STRIPE_SECRET_KEY_DEV
+  } else {
+    if (process.env.STRIPE_SECRET_KEY_PROD === undefined) {
+      throw new Error('Stripe secret key for production is not set')
+    }
+    return process.env.STRIPE_SECRET_KEY_PROD
   }
-)
+}
 
-export async function createPaymentIntent(req: Request, res: Response): Promise<void> {
+export const stripe = new Stripe(getStripeSecretKey(), {
+  apiVersion: '2020-08-27'
+})
+
+export async function createPaymentIntent (req: Request, res: Response): Promise<void> {
   try {
     // basic parameter checking
-    if (!req.body.price) {
+    if (req.body.price == null) {
       res.status(400).json({ message: 'Please enter a price' })
       return
     }
-    if (!req.body.userId) {
+    if (req.body.userId == null) {
       res.status(400).json({ message: "You aren't logged in. No user found" })
       return
     }
 
     // check if the customer exists in stripe, their account is created when they first login to CAS
     const customerQuery = await stripe.customers.search({
-      query: "metadata['userId']:'" + req.body.userId + "'",
+      query: "metadata['userId']:'" + req.body.userId + "'"
     })
 
     console.log(customerQuery)
-    if (!customerQuery.data[0]?.id) {
+    if (customerQuery.data[0]?.id == null) {
       res.status(403).json({
         message:
-          "Invalid user: you might have created a user and then ordered too fast, please wait 10 seconds. If that doesn't work, try reloading the app",
+          "Invalid user: you might have created a user and then ordered too fast, please wait 10 seconds. If that doesn't work, try reloading the app"
       })
       return
     }
@@ -56,15 +67,15 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
     const backendItems = await prisma.menuItem.findMany({
       where: {
         collegeId: college.id,
-        isActive: true,
-      },
+        isActive: true
+      }
     })
 
     let validOrder = true
 
     req.body.items.forEach((item) => {
       const backendItem = backendItems.find((i) => i.id === item.orderItem.id)
-      if (!backendItem || backendItem.price != item.orderItem.price) {
+      if (backendItem == null || backendItem.price !== item.orderItem.price) {
         validOrder = false
       }
     })
@@ -100,12 +111,11 @@ export async function createPaymentIntent(req: Request, res: Response): Promise<
       customer: customer.id,
       // setup_future_usage: 'off_session', for card saving
       payment_method_types: ['card'], // delayed capturing doesn't work for everything and we can get into legal trouble, let's stick with cards (credit & debit) for now
-      capture_method: 'manual', // don't charge the user right now, but we'll need to save the paymentIntent's id to charge later.
+      capture_method: 'manual' // don't charge the user right now, but we'll need to save the paymentIntent's id to charge later.
     })
     res.json({ message: 'Payment initiated', paymentIntent })
   } catch (err) {
     console.error(err)
     res.status(500).json({ message: 'Internal server error' })
-    return
   }
 }
