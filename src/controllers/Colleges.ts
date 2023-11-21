@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 
 import prisma from '@src/prismaClient'
 import { formatCollege } from '@utils/dtoConverters'
-import HTTPError from '@src/utils/httpError'
+import HTTPError from '@src/utils/HTTPError'
 
 export interface TypedRequest<Params, Body> extends Express.Request {
   params: Params
