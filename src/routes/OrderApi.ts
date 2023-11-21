@@ -5,16 +5,17 @@ import {
   getRecentOrdersFromCollege,
   getOrder,
   updateOrder,
-  updateOrderItem,
+  updateOrderItem
 } from '@controllers/Orders'
+import asyncHandler from '@src/middlewares/asyncHandler'
 
 const router = express.Router()
 
-router.get('/:orderId', getOrder)
-router.get('/college/:collegeName', getAllOrdersFromCollege)
-router.get('/college/recent/:collegeName', getRecentOrdersFromCollege)
-router.post('/', createOrder)
-router.put('/:orderId', updateOrder) // unused
-router.put('/item/:orderItemId', updateOrderItem)
+router.get('/:orderId', asyncHandler(getOrder))
+router.get('/college/:collegeName', asyncHandler(getAllOrdersFromCollege))
+router.get('/college/recent/:collegeName', asyncHandler(getRecentOrdersFromCollege))
+router.post('/', asyncHandler(createOrder))
+router.put('/:orderId', asyncHandler(updateOrder)) // unused
+router.put('/item/:orderItemId', asyncHandler(updateOrderItem))
 
 export default router

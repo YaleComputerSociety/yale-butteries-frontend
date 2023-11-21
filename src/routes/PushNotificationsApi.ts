@@ -1,8 +1,9 @@
 import express from 'express'
 import { subscribePushNotifications } from '@controllers/PushNotifications'
+import asyncHandler from '@src/middlewares/asyncHandler'
 
 const router = express.Router()
 
-router.post('/', subscribePushNotifications)
+router.post('/', asyncHandler(subscribePushNotifications))
 
 export default router
