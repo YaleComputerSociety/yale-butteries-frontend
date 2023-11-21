@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 
 import prisma from '@src/prismaClient'
 import { formatCollege } from '@utils/dtoConverters'
+import HTTPError from '@src/utils/httpError'
 
 export interface TypedRequest<Params, Body> extends Express.Request {
   params: Params
@@ -9,29 +10,21 @@ export interface TypedRequest<Params, Body> extends Express.Request {
 }
 
 export async function getAllColleges (_: Request, res: Response): Promise<void> {
-  try {
-    const colleges = await prisma.college.findMany(includeProperty)
-    const frontendColleges = colleges.map((college) => formatCollege(college))
-    res.json(frontendColleges)
-  } catch (e) {
-    console.log(e)
-    res.status(400).send(e)
-  }
+  const colleges = await prisma.college.findMany(includeProperty)
+  const frontendColleges = colleges.map((college) => formatCollege(college))
+  res.json(frontendColleges)
 }
 
 export async function getCollege (req: Request<{ collegeId: string }, null>, res: Response): Promise<void> {
-  try {
-    const college = await prisma.college.findUnique({
-      ...includeProperty,
-      where: {
-        id: parseInt(req.params.collegeId)
-      }
-    })
-    res.json(college)
-  } catch (e) {
-    console.log(e)
-    res.status(400).send(e)
-  }
+  const college = await prisma.college.findUnique({
+    ...includeProperty,
+    where: {
+      id: parseInt(req.params.collegeId)
+    }
+  })
+
+  if (college === null) throw new HTTPError(`No college found at ID ${req.params.collegeId}`, 404)
+  res.json(college)
 }
 
 export async function updateCollege (req: Request, res: Response): Promise<void> {

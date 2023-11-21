@@ -2,7 +2,6 @@ import type { Request, Response, NextFunction, ErrorRequestHandler } from 'expre
 
 interface ExtendedError extends Error {
   status?: number
-  // Add any other custom properties that your errors might have
 }
 
 const errorHandler: ErrorRequestHandler = (err: ExtendedError, req: Request, res: Response, next: NextFunction) => {
