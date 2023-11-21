@@ -1,38 +1,16 @@
 import type { Request, Response } from 'express'
+
+import prisma from '@src/prismaClient'
 import { OrderItemStatus } from '@prisma/client'
 import type { OrderItemDto } from '@utils/dtos'
-import prisma from '@src/prismaClient'
-import {
-  getCollegeFromId,
-  getCollegeFromName,
-  getOrderFromId,
-  getUserFromId,
-  isOrderItemStatus
-} from '../utils/prismaUtils'
-import { formatOrderItems, formatOrdersDto } from '../utils/dtoConverters'
+import { formatOrder, formatOrdersDto } from '@utils/dtoConverters'
+import { getCollegeFromName, getOrderFromId, isOrderItemStatus } from '@utils/prismaUtils'
 
 export async function getOrder (req: Request, res: Response): Promise<void> {
-  try {
-    const order = await getOrderFromId(parseInt(req.params.orderId))
-
-    const college = await getCollegeFromId(order.collegeId)
-    const user = await getUserFromId(order.userId)
-    const orderItems = await formatOrderItems(order)
-
-    const ret = {
-      id: order.id,
-      college: college.name,
-      inProgress: order.status,
-      price: order.price,
-      userId: user.id,
-      transactionItems: orderItems
-    }
-
-    res.send(JSON.stringify(ret))
-  } catch (e) {
-    console.log(e)
-    res.status(500).send(e)
-  }
+  const order = await getOrderFromId(parseInt(req.params.orderId))
+  console.log(order)
+  const formattedOrder = await formatOrder(order)
+  res.json(formattedOrder)
 }
 
 // returns all of the orders along with their items
