@@ -6,7 +6,7 @@ import { createOrder, getAllOrdersFromCollege, getRecentOrdersFromCollege, getOr
 
 const router = express.Router()
 
-const validateCollegeName = createParamValidator('collegeId', isNonEmptyString, 'College Name must be non-empty')
+const validateCollegeName = createParamValidator('collegeName', isNonEmptyString, 'College Name must be non-empty')
 const validateOrderId = createParamValidator('orderId', isInteger, 'Order ID must be an integer')
 const validateOrderItemId = createParamValidator('orderItemId', isInteger, 'Order item ID must be an integer')
 

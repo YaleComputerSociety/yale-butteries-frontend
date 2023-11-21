@@ -15,7 +15,10 @@ export async function formatUserDto (user: User): Promise<UserDto> {
     id: user.id
   }
 }
-export const formatOrdersDto = async (orders: Order[], college: string): Promise<OrderDto[]> => {
+
+// TODO: make this function more efficient by reducing database calls
+// (user, th, tis are fetched for every order, should be fetched at beginning and put in a map)
+export const formatOrders = async (orders: Order[], college: string): Promise<OrderDto[]> => {
   const res: OrderDto[] = []
   for (const item of orders) {
     const user: User = await getUserFromId(item.userId)
@@ -28,7 +31,7 @@ export const formatOrdersDto = async (orders: Order[], college: string): Promise
       inProgress: item.status,
       price: item.price,
       userId: user.id,
-      paymentIntentId: item.paymentIntentId ?? 'none',
+      paymentIntentId: item.paymentIntentId ?? '',
       creationTime: item.createdAt,
       transactionItems: tis
     }

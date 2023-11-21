@@ -3,7 +3,7 @@ import type { Request, Response } from 'express'
 import prisma from '@src/prismaClient'
 import { OrderItemStatus } from '@prisma/client'
 import type { OrderItemDto } from '@utils/dtos'
-import { formatOrder, formatOrdersDto } from '@utils/dtoConverters'
+import { formatOrder, formatOrders } from '@utils/dtoConverters'
 import { getCollegeFromName, getOrderFromId, isOrderItemStatus } from '@utils/prismaUtils'
 
 export async function getOrder (req: Request, res: Response): Promise<void> {
@@ -13,36 +13,20 @@ export async function getOrder (req: Request, res: Response): Promise<void> {
   res.json(formattedOrder)
 }
 
-// returns all of the orders along with their items
-// used for the staff payments screen
-// will probably not be able to do this once there are enough orders...
 export async function getAllOrdersFromCollege (req: Request, res: Response): Promise<void> {
-  try {
-    const college = await getCollegeFromName(req.params.collegeName)
+  const college = await getCollegeFromName(req.params.collegeName)
 
-    const validOrders = await prisma.order.findMany({
-      where: {
-        collegeId: college.id
-      },
-      include: {
-        orderItems: true
-      },
-      orderBy: {
-        id: 'asc'
-      }
-    })
-
-    const frontValidOrders = await formatOrdersDto(validOrders, college.name)
-
-    const ret = {
-      transactionHistories: frontValidOrders
+  const orders = await prisma.order.findMany({
+    where: {
+      collegeId: college.id
+    },
+    include: {
+      orderItems: true
     }
+  })
 
-    res.send(JSON.stringify(ret))
-  } catch (e) {
-    console.log(e)
-    res.status(400).send(e)
-  }
+  const formattedOrders = await formatOrders(orders, college.name)
+  res.json({ transactionHistories: formattedOrders })
 }
 
 // returns all orders of a specific college within the last 6 hours
@@ -66,7 +50,7 @@ export async function getRecentOrdersFromCollege (req: Request, res: Response): 
       }
     })
 
-    const frontValidOrders = await formatOrdersDto(validOrders, college.name)
+    const frontValidOrders = await formatOrders(validOrders, college.name)
 
     const ret = {
       transactionHistories: frontValidOrders
