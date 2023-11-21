@@ -2,10 +2,10 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-const main = async () => {
+const main = async (): Promise<void> => {
   await prisma.college.upsert({
     where: {
-      id: 1,
+      id: 1
     },
     update: {},
     create: {
@@ -14,12 +14,12 @@ const main = async () => {
       isButteryIntegrated: true,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Monday'],
-    },
+      daysOpen: ['Monday']
+    }
   })
   await prisma.college.upsert({
     where: {
-      id: 2,
+      id: 2
     },
     update: {},
     create: {
@@ -28,12 +28,12 @@ const main = async () => {
       isButteryIntegrated: true,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Tuesday'],
-    },
+      daysOpen: ['Tuesday']
+    }
   })
   await prisma.college.upsert({
     where: {
-      id: 3,
+      id: 3
     },
     update: {},
     create: {
@@ -42,12 +42,12 @@ const main = async () => {
       isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Wednesday'],
-    },
+      daysOpen: ['Wednesday']
+    }
   })
   await prisma.college.upsert({
     where: {
-      id: 4,
+      id: 4
     },
     update: {},
     create: {
@@ -56,12 +56,12 @@ const main = async () => {
       isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Thursday'],
-    },
+      daysOpen: ['Thursday']
+    }
   })
   await prisma.college.upsert({
     where: {
-      id: 5,
+      id: 5
     },
     update: {},
     create: {
@@ -70,12 +70,12 @@ const main = async () => {
       isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Friday'],
-    },
+      daysOpen: ['Friday']
+    }
   })
   await prisma.college.upsert({
     where: {
-      id: 6,
+      id: 6
     },
     update: {},
     create: {
@@ -84,12 +84,12 @@ const main = async () => {
       isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
-    },
+      daysOpen: ['Monday', 'Tuesday', 'Wednesday']
+    }
   })
   await prisma.college.upsert({
     where: {
-      id: 7,
+      id: 7
     },
     update: {},
     create: {
@@ -98,12 +98,12 @@ const main = async () => {
       isButteryIntegrated: true,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
-    },
+      daysOpen: ['Monday', 'Tuesday', 'Wednesday']
+    }
   })
   await prisma.college.upsert({
     where: {
-      id: 8,
+      id: 8
     },
     update: {},
     create: {
@@ -112,12 +112,12 @@ const main = async () => {
       isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
-    },
+      daysOpen: ['Monday', 'Tuesday', 'Wednesday']
+    }
   })
   await prisma.college.upsert({
     where: {
-      id: 9,
+      id: 9
     },
     update: {},
     create: {
@@ -126,12 +126,12 @@ const main = async () => {
       isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Monday', 'Wednesday'],
-    },
+      daysOpen: ['Monday', 'Wednesday']
+    }
   })
   await prisma.college.upsert({
     where: {
-      id: 10,
+      id: 10
     },
     update: {},
     create: {
@@ -140,12 +140,12 @@ const main = async () => {
       isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
-    },
+      daysOpen: ['Monday', 'Tuesday', 'Wednesday']
+    }
   })
   await prisma.college.upsert({
     where: {
-      id: 11,
+      id: 11
     },
     update: {},
     create: {
@@ -154,12 +154,12 @@ const main = async () => {
       isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
-    },
+      daysOpen: ['Monday', 'Tuesday', 'Wednesday']
+    }
   })
   await prisma.college.upsert({
     where: {
-      id: 12,
+      id: 12
     },
     update: {},
     create: {
@@ -168,12 +168,12 @@ const main = async () => {
       isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Saturday', 'Tuesday', 'Thursday'],
-    },
+      daysOpen: ['Saturday', 'Tuesday', 'Thursday']
+    }
   })
   await prisma.college.upsert({
     where: {
-      id: 13,
+      id: 13
     },
     update: {},
     create: {
@@ -182,12 +182,12 @@ const main = async () => {
       isButteryIntegrated: false,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Monday', 'Tuesday', 'Wednesday'],
-    },
+      daysOpen: ['Monday', 'Tuesday', 'Wednesday']
+    }
   })
   await prisma.college.upsert({
     where: {
-      id: 14,
+      id: 14
     },
     update: {},
     create: {
@@ -196,12 +196,12 @@ const main = async () => {
       isButteryIntegrated: true,
       closeTime: '23:00',
       openTime: '21:00',
-      daysOpen: ['Wednesday'],
-    },
+      daysOpen: ['Wednesday']
+    }
   })
   await prisma.user.upsert({
     where: {
-      id: '3',
+      id: '3'
     },
     update: {},
     create: {
@@ -210,109 +210,115 @@ const main = async () => {
       token: 'jugglemaster',
       role: 'STAFF',
       college: {
-        connect: { id: 14 },
-      },
-    },
+        connect: { id: 14 }
+      }
+    }
   })
   await prisma.menuItem.upsert({
     where: {
-      id: 1,
+      id: 1
     },
     update: {},
     create: {
       name: 'Oops! Something is wrong',
       price: 156,
       college: {
-        connect: { id: 7 },
+        connect: { id: 7 }
       },
-      description: 'help',
-    },
+      description: 'help'
+    }
   })
   await prisma.menuItem.upsert({
     where: {
-      id: 2,
+      id: 2
     },
     update: {},
     create: {
       name: 'Bony Bony Burger',
       price: 348,
       college: {
-        connect: { id: 1 },
-      },
-    },
+        connect: { id: 1 }
+      }
+    }
   })
   await prisma.menuItem.upsert({
     where: {
-      id: 3,
+      id: 3
     },
     update: {},
     create: {
       name: 'Large Bean',
       price: 555,
       college: {
-        connect: { id: 1 },
-      },
-    },
+        connect: { id: 1 }
+      }
+    }
   })
   await prisma.menuItem.upsert({
     where: {
-      id: 4,
+      id: 4
     },
     update: {},
     create: {
       name: 'Burton',
       price: 3,
       college: {
-        connect: { id: 1 },
-      },
-    },
+        connect: { id: 1 }
+      }
+    }
   })
   await prisma.menuItem.upsert({
     where: {
-      id: 5,
+      id: 5
     },
     update: {},
     create: {
       name: 'The Yale Butteries App',
       price: 400000,
       college: {
-        connect: { id: 1 },
-      },
-    },
+        connect: { id: 1 }
+      }
+    }
   })
   await prisma.menuItem.upsert({
     where: {
-      id: 6,
+      id: 6
     },
     update: {},
     create: {
       name: 'Chicken Nuggets',
       price: 150,
       college: {
-        connect: { id: 1 },
-      },
-    },
+        connect: { id: 1 }
+      }
+    }
   })
   await prisma.menuItem.upsert({
     where: {
-      id: 7,
+      id: 7
     },
     update: {},
     create: {
       name: "Stephen Slade's Microwavable Lunch",
       price: 100,
       college: {
-        connect: { id: 1 },
-      },
-    },
+        connect: { id: 1 }
+      }
+    }
   })
 }
 
-main()
-  .catch((e) => {
-    console.error(e)
-    process.exit(1)
-  })
-  .finally(async () => {
+const cleanup = async (): Promise<void> => {
+  try {
     await prisma.$disconnect()
+  } catch (e) {
+    console.error('Error during cleanup:', e)
+  }
+}
+
+main()
+  .catch(async (e) => {
+    console.error(e)
+    await cleanup()
+    process.exit(1)
   })
