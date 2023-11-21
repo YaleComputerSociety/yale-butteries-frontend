@@ -1,4 +1,4 @@
-// This file contains general functions relating to the prisma database
+// This file contains general functions relating to the database
 
 import type { User, College, MenuItem, Order, OrderItem } from '@prisma/client'
 import { UserRole, MenuItemType, OrderItemStatus } from '@prisma/client'
@@ -13,7 +13,7 @@ export async function findUserByNetId (netId: string): Promise<(User & { college
 }
 
 export const getCollegeFromName = async (name: string): Promise<College> => {
-  const college: College | null = await prisma.college.findFirst({
+  const college = await prisma.college.findFirst({
     where: {
       name: {
         equals: name.toLowerCase(),
@@ -75,10 +75,13 @@ export const getUserFromId = async (id: string): Promise<User> => {
   return user
 }
 
-export const getMenuItemFromId = async (id: number): Promise<MenuItem> => {
+export const getMenuItemFromId = async (id: number): Promise<MenuItem & { college: College }> => {
   const item = await prisma.menuItem.findUnique({
     where: {
       id
+    },
+    include: {
+      college: true
     }
   })
 
