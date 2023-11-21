@@ -2,8 +2,9 @@ import type { Request, Response } from 'express'
 
 import prisma from '@src/prismaClient'
 import { OrderItemStatus } from '@prisma/client'
-import { formatOrder, formatOrders } from '@utils/dtoConverters'
-import { getCollegeFromName, getOrderFromId, getUserFromId, isOrderItemStatus } from '@utils/prismaUtils'
+import { formatOrder, formatOrderItem, formatOrders } from '@utils/dtoConverters'
+import { getCollegeFromName, getOrderFromId, getOrderItemFromId, getUserFromId, isOrderItemStatus } from '@utils/prismaUtils'
+import HTTPError from '@src/utils/httpError'
 
 const MILLISECONDS_UNTIL_ORDER_IS_EXPIRED = 3600000 * 6
 
@@ -55,6 +56,7 @@ export async function createOrder (req: Request, res: Response): Promise<void> {
     price: number
     status: OrderItemStatus
     menuItemId: number
+    userId: string
   }
 
   const college = await getCollegeFromName(req.body.college)
@@ -69,7 +71,8 @@ export async function createOrder (req: Request, res: Response): Promise<void> {
     const newItem: NewOrderItem = {
       price: parseInt(item.itemCost),
       status: OrderItemStatus.QUEUED,
-      menuItemId: item.menuItemId
+      menuItemId: item.menuItemId,
+      userId: req.body.userId
     }
     orderItems.push(newItem)
   }
@@ -103,6 +106,30 @@ export async function createOrder (req: Request, res: Response): Promise<void> {
   res.json(formattedOrder)
 }
 
+export async function updateOrderItem (req: Request, res: Response): Promise<void> {
+  if (!isOrderItemStatus(req.body.orderStatus)) {
+    throw new HTTPError('Invalid status', 400)
+  }
+
+  // check that order item exists
+  await getOrderItemFromId(parseInt(req.params.orderItemId))
+
+  const orderItem = await prisma.orderItem.update({
+    where: {
+      id: parseInt(req.params.orderItemId)
+    },
+    data: {
+      status: req.body.orderStatus
+    }
+  })
+
+  if (orderItem === null) throw new HTTPError(`No order item found with ID ${req.params.orderItemId}`, 404)
+
+  const formattedOrderItem = await formatOrderItem(orderItem)
+  res.json(formattedOrderItem)
+}
+
+// This function is currently unused and probably doesn't work
 export async function updateOrder (req: Request, res: Response): Promise<void> {
   try {
     const order = await prisma.order.update({
@@ -117,28 +144,6 @@ export async function updateOrder (req: Request, res: Response): Promise<void> {
     })
     res.send(JSON.stringify(order))
   } catch (e) {
-    res.status(400).send(e)
-  }
-}
-
-export async function updateOrderItem (req: Request, res: Response): Promise<void> {
-  try {
-    if (!isOrderItemStatus(req.body.orderStatus)) {
-      res.status(400).send('malformed status')
-      return
-    }
-
-    const orderItem = await prisma.orderItem.update({
-      where: {
-        id: parseInt(req.params.orderItemId)
-      },
-      data: {
-        status: req.body.orderStatus
-      }
-    })
-    res.send(JSON.stringify(orderItem))
-  } catch (e) {
-    console.log(e)
     res.status(400).send(e)
   }
 }

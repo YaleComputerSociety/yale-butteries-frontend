@@ -104,3 +104,15 @@ export const getOrderFromId = async (id: number): Promise<Order & { orderItems: 
 
   return order
 }
+
+export const getOrderItemFromId = async (id: number): Promise<OrderItem> => {
+  const orderItem = await prisma.orderItem.findUnique({
+    where: {
+      id
+    }
+  })
+
+  if (orderItem === null) throw new HTTPError(`No order item found with ID ${id}`, 404)
+
+  return orderItem
+}

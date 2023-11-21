@@ -59,6 +59,7 @@ export const formatOrder = async (order: Order & { orderItems: OrderItem[] }): P
   return formattedOrder
 }
 
+// TODO make more database-call efficient
 export const formatOrderItems = async (order: Order & { orderItems: OrderItem[] }): Promise<OrderItemDto[]> => {
   const orderItems: OrderItemDto[] = []
   for (const item of order.orderItems) {
@@ -77,6 +78,19 @@ export const formatOrderItems = async (order: Order & { orderItems: OrderItem[] 
   }
 
   return orderItems
+}
+
+export const formatOrderItem = async (orderItem: OrderItem): Promise<OrderItemDto> => {
+  const menuItem = await getMenuItemFromId(orderItem.menuItemId)
+
+  return {
+    itemCost: orderItem.price,
+    orderStatus: orderItem.status,
+    menuItemId: orderItem.menuItemId,
+    name: menuItem.name,
+    id: orderItem.id,
+    user: orderItem.userId
+  }
 }
 
 export const formatCollege = (college: College): CollegeDto => {
