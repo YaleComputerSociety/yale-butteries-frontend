@@ -70,7 +70,7 @@ export const getUserFromId = async (id: string): Promise<User> => {
     }
   })
 
-  if (user === null) throw new Error(`User not found for id: ${id}`)
+  if (user === null) throw new HTTPError(`No user found with ID ${id}`, 404)
 
   return user
 }
@@ -82,7 +82,7 @@ export const getMenuItemFromId = async (id: number): Promise<MenuItem> => {
     }
   })
 
-  if (item === null) throw new Error(`Menu Item not found for id: ${id}`)
+  if (item === null) throw new HTTPError(`No menu item found with ID ${id}`, 404)
 
   return item
 }
@@ -97,7 +97,7 @@ export const getOrderFromId = async (id: number): Promise<Order & { orderItems: 
     }
   })
 
-  if (order === null) throw new Error(`Order not found for id: ${id}`)
+  if (order === null) throw new HTTPError(`No order found with ID ${id}`, 404)
 
   return order
 }
