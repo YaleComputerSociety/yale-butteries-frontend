@@ -6,6 +6,8 @@ import type { OrderItemDto } from '@utils/dtos'
 import { formatOrder, formatOrders } from '@utils/dtoConverters'
 import { getCollegeFromName, getOrderFromId, isOrderItemStatus } from '@utils/prismaUtils'
 
+const MILLISECONDS_UNTIL_ORDER_IS_EXPIRED = 3600000 * 6
+
 export async function getOrder (req: Request, res: Response): Promise<void> {
   const order = await getOrderFromId(parseInt(req.params.orderId))
   console.log(order)
@@ -31,36 +33,23 @@ export async function getAllOrdersFromCollege (req: Request, res: Response): Pro
 
 // returns all orders of a specific college within the last 6 hours
 export async function getRecentOrdersFromCollege (req: Request, res: Response): Promise<void> {
-  try {
-    const college = await getCollegeFromName(req.params.collegeName)
-    const date = new Date(Date.now() - 36e5 * 6) // select only transactions from after 6 hours before this moment
+  const college = await getCollegeFromName(req.params.collegeName)
+  const orderExpirationTime = new Date(Date.now() - MILLISECONDS_UNTIL_ORDER_IS_EXPIRED)
 
-    const validOrders = await prisma.order.findMany({
-      where: {
-        collegeId: college.id,
-        createdAt: {
-          gte: date
-        }
-      },
-      orderBy: {
-        id: 'asc'
-      },
-      include: {
-        orderItems: true
+  const orders = await prisma.order.findMany({
+    where: {
+      collegeId: college.id,
+      createdAt: {
+        gte: orderExpirationTime
       }
-    })
-
-    const frontValidOrders = await formatOrders(validOrders, college.name)
-
-    const ret = {
-      transactionHistories: frontValidOrders
+    },
+    include: {
+      orderItems: true
     }
+  })
 
-    res.send(JSON.stringify(ret))
-  } catch (e) {
-    console.log(e)
-    res.status(400).send(e)
-  }
+  const formattedOrders = await formatOrders(orders, college.name)
+  res.json({ transactionHistories: formattedOrders })
 }
 
 export async function createOrder (req: Request, res: Response): Promise<void> {
