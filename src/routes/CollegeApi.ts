@@ -4,8 +4,8 @@ import asyncHandler from '@middlewares/asyncHandler'
 
 const router = express.Router()
 
-router.get('/', getAllColleges)
+router.get('/', asyncHandler(getAllColleges))
 router.get('/:collegeId', asyncHandler(getCollege))
-router.put('/:collegeId', updateCollege)
+router.put('/:collegeId', asyncHandler(updateCollege))
 
 export default router
