@@ -1,13 +1,20 @@
-import { Request, Response, NextFunction, ErrorRequestHandler } from 'express'
+import type { Request, Response, NextFunction, ErrorRequestHandler } from 'express'
 
-const errorHandler: ErrorRequestHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+interface ExtendedError extends Error {
+  status?: number
+  // Add any other custom properties that your errors might have
+}
+
+const errorHandler: ErrorRequestHandler = (err: ExtendedError, req: Request, res: Response, next: NextFunction) => {
   console.error(err)
 
   if (res.headersSent) {
-    return next(err)
+    next(err)
+    return
   }
 
-  res.status(500).json({ error: 'Internal server error' })
+  const statusCode = err.status ?? 500
+  res.status(statusCode).json({ error: err.message ?? 'Internal server error' })
 }
 
 export default errorHandler
