@@ -1,45 +1,19 @@
-import prisma from '@src/prismaClient'
 import type { Request, Response } from 'express'
-import { getCollegeFromName, isMenuItemType } from '../utils/prismaUtils'
+
 import type { MenuItemType } from '@prisma/client'
+import prisma from '@src/prismaClient'
+import { getCollegeFromName, isMenuItemType } from '@utils/prismaUtils'
 import type { MenuItemDto } from '@utils/dtos'
+import { formatMenuItem } from '@src/utils/dtoConverters'
 
 export async function getAllMenuItems (_: Request, res: Response): Promise<void> {
-  try {
-    const menuItems = await prisma.menuItem.findMany({
-      include: {
-        college: true
-      }
-    })
-
-    const collegeIds = [...new Set(menuItems.map((item) => item.collegeId))]
-
-    const colleges = await prisma.college.findMany({
-      where: {
-        id: {
-          in: collegeIds
-        }
-      }
-    })
-
-    const collegeMap = colleges.reduce((map, college) => {
-      map[college.id] = college.name
-      return map
-    }, {})
-
-    const frontMenuItems = menuItems.map((item) => ({
-      id: item.id,
-      item: item.name,
-      price: item.price,
-      college: collegeMap[item.collegeId],
-      isActive: item.isActive,
-      description: item.description,
-      foodType: item.type
-    }))
-    res.send(frontMenuItems)
-  } catch (e) {
-    res.status(400).send(e.message)
-  }
+  const menuItems = await prisma.menuItem.findMany({
+    include: {
+      college: true
+    }
+  })
+  const formattedMenuItems = menuItems.map((item) => formatMenuItem(item))
+  res.json(formattedMenuItems)
 }
 
 export async function getMenuItem (req: Request, res: Response): Promise<void> {
