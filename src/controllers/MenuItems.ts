@@ -5,6 +5,7 @@ import prisma from '@src/prismaClient'
 import { getCollegeFromName, isMenuItemType } from '@utils/prismaUtils'
 import type { MenuItemDto } from '@utils/dtos'
 import { formatMenuItem } from '@src/utils/dtoConverters'
+import HTTPError from '@src/utils/httpError'
 
 export async function getAllMenuItems (_: Request, res: Response): Promise<void> {
   const menuItems = await prisma.menuItem.findMany({
@@ -17,19 +18,19 @@ export async function getAllMenuItems (_: Request, res: Response): Promise<void>
 }
 
 export async function getMenuItem (req: Request, res: Response): Promise<void> {
-  try {
-    const menuItem = await prisma.menuItem.findUnique({
-      where: {
-        id: parseInt(req.params.menuItemId)
-      },
-      include: {
-        college: true
-      }
-    })
-    res.send(JSON.stringify(menuItem))
-  } catch (e) {
-    res.status(400).send(e)
-  }
+  const menuItem = await prisma.menuItem.findUnique({
+    where: {
+      id: parseInt(req.params.menuItemId)
+    },
+    include: {
+      college: true
+    }
+  })
+
+  if (menuItem === null) throw new HTTPError(`No menu item found at ID ${req.params.menuItemId}`, 404)
+  const formattedMenuItem = formatMenuItem(menuItem)
+
+  res.json(formattedMenuItem)
 }
 
 export async function createMenuItem (req: Request, res: Response): Promise<void> {
