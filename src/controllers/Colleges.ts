@@ -11,11 +11,11 @@ export interface TypedRequest<Params, Body> extends Express.Request {
 
 export async function getAllColleges (_: Request, res: Response): Promise<void> {
   const colleges = await prisma.college.findMany(includeProperty)
-  const frontendColleges = colleges.map((college) => formatCollege(college))
-  res.json(frontendColleges)
+  const formattedColleges = colleges.map((college) => formatCollege(college))
+  res.json(formattedColleges)
 }
 
-export async function getCollege (req: Request<{ collegeId: string }, null>, res: Response): Promise<void> {
+export async function getCollege (req: Request, res: Response): Promise<void> {
   const college = await prisma.college.findUnique({
     ...includeProperty,
     where: {
@@ -24,29 +24,27 @@ export async function getCollege (req: Request<{ collegeId: string }, null>, res
   })
 
   if (college === null) throw new HTTPError(`No college found at ID ${req.params.collegeId}`, 404)
-  res.json(college)
+  const formattedCollege = formatCollege(college)
+
+  res.json(formattedCollege)
 }
 
 export async function updateCollege (req: Request, res: Response): Promise<void> {
-  try {
-    console.log(req.body)
-    const result = await prisma.college.update({
-      where: {
-        id: parseInt(req.params.collegeId)
-      },
-      data: {
-        daysOpen: req.body.daysOpen,
-        isOpen: req.body.isOpen,
-        openTime: req.body.openTime,
-        closeTime: req.body.closeTime
-      }
-    })
-    console.log(result)
-    res.send(JSON.stringify(result))
-  } catch (e) {
-    console.log(e)
-    res.status(400).send(e)
-  }
+  const college = await prisma.college.update({
+    where: {
+      id: parseInt(req.params.collegeId)
+    },
+    data: {
+      daysOpen: req.body.daysOpen,
+      isOpen: req.body.isOpen,
+      openTime: req.body.openTime,
+      closeTime: req.body.closeTime
+    }
+  })
+  if (college === null) throw new HTTPError(`No college found at ID ${req.params.collegeId}`, 404)
+  const formattedCollege = formatCollege(college)
+
+  res.json(formattedCollege)
 }
 
 const includeProperty = {
