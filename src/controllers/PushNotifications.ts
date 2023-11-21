@@ -60,7 +60,7 @@ const getOrderFromId = async (id: number): Promise<Order & { orderItems: OrderIt
       id
     }
   })
-  if (res === null) throw new Error(`No order found at id ${id}`)
+  if (res === null) throw new Error(`No order found with id ${id}`)
   return res
 }
 

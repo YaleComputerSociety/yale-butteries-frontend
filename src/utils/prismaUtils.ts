@@ -3,6 +3,7 @@
 import type { User, College, MenuItem, Order, OrderItem } from '@prisma/client'
 import { UserRole, MenuItemType, OrderItemStatus } from '@prisma/client'
 import prisma from '@src/prismaClient'
+import HTTPError from '@src/utils/httpError'
 
 export async function findUserByNetId (netId: string): Promise<(User & { college: College }) | null> {
   return await prisma.user.findFirst({
@@ -21,7 +22,7 @@ export const getCollegeFromName = async (name: string): Promise<College> => {
     }
   })
 
-  if (college === null) throw new Error(`College not found for name: ${name}`)
+  if (college === null) throw new HTTPError(`No college found with name ${name}`, 404)
 
   return college
 }
@@ -33,7 +34,7 @@ export const getCollegeNameFromId = async (id: number): Promise<string> => {
     }
   })
 
-  if (college === null) throw new Error(`College not found for id: ${id}`)
+  if (college === null) throw new HTTPError(`No college found with ID ${id}`, 404)
 
   return college.name
 }
@@ -45,7 +46,7 @@ export const getCollegeFromId = async (id: number): Promise<College> => {
     }
   })
 
-  if (college === null) throw new Error(`College not found for id: ${id}`)
+  if (college === null) throw new HTTPError(`No college found with ID ${id}`, 404)
 
   return college
 }
