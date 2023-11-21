@@ -2,9 +2,8 @@ import type { Request, Response } from 'express'
 
 import prisma from '@src/prismaClient'
 import { OrderItemStatus } from '@prisma/client'
-import type { OrderItemDto } from '@utils/dtos'
 import { formatOrder, formatOrders } from '@utils/dtoConverters'
-import { getCollegeFromName, getOrderFromId, isOrderItemStatus } from '@utils/prismaUtils'
+import { getCollegeFromName, getOrderFromId, getUserFromId, isOrderItemStatus } from '@utils/prismaUtils'
 
 const MILLISECONDS_UNTIL_ORDER_IS_EXPIRED = 3600000 * 6
 
@@ -31,7 +30,6 @@ export async function getAllOrdersFromCollege (req: Request, res: Response): Pro
   res.json({ transactionHistories: formattedOrders })
 }
 
-// returns all orders of a specific college within the last 6 hours
 export async function getRecentOrdersFromCollege (req: Request, res: Response): Promise<void> {
   const college = await getCollegeFromName(req.params.collegeName)
   const orderExpirationTime = new Date(Date.now() - MILLISECONDS_UNTIL_ORDER_IS_EXPIRED)
@@ -58,58 +56,51 @@ export async function createOrder (req: Request, res: Response): Promise<void> {
     status: OrderItemStatus
     menuItemId: number
   }
-  try {
-    const totalPrice = parseInt(req.body.price)
-    const college = await getCollegeFromName(req.body.college)
-    const collegeId = college.id
 
-    const inputOrderItems: OrderItemDto[] = req.body.transactionItems
-    const orderItems: NewOrderItem[] = []
-    for (const item of inputOrderItems) {
-      const newItem: NewOrderItem = {
-        price: item.itemCost,
-        status: OrderItemStatus.QUEUED,
-        menuItemId: item.menuItemId
-      }
-      orderItems.push(newItem)
+  const college = await getCollegeFromName(req.body.college)
+
+  // test is user exists
+  // TODO test if user is the actual user sending the request
+  await getUserFromId(req.body.userId)
+
+  // Get sanitized orderItems list
+  const orderItems: NewOrderItem[] = []
+  for (const item of req.body.transactionItems) {
+    const newItem: NewOrderItem = {
+      price: parseInt(item.itemCost),
+      status: OrderItemStatus.QUEUED,
+      menuItemId: item.menuItemId
     }
+    orderItems.push(newItem)
+  }
 
-    // store the transaction in the database
-    const newOrder = await prisma.order.create({
-      data: {
-        status: 'QUEUED',
-        price: totalPrice,
-        college: {
-          connect: {
-            id: collegeId
-          }
-        },
-        user: {
-          connect: {
-            id: req.body.userId
-          }
-        },
-        orderItems: {
-          createMany: {
-            data: orderItems
-          }
+  const order = await prisma.order.create({
+    data: {
+      status: 'QUEUED',
+      price: parseInt(req.body.price),
+      college: {
+        connect: {
+          id: college.id
+        }
+      },
+      user: {
+        connect: {
+          id: req.body.userId
+        }
+      },
+      orderItems: {
+        createMany: {
+          data: orderItems
         }
       }
-    })
-
-    const sendOrder = {
-      id: newOrder.id,
-      college: req.body.college,
-      inProgress: req.body.inProgress,
-      price: req.body.price,
-      userId: req.body.userId,
-      transactionItems: orderItems
+    },
+    include: {
+      orderItems: true
     }
-    res.send(JSON.stringify(sendOrder))
-  } catch (e) {
-    console.log(e)
-    res.status(400).send(e)
-  }
+  })
+
+  const formattedOrder = await formatOrder(order)
+  res.json(formattedOrder)
 }
 
 export async function updateOrder (req: Request, res: Response): Promise<void> {

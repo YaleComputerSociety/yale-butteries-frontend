@@ -41,7 +41,7 @@ async function updateOrderInner (orderData: {
       data: {
         status: orderData.status,
         price: orderData.charged_price,
-        endedAt: orderData.order_complete
+        readyAt: orderData.order_complete
       }
     })
     return order

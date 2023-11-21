@@ -97,7 +97,7 @@ model Order {
   paymentIntentId  String? // the id of the payment method to charge later; requires stripe secret key to work
   initialQueueSize Int?
   endQueueSize     Int?
-  endedAt          DateTime?
+  readyAt          DateTime?
   paidAt           DateTime?
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @default(now()) @updatedAt
