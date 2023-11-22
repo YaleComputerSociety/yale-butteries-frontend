@@ -37,7 +37,6 @@ export async function getUser (req: Request, res: Response): Promise<void> {
       id: req.params.userId
     }
   })
-  console.log(user)
 
   if (user === null) throw new HTTPError(`No user found with ID ${req.params.userId}`, 404)
 

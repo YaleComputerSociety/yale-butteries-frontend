@@ -43,6 +43,7 @@ export async function createMenuItem (req: Request, res: Response): Promise<void
   }
 
   const newMenuItem = await prisma.menuItem.create({ data: menuItemData })
+  // TODO: change this in frontend
   res.json(newMenuItem.id)
 }
 

@@ -132,19 +132,15 @@ export async function updateOrderItem (req: Request, res: Response): Promise<voi
 
 // This function is currently unused and probably doesn't work
 export async function updateOrder (req: Request, res: Response): Promise<void> {
-  try {
-    const order = await prisma.order.update({
-      where: {
-        id: req.body.id
-      },
-      data: {
-        status: typeof req.body.in_progress !== 'undefined' ? req.body.in_progress : undefined,
-        price: typeof req.body.total_price !== 'undefined' ? req.body.total_price : undefined,
-        stripeFee: typeof req.body.stripe_fee !== 'undefined' ? req.body.stripe_fee : undefined
-      }
-    })
-    res.send(JSON.stringify(order))
-  } catch (e) {
-    res.status(400).send(e)
-  }
+  const order = await prisma.order.update({
+    where: {
+      id: req.body.id
+    },
+    data: {
+      status: req.body.in_progress ?? undefined,
+      price: req.body.total_price ?? undefined,
+      stripeFee: req.body.stripe_fee ?? undefined
+    }
+  })
+  res.json(order)
 }
