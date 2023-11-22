@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express'
 
-import { User, UserRole } from '@prisma/client'
+import { UserRole } from '@prisma/client'
 import prisma from '@src/prismaClient'
-import { findUserByNetId, getCollegeFromName, isUserRole } from '@utils/prismaUtils'
+import { findUserByNetId, getCollegeFromName } from '@utils/prismaUtils'
 import { formatOrderItem, formatUser, formatUsers } from '@utils/dtoConverters'
 import HTTPError from '@src/utils/httpError'
 import { MILLISECONDS_UNTIL_ORDER_IS_EXPIRED } from '@src/utils/constants'
@@ -92,26 +92,18 @@ export async function createUser (req: Request, res: Response): Promise<void> {
 }
 
 export async function updateUser (req: Request, res: Response): Promise<void> {
-  try {
-    interface userUpdateData {
-      name?: string
-      email?: string
+  const user = await prisma.user.update({
+    where: {
+      id: req.params.userId
+    },
+    data: {
+      name: req.body.name ?? undefined,
+      email: req.body.email ?? undefined
     }
+  })
 
-    const userData: userUpdateData = {}
-    if (req.body.name !== undefined) userData.name = req.body.name
-    if (req.body.email !== undefined) userData.email = req.body.email
-
-    const user = await prisma.user.update({
-      where: {
-        id: req.params.userId
-      },
-      data: userData
-    })
-    res.send(JSON.stringify(user))
-  } catch (e) {
-    res.status(400).send(e)
-  }
+  const formattedUser = await formatUser(user)
+  res.json(formattedUser)
 }
 
 export async function verifyStaffLogin (req: Request, res: Response): Promise<void> {
