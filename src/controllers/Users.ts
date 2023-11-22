@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import type { User, UserRole } from '@prisma/client'
+import { User, UserRole } from '@prisma/client'
 import prisma from '@src/prismaClient'
 import { findUserByNetId, getCollegeFromName, isUserRole } from '@utils/prismaUtils'
 import { formatOrderItem, formatUser, formatUsers } from '@utils/dtoConverters'
@@ -54,77 +54,41 @@ export async function getUser (req: Request, res: Response): Promise<void> {
   res.json(formattedUser)
 }
 
-interface CreateUserRequestBody {
-  netid: string
-  college: string
-  name?: string
-  permissions?: string
-  email?: string
-  token?: string
-}
-
-interface NewUserData {
-  netId: string
-  name: string
-  college: {
-    connect: {
-      id: number
-    }
-  }
-  role?: UserRole
-  token?: string
-  email?: string
-}
-
-async function createUserRecord (data: CreateUserRequestBody): Promise<User> {
-  const collegeData = await getCollegeFromName(data.college)
-
-  const userData: NewUserData = {
-    netId: data.netid,
-    name: data.name === null ? data.name : data.netid,
-    college: {
-      connect: {
-        id: collegeData.id
-      }
-    }
-  }
-
-  if (data.permissions === null && isUserRole(data.permissions)) userData.role = data.permissions
-  if (data.email === null) userData.email = data.email
-  if (data.token === null) userData.token = data.token
-
-  return await prisma.user.create({ data: userData })
-}
-
 export async function createUser (req: Request, res: Response): Promise<void> {
-  try {
-    const { netid } = req.body
-
-    if (netid === undefined) {
-      res.status(400).send('Required fields are missing')
-      return
-    }
-
-    // In case the user already exists
-    const existingUser = await findUserByNetId(netid)
-    if (existingUser !== null) {
-      res.send(JSON.stringify(await formatUser(existingUser)))
-      return
-    }
-
-    const newUser = await createUserRecord(req.body)
-
-    // await stripe.customers.create({
-    //   email: req.body.email,
-    //   name: req.body.name,
-    //   metadata: { userId: newUser.id },
-    // })
-
-    res.send(JSON.stringify(await formatUser(newUser)))
-  } catch (e) {
-    console.log(e)
-    res.status(500).send(e)
+  // In case the user already exists
+  const existingUser = await findUserByNetId(req.body.netid)
+  if (existingUser !== null) {
+    const formattedUser = await formatUser(existingUser)
+    res.json(formattedUser)
+    return
   }
+
+  const college = await getCollegeFromName(req.body.college)
+
+  const user = await prisma.user.create({
+    data: {
+      netId: req.body.netid,
+      name: req.body.name ?? req.body.netid,
+      college: {
+        connect: {
+          id: college.id
+        }
+      },
+      role: UserRole.CUSTOMER,
+      email: req.body.email ?? undefined,
+      token: req.body.token ?? undefined
+    }
+  })
+
+  // stripe user initialization
+  // await stripe.customers.create({
+  //   email: req.body.email,
+  //   name: req.body.name,
+  //   metadata: { userId: newUser.id },
+  // })
+
+  const formattedUser = await formatUser(user)
+  res.json(formattedUser)
 }
 
 export async function updateUser (req: Request, res: Response): Promise<void> {
