@@ -33,32 +33,32 @@ export const formatUsers = async (users: Array<User & { college: College }>): Pr
 
 // TODO: make this function more efficient by reducing database calls
 // (user, th, tis are fetched for every order, should be fetched at beginning and put in a map)
-export const formatOrders = async (orders: Order[], college: string): Promise<OrderDto[]> => {
-  const res: OrderDto[] = []
-  for (const item of orders) {
-    const user: User = await getUserFromId(item.userId)
-    const th: Order & { orderItems: OrderItem[] } = await getOrderFromId(item.id)
-    const tis: OrderItemDto[] = await formatOrderItems(th)
+export const formatOrders = async (orders: Array<Order & { orderItems: OrderItem[] }>, college: string): Promise<OrderDto[]> => {
+  const formattedOrders: OrderDto[] = []
 
-    const newItem: OrderDto = {
-      id: item.id,
+  for (const order of orders) {
+    const user: User = await getUserFromId(order.userId)
+    const orderItems: OrderItemDto[] = await formatOrderItems(order.orderItems)
+
+    formattedOrders.push({
+      id: order.id,
       college,
-      inProgress: item.status,
-      price: item.price,
+      inProgress: order.status,
+      price: order.price,
       userId: user.id,
-      paymentIntentId: item.paymentIntentId ?? '',
-      creationTime: item.createdAt,
-      transactionItems: tis
-    }
-    res.push(newItem)
+      paymentIntentId: order.paymentIntentId ?? '',
+      creationTime: order.createdAt,
+      transactionItems: orderItems
+    })
   }
-  return res
+
+  return formattedOrders
 }
 
 export const formatOrder = async (order: Order & { orderItems: OrderItem[] }): Promise<OrderDto> => {
   const college = await getCollegeFromId(order.collegeId)
   const user = await getUserFromId(order.userId)
-  const orderItems = await formatOrderItems(order)
+  const orderItems = await formatOrderItems(order.orderItems)
 
   const formattedOrder: OrderDto = {
     id: order.id,
@@ -74,25 +74,26 @@ export const formatOrder = async (order: Order & { orderItems: OrderItem[] }): P
   return formattedOrder
 }
 
-// TODO make more database-call efficient
-export const formatOrderItems = async (order: Order & { orderItems: OrderItem[] }): Promise<OrderItemDto[]> => {
-  const orderItems: OrderItemDto[] = []
-  for (const item of order.orderItems) {
-    const menuItem = await getMenuItemFromId(item.menuItemId)
-    const user = await getUserFromId(order.userId)
+export const formatOrderItems = async (orderItems: OrderItem[]): Promise<OrderItemDto[]> => {
+  const formattedOrderItems: OrderItemDto[] = []
 
-    const newItem: OrderItemDto = {
+  // user is the same for every order item
+  const user = await getUserFromId(orderItems[0].userId)
+
+  for (const item of orderItems) {
+    const menuItem = await getMenuItemFromId(item.menuItemId)
+
+    formattedOrderItems.push({
       itemCost: item.price,
       orderStatus: item.status,
       menuItemId: item.menuItemId,
       name: menuItem.name,
       id: item.id,
       user: user.name
-    }
-    orderItems.push(newItem)
+    })
   }
 
-  return orderItems
+  return formattedOrderItems
 }
 
 export const formatOrderItem = async (orderItem: OrderItem): Promise<OrderItemDto> => {
