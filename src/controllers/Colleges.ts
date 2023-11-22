@@ -4,6 +4,7 @@ import prisma from '@src/prismaClient'
 import { formatCollege } from '@utils/dtoConverters'
 import HTTPError from '@src/utils/httpError'
 import { getCollegeFromId } from '@src/utils/prismaUtils'
+import type { UpdateCollegeBody } from '@src/utils/bodyTypes'
 
 export interface TypedRequest<Params, Body> extends Express.Request {
   params: Params
@@ -23,15 +24,17 @@ export async function getCollege (req: Request, res: Response): Promise<void> {
 }
 
 export async function updateCollege (req: Request, res: Response): Promise<void> {
+  const requestBody: UpdateCollegeBody = req.body as UpdateCollegeBody
+
   const college = await prisma.college.update({
     where: {
       id: parseInt(req.params.collegeId)
     },
     data: {
-      daysOpen: req.body.daysOpen,
-      isOpen: req.body.isOpen,
-      openTime: req.body.openTime,
-      closeTime: req.body.closeTime
+      daysOpen: requestBody.daysOpen,
+      isOpen: requestBody.isOpen,
+      openTime: requestBody.openTime,
+      closeTime: requestBody.closeTime
     }
   })
   if (college === null) throw new HTTPError(`No college found with ID ${req.params.collegeId}`, 404)
