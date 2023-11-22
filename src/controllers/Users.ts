@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 
 import { UserRole } from '@prisma/client'
 import prisma from '@src/prismaClient'
-import { findUserByNetId, getCollegeFromName } from '@utils/prismaUtils'
+import { findUserByNetId, getCollegeFromName, getUserFromId } from '@utils/prismaUtils'
 import { formatOrderItem, formatUser, formatUsers } from '@utils/dtoConverters'
 import HTTPError from '@src/utils/httpError'
 import { MILLISECONDS_UNTIL_ORDER_IS_EXPIRED } from '@src/utils/constants'
@@ -107,20 +107,10 @@ export async function updateUser (req: Request, res: Response): Promise<void> {
 }
 
 export async function verifyStaffLogin (req: Request, res: Response): Promise<void> {
-  try {
-    // this needs to be fixed but we also wont use this in the future
-    const user = await prisma.user.findUnique({
-      where: {
-        id: '89839659-e7b1-4e3d-ad6e-fd30fca49a75'
-      }
-    })
-    if (user === null) throw new Error('could not find staff credentials')
-    let ret = false
-    if (user.name === req.body.username && user.token === req.body.password) {
-      ret = true
-    }
-    res.send(ret)
-  } catch (e) {
-    res.status(400).send(e)
-  }
+  // this needs to be fixed but we also wont use this in the future
+  const user = await getUserFromId('07732f82-f2b8-471b-a44a-6e1c4057f218')
+  if (user === null) throw new HTTPError('No user found', 404)
+
+  const verified = (user.name === req.body.username && user.token === req.body.password)
+  res.json(verified)
 }
