@@ -1,68 +1,10 @@
 // This file contains general functions relating to the database
-
 import type { User, College, MenuItem, Order, OrderItem } from '@prisma/client'
 import { UserRole, MenuItemType, OrderItemStatus } from '@prisma/client'
 import prisma from '@src/prismaClient'
 import HTTPError from '@src/utils/httpError'
 
-export async function findUserByNetId (netId: string): Promise<(User & { college: College }) | null> {
-  return await prisma.user.findFirst({
-    where: { netId },
-    include: { college: true }
-  })
-}
-
-export const getCollegeFromName = async (name: string): Promise<College> => {
-  const college = await prisma.college.findFirst({
-    where: {
-      name: {
-        equals: name.toLowerCase(),
-        mode: 'insensitive'
-      }
-    }
-  })
-
-  if (college === null) throw new HTTPError(`No college found with name ${name}`, 404)
-
-  return college
-}
-
-export const getCollegeNameFromId = async (id: number): Promise<string> => {
-  const college = await prisma.college.findFirst({
-    where: {
-      id
-    }
-  })
-
-  if (college === null) throw new HTTPError(`No college found with ID ${id}`, 404)
-
-  return college.name
-}
-
-export const getCollegeFromId = async (id: number): Promise<College> => {
-  const college = await prisma.college.findUnique({
-    where: {
-      id
-    }
-  })
-
-  if (college === null) throw new HTTPError(`No college found with ID ${id}`, 404)
-
-  return college
-}
-
-export function isUserRole (value: string): value is UserRole {
-  return Object.values(UserRole).includes(value as UserRole)
-}
-
-export function isMenuItemType (value: string): value is MenuItemType {
-  return Object.values(MenuItemType).includes(value as MenuItemType)
-}
-
-export function isOrderItemStatus (value: string): value is OrderItemStatus {
-  return Object.values(OrderItemStatus).includes(value as OrderItemStatus)
-}
-
+// user functions
 export const getUserFromId = async (id: string): Promise<User> => {
   const user = await prisma.user.findUnique({
     where: {
@@ -75,6 +17,39 @@ export const getUserFromId = async (id: string): Promise<User> => {
   return user
 }
 
+export async function findUserByNetId (netId: string): Promise<(User & { college: College }) | null> {
+  return await prisma.user.findFirst({
+    where: { netId },
+    include: { college: true }
+  })
+}
+
+// college functions
+export const getCollegeFromId = async (id: number): Promise<College> => {
+  const college = await prisma.college.findUnique({
+    where: {
+      id
+    }
+  })
+
+  if (college === null) throw new HTTPError(`No college found with ID ${id}`, 404)
+  return college
+}
+
+export const getCollegeFromName = async (name: string): Promise<College> => {
+  const college = await prisma.college.findFirst({
+    where: {
+      name: {
+        equals: name.toLowerCase(),
+        mode: 'insensitive'
+      }
+    }
+  })
+  if (college === null) throw new HTTPError(`No college found with name ${name}`, 404)
+  return college
+}
+
+// menu item functinos
 export const getMenuItemFromId = async (id: number): Promise<MenuItem & { college: College }> => {
   const item = await prisma.menuItem.findUnique({
     where: {
@@ -90,6 +65,7 @@ export const getMenuItemFromId = async (id: number): Promise<MenuItem & { colleg
   return item
 }
 
+// order functions
 export const getOrderFromId = async (id: number): Promise<Order & { orderItems: OrderItem[] }> => {
   const order = await prisma.order.findUnique({
     include: {
@@ -105,6 +81,7 @@ export const getOrderFromId = async (id: number): Promise<Order & { orderItems: 
   return order
 }
 
+// order item functions
 export const getOrderItemFromId = async (id: number): Promise<OrderItem> => {
   const orderItem = await prisma.orderItem.findUnique({
     where: {
@@ -115,4 +92,17 @@ export const getOrderItemFromId = async (id: number): Promise<OrderItem> => {
   if (orderItem === null) throw new HTTPError(`No order item found with ID ${id}`, 404)
 
   return orderItem
+}
+
+// Type checkers
+export function isUserRole (value: string): value is UserRole {
+  return Object.values(UserRole).includes(value as UserRole)
+}
+
+export function isMenuItemType (value: string): value is MenuItemType {
+  return Object.values(MenuItemType).includes(value as MenuItemType)
+}
+
+export function isOrderItemStatus (value: string): value is OrderItemStatus {
+  return Object.values(OrderItemStatus).includes(value as OrderItemStatus)
 }
