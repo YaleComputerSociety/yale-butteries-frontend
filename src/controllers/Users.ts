@@ -3,57 +3,55 @@ import type { Request, Response } from 'express'
 import type { User, UserRole } from '@prisma/client'
 import prisma from '@src/prismaClient'
 import { findUserByNetId, getCollegeFromName, isUserRole } from '@utils/prismaUtils'
-import { formatUserDto, formatOrders } from '@utils/dtoConverters'
+import { formatOrderItem, formatUser, formatUsers } from '@utils/dtoConverters'
+import HTTPError from '@src/utils/httpError'
+import { MILLISECONDS_UNTIL_ORDER_IS_EXPIRED } from '@src/utils/constants'
 
 export async function getAllUsers (_req: Request, res: Response): Promise<void> {
-  try {
-    const users = await prisma.user.findMany(includeProperty)
-    res.send(JSON.stringify({ users }))
-  } catch (e) {
-    console.log(e)
-    res.status(400).send(e)
-  }
+  const users = await prisma.user.findMany({ include: { college: true } })
+  const formattedUsers = await formatUsers(users)
+  res.json(formattedUsers)
 }
 
 export async function getUser (req: Request, res: Response): Promise<void> {
-  try {
-    const user = await prisma.user.findUnique({
-      include: {
-        college: true,
-        orders: true
-      },
-      where: {
-        id: req.params.userId
+  const orderExpirationTime = new Date(Date.now() - MILLISECONDS_UNTIL_ORDER_IS_EXPIRED)
+
+  const user = await prisma.user.findUnique({
+    include: {
+      college: true,
+      orders: {
+        where: {
+          createdAt: {
+            gte: orderExpirationTime
+          }
+        },
+        include: {
+          orderItems: true
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
       }
-    })
-
-    if (user === null) throw new Error('No user found')
-
-    let currentOrder
-
-    if (user.orders.length > 0) {
-      const recentOrder = user.orders[user.orders.length - 1]
-      const modifiedRecentOrder = (await formatOrders([recentOrder], user.college.name))[0]
-      if (recentOrder !== null) {
-        const lifetime = Math.abs(new Date().getTime() - recentOrder.createdAt.getTime()) / 36e5
-        currentOrder = lifetime < 6 ? modifiedRecentOrder : null
-      }
+    },
+    where: {
+      id: req.params.userId
     }
+  })
+  console.log(user)
 
-    const frontUser = {
-      college: user.college.name,
-      id: user.id,
-      permissions: user.role,
-      token: user.token,
-      name: user.name,
-      email: user.email,
-      currentOrder
-    }
-    res.send(JSON.stringify(frontUser))
-  } catch (e) {
-    console.log(e)
-    res.status(400).send(e)
+  if (user === null) throw new HTTPError(`No user found with ID ${req.params.userId}`, 404)
+
+  const formattedUser = await formatUser(user)
+
+  // get most recent valid order
+  // TODO: change frontend behavior to make more sense, remove this part and put it somewhere else
+  if (user.orders.length > 0) {
+    const recentOrder = user.orders[0]
+    const recentOrderItem = recentOrder.orderItems[0]
+    formattedUser.currentOrder = await formatOrderItem(recentOrderItem)
   }
+
+  res.json(formattedUser)
 }
 
 interface CreateUserRequestBody {
@@ -110,7 +108,7 @@ export async function createUser (req: Request, res: Response): Promise<void> {
     // In case the user already exists
     const existingUser = await findUserByNetId(netid)
     if (existingUser !== null) {
-      res.send(JSON.stringify(await formatUserDto(existingUser)))
+      res.send(JSON.stringify(await formatUser(existingUser)))
       return
     }
 
@@ -122,7 +120,7 @@ export async function createUser (req: Request, res: Response): Promise<void> {
     //   metadata: { userId: newUser.id },
     // })
 
-    res.send(JSON.stringify(await formatUserDto(newUser)))
+    res.send(JSON.stringify(await formatUser(newUser)))
   } catch (e) {
     console.log(e)
     res.status(500).send(e)
@@ -149,12 +147,6 @@ export async function updateUser (req: Request, res: Response): Promise<void> {
     res.send(JSON.stringify(user))
   } catch (e) {
     res.status(400).send(e)
-  }
-}
-
-const includeProperty = {
-  include: {
-    college: true
   }
 }
 

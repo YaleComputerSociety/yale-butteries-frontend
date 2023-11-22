@@ -3,7 +3,7 @@ import type { CollegeDto, MenuItemDto, OrderDto, OrderItemDto, UserDto } from '.
 import type { College, MenuItem, Order, OrderItem, User } from '@prisma/client'
 import { getUserFromId, getOrderFromId, getCollegeNameFromId, getMenuItemFromId, getCollegeFromId } from './prismaUtils'
 
-export async function formatUserDto (user: User): Promise<UserDto> {
+export async function formatUser (user: User): Promise<UserDto> {
   const collegeName = await getCollegeNameFromId(user.collegeId)
 
   return {
@@ -14,6 +14,21 @@ export async function formatUserDto (user: User): Promise<UserDto> {
     college: collegeName,
     id: user.id
   }
+}
+
+export const formatUsers = async (users: Array<User & { college: College }>): Promise<UserDto[]> => {
+  const formattedUsers: UserDto[] = []
+  for (const user of users) {
+    formattedUsers.push({
+      email: user.email ?? 'noemail',
+      netid: user.netId,
+      name: user.name,
+      permissions: user.role,
+      college: user.college.name,
+      id: user.id
+    })
+  }
+  return formattedUsers
 }
 
 // TODO: make this function more efficient by reducing database calls
