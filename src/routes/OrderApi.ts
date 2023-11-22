@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import express from 'express'
 
 import asyncHandler from '@src/middlewares/asyncHandler'

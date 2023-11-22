@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsOptional, IsString } from 'class-validator'
+import { IsArray, IsBoolean, IsIn, IsInt, IsOptional, IsString, Max, Min } from 'class-validator'
 
 export class UpdateCollegeBody {
   @IsOptional()
@@ -17,4 +17,53 @@ export class UpdateCollegeBody {
   @IsOptional()
   @IsString()
     closeTime: string
+}
+
+export class CreateMenuItemBody {
+  @IsString()
+    item: string
+
+  @IsString()
+    college: string
+
+  @IsInt()
+  @Min(50)
+  @Max(2000)
+    price: number
+
+  @IsOptional()
+  @IsString()
+    description: string
+
+  @IsOptional()
+  @IsBoolean()
+    isActive: boolean
+
+  @IsOptional()
+  @IsIn(['FOOD', 'DESSERT', 'DRINK'])
+    foodType: 'FOOD' | 'DRINK' | 'DESSERT'
+}
+
+export class UpdateMenuItemBody {
+  @IsOptional()
+  @IsString()
+    item: string
+
+  @IsOptional()
+  @IsInt()
+  @Min(50)
+  @Max(2000)
+    price: number
+
+  @IsOptional()
+  @IsString()
+    description: string
+
+  @IsOptional()
+  @IsBoolean()
+    isActive: boolean
+
+  @IsOptional()
+  @IsIn(['FOOD', 'DESSERT', 'DRINK'])
+    foodType: 'FOOD' | 'DRINK' | 'DESSERT'
 }

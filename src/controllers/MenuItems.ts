@@ -3,8 +3,8 @@ import type { Request, Response } from 'express'
 import { MenuItemType } from '@prisma/client'
 import prisma from '@src/prismaClient'
 import { getCollegeFromName, getMenuItemFromId } from '@utils/prismaUtils'
-import { formatMenuItem } from '@src/utils/dtoConverters'
-import HTTPError from '@src/utils/httpError'
+import { formatMenuItem } from '@utils/dtoConverters'
+import type { CreateMenuItemBody, UpdateMenuItemBody } from '@utils/bodyTypes'
 
 export async function getAllMenuItems (_: Request, res: Response): Promise<void> {
   const menuItems = await prisma.menuItem.findMany({
@@ -23,43 +23,39 @@ export async function getMenuItem (req: Request, res: Response): Promise<void> {
 }
 
 export async function createMenuItem (req: Request, res: Response): Promise<void> {
-  if (req.body.item == null || req.body.price == null || req.body.college == null) {
-    throw new HTTPError('Required fields are missing', 400)
-  }
+  const requestBody: CreateMenuItemBody = req.body as CreateMenuItemBody
 
-  const collegeData = await getCollegeFromName(req.body.college)
+  const collegeData = await getCollegeFromName(requestBody.college)
 
   const menuItemData = {
-    name: req.body.item,
-    price: parseInt(req.body.price),
+    name: requestBody.item,
+    price: requestBody.price,
     college: {
       connect: {
         id: collegeData.id
       }
     },
-    type: req.body.foodType ?? MenuItemType.FOOD,
-    isActive: req.body.isActive !== 'false',
-    description: req.body.description ?? 'No description provided'
+    type: requestBody.foodType ?? MenuItemType.FOOD,
+    isActive: requestBody.isActive,
+    description: requestBody.description ?? 'No description provided'
   }
 
   const newMenuItem = await prisma.menuItem.create({ data: menuItemData })
-  // TODO: change this in frontend
+  // TODO: change this in frontend so it can send the full object
   res.json(newMenuItem.id)
 }
 
 export async function updateMenuItem (req: Request, res: Response): Promise<void> {
+  const requestBody: UpdateMenuItemBody = req.body as UpdateMenuItemBody
   // check that the menu Item exists
   await getMenuItemFromId(parseInt(req.params.menuItemId))
 
-  // const menuItemInput: MenuItemDto = { ...req.body }
-  // remember to include price > 50 and < 2000 in validation
-
   const menuItemData = {
-    name: req.body.item ?? undefined,
-    price: req.body.price != null ? parseInt(req.body.price) : undefined,
-    isActive: req.body.isActive != null ? req.body.isActive !== 'false' : undefined,
-    description: req.body.description ?? undefined,
-    type: req.body.foodType ?? undefined
+    name: requestBody.item ?? undefined,
+    price: requestBody.price ?? undefined,
+    isActive: requestBody.isActive ?? undefined,
+    description: requestBody.description ?? undefined,
+    type: requestBody.foodType ?? undefined
   }
 
   const updatedMenuItem = await prisma.menuItem.update({

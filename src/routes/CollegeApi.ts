@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import express from 'express'
 import { getAllColleges, getCollege, updateCollege } from '@controllers/Colleges'
 import asyncHandler from '@middlewares/asyncHandler'
@@ -11,7 +12,6 @@ const validateCollegeId = createParamValidator('collegeId', isInteger, 'College 
 
 router.get('/', asyncHandler(getAllColleges))
 router.get('/:collegeId', validateCollegeId, asyncHandler(getCollege))
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.put('/:collegeId', validateCollegeId, validateBody(UpdateCollegeBody), asyncHandler(updateCollege))
 
 export default router
