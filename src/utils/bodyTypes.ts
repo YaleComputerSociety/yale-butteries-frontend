@@ -1,5 +1,11 @@
+import { MenuItemType, OrderItemStatus, OrderStatus } from '@prisma/client'
 import { Type } from 'class-transformer'
 import { ArrayNotEmpty, IsArray, IsBoolean, IsIn, IsInt, IsOptional, IsString, Max, Min, ValidateNested } from 'class-validator'
+
+// convert prisma enums into lists of strings for class-validator to use
+const orderStatusValues = Object.values(OrderStatus) as string[]
+const orderItemStatusValues = Object.values(OrderItemStatus) as string[]
+const menuItemTypeValues = Object.values(MenuItemType) as string[]
 
 export class UpdateCollegeBody {
   @IsOptional()
@@ -41,8 +47,8 @@ export class CreateMenuItemBody {
     isActive: boolean
 
   @IsOptional()
-  @IsIn(['FOOD', 'DESSERT', 'DRINK'])
-    foodType: 'FOOD' | 'DRINK' | 'DESSERT'
+  @IsIn(menuItemTypeValues)
+    foodType: string
 }
 
 export class UpdateMenuItemBody {
@@ -65,8 +71,8 @@ export class UpdateMenuItemBody {
     isActive: boolean
 
   @IsOptional()
-  @IsIn(['FOOD', 'DESSERT', 'DRINK'])
-    foodType: 'FOOD' | 'DRINK' | 'DESSERT'
+  @IsIn(menuItemTypeValues)
+    foodType: string
 }
 
 export class CreateOrderBody {
@@ -94,4 +100,23 @@ export class CreateOrderItemBody {
 
   @IsInt()
     menuItemId: number
+}
+
+export class UpdateOrderItemBody {
+  @IsIn(orderItemStatusValues)
+    orderStatus: string
+}
+
+export class UpdateOrderBody {
+  @IsOptional()
+  @IsIn(orderStatusValues)
+    in_progress: string
+
+  @IsOptional()
+  @IsInt()
+    total_price: number
+
+  @IsOptional()
+  @IsInt()
+    stripe_fee: number
 }

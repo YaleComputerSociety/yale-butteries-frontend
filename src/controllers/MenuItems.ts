@@ -35,7 +35,7 @@ export async function createMenuItem (req: Request, res: Response): Promise<void
         id: collegeData.id
       }
     },
-    type: requestBody.foodType ?? MenuItemType.FOOD,
+    type: requestBody.foodType as MenuItemType ?? MenuItemType.FOOD,
     isActive: requestBody.isActive,
     description: requestBody.description ?? 'No description provided'
   }
@@ -56,7 +56,7 @@ export async function updateMenuItem (req: Request, res: Response): Promise<void
     price: requestBody.price ?? undefined,
     isActive: requestBody.isActive ?? undefined,
     description: requestBody.description ?? undefined,
-    type: requestBody.foodType ?? undefined
+    type: requestBody.foodType as MenuItemType ?? undefined
   }
 
   const updatedMenuItem = await prisma.menuItem.update({

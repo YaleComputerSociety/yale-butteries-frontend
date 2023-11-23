@@ -1,12 +1,13 @@
 import type { Request, Response } from 'express'
 
 import prisma from '@src/prismaClient'
+import type { OrderStatus } from '@prisma/client'
 import { OrderItemStatus } from '@prisma/client'
 import { formatOrder, formatOrderItem, formatOrders } from '@utils/dtoConverters'
-import { getCollegeFromName, getOrderFromId, getOrderItemFromId, getUserFromId, isOrderItemStatus } from '@utils/prismaUtils'
+import { getCollegeFromName, getOrderFromId, getOrderItemFromId, getUserFromId } from '@utils/prismaUtils'
 import HTTPError from '@src/utils/httpError'
 import { MILLISECONDS_UNTIL_ORDER_IS_EXPIRED } from '@src/utils/constants'
-import type { CreateOrderBody } from '@src/utils/bodyTypes'
+import type { CreateOrderBody, UpdateOrderBody, UpdateOrderItemBody } from '@src/utils/bodyTypes'
 
 export async function getOrder (req: Request, res: Response): Promise<void> {
   const order = await getOrderFromId(parseInt(req.params.orderId))
@@ -108,9 +109,7 @@ export async function createOrder (req: Request, res: Response): Promise<void> {
 }
 
 export async function updateOrderItem (req: Request, res: Response): Promise<void> {
-  if (!isOrderItemStatus(req.body.orderStatus)) {
-    throw new HTTPError('Invalid status', 400)
-  }
+  const requestBody: UpdateOrderItemBody = req.body as UpdateOrderItemBody
 
   // check that order item exists
   await getOrderItemFromId(parseInt(req.params.orderItemId))
@@ -120,7 +119,7 @@ export async function updateOrderItem (req: Request, res: Response): Promise<voi
       id: parseInt(req.params.orderItemId)
     },
     data: {
-      status: req.body.orderStatus
+      status: requestBody.orderStatus as OrderItemStatus
     }
   })
 
@@ -132,15 +131,20 @@ export async function updateOrderItem (req: Request, res: Response): Promise<voi
 
 // This function is currently unused and probably doesn't work
 export async function updateOrder (req: Request, res: Response): Promise<void> {
+  const requestBody: UpdateOrderBody = req.body as UpdateOrderBody
   const order = await prisma.order.update({
     where: {
-      id: req.body.id
+      id: parseInt(req.params.orderId)
     },
     data: {
-      status: req.body.in_progress ?? undefined,
-      price: req.body.total_price ?? undefined,
-      stripeFee: req.body.stripe_fee ?? undefined
+      status: requestBody.in_progress as OrderStatus ?? undefined,
+      price: requestBody.total_price ?? undefined,
+      stripeFee: requestBody.stripe_fee ?? undefined
+    },
+    include: {
+      orderItems: true
     }
   })
-  res.json(order)
+  const formattedOrder = await formatOrder(order)
+  res.json(formattedOrder)
 }
