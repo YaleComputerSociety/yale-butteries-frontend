@@ -1,4 +1,5 @@
-import { IsArray, IsBoolean, IsIn, IsInt, IsOptional, IsString, Max, Min } from 'class-validator'
+import { Type } from 'class-transformer'
+import { ArrayNotEmpty, IsArray, IsBoolean, IsIn, IsInt, IsOptional, IsString, Max, Min, ValidateNested } from 'class-validator'
 
 export class UpdateCollegeBody {
   @IsOptional()
@@ -66,4 +67,31 @@ export class UpdateMenuItemBody {
   @IsOptional()
   @IsIn(['FOOD', 'DESSERT', 'DRINK'])
     foodType: 'FOOD' | 'DRINK' | 'DESSERT'
+}
+
+export class CreateOrderBody {
+  @IsString()
+    userId: string
+
+  @IsInt()
+    price: number
+
+  @IsString()
+    college: string
+
+  @IsArray()
+  @ArrayNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => CreateOrderItemBody)
+    transactionItems: CreateOrderItemBody[]
+}
+
+export class CreateOrderItemBody {
+  @IsInt()
+  @Min(50)
+  @Max(2000)
+    itemCost: number
+
+  @IsInt()
+    menuItemId: number
 }

@@ -18,7 +18,7 @@
       "@utils/*": ["src/utils/*"]
     },
     "strictNullChecks": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
   },
   "include": ["src/**/*", "prisma"],
   "exclude": ["**/*.spec.ts", "node_modules", "vendor", "public"],

@@ -12,11 +12,11 @@ export interface UserDto {
 }
 
 export interface OrderItemDto {
+  id: number
   itemCost: number
   orderStatus: string
   menuItemId: number
   name: string
-  id: number
   user: string
 }
 

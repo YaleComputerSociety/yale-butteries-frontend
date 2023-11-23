@@ -4,6 +4,8 @@ import express from 'express'
 import asyncHandler from '@src/middlewares/asyncHandler'
 import { createParamValidator, isInteger, isNonEmptyString } from '@src/middlewares/validateParamHandler'
 import { createOrder, getAllOrdersFromCollege, getRecentOrdersFromCollege, getOrder, updateOrder, updateOrderItem } from '@controllers/Orders'
+import { validateBody } from '@src/middlewares/validateBodyHandler'
+import { CreateOrderBody } from '@src/utils/bodyTypes'
 
 const router = express.Router()
 
@@ -14,7 +16,7 @@ const validateOrderItemId = createParamValidator('orderItemId', isInteger, 'Orde
 router.get('/:orderId', validateOrderId, asyncHandler(getOrder))
 router.get('/college/:collegeName', validateCollegeName, asyncHandler(getAllOrdersFromCollege))
 router.get('/college/recent/:collegeName', validateCollegeName, asyncHandler(getRecentOrdersFromCollege))
-router.post('/', asyncHandler(createOrder))
+router.post('/', validateBody(CreateOrderBody), asyncHandler(createOrder))
 router.put('/item/:orderItemId', validateOrderItemId, asyncHandler(updateOrderItem))
 
 router.put('/:orderId', validateOrderId, asyncHandler(updateOrder)) // unused & untested

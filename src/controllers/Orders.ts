@@ -6,6 +6,7 @@ import { formatOrder, formatOrderItem, formatOrders } from '@utils/dtoConverters
 import { getCollegeFromName, getOrderFromId, getOrderItemFromId, getUserFromId, isOrderItemStatus } from '@utils/prismaUtils'
 import HTTPError from '@src/utils/httpError'
 import { MILLISECONDS_UNTIL_ORDER_IS_EXPIRED } from '@src/utils/constants'
+import type { CreateOrderBody } from '@src/utils/bodyTypes'
 
 export async function getOrder (req: Request, res: Response): Promise<void> {
   const order = await getOrderFromId(parseInt(req.params.orderId))
@@ -58,30 +59,29 @@ export async function createOrder (req: Request, res: Response): Promise<void> {
     userId: string
   }
 
-  if (req.body.transactionItems == null) throw new HTTPError('An order must have at least one order item', 400)
+  const requestBody: CreateOrderBody = req.body as CreateOrderBody
 
-  const college = await getCollegeFromName(req.body.college)
+  const college = await getCollegeFromName(requestBody.college)
 
   // test is user exists
   // TODO test if user is the actual user sending the request
-  await getUserFromId(req.body.userId)
+  await getUserFromId(requestBody.userId)
 
   // Get sanitized orderItems list
   const orderItems: NewOrderItem[] = []
-  for (const item of req.body.transactionItems) {
-    const newItem: NewOrderItem = {
-      price: parseInt(item.itemCost),
+  for (const item of requestBody.transactionItems) {
+    orderItems.push({
+      price: item.itemCost,
       status: OrderItemStatus.QUEUED,
       menuItemId: item.menuItemId,
-      userId: req.body.userId
-    }
-    orderItems.push(newItem)
+      userId: requestBody.userId
+    })
   }
 
   const order = await prisma.order.create({
     data: {
       status: 'QUEUED',
-      price: parseInt(req.body.price),
+      price: requestBody.price,
       college: {
         connect: {
           id: college.id
@@ -89,7 +89,7 @@ export async function createOrder (req: Request, res: Response): Promise<void> {
       },
       user: {
         connect: {
-          id: req.body.userId
+          id: requestBody.userId
         }
       },
       orderItems: {

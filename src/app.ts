@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import session from 'express-session'
+import 'reflect-metadata'
 
 import collegeRouter from './routes/CollegeApi'
 import menuItemRouter from './routes/MenuItemApi'

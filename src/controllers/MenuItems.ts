@@ -47,6 +47,7 @@ export async function createMenuItem (req: Request, res: Response): Promise<void
 
 export async function updateMenuItem (req: Request, res: Response): Promise<void> {
   const requestBody: UpdateMenuItemBody = req.body as UpdateMenuItemBody
+
   // check that the menu Item exists
   await getMenuItemFromId(parseInt(req.params.menuItemId))
 
