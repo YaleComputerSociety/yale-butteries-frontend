@@ -5,6 +5,7 @@ import type { ExpoPushTicket } from 'expo-server-sdk'
 import { Expo } from 'expo-server-sdk'
 import prisma from '@src/prismaClient'
 import HTTPError from '@src/utils/httpError'
+import type { SubscribePushNotificationsBody } from '@src/utils/bodyTypes'
 // import Stripe from 'stripe'
 
 interface NotificationMessage {
@@ -113,7 +114,8 @@ const sendNotification = async (expoPushToken: string, data: NotificationMessage
 }
 
 export async function subscribePushNotifications (req: Request, res: Response): Promise<void> {
-  const token = req.body.pushToken
+  const requestBody = req.body as SubscribePushNotificationsBody
+  const token = requestBody.pushToken
 
   const messageComplete = {
     to: token,
@@ -129,9 +131,9 @@ export async function subscribePushNotifications (req: Request, res: Response): 
     data: { withSome: 'data' }
   }
 
-  async function checkAndUpdateOrder (transactionId: string, token?: string): Promise<void> {
-    const items = await getItems(parseInt(req.body.transactionId))
-    const orderStatus = checkItems(items, await getOrderFromId(req.body.transactionId))
+  async function checkAndUpdateOrder (transactionId: number, token?: string): Promise<void> {
+    const items = await getItems(requestBody.transactionId)
+    const orderStatus = checkItems(items, await getOrderFromId(requestBody.transactionId))
 
     if (orderStatus === OrderStatus.READY) {
       let price = 0
@@ -148,12 +150,12 @@ export async function subscribePushNotifications (req: Request, res: Response): 
       }
 
       await updateOrderInner({
-        id: req.body.transactionId,
+        id: requestBody.transactionId,
         order_complete: new Date(),
         status: 'READY',
         charged_price: price
       })
-      // const pii = await getPaymentIntentIdFromId(req.body.transactionId)
+      // const pii = await getPaymentIntentIdFromId(requestBody.transactionId)
       // await stripe.paymentIntents.capture(pii, {
       //   amount_to_capture: price,
       // })
@@ -163,17 +165,17 @@ export async function subscribePushNotifications (req: Request, res: Response): 
         sendNotification(token, messageCancelled).catch(e => { throw e })
       }
       await updateOrderInner({
-        id: req.body.transactionId,
+        id: requestBody.transactionId,
         order_complete: new Date(),
         status: 'CANCELLED',
         charged_price: 0
       })
-      // stripe.paymentIntents.cancel(await getPaymentIntentIdFromId(req.body.transactionId))
+      // stripe.paymentIntents.cancel(await getPaymentIntentIdFromId(requestBody.transactionId))
     }
   }
 
   const interval = setInterval(() => {
-    checkAndUpdateOrder(req.body.transactionId, token)
+    checkAndUpdateOrder(requestBody.transactionId, token)
       .catch(e => {
         console.error('Error in interval:', e)
         clearInterval(interval)

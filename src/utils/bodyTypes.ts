@@ -192,3 +192,12 @@ export class CreatePaymentIntentItemItemBody {
   @IsInt()
     id: number
 }
+
+export class SubscribePushNotificationsBody {
+  @IsOptional()
+  @IsString()
+    pushToken: string
+
+  @IsInt()
+    transactionId: number
+}
