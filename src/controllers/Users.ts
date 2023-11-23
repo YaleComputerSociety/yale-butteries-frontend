@@ -6,6 +6,7 @@ import { findUserByNetId, getCollegeFromName, getUserFromId } from '@utils/prism
 import { formatOrderItem, formatUser, formatUsers } from '@utils/dtoConverters'
 import HTTPError from '@src/utils/httpError'
 import { MILLISECONDS_UNTIL_ORDER_IS_EXPIRED } from '@src/utils/constants'
+import type { CreateUserBody, UpdateUserBody, VerifyStaffLoginBody } from '@src/utils/bodyTypes'
 
 export async function getAllUsers (_req: Request, res: Response): Promise<void> {
   const users = await prisma.user.findMany({ include: { college: true } })
@@ -54,35 +55,37 @@ export async function getUser (req: Request, res: Response): Promise<void> {
 }
 
 export async function createUser (req: Request, res: Response): Promise<void> {
+  const requestBody = req.body as CreateUserBody
+
   // In case the user already exists
-  const existingUser = await findUserByNetId(req.body.netid)
+  const existingUser = await findUserByNetId(requestBody.netid)
   if (existingUser !== null) {
     const formattedUser = await formatUser(existingUser)
     res.json(formattedUser)
     return
   }
 
-  const college = await getCollegeFromName(req.body.college)
+  const college = await getCollegeFromName(requestBody.college)
 
   const user = await prisma.user.create({
     data: {
-      netId: req.body.netid,
-      name: req.body.name ?? req.body.netid,
+      netId: requestBody.netid,
+      name: requestBody.name ?? requestBody.netid,
       college: {
         connect: {
           id: college.id
         }
       },
       role: UserRole.CUSTOMER,
-      email: req.body.email ?? undefined,
-      token: req.body.token ?? undefined
+      email: requestBody.email ?? undefined,
+      token: requestBody.token ?? undefined
     }
   })
 
   // stripe user initialization
   // await stripe.customers.create({
-  //   email: req.body.email,
-  //   name: req.body.name,
+  //   email: requestBody.email,
+  //   name: requestBody.name,
   //   metadata: { userId: newUser.id },
   // })
 
@@ -91,13 +94,15 @@ export async function createUser (req: Request, res: Response): Promise<void> {
 }
 
 export async function updateUser (req: Request, res: Response): Promise<void> {
+  const requestBody = req.body as UpdateUserBody
+
   const user = await prisma.user.update({
     where: {
       id: req.params.userId
     },
     data: {
-      name: req.body.name ?? undefined,
-      email: req.body.email ?? undefined
+      name: requestBody.name ?? undefined,
+      email: requestBody.email ?? undefined
     }
   })
 
@@ -105,11 +110,14 @@ export async function updateUser (req: Request, res: Response): Promise<void> {
   res.json(formattedUser)
 }
 
+// TODO: change guest login such that it doesn't require a login
 export async function verifyStaffLogin (req: Request, res: Response): Promise<void> {
-  // this needs to be fixed but we also wont use this in the future
+  const requestBody = req.body as VerifyStaffLoginBody
+
+  // this needs to be fixed but we also wont use this endpoint in the future
   const user = await getUserFromId('07732f82-f2b8-471b-a44a-6e1c4057f218')
   if (user === null) throw new HTTPError('No user found', 404)
 
-  const verified = (user.name === req.body.username && user.token === req.body.password)
+  const verified = (user.name === requestBody.username && user.token === requestBody.password)
   res.json(verified)
 }

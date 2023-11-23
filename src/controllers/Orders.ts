@@ -60,7 +60,7 @@ export async function createOrder (req: Request, res: Response): Promise<void> {
     userId: string
   }
 
-  const requestBody: CreateOrderBody = req.body as CreateOrderBody
+  const requestBody = req.body as CreateOrderBody
 
   const college = await getCollegeFromName(requestBody.college)
 
@@ -109,7 +109,7 @@ export async function createOrder (req: Request, res: Response): Promise<void> {
 }
 
 export async function updateOrderItem (req: Request, res: Response): Promise<void> {
-  const requestBody: UpdateOrderItemBody = req.body as UpdateOrderItemBody
+  const requestBody = req.body as UpdateOrderItemBody
 
   // check that order item exists
   await getOrderItemFromId(parseInt(req.params.orderItemId))
@@ -131,7 +131,7 @@ export async function updateOrderItem (req: Request, res: Response): Promise<voi
 
 // This function is currently unused and probably doesn't work
 export async function updateOrder (req: Request, res: Response): Promise<void> {
-  const requestBody: UpdateOrderBody = req.body as UpdateOrderBody
+  const requestBody = req.body as UpdateOrderBody
   const order = await prisma.order.update({
     where: {
       id: parseInt(req.params.orderId)

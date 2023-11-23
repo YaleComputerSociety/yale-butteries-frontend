@@ -24,7 +24,7 @@ export async function getCollege (req: Request, res: Response): Promise<void> {
 }
 
 export async function updateCollege (req: Request, res: Response): Promise<void> {
-  const requestBody: UpdateCollegeBody = req.body as UpdateCollegeBody
+  const requestBody = req.body as UpdateCollegeBody
 
   const college = await prisma.college.update({
     where: {

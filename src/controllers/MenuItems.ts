@@ -23,7 +23,7 @@ export async function getMenuItem (req: Request, res: Response): Promise<void> {
 }
 
 export async function createMenuItem (req: Request, res: Response): Promise<void> {
-  const requestBody: CreateMenuItemBody = req.body as CreateMenuItemBody
+  const requestBody = req.body as CreateMenuItemBody
 
   const collegeData = await getCollegeFromName(requestBody.college)
 
@@ -46,7 +46,7 @@ export async function createMenuItem (req: Request, res: Response): Promise<void
 }
 
 export async function updateMenuItem (req: Request, res: Response): Promise<void> {
-  const requestBody: UpdateMenuItemBody = req.body as UpdateMenuItemBody
+  const requestBody = req.body as UpdateMenuItemBody
 
   // check that the menu Item exists
   await getMenuItemFromId(parseInt(req.params.menuItemId))

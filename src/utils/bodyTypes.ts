@@ -120,3 +120,41 @@ export class UpdateOrderBody {
   @IsInt()
     stripe_fee: number
 }
+
+export class CreateUserBody {
+  @IsString()
+    netid: string
+
+  @IsString()
+    college: string
+
+  @IsOptional()
+  @IsString()
+    name: string
+
+  @IsOptional()
+  @IsString()
+    email: string
+
+  @IsOptional()
+  @IsString()
+    token: string
+}
+
+export class UpdateUserBody {
+  @IsOptional()
+  @IsString()
+    name: string
+
+  @IsOptional()
+  @IsString()
+    email: string
+}
+
+export class VerifyStaffLoginBody {
+  @IsString()
+    username: string
+
+  @IsString()
+    password: string
+}
