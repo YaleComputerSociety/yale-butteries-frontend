@@ -35,7 +35,7 @@ app.use('/api/users', userRouter)
 app.use('/api/payments', paymentRouter)
 app.use('/api/notifs', notifsRouter)
 
-app.use(invalidUrlHandler)
+// app.use(invalidUrlHandler)
 app.use(errorHandler)
 
 passport(app)
