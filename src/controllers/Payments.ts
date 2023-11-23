@@ -3,6 +3,7 @@ import Stripe from 'stripe'
 import { getCollegeFromName } from '@utils/prismaUtils'
 import prisma from '@src/prismaClient'
 import HTTPError from '@src/utils/httpError'
+import type { CreatePaymentIntentBody } from '@src/utils/bodyTypes'
 
 export interface TypedRequestBody<T> extends Request {
   body: T
@@ -28,26 +29,25 @@ export const stripe = new Stripe(/* getStripeSecretKey() */'temporary', {
   apiVersion: '2020-08-27'
 })
 
+// TODO: rename orderitem.price and .id to match order creation names, so body types can be the same
 export async function createPaymentIntent (req: Request, res: Response): Promise<void> {
-  // basic parameter checking
-  if (req.body.price == null) throw new HTTPError('Please enter a price', 400)
-  if (req.body.userId == null) throw new HTTPError('Please enter a user', 400)
+  const requestBody = req.body as CreatePaymentIntentBody
 
   // check if the customer exists in stripe, their account is created when they first login to CAS
   const customerQuery = await stripe.customers.search({
-    query: "metadata['userId']:'" + req.body.userId + "'"
+    query: "metadata['userId']:'" + requestBody.userId + "'"
   })
 
   if (customerQuery.data[0]?.id == null) throw new HTTPError("Invalid user: you might have created a user and then ordered too fast, please wait 10 seconds. If that doesn't work, try reloading the app", 403)
 
   const customer = await stripe.customers.retrieve(customerQuery.data[0].id)
-  const price: number = req.body.price
+  const price = requestBody.price
 
   // verify that backend data matches frontend order:
   // verify all the prices match
   // verify all the items are enabled
 
-  const college = await getCollegeFromName(req.body.college)
+  const college = await getCollegeFromName(requestBody.college)
 
   const backendItems = await prisma.menuItem.findMany({
     where: {
@@ -58,7 +58,7 @@ export async function createPaymentIntent (req: Request, res: Response): Promise
 
   let validOrder = true
 
-  req.body.items.forEach((item) => {
+  requestBody.items.forEach((item) => {
     const backendItem = backendItems.find((i) => i.id === item.orderItem.id)
     if (backendItem == null || backendItem.price !== item.orderItem.price) {
       validOrder = false
@@ -93,7 +93,7 @@ export async function createPaymentIntent (req: Request, res: Response): Promise
     customer: customer.id,
     // setup_future_usage: 'off_session', for card saving
     payment_method_types: ['card'], // delayed capturing doesn't work for everything and we can get into legal trouble, let's stick with cards (credit & debit) for now
-    capture_method: 'manual' // don't charge the user right now, but we'll need to save the paymentIntent's id to charge later.
+    capture_method: 'manual' // don't charge the user right now, instead we save the paymentIntent's id to charge later.
   })
   res.json({ message: 'Payment initiated', paymentIntent })
 }

@@ -158,3 +158,37 @@ export class VerifyStaffLoginBody {
   @IsString()
     password: string
 }
+
+export class CreatePaymentIntentBody {
+  @IsString()
+    userId: string
+
+  @IsInt()
+    price: number
+
+  @IsString()
+    college: string
+
+  @IsArray()
+  @ArrayNotEmpty()
+  @ValidateNested({ each: true })
+  @Type(() => CreatePaymentIntentItemBody)
+    items: CreatePaymentIntentItemBody[]
+}
+
+// what the actual fuck why is the frontend written like this
+export class CreatePaymentIntentItemBody {
+  @ValidateNested()
+  @Type(() => CreatePaymentIntentItemItemBody)
+    orderItem: CreatePaymentIntentItemItemBody
+}
+
+export class CreatePaymentIntentItemItemBody {
+  @IsInt()
+  @Min(50)
+  @Max(2000)
+    price: number
+
+  @IsInt()
+    id: number
+}
