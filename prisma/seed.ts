@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, UserRole } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -208,7 +208,7 @@ const main = async (): Promise<void> => {
       netId: 'guest',
       name: 'appletester',
       token: 'jugglemaster',
-      role: 'STAFF',
+      role: UserRole.STAFF,
       college: {
         connect: { id: 14 }
       }

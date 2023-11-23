@@ -1,3 +1,6 @@
+// This file contains class-validator types for the request bodies of every endpiont that uses a body
+// class-validator uses these type classes to automatically check that the body inputted is correct and deal with errors
+
 import { MenuItemType, OrderItemStatus, OrderStatus } from '@prisma/client'
 import { Type } from 'class-transformer'
 import { ArrayNotEmpty, IsArray, IsBoolean, IsIn, IsInt, IsOptional, IsString, Max, Min, ValidateNested } from 'class-validator'
@@ -159,6 +162,23 @@ export class VerifyStaffLoginBody {
     password: string
 }
 
+// what the actual fuck why is the frontend written like this
+export class CreatePaymentIntentItemItemBody {
+  @IsInt()
+  @Min(50)
+  @Max(2000)
+    price: number
+
+  @IsInt()
+    id: number
+}
+
+export class CreatePaymentIntentItemBody {
+  @ValidateNested()
+  @Type(() => CreatePaymentIntentItemItemBody)
+    orderItem: CreatePaymentIntentItemItemBody
+}
+
 export class CreatePaymentIntentBody {
   @IsString()
     userId: string
@@ -174,23 +194,6 @@ export class CreatePaymentIntentBody {
   @ValidateNested({ each: true })
   @Type(() => CreatePaymentIntentItemBody)
     items: CreatePaymentIntentItemBody[]
-}
-
-// what the actual fuck why is the frontend written like this
-export class CreatePaymentIntentItemBody {
-  @ValidateNested()
-  @Type(() => CreatePaymentIntentItemItemBody)
-    orderItem: CreatePaymentIntentItemItemBody
-}
-
-export class CreatePaymentIntentItemItemBody {
-  @IsInt()
-  @Min(50)
-  @Max(2000)
-    price: number
-
-  @IsInt()
-    id: number
 }
 
 export class SubscribePushNotificationsBody {
