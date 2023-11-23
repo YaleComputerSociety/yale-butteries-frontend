@@ -12,6 +12,7 @@ import notifsRouter from '@routes/PushNotificationsApi'
 import passport from '@controllers/Auth'
 import errorHandler from '@middlewares/errorHandler'
 import { port, url, sessionSecret } from '@utils/constants'
+import { invalidUrlHandler } from '@src/middlewares/invalidUrlHandler'
 
 const app: express.Express = express()
   // .use('/stripe', express.raw({ type: '*/*' }))
@@ -34,6 +35,7 @@ app.use('/api/users', userRouter)
 app.use('/api/payments', paymentRouter)
 app.use('/api/notifs', notifsRouter)
 
+app.use(invalidUrlHandler)
 app.use(errorHandler)
 
 passport(app)
