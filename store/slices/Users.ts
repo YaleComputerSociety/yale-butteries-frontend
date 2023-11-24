@@ -73,7 +73,6 @@ export const asyncCreateUser = (user: NewUser, token: string) => {
 
       dispatch(setCurrentUserState(data))
 
-      console.log(user)
       if (user.permissions == 'dev') {
         return true
       }

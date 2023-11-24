@@ -68,8 +68,9 @@ export const asyncFetchUser = (id: string) => {
 
 export const asyncUpdateCurrentUser = (currentUser: User) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
+    console.log(currentUser)
     try {
-      const updatedUser = await fetch(baseUrl + 'api/users', {
+      const updatedUser = await fetch(`${baseUrl}api/users/${currentUser.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
