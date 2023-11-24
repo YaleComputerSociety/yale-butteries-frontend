@@ -2,7 +2,7 @@ import type { Request, Response } from 'express'
 
 import prisma from '@src/config/prismaClient'
 import { getCollegeFromName } from '@utils/prismaUtils'
-import HTTPError from '@utils/httpError'
+import HTTPError from '@src/utils/httpError'
 import type { CreatePaymentIntentBody } from '@utils/bodyTypes'
 import { stripe } from '@src/config/stripe'
 
