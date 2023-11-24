@@ -1,8 +1,8 @@
 // This file contains general functions relating to the database
-import type { User, College, MenuItem, Order, OrderItem } from '@prisma/client'
+import type { User, College, MenuItem, Order, OrderItem, OrderStatus } from '@prisma/client'
 import { UserRole, MenuItemType, OrderItemStatus } from '@prisma/client'
 import prisma from '@src/prismaClient'
-import HTTPError from '@src/utils/httpError'
+import HTTPError from '@utils/httpError'
 
 // user functions
 export const getUserFromId = async (id: string): Promise<User> => {
@@ -79,6 +79,32 @@ export const getOrderFromId = async (id: number): Promise<Order & { orderItems: 
   if (order === null) throw new HTTPError(`No order found with ID ${id}`, 404)
 
   return order
+}
+
+interface UpdateOrderInternalBody {
+  id: number
+  readyAt: Date
+  status: OrderStatus
+  price: number
+}
+
+export const updateOrderInternal = async (order: UpdateOrderInternalBody): Promise<void> => {
+  // check that the order exists
+  await getOrderFromId(order.id)
+
+  await prisma.order.update({
+    where: {
+      id: order.id
+    },
+    data: {
+      status: order.status,
+      price: order.price,
+      readyAt: order.readyAt
+    },
+    include: {
+      orderItems: true
+    }
+  })
 }
 
 // order item functions

@@ -33,7 +33,7 @@ app.use('/api/menu-items', menuItemRouter)
 app.use('/api/orders', orderRouter)
 app.use('/api/users', userRouter)
 app.use('/api/payments', paymentRouter)
-app.use('/api/notifs', notifsRouter)
+app.use('/api/notifications', notifsRouter)
 
 passport(app)
 

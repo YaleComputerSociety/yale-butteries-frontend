@@ -11,7 +11,6 @@ import type { CreateOrderBody, UpdateOrderBody, UpdateOrderItemBody } from '@src
 
 export async function getOrder (req: Request, res: Response): Promise<void> {
   const order = await getOrderFromId(parseInt(req.params.orderId))
-  console.log(order)
   const formattedOrder = await formatOrder(order)
   res.json(formattedOrder)
 }
@@ -132,14 +131,17 @@ export async function updateOrderItem (req: Request, res: Response): Promise<voi
 // This function is currently unused and probably doesn't work
 export async function updateOrder (req: Request, res: Response): Promise<void> {
   const requestBody = req.body as UpdateOrderBody
+
+  // check that the order exists
+  await getOrderFromId(parseInt(req.params.orderId))
+
   const order = await prisma.order.update({
     where: {
       id: parseInt(req.params.orderId)
     },
     data: {
       status: requestBody.in_progress as OrderStatus ?? undefined,
-      price: requestBody.total_price ?? undefined,
-      stripeFee: requestBody.stripe_fee ?? undefined
+      price: requestBody.total_price ?? undefined
     },
     include: {
       orderItems: true
