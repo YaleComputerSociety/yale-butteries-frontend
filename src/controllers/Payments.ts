@@ -1,33 +1,14 @@
 import type { Request, Response } from 'express'
-import Stripe from 'stripe'
-import { getCollegeFromName } from '@utils/prismaUtils'
+
 import prisma from '@src/prismaClient'
-import HTTPError from '@src/utils/httpError'
-import type { CreatePaymentIntentBody } from '@src/utils/bodyTypes'
+import { getCollegeFromName } from '@utils/prismaUtils'
+import HTTPError from '@utils/httpError'
+import type { CreatePaymentIntentBody } from '@utils/bodyTypes'
+import { stripe } from '@src/stripe'
 
 export interface TypedRequestBody<T> extends Request {
   body: T
 }
-
-// const environment = process.env.NODE_ENV ?? 'development'
-
-// function getStripeSecretKey (): string {
-//   if (environment === 'development') {
-//     if (process.env.STRIPE_SECRET_KEY_DEV === undefined) {
-//       throw new Error('Stripe secret key for development is not set')
-//     }
-//     return process.env.STRIPE_SECRET_KEY_DEV
-//   } else {
-//     if (process.env.STRIPE_SECRET_KEY_PROD === undefined) {
-//       throw new Error('Stripe secret key for production is not set')
-//     }
-//     return process.env.STRIPE_SECRET_KEY_PROD
-//   }
-// }
-
-export const stripe = new Stripe(/* getStripeSecretKey() */'temporary', {
-  apiVersion: '2020-08-27'
-})
 
 // TODO: rename orderitem.price and .id to match order creation names, so body types can be the same
 export async function createPaymentIntent (req: Request, res: Response): Promise<void> {

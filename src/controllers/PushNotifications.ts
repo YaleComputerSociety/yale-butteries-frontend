@@ -1,12 +1,13 @@
-import type { OrderItem, Order } from '@prisma/client'
-import { OrderStatus } from '@prisma/client'
 import type { Request, Response } from 'express'
 import type { ExpoPushTicket } from 'expo-server-sdk'
 import { Expo } from 'expo-server-sdk'
+
+import type { OrderItem, Order } from '@prisma/client'
+import { OrderStatus } from '@prisma/client'
 import prisma from '@src/prismaClient'
-import HTTPError from '@src/utils/httpError'
-import type { SubscribePushNotificationsBody } from '@src/utils/bodyTypes'
-// import Stripe from 'stripe'
+import HTTPError from '@utils/httpError'
+import type { SubscribePushNotificationsBody } from '@utils/bodyTypes'
+// import { stripe } from '@src/stripe'
 
 interface NotificationMessage {
   to: string
@@ -14,14 +15,6 @@ interface NotificationMessage {
 
 // Create a new Expo SDK client
 // optionally providing an access token if you have enabled push security
-// const environment = process.env.NODE_ENV ?? 'development'
-
-// export const stripe = new Stripe(
-//   environment === 'development' ? process.env.STRIPE_SECRET_KEY_DEV : process.env.STRIPE_SECRET_KEY_PROD,
-//   {
-//     apiVersion: '2020-08-27',
-//   }
-// )
 
 async function updateOrderInner (orderData: {
   id: number
