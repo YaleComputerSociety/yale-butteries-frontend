@@ -171,11 +171,12 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       let token = ''
       if (Device.isDevice) {
         token = (await Notifications.getDevicePushTokenAsync()).data
+        console.log('token: ', token)
       } else {
         console.log('not a device')
       }
 
-      const subscribeNotification = await fetch(baseUrl + 'api/notifs', {
+      const subscribeNotification = await fetch(baseUrl + 'api/notifications', {
         method: 'POST',
         body: JSON.stringify({
           transactionId: uploadTransactionResponse.id,
