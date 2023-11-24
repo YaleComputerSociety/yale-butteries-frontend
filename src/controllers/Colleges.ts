@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import prisma from '@src/prismaClient'
+import prisma from '@src/config/prismaClient'
 import { formatCollege } from '@utils/dtoConverters'
 import HTTPError from '@src/utils/httpError'
 import { getCollegeFromId } from '@src/utils/prismaUtils'

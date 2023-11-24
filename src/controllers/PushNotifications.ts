@@ -7,7 +7,7 @@ import { OrderStatus } from '@prisma/client'
 import type { SubscribePushNotificationsBody } from '@utils/bodyTypes'
 import { getOrderFromId, updateOrderInternal } from '@utils/prismaUtils'
 import { MILLISECONDS_UNTIL_ORDER_IS_EXPIRED } from '@src/utils/constants'
-// import { stripe } from '@src/stripe'
+// import { stripe } from '@src/config/stripe'
 
 // { accessToken: process.env.EXPO_ACCESS_TOKEN }
 const expo = new Expo()

@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { MenuItemType } from '@prisma/client'
-import prisma from '@src/prismaClient'
+import prisma from '@src/config/prismaClient'
 import { getCollegeFromName, getMenuItemFromId } from '@utils/prismaUtils'
 import { formatMenuItem } from '@utils/dtoConverters'
 import type { CreateMenuItemBody, UpdateMenuItemBody } from '@utils/bodyTypes'

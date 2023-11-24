@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 
-import prisma from '@src/prismaClient'
+import prisma from '@src/config/prismaClient'
 import type { OrderStatus } from '@prisma/client'
 import { OrderItemStatus } from '@prisma/client'
 import { formatOrder, formatOrderItem, formatOrders } from '@utils/dtoConverters'

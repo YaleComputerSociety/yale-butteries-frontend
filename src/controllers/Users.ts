@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express'
 
 import { UserRole } from '@prisma/client'
-import prisma from '@src/prismaClient'
+import prisma from '@src/config/prismaClient'
 import { findUserByNetId, getCollegeFromName, getUserFromId } from '@utils/prismaUtils'
 import { formatOrderItem, formatUser, formatUsers } from '@utils/dtoConverters'
 import HTTPError from '@src/utils/httpError'

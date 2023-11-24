@@ -1,7 +1,7 @@
 // This file contains general functions relating to the database
 import type { User, College, MenuItem, Order, OrderItem, OrderStatus } from '@prisma/client'
 import { UserRole, MenuItemType, OrderItemStatus } from '@prisma/client'
-import prisma from '@src/prismaClient'
+import prisma from '@src/config/prismaClient'
 import HTTPError from '@utils/httpError'
 
 // user functions
