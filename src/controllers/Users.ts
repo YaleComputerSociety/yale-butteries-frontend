@@ -96,6 +96,9 @@ export async function createUser (req: Request, res: Response): Promise<void> {
 export async function updateUser (req: Request, res: Response): Promise<void> {
   const requestBody = req.body as UpdateUserBody
 
+  // check that the user exists
+  await getUserFromId(req.params.userId)
+
   const user = await prisma.user.update({
     where: {
       id: req.params.userId
@@ -116,7 +119,6 @@ export async function verifyStaffLogin (req: Request, res: Response): Promise<vo
 
   // this needs to be fixed but we also wont use this endpoint in the future
   const user = await getUserFromId('07732f82-f2b8-471b-a44a-6e1c4057f218')
-  if (user === null) throw new HTTPError('No user found', 404)
 
   const verified = (user.name === requestBody.username && user.token === requestBody.password)
   res.json(verified)
