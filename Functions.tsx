@@ -245,11 +245,12 @@ export async function registerForPushNotificationsAsync(): Promise<any> {
     if (finalStatus !== 'granted') {
       return
     }
-    token = (await Notifications.getDevicePushTokenAsync()).data
+    token = __DEV__
+      ? (await Notifications.getExpoPushTokenAsync()).data
+      : (await Notifications.getDevicePushTokenAsync()).data
   } else {
     alert('Must use physical device for Push Notifications')
   }
-
   if (Platform.OS === 'android') {
     Notifications.setNotificationChannelAsync('default', {
       name: 'default',
