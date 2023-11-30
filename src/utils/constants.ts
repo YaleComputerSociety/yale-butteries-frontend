@@ -7,4 +7,4 @@ export const url = environment === 'production' ? 'https://yale-butteries.heroku
 export const sessionSecret = process.env.SESSION_SECRET_KEY ?? 'default_secret'
 
 // Constants
-export const MILLISECONDS_UNTIL_ORDER_IS_EXPIRED = 3600000 * 600
+export const MILLISECONDS_UNTIL_ORDER_IS_EXPIRED = 3600000 * 6
