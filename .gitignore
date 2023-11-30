@@ -1,16 +1,12 @@
 **/node_modules
 **/yarn-error.log
+**/package-lock.json
 yarn-debug.log*
 .yarn-integrity
 /private
 /dist
 
-/src/frontend/dist
-
 .env.local
 
 **/.DS_Store
 
-# Ignore package-lock.json in case we run npm install instead of yarn install
-# Heroku doesn't let you deploy if you have a yarn.lock and package-lock.json
-package-lock.json
