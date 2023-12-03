@@ -33,7 +33,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   useEffect(() => {
     const push = async () => {
       const token = await registerForPushNotificationsAsync()
-      Alert.alert(token ? token : 'no token')
+      // Alert.alert(token ? token : 'no token')
     }
     push()
   }, [])
@@ -188,7 +188,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
             <View style={home.outerContainer}>
               {getCollegeVisual(butteries[13], 13)}
               <View style={home.partition}>
-                <Text style={home.announcement}>More Butteries Coming Soooon!</Text>
+                <Text style={home.announcement}>More Butteries Coming Soon!</Text>
               </View>
               {getAllCards()}
             </View>
