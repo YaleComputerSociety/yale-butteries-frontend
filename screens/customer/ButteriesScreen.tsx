@@ -45,8 +45,8 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
   const butteries: CollegeInfo[] = [
     {
-      ne: 'Trumbull',
-      active: true,
+      ne: 'Morse',
+      active: false,
     },
     {
       ne: 'Berkeley',
@@ -73,10 +73,6 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
       active: false,
     },
     {
-      ne: 'Morse',
-      active: false,
-    },
-    {
       ne: 'Murray',
       active: false,
     },
@@ -99,6 +95,10 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     {
       ne: 'TD',
       active: false,
+    },
+    {
+      ne: 'Trumbull',
+      active: true,
     },
   ]
 
@@ -143,7 +143,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   const getAllCards = () => {
     const collegeCards: JSX.Element[] = []
 
-    for (let i = 1; i < butteries.length; i++) {
+    for (let i = 0; i < butteries.length; i++) {
       collegeCards.push(getCollegeVisual(butteries[i], i))
     }
 
@@ -185,7 +185,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
         >
           <LinearGradient colors={['#121212', '#121212']} locations={[0, 1]}>
             <View style={home.outerContainer}>
-              {getCollegeVisual(butteries[0], 0)}
+              {getCollegeVisual(butteries[13], 13)}
               <View style={home.partition}>
                 <Text style={home.announcement}>More Butteries Coming Soon!</Text>
               </View>

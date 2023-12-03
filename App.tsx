@@ -24,6 +24,8 @@ const InnerApp: FC = () => {
   const [connection, setConnection] = useState(true)
   const dispatch = useAppDispatch()
 
+  SplashScreen.preventAutoHideAsync()
+
   const loadFonts = async () => {
     await Font.loadAsync({
       Roboto: require('./assets/fonts/Roboto-Black.ttf'),
@@ -37,7 +39,7 @@ const InnerApp: FC = () => {
 
   const establishUser = async () => {
     try {
-      AsyncStorage.clear()
+      // AsyncStorage.clear()
 
       // Check if user already exists in local storage
       const userInfo = await LocalStorage.getUserInfo('token')
@@ -68,6 +70,8 @@ const InnerApp: FC = () => {
         // ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
         await loadFonts()
         await establishUser()
+
+        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
       } catch (e) {
         console.warn(e)
       } finally {

@@ -4,6 +4,7 @@ import { checkout } from '../../styles/CheckoutStyles'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { loading } from '../../styles/GlobalStyles'
 import CheckoutItem from '../../components/customer/CheckoutItem'
+import * as Device from 'expo-device'
 import { priceToText, returnCollegeName } from '../../Functions'
 import { StripeProvider, useStripe, isPlatformPaySupported, PlatformPay } from '@stripe/stripe-react-native'
 import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
@@ -14,7 +15,6 @@ import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
 import { stripePK } from '../../utils/utils'
 import { FlatList } from 'react-native-gesture-handler'
-import * as Device from 'expo-device'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const {
@@ -64,6 +64,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     }
 
     const obj = { userId: currentUser.id, price: price, items: orderItems, college: collegeOrderCart }
+    console.log('hello3')
     const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
       method: 'POST',
       body: JSON.stringify(obj),
@@ -96,11 +97,31 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     return data.paymentIntent
   }
 
+  const safetyCheck = () => {
+    Alert.alert(
+      'Are you sure you would like to place this order?',
+      'This action cannot be undone',
+      [
+        { text: "Yes, I'm Sure", onPress: makePayment },
+        {
+          text: 'Cancel',
+          onPress: () => {
+            updateDisabled(false)
+            return
+          },
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    )
+  }
+
   const makePayment = async () => {
     try {
       // const paymentIntent = await showPaymentSheet()
 
-      // // user cancelled or there was an error
+      // user cancelled or there was an error
       // if (!paymentIntent) {
       //   updateDisabled(false)
       //   return
@@ -111,6 +132,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         orderStatus: 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED'
         menuItemId: number
       }
+      console.log('hello1')
 
       const transaction_items: tempItem[] = []
       orderItems.forEach((item) => {
@@ -148,12 +170,15 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
       let token = ''
       if (Device.isDevice) {
-        token = (await Notifications.getDevicePushTokenAsync()).data
+        token = __DEV__
+          ? (await Notifications.getExpoPushTokenAsync()).data
+          : (await Notifications.getDevicePushTokenAsync()).data
+        console.log('token: ', token)
       } else {
         console.log('not a device')
       }
 
-      const subscribeNotification = await fetch(baseUrl + 'api/notifs', {
+      const subscribeNotification = await fetch(baseUrl + 'api/notifications', {
         method: 'POST',
         body: JSON.stringify({
           transactionId: uploadTransactionResponse.id,
@@ -163,6 +188,9 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           'Content-Type': 'application/json',
         },
       })
+
+      const subscribeNotificationResponse = await subscribeNotification.json()
+      console.log(subscribeNotificationResponse)
 
       navigation.navigate('OrderStatusScreen')
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
@@ -219,7 +247,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 ]}
                 onPress={() => {
                   updateDisabled(true)
-                  makePayment()
+                  safetyCheck()
                 }}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>

@@ -21,9 +21,6 @@ const Settings: FC<{ navigation: any }> = ({ navigation }) => {
   const [successView, setSuccessView] = useState(false)
 
   const changeName = async (name: string) => {
-    console.log(currentUser.permissions)
-    console.log('hi')
-
     if (currentUser.permissions == 'dev') {
       Alert.alert('You are currently in developer mode. You cannot change your name.')
       return
@@ -35,8 +32,8 @@ const Settings: FC<{ navigation: any }> = ({ navigation }) => {
     } else {
       setInvalidName(false)
       const updatedCurrentUser = {
-        id: parseInt(id),
-        name: name,
+        id,
+        name,
         college: null,
         permissions: null,
         token: null,
