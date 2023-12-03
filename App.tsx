@@ -47,7 +47,6 @@ const InnerApp: FC = () => {
       if (userInfo && id) {
         // sets the current user state to a user, if it can't connect to the database then show evil modal
         await dispatch(asyncFetchUser(id)).then((result: 'good' | 'error' | 'missing') => {
-          console.log(id)
           if (result === 'error') {
             setConnection(false)
           } else if (result === 'missing') {
@@ -67,11 +66,11 @@ const InnerApp: FC = () => {
       try {
         // Keep the splash screen visible while we fetch resources
         await SplashScreen.preventAutoHideAsync()
-        // ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
+
         await loadFonts()
         await establishUser()
 
-        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
+        ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT).catch(() => {})
       } catch (e) {
         console.warn(e)
       } finally {
@@ -107,7 +106,6 @@ const InnerApp: FC = () => {
 }
 
 // seperate outer component for redux store to work on the inner component
-
 const App: FC = () => {
   return (
     <Provider store={store}>

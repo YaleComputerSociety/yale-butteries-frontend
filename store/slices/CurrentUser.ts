@@ -39,7 +39,6 @@ export const { setCurrentUserState, setIsLoading, setCurrentUserId } = currentUs
 export const asyncFetchUser = (id: string) => {
   return async (dispatch: AppDispatch): Promise<'good' | 'error' | 'missing'> => {
     dispatch(setIsLoading(true))
-    console.log(id)
     try {
       const user = await fetch(baseUrl + 'api/users/' + id, {
         method: 'GET',
@@ -49,8 +48,10 @@ export const asyncFetchUser = (id: string) => {
       })
       const data = await user.json()
 
-      if (Object.keys(data).length === 0) {
+      if (user.status === 404) {
         return 'missing'
+      } else if (!user.ok) {
+        return 'error'
       }
 
       dispatch(setCurrentUserState(data))

@@ -26,7 +26,7 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
     if (verified) {
       const info: [string, string][] = [
         ['username', username],
-        ['permissions', 'staff'],
+        ['permissions', 'STAFF'],
         ['id', JSON.stringify(3)],
         ['token', password],
       ]

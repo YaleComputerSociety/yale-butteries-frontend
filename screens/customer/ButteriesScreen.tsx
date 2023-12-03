@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Text, View, ScrollView, ActivityIndicator, RefreshControl } from 'react-native'
+import { Text, View, ScrollView, ActivityIndicator, RefreshControl, Alert } from 'react-native'
 import { home } from '../../styles/ButteriesStyles'
 import { ButteryCard } from '../../components/customer/ButteryCard'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
@@ -32,7 +32,8 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
   useEffect(() => {
     const push = async () => {
-      await registerForPushNotificationsAsync()
+      const token = await registerForPushNotificationsAsync()
+      // Alert.alert(token ? token : 'no token')
     }
     push()
   }, [])

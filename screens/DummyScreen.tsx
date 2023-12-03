@@ -10,13 +10,13 @@ const Dummy: FC<{ navigation: any }> = ({ navigation }) => {
   useEffect(() => {
     if (!isLoadingCurrentUser) {
       if (currentUser) {
-        if (currentUser.permissions === 'customer') {
+        if (currentUser.permissions === 'CUSTOMER') {
           if (currentTransactionHistory) {
             navigation.navigate('OrderStatusScreen')
           } else {
             navigation.navigate('ButteriesScreen')
           }
-        } else if (currentUser.permissions === 'staff') {
+        } else if (currentUser.permissions === 'STAFF') {
           navigation.navigate('NavigationScreen')
         }
       } else {
