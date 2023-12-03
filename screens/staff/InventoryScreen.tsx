@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   scrollView: {
     paddingTop: LAYOUTS.getWidth(10),
     paddingHorizontal: LAYOUTS.getWidth(10),
-    backgroundColor: COLORS.offWhite,
+    backgroundColor: '#121212',
     flex: 1,
   },
   loader: {

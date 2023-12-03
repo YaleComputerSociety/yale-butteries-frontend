@@ -26,7 +26,20 @@ function AntDesignBarIcon(props: { name: React.ComponentProps<typeof AntDesign>[
 
 const StaffStack: React.FC = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{
+      tabBarStyle: {
+        backgroundColor: '#1f1f1f',
+      },
+      headerStyle: {
+        backgroundColor: '#1f1f1f',
+        borderWidth: 0,
+        shadowColor: '#222',
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+      },
+      headerTitleStyle: { fontFamily: 'HindSiliguri-Bold', fontSize: 20, paddingBottom: 10 },
+      headerTintColor: '#FFF'
+  }}>
       <Tab.Screen
         name="Orders"
         component={OrdersScreen}

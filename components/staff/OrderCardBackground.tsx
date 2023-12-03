@@ -51,14 +51,10 @@ const OrderCardBackground: React.FC<Props> = ({ status, orderItem, time }: Props
   return (
     <View style={{ ...styles.container, backgroundColor: getColor(status) }}>
       <View style={{ ...styles.timeContainer }}>
-        <Text style={{ ...styles.boldText, lineHeight: 30 }}>{time}</Text>
         <Text style={{ ...styles.nameText, lineHeight: 14 }}>{getStatus(status)}</Text>
       </View>
       <View style={styles.itemContainer}>
         <Text style={{ ...styles.regularText }}>{orderItem.name + ' ' + orderItem.id}</Text>
-      </View>
-      <View style={styles.nameContainer}>
-        <Text style={{ ...styles.nameText }}>{orderItem.user}</Text>
       </View>
     </View>
   )
@@ -80,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     paddingBottom: LAYOUTS.getWidth(10),
-    paddingTop: LAYOUTS.getWidth(4),
+    paddingTop: LAYOUTS.getWidth(10),
   },
   itemContainer: {
     flex: 1,

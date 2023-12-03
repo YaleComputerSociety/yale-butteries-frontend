@@ -213,10 +213,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: '100%',
+    backgroundColor: '#121212'
   },
   sectionContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#1f1f1f',
     marginTop: 10,
     borderRadius: 8,
     padding: 10,
