@@ -14,8 +14,16 @@ const AnalyticsScreen: FC = () => {
   const [date, updateDate] = useState(today)
 
   const moveForward = () => {
-    date.setDate(date.getDate() + 1)
-    updateDate(new Date(date))
+    if(date.getFullYear() < today.getFullYear() || date.getMonth() < today.getMonth() || date.getDate() < today.getDate()) {
+      date.setDate(date.getDate() + 1)
+      updateDate(new Date(date))
+      console.log("Date: ", date, "today: ", today);
+
+      // Make it disappear
+      if(date.getFullYear() >= today.getFullYear() || date.getMonth() >= today.getMonth() || date.getDate() >= today.getDate()) {
+        console.log("disappear");
+      }
+    }
   }
 
   const moveBackward = () => {
