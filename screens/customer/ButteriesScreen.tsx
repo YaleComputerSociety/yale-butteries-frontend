@@ -17,6 +17,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   const [refreshing, setRefreshing] = useState(false)
   const [begin, setBegin] = useState(true)
   const [connection, setConnection] = useState(true)
+  const [pushTokenState, setPushTokenState] = useState('')
 
   const { colleges, isLoading: isLoading } = useAppSelector((state) => state.colleges)
 
@@ -32,7 +33,8 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
   useEffect(() => {
     const push = async () => {
-      await registerForPushNotificationsAsync()
+      const token = await registerForPushNotificationsAsync()
+      setPushTokenState(token)
     }
     push()
   }, [])
@@ -162,6 +164,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
   return (
     <View style={{ width: '100%', height: '100%' }}>
+      <Text style={{color: 'black'}}>{pushTokenState}</Text>
       {begin ? (
         <LinearGradient colors={['#121212', '#121212']} locations={[0, 1]}>
           <ScrollView
