@@ -233,8 +233,8 @@ export function returnCollegeName(collegeName: string): string[] {
 
 // PUSH NOTIFS
 
-export async function registerForPushNotificationsAsync(): Promise<any> {
-  let token
+export async function registerForPushNotificationsAsync(): Promise<string | null> {
+  let token: string | null
   if (Device.isDevice) {
     const { status: existingStatus } = await Notifications.getPermissionsAsync()
     let finalStatus = existingStatus
@@ -242,10 +242,17 @@ export async function registerForPushNotificationsAsync(): Promise<any> {
       const { status } = await Notifications.requestPermissionsAsync()
       finalStatus = status
     }
+    
     if (finalStatus !== 'granted') {
-      return
+      return null
     }
+
     token = (await Notifications.getExpoPushTokenAsync()).data
+
+    if (token === '') {
+      return null
+    }
+
   } else {
     alert('Must use physical device for Push Notifications')
   }

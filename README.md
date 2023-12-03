@@ -42,12 +42,15 @@ With the frontend running, you'll be able to see the app and interact with it, b
 #### iOS
 We use [Expo](https://expo.dev/accounts/yale_butteries) to turn the frontend code into a compiled binary, which we can then submit to app stores. To start, you'll need to have `eas-cli` installed, and will need to login to the yale_butteries Expo organization. Follow [this guide](https://docs.expo.dev/build/setup/)
 
-- There are a few ways to build the app, but the most important distinction is between a simulator build and a Testflight build
+- There are a few ways to build the app, but the most important distinction is between a simulator build, a development build, and a Testflight build
 
     - A simulator build takes ~10 minutes and will run on either your iPhone simulator or on Expo within your phone. Any bug that appears here will probably appear in a testflight build, but things tend to work better for these
         - Make a simulator build using Expo with `eas build -p ios --profile preview`
         - With the new build finished, run `eas build:run -p ios --latest` to start it on your iPhone simulator
-        - TODO: add running on physical phone
+    - A development build takes ~10 minutes to build and runs on your phone. It can be updated dynamically once built
+        - Make the development build with `eas build -p ios --profile development`
+        - Install the app on your phone (make sure to delete any existing version of Yale Butteries) by scanning the big QR code with your camera
+        - Run `yarn dev`, and then open the app on your phone
     - A Testflight build takes ~10 minutes to build, and ~5 minutes to submit to the Apple developer account. It should be identical to what the real app will look like, though because of this there will likely be more errors than in the simulator build
         - *A Testflight build requires access to the Apple developer account, which is currently owned by* ***Addison Goolsbee***
         - First, increment **version** in **app.json**. If you forget, then after 15 minutes you'll be thrown an error and have to rebuild
