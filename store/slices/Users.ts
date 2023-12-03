@@ -93,4 +93,41 @@ export const asyncCreateUser = (user: NewUser, token: string) => {
   }
 }
 
+export const asyncFetchUsers = () => {
+  return async (dispatch: AppDispatch): Promise<boolean> => {
+    dispatch(setIsLoading(true))
+    try {
+      const users = await fetch(baseUrl + 'api/users', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const data = await users.json()
+      const newData: User[] = []
+      data.forEach((user) => {
+        const newUser: User = {
+          email: user.email,
+          netid: user.netid,
+          name: user.name,
+          permissions: user.permissions,
+          college: user.college,
+          id: user.id,
+          currentOrder: user.currentOrder,
+        }
+        newData.push(newUser);
+      })
+      // CHECK ON THIS
+      dispatch(setUsersState(newData));
+      return true;
+    }
+    catch (e) {
+      console.log(e);
+    }
+    finally {
+      dispatch(setIsLoading(false));
+    }
+  }
+}
+
 export default usersSlice.reducer
