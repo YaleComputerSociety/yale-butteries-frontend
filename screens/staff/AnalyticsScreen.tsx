@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { Text, View, ScrollView, StyleSheet, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
-import { asyncFetchAllTransactionHistories } from '../../store/slices/TransactionHistory'
+import { TransactionHistoryEntry, asyncFetchAllTransactionHistories } from '../../store/slices/TransactionHistory'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
 const AnalyticsScreen: FC = () => {
@@ -11,7 +11,14 @@ const AnalyticsScreen: FC = () => {
 
   const today = new Date()
 
+  let day = today.getDate().toString()
+  let month = today.getMonth().toString()
+  let year = today.getFullYear().toString()
+
   const [date, updateDate] = useState(today)
+
+  const { transactionHistory, isLoading: isLoading } = useAppSelector((state) => state.transactionHistory)
+  const [filtered, setFiltered] = useState(transactionHistory.filter(transactionsOnDay))
 
   const moveForward = () => {
     date.setDate(date.getDate() + 1)
@@ -23,7 +30,26 @@ const AnalyticsScreen: FC = () => {
     updateDate(new Date(date))
   }
 
-  useEffect(() => {}, [updateDate])
+  function transactionsOnDay(transactionHistory: TransactionHistoryEntry) {
+    let selectedDate = transactionHistory.creationTime.split('-')
+    selectedDate[2] = selectedDate[2].slice(0, 2) //get day (first two numbers)
+    return year == selectedDate[0] && (parseInt(month) + 1).toString() == selectedDate[1] && day == selectedDate[2]
+  }
+
+  useEffect(() => {
+    if (!isLoading) {
+      setFiltered(transactionHistory.filter(transactionsOnDay))
+    }
+  }, [])
+
+  useEffect(() => {
+    day = date.getDate().toString()
+    month = date.getMonth().toString()
+    year = date.getFullYear().toString()
+
+    dispatch(asyncFetchAllTransactionHistories(currentUser.college))
+    setFiltered(transactionHistory.filter(transactionsOnDay)) //update orders for that past day
+  }, [date])
 
   return (
     <ScrollView>
@@ -35,6 +61,9 @@ const AnalyticsScreen: FC = () => {
         <Pressable onPress={moveForward}>
           <Ionicon name="arrow-forward" size={25} color="#000" />
         </Pressable>
+      </View>
+      <View>
+        <Text>{filtered.toString()}</Text>
       </View>
     </ScrollView>
   )
