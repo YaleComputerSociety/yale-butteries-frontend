@@ -48,9 +48,12 @@ export const asyncFetchUser = (id: string) => {
         },
       })
       const data = await user.json()
+      console.log(user.status)
 
-      if (Object.keys(data).length === 0) {
+      if (user.status === 404) {
         return 'missing'
+      } else if (!user.ok) {
+        return 'error'
       }
 
       dispatch(setCurrentUserState(data))

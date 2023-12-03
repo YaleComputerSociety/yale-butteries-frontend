@@ -51,8 +51,8 @@ We use [Expo](https://expo.dev/accounts/yale_butteries) to turn the frontend cod
     - A Testflight build takes ~10 minutes to build, and ~5 minutes to submit to the Apple developer account. It should be identical to what the real app will look like, though because of this there will likely be more errors than in the simulator build
         - *A Testflight build requires access to the Apple developer account, which is currently owned by* ***Addison Goolsbee***
         - First, increment **version** in **app.json**. If you forget, then after 15 minutes you'll be thrown an error and have to rebuild
-        - Make a real build with `eas build --platform ios`
-        - Submit the build to the app store. Run `eas submit --platform ios`
+        - Make a real build with `eas build -p ios`
+        - Submit the build to the app store. Run `eas submit -p ios`
 
 ## Version Control
 

@@ -47,7 +47,7 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         name: netid,
         college: 'morse',
         token: token,
-        permissions: 'customer',
+        permissions: 'CUSTOMER',
       }
 
       dispatch(asyncCreateUser(newUser, token)).then((success) => {
