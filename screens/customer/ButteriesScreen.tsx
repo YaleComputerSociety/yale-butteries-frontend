@@ -188,7 +188,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
             <View style={home.outerContainer}>
               {getCollegeVisual(butteries[13], 13)}
               <View style={home.partition}>
-                <Text style={home.announcement}>More Butteries Coming Soon!</Text>
+                <Text style={home.announcement}>More Butteries Coming Soooon!</Text>
               </View>
               {getAllCards()}
             </View>
