@@ -22,7 +22,7 @@ const GuestLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
       const newUser = {
         email: 'appleDevTester@gmail.com',
-        netid: 'staff',
+        netid: 'STAFF',
         name: username,
         college: 'morse',
         token: password,
