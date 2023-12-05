@@ -77,13 +77,13 @@ const BigCard: React.FC<Props> = ({transactionItems, interactable, setConnection
             })}
             <View style={styles.buttonContainer}>
               {isWaiting && 
-                  (<TouchableOpacity style={[styles.accept, styles.shadowAccept]} onPress={acceptClick}>
-                      <Text style={{color: 'white'}}>Accept</Text>
+                  (<TouchableOpacity style={styles.accept} onPress={acceptClick}>
+                      <Text style={{color: 'white'}}>Accept {'\u2713'}</Text>
                   </TouchableOpacity>)
               }
               {isWaiting && 
                   (<TouchableOpacity style={styles.decline} onPress={declineClick}>
-                      <Text style={{color: 'white'}}>Decline</Text>
+                      <Text style={{color: 'white'}}>Decline {'\u2717'}</Text>
                   </TouchableOpacity>)
               }
             </View>
@@ -102,17 +102,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#44CC44',
         padding: 8,
         margin: 10,
-    },
-    shadowAccept: {
-      shadowColor: '#purple',
-      shadowOffset: {width: 0, height: 1},
-      shadowOpacity: 0.2,
-      shadowRadius: 5,
+        borderRadius: 12
     },
     decline: {
         backgroundColor: 'red',
         padding: 8,
-        margin: 10
+        margin: 10,
+        borderRadius: 12
     },
     background: {
         backgroundColor: '#1f1f1f',

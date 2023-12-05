@@ -45,6 +45,7 @@ const OrdersScreen2: React.FC = () => {
         store.getState().transactionHistory.transactionHistory.forEach((th) => {
             let pendingCount = 0
             let doneCount = 0
+            let readyCount = 0
             const ti: TransactionItem[] = []
             th.transactionItems.forEach((item) => {
                 if (item.orderStatus == 'QUEUED') {
@@ -52,6 +53,9 @@ const OrdersScreen2: React.FC = () => {
                 }
                 else if (item.orderStatus != 'ONGOING') {
                     doneCount++
+                    if (item.orderStatus == 'READY') {
+                      readyCount++
+                    }
                 }
                 ti.push({ ...item, creationTime: th.creationTime })
             })
@@ -61,7 +65,9 @@ const OrdersScreen2: React.FC = () => {
                 waiting.push({...ti}) 
             }
             else if (doneCount == ti.length) {
-                past.push({...ti})
+                if (readyCount > 0) {
+                  past.push({...ti})
+                }
             }
             else {
                 current.push({...ti})
@@ -107,7 +113,9 @@ const OrdersScreen2: React.FC = () => {
           style={{ ...styles.scrollView }}
           //contentContainerStyle={{alignItems: 'stretch', justifyContent: 'stretch'}}>
         >
-          <Text style={{ ...styles.title }}>Live Orders</Text>
+          <View style={styles.background}>
+            <Text style={{ ...styles.title }}>Live Orders</Text>
+          </View>
           {waitingOrders.map((element) => {
             return (
               <View key={element["0"].id + 'vv'} style={styles.tag}>
@@ -134,7 +142,9 @@ const OrdersScreen2: React.FC = () => {
               </View>
             )
           })}
-          <Text style={{ ...styles.title2 }}>Completed Today</Text>
+          <View style={styles.background}>
+              <Text style={{ ...styles.title2 }}>Completed Today</Text>
+          </View>
           {pastOrders.map((element) => {
             return (
               <View key={element["0"].id + 'v'}>
@@ -161,17 +171,25 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'flex-start'
   },
+  background: {
+    backgroundColor: '#2c2c2c',
+    padding: 5,
+    marginBottom: LAYOUTS.getWidth(10),
+    borderRadius: 8
+  },
   title: {
-    fontSize: TEXTS.adjust(30),
-    marginBottom: LAYOUTS.getWidth(8),
+    fontSize: TEXTS.adjust(20),
+    // marginBottom: LAYOUTS.getWidth(5),
     color: 'rgba(255,255,255, 0.87)',
     fontWeight: '500',
+    textAlign: 'center'
     //fontFamily: 'HindSiliguri',
   },
   title2: {
-    fontSize: TEXTS.adjust(30),
-    marginBottom: LAYOUTS.getWidth(8),
-    marginTop: LAYOUTS.getWidth(8),
+    fontSize: TEXTS.adjust(20),
+    textAlign: 'center',
+    // marginBottom: LAYOUTS.getWidth(5),
+    // marginTop: LAYOUTS.getWidth(5),
     color: 'rgba(255,255,255, 0.87)',
     fontWeight: '500',
     //fontFamily: 'HindSiliguri',

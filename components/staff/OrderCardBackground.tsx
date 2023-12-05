@@ -54,7 +54,7 @@ const OrderCardBackground: React.FC<Props> = ({ status, orderItem, time }: Props
         <Text style={{ ...styles.nameText, lineHeight: 14 }}>{getStatus(status)}</Text>
       </View>
       <View style={styles.itemContainer}>
-        <Text style={{ ...styles.regularText }}>{orderItem.name + ' ' + orderItem.id}</Text>
+        <Text style={{ ...styles.regularText }}>{orderItem.name}</Text>
       </View>
     </View>
   )
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     color: COLORS.black,
   },
   nameText: {
-    fontSize: TEXTS.adjust(12),
+    fontSize: TEXTS.adjust(10),
     color: COLORS.black,
   },
 })

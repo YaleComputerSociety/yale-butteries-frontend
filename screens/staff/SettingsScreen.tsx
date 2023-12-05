@@ -203,7 +203,7 @@ export default SettingsScreen
 
 const styles = StyleSheet.create({
   headerText: {
-    color: '#000',
+    color: 'rgba(255,255,255, 0.87)',
     fontSize: 24,
     fontFamily: 'HindSiliguri-Bold',
     textAlignVertical: 'center',
@@ -232,14 +232,14 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlignVertical: 'center',
-    color: '#fff',
+    color: 'rgba(255,255,255, 0.87)',
     fontSize: 24,
     fontFamily: 'HindSiliguri-Bold',
     alignSelf: 'center',
   },
   button: {
     justifyContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(255,255,255, 0.87)',
     borderRadius: 8,
     padding: 5,
     alignSelf: 'center',
