@@ -8,7 +8,7 @@ import { MenuItemCard } from '../../components/customer/MenuItemCard'
 import { home } from '../../styles/ButteriesStyles'
 import { menu } from '../../styles/MenuStyles'
 import { loading } from '../../styles/GlobalStyles'
-import { getPriceFromOrderItems, returnCollegeName } from '../../Functions'
+import { getCollegeAcceptingOrders, getPriceFromOrderItems, returnCollegeName } from '../../Functions'
 
 import * as Haptics from 'expo-haptics'
 
@@ -26,6 +26,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const isFocused = useIsFocused()
   const { menuItems } = useAppSelector((state) => state.menuItems)
   const { orderItems, college: collegeOrderCart } = useAppSelector((state) => state.orderCart)
+  const { colleges, isLoading: isLoading } = useAppSelector((state) => state.colleges)
 
   const [data, setData] = useState([])
 
@@ -164,10 +165,10 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
           />
           <View style={styles.footer}>
             <Pressable
-              disabled={orderItems.length < 1 ? true : false}
+              disabled={orderItems.length < 1 || !getCollegeAcceptingOrders(colleges, collegeOrderCart) ? true : false}
               style={({ pressed }) => [
                 {
-                  opacity: orderItems.length < 1 || pressed ? 0.7 : 1,
+                  opacity: orderItems.length < 1 || !getCollegeAcceptingOrders(colleges, collegeOrderCart) || pressed ? 0.7 : 1,
                   backgroundColor: returnCollegeName(collegeOrderCart)[1],
                 },
                 styles.cartButton,

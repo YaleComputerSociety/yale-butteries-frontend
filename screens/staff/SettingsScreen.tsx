@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { StyleSheet, Text, View, ScrollView, Pressable, Alert, ActivityIndicator, Button } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Pressable, Switch, Alert, ActivityIndicator, Button } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import EvilModal from '../../components/EvilModal'
 
@@ -37,6 +37,8 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
   const [closeTimeMinutes, setCloseTimeMinutes] = useState(null)
   const [closeTimeAM_PM, setCloseTimeAM_PM] = useState(null)
 
+  const [acceptingOrders, setAcceptingOrders] = useState(null)
+
   const [currentCollege, setCurrentCollege] = useState(null)
   const [begin, setBegin] = useState(true)
 
@@ -47,13 +49,15 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
   }, [isFocused])
 
   useEffect(() => {
-    console.log('hey')
     if (colleges && currentUser) {
       setCurrentCollege(colleges.filter((college) => college.name == currentUser.college)[0])
     }
+
     if (currentCollege) {
       const openTime = currentCollege.openTime.split(':')
       const closeTime = currentCollege.closeTime.split(':')
+
+      setAcceptingOrders(currentCollege.isAcceptingOrders)
 
       updateOpenDays(currentCollege.daysOpen)
       setOpenCount(currentCollege.daysOpen.length)
@@ -76,6 +80,7 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
       setCloseTimeHour(closeTime[0])
       setCloseTimeMinutes(closeTime[1])
 
+      setAcceptingOrders(currentCollege.isAcceptingOrders)
       setBegin(false)
     }
   }, [currentCollege, isLoading])
@@ -122,22 +127,20 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
   }
 
   const updateCollege = (openTimeAM_PM: string, closeTimeAM_PM: string) => {
-    console.log(openTimeAM_PM, closeTimeAM_PM)
     const open = outputTime(openTimeHour, openTimeMinutes, openTimeAM_PM)
     const close = outputTime(closeTimeHour, closeTimeMinutes, closeTimeAM_PM)
-    console.log(open, close)
 
-    console.log(open, close)
     const butteryTime: College = {
       id: currentCollege.id,
       name: currentCollege.name,
-      buttery_activated: currentCollege.buttery_activated,
+      isButteryIntegrated: currentCollege.isButteryIntegrated,
+      isAcceptingOrders: acceptingOrders,
       daysOpen: openDays,
       openTime: open,
       closeTime: close,
-      isOpen: true,
-      //hard coded for now but will change these values,
+      isOpen: currentCollege.isOpen
     }
+
     dispatch(asyncUpdateCollege(butteryTime))
     Alert.alert('Your changes have been saved!')
   }
@@ -188,6 +191,13 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
               hour={(hour) => setCloseTimeHour(hour)}
               minutes={(minutes) => setCloseTimeMinutes(minutes)}
               time={outputTime(closeTimeHour, closeTimeMinutes)}
+            />
+          </View>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.headerText}>Accepting orders?</Text>
+            <Switch
+              value={acceptingOrders}
+              onValueChange={setAcceptingOrders}
             />
           </View>
           <View style={styles.button}>

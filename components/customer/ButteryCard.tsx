@@ -5,6 +5,7 @@ import SpriteSheet from 'rn-sprite-sheet'
 
 interface butteryProps {
   college: string
+  isAcceptingOrders: boolean
   openTime: string
   closeTime: string
   daysOpen: boolean[]
@@ -16,6 +17,7 @@ interface butteryProps {
 
 export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   const [isOpen, setIsOpen] = useState(props.isOpen)
+  const [isAcceptingOrders, setIsAcceptingOrders] = useState(props.isAcceptingOrders)
 
   let open = props.openTime.split(' ')
   let close = props.closeTime.split(' ')

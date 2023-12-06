@@ -163,6 +163,11 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
   return true
 }
 
+export function getCollegeAcceptingOrders(colleges: College[], name: string): boolean {
+  const college = colleges.filter((college) => college.name.toLowerCase() == name.toLowerCase())[0]
+  return college.isAcceptingOrders
+}
+
 export function returnCollegeName(collegeName: string): string[] {
   let name = ''
   let headercolor = ''
