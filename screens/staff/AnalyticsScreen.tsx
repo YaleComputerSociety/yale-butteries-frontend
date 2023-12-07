@@ -41,19 +41,29 @@ const AnalyticsScreen: FC = () => {
     })
   }, [isFocused])
 
+  useEffect(() => {
+    console.log("TRYING TO GET THE TRANSACTIONS - THIS IS NOT GOOD CODE, HARDCODED FOR TRUMBULL");
+    dispatch(asyncFetchAllTransactionHistories("Trumbull")).then((success: boolean) => {
+      if (!success) {
+        setConnection(false)
+      }
+    })
+  }, [isFocused])
+
+  useEffect(() => {
+    console.log("TRYING TO GET THE TRANSACTIONS - THIS IS NOT GOOD CODE, HARDCODED FOR TRUMBULL");
+    dispatch(asyncFetchAllTransactionHistories("Trumbull")).then((success: boolean) => {
+      if (!success) {
+        setConnection(false)
+      }
+    })
+  }, [date])
+
   const moveForward = () => {
     if(date.getFullYear() < today.getFullYear() || date.getMonth() < today.getMonth() || date.getDate() < today.getDate()) {
       date.setDate(date.getDate() + 1)
       updateDate(new Date(date))
-      console.log("Date: ", date, "today: ", today);
-
-      // Make it disappear
-      if(date.getFullYear() >= today.getFullYear() || date.getMonth() >= today.getMonth() || date.getDate() >= today.getDate()) {
-        console.log("disappear");
-      }
     }
-
-    console.log(transactionHistory);
   }
 
   const moveBackward = () => {
@@ -87,8 +97,22 @@ const AnalyticsScreen: FC = () => {
   function transactionsOnDay(transactionHistory: TransactionHistoryEntry) {
     let selectedDate = transactionHistory.creationTime.split('-')
     selectedDate[2] = selectedDate[2].slice(0, 2) //get day (first two numbers)
-    // console.log(year == selectedDate[0], (parseInt(month) + 1).toString() == selectedDate[1], day == selectedDate[2])
-    return year == selectedDate[0] && (parseInt(date.getMonth().toString()) + 1).toString() == selectedDate[1] && day == date.getDate().toString()
+
+    console.log("\nSelected date: ", {selectedDate});
+
+    let i = transactionHistory.id;
+    console.log("Checking ", {i});
+
+    let d = date.getDate().toString();
+    let a = parseInt(selectedDate[2]);
+    let b = a.toString();
+
+    if (!(year == selectedDate[0] && (parseInt(date.getMonth().toString()) + 1).toString() == selectedDate[1] && date.getDate().toString() == selectedDate[2])) {
+      
+      console.log("order day:", b, "page day: ", d);
+    }
+
+    return year == selectedDate[0] && (parseInt(date.getMonth().toString()) + 1).toString() == selectedDate[1] && date.getDate().toString() == b
   }
 
   function getUserFromId(id: string) {
@@ -105,6 +129,15 @@ const AnalyticsScreen: FC = () => {
     return "error";
   }
 
+  function reformatTime(time: string) {
+    const date = new Date(time);
+
+    const estTime = date.toLocaleString("en-US", {timeZone: "America/New_York"});
+    const [_, hours, minutes] = estTime.match(/(\d+):(\d+):(\d+)/);
+
+    return `${hours}:${minutes}`;
+  }
+
   useEffect(() => {
     if (!isLoading) {
       setFiltered(transactionHistory.filter(transactionsOnDay))
@@ -112,9 +145,8 @@ const AnalyticsScreen: FC = () => {
   }, [])
 
   useEffect(() => {
-    // console.log("day: ", day, "month: ", month, "year: ", year);
     setFiltered(transactionHistory.filter(transactionsOnDay)) //update orders for that past day
-    console.log(filtered)
+    console.log("filtered: ", filtered)
   }, [date])
 
   return (
@@ -142,8 +174,8 @@ const AnalyticsScreen: FC = () => {
       </View>
 
       <View style={staffAnalytics.title}>
-          <Text style = {staffAnalytics.drop}>-</Text>
-          <Text style = {staffAnalytics.idText}>ID</Text>
+          <Text style = {staffAnalytics.drop}></Text>
+          <Text style = {staffAnalytics.idText}>Time</Text>
           <Text style = {staffAnalytics.nameText}>Name</Text>
           <Text style = {staffAnalytics.countText}>Items</Text>
           <Text style = {staffAnalytics.costText}>Cost</Text>
@@ -151,10 +183,11 @@ const AnalyticsScreen: FC = () => {
 
       {filtered?.map((transaction) => (
         <AnalyticsCard
-          id={transaction.id}
+          time={reformatTime(transaction.creationTime)}
           name={getUserFromId(transaction.userId)}
-          items={transaction.transactionItems.length}
+          num_items={transaction.transactionItems.length}
           cost={orderTotalCost(transaction).toFixed(2)}
+          items={transaction.transactionItems}
         />
       ))}
     </ScrollView>

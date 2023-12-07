@@ -1,24 +1,55 @@
 import React, { FC } from 'react'
+import { useState } from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 import Ionicon from 'react-native-vector-icons/Ionicons'
+import { TransactionItem } from '../../store/slices/TransactionItems'
+import AnalyticsItemCard from './AnalyticsItemCard'
 
 interface Props {
-    id: Number
+    time: string
     name: string
-    items: Number
+    num_items: Number
     cost: string
+    items: TransactionItem[]
 }
 
-const AnalyticsCard: FC<Props> = ({ id, name, items, cost }: Props) => {
-  return (
-    <View style = {styles.entry}>
-        <Text style = {styles.drop}>-</Text>
-        <Text style = {styles.idText}>{id.toString()}</Text>
-        <Text style = {styles.nameText}>{name}</Text>
-        <Text style = {styles.countText}>{items.toString()}</Text>
-        <Text style = {styles.costText}>${cost}</Text>
-      </View>
-  )
+const AnalyticsCard: FC<Props> = ({ time, name, num_items, cost, items }: Props) => {
+
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const [iconName, setIconName] = useState('chevron-forward-outline');
+
+    function toggleExpand() {
+        setIsExpanded(!isExpanded);
+        const newIconName = iconName === 'chevron-down-outline' ? 'chevron-forward-outline' : 'chevron-down-outline';
+        setIconName(newIconName);
+    }
+
+
+    return (
+        <View>
+            <View 
+                style = {styles.entry}
+                onStartShouldSetResponder={() => true} // Set to capture touches
+                onResponderRelease={toggleExpand} // Handle touch release
+            >
+                <Ionicon style = {styles.drop} name={iconName} size={25} color="#000" />
+                <Text style = {styles.timeText}>{time}</Text>
+                <Text style = {styles.nameText}>{name}</Text>
+                <Text style = {styles.countText}>{num_items.toString()}</Text>
+                <Text style = {styles.costText}>${cost}</Text>
+            </View>
+
+            {items?.map((item) => (
+                <AnalyticsItemCard
+                hide={!isExpanded}
+                name={item.name}
+                cost={(item.itemCost/100).toFixed(2)}
+                />
+            ))}
+        </View>
+        
+    )
 }
 
 const styles = StyleSheet.create({
@@ -55,7 +86,7 @@ const styles = StyleSheet.create({
     drop: {
         flex: 2,
     },
-    idText: {
+    timeText: {
         flex: 2,
     },
     nameText: {
