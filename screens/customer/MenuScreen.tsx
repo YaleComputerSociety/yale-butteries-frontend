@@ -1,6 +1,6 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
-import { StyleSheet, View, ActivityIndicator, Text, Pressable, RefreshControl, SectionList } from 'react-native'
+import { StyleSheet, View, Alert, ActivityIndicator, Text, Pressable, RefreshControl, SectionList } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems, MenuItem } from '../../store/slices/MenuItems'
 import { addOrderItem, OrderItem, removeOrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
@@ -165,17 +165,27 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
           />
           <View style={styles.footer}>
             <Pressable
-              disabled={orderItems.length < 1 || !getCollegeAcceptingOrders(colleges, collegeOrderCart) ? true : false}
+              disabled={orderItems.length < 1 ? true : false}
               style={({ pressed }) => [
                 {
-                  opacity: orderItems.length < 1 || !getCollegeAcceptingOrders(colleges, collegeOrderCart) || pressed ? 0.7 : 1,
+                  opacity: orderItems.length < 1 || pressed ? 0.7 : 1,
                   backgroundColor: returnCollegeName(collegeOrderCart)[1],
                 },
                 styles.cartButton,
               ]}
               onPress={() => {
-                navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+                if (!getCollegeAcceptingOrders(colleges, collegeOrderCart)) {
+                  Alert.alert(
+                    "Try again later",
+                    "This buttery is currently busy, try again later.",
+                    [
+                      { text: "OK"}
+                    ]
+                  );
+                } else {
+                  navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+                }
               }}
             >
               <Text style={[styles.cartText, { marginRight: 25 }]}>Go to Cart</Text>
