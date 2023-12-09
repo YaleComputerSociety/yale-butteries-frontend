@@ -60,7 +60,7 @@ const BigCard: React.FC<Props> = ({transactionItems, interactable, setConnection
     return (
         <View style={styles.backgroundCard}>
             <View style = {styles.topContainer}>
-                <Text style={card.cardText1}>NetID: {newItems[0].user}</Text>
+                <Text style={card.cardText1}>Name: {newItems[0].user}</Text>
                 <Text style={card.cardText2}>Time: {orderTime}</Text>
             </View>
             {newItems.map((element) => {
