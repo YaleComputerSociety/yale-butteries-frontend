@@ -36,6 +36,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const [connection, setConnection] = useState(true)
 
   useEffect(() => {
+    console.log("Getting menu")
     dispatch(asyncFetchMenuItems()).then((success: boolean) => {
       if (!success) {
         setConnection(false)
