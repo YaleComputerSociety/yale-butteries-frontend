@@ -191,7 +191,7 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
             />
           </View>
           <View style={styles.button}>
-            <Button title="Save Changes" onPress={safetyCheck} />
+            <Button title="Save Changes" color="rgba(255,255,255, 0.87)" onPress={safetyCheck} />
           </View>
         </ScrollView>
       )}
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   },
   button: {
     justifyContent: 'center',
-    backgroundColor: 'rgba(255,255,255, 0.87)',
+    backgroundColor: '#1877F2',
     borderRadius: 8,
     padding: 5,
     alignSelf: 'center',

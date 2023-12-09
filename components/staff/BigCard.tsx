@@ -6,7 +6,7 @@ import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
 
 import OrderCard from './OrderCard'
-import { card, home } from '../../styles/ButteriesStyles'
+import { card } from '../../styles/ButteriesStyles'
 
 import { useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateTransactionItem, TransactionItem, updateTransactionItem } from '../../store/slices/TransactionItems'
@@ -24,6 +24,7 @@ const BigCard: React.FC<Props> = ({transactionItems, interactable, setConnection
     
     const newItems = Object.values(transactionItems);
     const orderTime = cleanTime(new Date(newItems[0].creationTime))
+    newItems.sort((a, b) => a.id - b.id)
     // const [declineClicked, setDeclineClicked] = useState(false)
     // console.log(newItems)
     const acceptClick = () => {
@@ -57,7 +58,7 @@ const BigCard: React.FC<Props> = ({transactionItems, interactable, setConnection
         // setDeclineClicked(true)
     }
     return (
-        <View style={styles.background}>
+        <View style={styles.backgroundCard}>
             <View style = {styles.topContainer}>
                 <Text style={card.cardText1}>NetID: {newItems[0].user}</Text>
                 <Text style={card.cardText2}>Time: {orderTime}</Text>
@@ -102,19 +103,27 @@ const styles = StyleSheet.create({
         backgroundColor: '#44CC44',
         padding: 8,
         margin: 10,
-        borderRadius: 12
+        borderRadius: 8,
+        justifyContent: 'center',
+        verticalAlign: 'center',
+        alignItems: 'center',
+        flex: 0.5,
     },
     decline: {
         backgroundColor: 'red',
         padding: 8,
         margin: 10,
-        borderRadius: 12
+        justifyContent: 'center',
+        borderRadius: 8,
+        flex: 0.5,
+        alignItems: 'center',
     },
-    background: {
+    backgroundCard: {
         backgroundColor: '#1f1f1f',
         padding: 5,
         marginBottom: LAYOUTS.getWidth(10),
-        borderRadius: 8
+        borderRadius: 8, 
+        flex: 1,
     },
     boldText: {
       fontSize: TEXTS.adjust(15),

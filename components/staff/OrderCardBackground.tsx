@@ -17,13 +17,13 @@ const OrderCardBackground: React.FC<Props> = ({ status, orderItem, time }: Props
   const getColor = (status: number): string => {
     switch (status) {
       case 0:
-        return '#F5B7B1'
+        return '#ff6464'
       case 1:
-        return '#FAE5D3'
+        return '#CCCCFF'
       case 2:
-        return '#FCF3CF'
+        return '#fff15d'
       case 3:
-        return '#D4EFDF'
+        return '#77f07f'
       case 4:
         return '#D989B9'
       default:

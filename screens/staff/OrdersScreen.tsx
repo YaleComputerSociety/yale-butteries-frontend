@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native'
 import store, { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
-import { home } from '../../styles/ButteriesStyles'
 
-import { COLORS } from '../../constants/Colors'
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
 
 import BigCard from '../../components/staff/BigCard'
 import { asyncFetchRecentTransactionHistories } from '../../store/slices/TransactionHistory'
-import { setTransactionItemsState, TransactionItem } from '../../store/slices/TransactionItems'
-import { useIsFocused } from '@react-navigation/native'
+import { TransactionItem } from '../../store/slices/TransactionItems'
+// import { useIsFocused } from '@react-navigation/native'
 import EvilModal from '../../components/EvilModal'
 
 const OrdersScreen2: React.FC = () => {
   const dispatch = useAppDispatch()
-  const isFocused = useIsFocused()
+  // const isFocused = useIsFocused()
 
   const { transactionItems, isLoading: isLoadingTransactionItems } = useAppSelector((state) => state.transactionItems)
   const { currentUser } = useAppSelector((state) => state.currentUser)
@@ -42,12 +40,14 @@ const OrdersScreen2: React.FC = () => {
         const current: TransactionItem[][] = []
         // all items finished or cancelled
         const past: TransactionItem[][] = []
-        store.getState().transactionHistory.transactionHistory.forEach((th) => {
+        // for each transaction history entry
+        store.getState().transactionHistory.transactionHistory.forEach((entry) => {
             let pendingCount = 0
             let doneCount = 0
             let readyCount = 0
-            const ti: TransactionItem[] = []
-            th.transactionItems.forEach((item) => {
+            const itemList: TransactionItem[] = []
+            // for each transactionItem
+            entry.transactionItems.forEach((item) => {
                 if (item.orderStatus == 'QUEUED') {
                     pendingCount++
                 }
@@ -57,20 +57,20 @@ const OrdersScreen2: React.FC = () => {
                       readyCount++
                     }
                 }
-                ti.push({ ...item, creationTime: th.creationTime })
+                itemList.push({ ...item, creationTime: entry.creationTime })
             })
             //console.log(ti.length)
             // console.log(done)
-            if (pendingCount == ti.length) {
-                waiting.push({...ti}) 
+            if (pendingCount == itemList.length) {
+                waiting.push({...itemList}) 
             }
-            else if (doneCount == ti.length) {
+            else if (doneCount == itemList.length) {
                 if (readyCount > 0) {
-                  past.push({...ti})
+                  past.push({...itemList})
                 }
             }
             else {
-                current.push({...ti})
+                current.push({...itemList})
             }
         })
 
@@ -101,7 +101,7 @@ const OrdersScreen2: React.FC = () => {
         <Text style={styles.connectionError}>You aren't connected to the internet. Orders may not be accurate</Text>
       )}
       {isLoadingTransactionItems || transactionItems == null ? (
-        <ScrollView
+        <ScrollView showsVerticalScrollIndicator={false}
           style={styles.scrollView}
           //contentContainerStyle={{alignItems: 'flex-start', justifyContent: 'stretch'}}>
         >
@@ -114,7 +114,7 @@ const OrdersScreen2: React.FC = () => {
           //contentContainerStyle={{alignItems: 'stretch', justifyContent: 'stretch'}}>
         >
           <View style={styles.background}>
-            <Text style={{ ...styles.title }}>Live Orders</Text>
+            <Text style={{ ...styles.title2 }}>Live Orders</Text>
           </View>
           {waitingOrders.map((element) => {
             return (
@@ -175,6 +175,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#2c2c2c',
     padding: 5,
     marginBottom: LAYOUTS.getWidth(10),
+    height: LAYOUTS.getWidth(50),
+    justifyContent: 'center',
     borderRadius: 8
   },
   title: {
@@ -191,7 +193,7 @@ const styles = StyleSheet.create({
     // marginBottom: LAYOUTS.getWidth(5),
     // marginTop: LAYOUTS.getWidth(5),
     color: 'rgba(255,255,255, 0.87)',
-    fontWeight: '500',
+    fontWeight: 'bold',
     //fontFamily: 'HindSiliguri',
   },
   scrollView: {
