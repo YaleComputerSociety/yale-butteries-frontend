@@ -7,7 +7,7 @@ import React from 'react'
 import EditItemScreen from '../screens/staff/EditItemScreen'
 import CreateItemScreen from '../screens/staff/CreateItemScreen'
 import SettingsScreen from '../screens/staff/SettingsScreen'
-
+import AnalyticsScreen from '../screens/staff/AnalyticsScreen'
 
 import { createStackNavigator } from '@react-navigation/stack'
 
@@ -46,6 +46,13 @@ const StaffStack: React.FC = () => {
         component={SettingsScreen}
         options={{
           tabBarIcon: ({ color }) => <AntDesignBarIcon name="setting" color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Analytics"
+        component={AnalyticsScreen}
+        options={{
+          tabBarIcon: ({ color }) => <AntDesignBarIcon name="areachart" color={color} />,
         }}
       />
     </Tab.Navigator>

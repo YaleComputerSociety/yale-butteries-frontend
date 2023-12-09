@@ -67,7 +67,7 @@ const OrdersScreen: React.FC = () => {
       fetchItems()
     }, 5000)
     return () => clearInterval(interval)
-  }, [isFocused])
+  }, [])
 
   useEffect(() => {
     if (transactionItems && counter > 5) {
@@ -151,7 +151,8 @@ const styles = StyleSheet.create({
     marginBottom: LAYOUTS.getWidth(8),
     color: COLORS.black,
     fontWeight: '500',
-    //fontFamily: 'HindSiliguri',
+    textAlign: 'center',
+    fontFamily: 'HindSiliguri-Bold',
   },
   title2: {
     fontSize: TEXTS.adjust(30),
@@ -159,7 +160,8 @@ const styles = StyleSheet.create({
     marginTop: LAYOUTS.getWidth(8),
     color: COLORS.black,
     fontWeight: '500',
-    //fontFamily: 'HindSiliguri',
+    textAlign: 'center',
+    fontFamily: 'HindSiliguri-Bold',
   },
   scrollView: {
     paddingTop: LAYOUTS.getWidth(10),
