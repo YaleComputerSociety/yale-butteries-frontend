@@ -8,6 +8,7 @@ import { totalMemory } from 'expo-device'
 import { staffAnalytics } from '../../styles/StaffAnalyticsStyles'
 import { useIsFocused } from '@react-navigation/native'
 import { User, asyncFetchUsers } from '../../store/slices/Users'
+import { LAYOUTS } from '../../constants/Layouts'
 
 import AnalyticsCard from '../../components/staff/AnalyticsCard'
 
@@ -172,10 +173,10 @@ const AnalyticsScreen: FC = () => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={{ ...styles.scrollView }}>
       <View style={styles.dateContainer}>
         <Pressable onPress={moveBackward}>
-          <Ionicon name="arrow-back" size={25} color="#000" />
+          <Ionicon name="arrow-back" size={25} color="#rgba(255,255,255, 0.87)" />
         </Pressable>
         <Text style={styles.dateHeader}>{date.toDateString()}</Text>
         <Pressable 
@@ -186,7 +187,7 @@ const AnalyticsScreen: FC = () => {
             }
           ]}
         >
-          <Ionicon name="arrow-forward" size={25} color="#000" />
+          <Ionicon name="arrow-forward" size={25} color="#rgba(255,255,255, 0.87)" />
         </Pressable>
       </View>
 
@@ -222,7 +223,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: 'grey',
+    backgroundColor: '#1877F2',
     width: '70%',
     justifyContent: 'space-evenly',
     margin: 10,
@@ -231,10 +232,17 @@ const styles = StyleSheet.create({
   },
   dateHeader: {
     textAlign: 'center',
+    color: 'rgba(255,255,255, 0.87)',
     fontSize: 20,
     marginHorizontal: 15,
     fontFamily: 'HindSiliguri-Bold',
   },
+  scrollView: {
+    paddingTop: LAYOUTS.getWidth(10),
+    paddingHorizontal: LAYOUTS.getWidth(10),
+    backgroundColor: '#121212',
+    flex: 1,
+  }
 })
 
 export default AnalyticsScreen

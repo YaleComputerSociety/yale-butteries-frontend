@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 export const staffAnalytics = StyleSheet.create({
   title: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#383838',
     flexDirection: "row",
     justifyContent: "space-evenly",
     padding: 10,
@@ -14,7 +14,7 @@ export const staffAnalytics = StyleSheet.create({
 
   header: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#2c2c2c',
     flexDirection: "row",
     justifyContent: "space-evenly",
     padding: 10,
@@ -33,10 +33,12 @@ export const staffAnalytics = StyleSheet.create({
   text: {
     flex: 3,
     fontFamily: 'HindSiliguri-Bold',
+    color: 'rgba(255,255,255, 0.87)'
   },
 
   subheader: {
     fontFamily: 'HindSiliguri-Bold',
+    color: 'rgba(255,255,255, 0.87)'
   }
 
 

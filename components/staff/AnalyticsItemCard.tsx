@@ -7,10 +7,9 @@ interface Props {
     name: string
     cost: string
     hide: boolean
-    time: string
 }
 
-const AnalyticsItemCard: FC<Props> = ({ name, cost, hide, time }: Props) => {
+const AnalyticsItemCard: FC<Props> = ({ name, cost, hide }: Props) => {
 
     if (hide) {
         return null;
@@ -20,8 +19,7 @@ const AnalyticsItemCard: FC<Props> = ({ name, cost, hide, time }: Props) => {
         <View>
             <View style = {styles.entry}>
                 <Text style = {styles.text}></Text>
-                <Text style = {styles.text}>{time}</Text>
-                <Text style = {styles.text}>{name}</Text>
+                <Text style = {styles.itemText}>{name}</Text>
                 <Text style = {styles.text}>1</Text>
                 <Text style = {styles.text}>${cost}</Text>
             </View>
@@ -53,7 +51,7 @@ const styles = StyleSheet.create({
 
     entry: {
         flex: 1,
-        backgroundColor: '#F1F1F1',
+        backgroundColor: '#5a5a5a',
         // borderWidth: 2,
         // borderColor: '#555',
         flexDirection: "row",
@@ -65,6 +63,14 @@ const styles = StyleSheet.create({
 
     text: {
         flex: 2,
+        padding: 2,
+        color: 'rgba(255,255,255, 0.87)',
+        fontFamily: 'HindSiliguri-Bold',
+    },
+    itemText: {
+        flex: 4,
+        padding: 2,
+        color: 'rgba(255,255,255, 0.87)',
         fontFamily: 'HindSiliguri-Bold',
     }
 })

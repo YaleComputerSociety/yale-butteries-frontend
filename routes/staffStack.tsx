@@ -55,17 +55,17 @@ const StaffStack: React.FC = () => {
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{
-          tabBarIcon: ({ color }) => <AntDesignBarIcon name="setting" color={color} />,
-        }}
-      />
-      <Tab.Screen
         name="Analytics"
         component={AnalyticsScreen}
         options={{
           tabBarIcon: ({ color }) => <AntDesignBarIcon name="areachart" color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          tabBarIcon: ({ color }) => <AntDesignBarIcon name="setting" color={color} />,
         }}
       />
     </Tab.Navigator>

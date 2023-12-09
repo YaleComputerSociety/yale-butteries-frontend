@@ -72,7 +72,6 @@ const AnalyticsCard: FC<Props> = ({ time, name, num_items, cost, items }: Props)
                     key={j}
                     hide={!isExpanded}
                     name={item.name}
-                    time={item.creationTime}
                     cost={(item.itemCost/100).toFixed(2)}
                 />
             ))}
@@ -85,10 +84,10 @@ const styles = StyleSheet.create({
 
     backgroundCard: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#1f1f1f',
         marginTop: 10,
         borderRadius: 8,
-        padding: 10,
+        padding: 5,
         marginHorizontal: 10,
       },
 
@@ -114,20 +113,23 @@ const styles = StyleSheet.create({
 
     entry: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#383838',
         // borderWidth: 2,
         // borderColor: '#555',
         flexDirection: "row",
         justifyContent: "space-evenly",
         padding: 10,
+        marginBottom: 5
     },
 
     drop: {
         flex: 2,
+        color: 'rgba(255,255,255, 0.87)'
     },
 
     text: {
         flex: 2,
+        color: 'rgba(255,255,255, 0.87)',
         fontFamily: 'HindSiliguri-Bold',
     },
 })
