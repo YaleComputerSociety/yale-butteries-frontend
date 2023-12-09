@@ -31,20 +31,15 @@ export const staffAnalytics = StyleSheet.create({
     padding: 10,
   },
 
+  text: {
+    flex: 3,
+    fontFamily: 'HindSiliguri-Bold',
+  },
 
-  drop: {
-    flex: 2,
-  },
-  idText: {
-    flex: 2,
-  },
-  nameText: {
-    flex: 2,
-  },
-  countText: {
-    flex: 2,
-  },
-  costText: {
-    flex: 2,
-  },
+  subheader: {
+    fontFamily: 'HindSiliguri-Bold',
+  }
+
+
+
 })

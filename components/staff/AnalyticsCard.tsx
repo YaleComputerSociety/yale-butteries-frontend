@@ -25,7 +25,6 @@ const AnalyticsCard: FC<Props> = ({ time, name, num_items, cost, items }: Props)
         setIconName(newIconName);
     }
 
-
     return (
         <View>
             <View 
@@ -34,17 +33,18 @@ const AnalyticsCard: FC<Props> = ({ time, name, num_items, cost, items }: Props)
                 onResponderRelease={toggleExpand} // Handle touch release
             >
                 <Ionicon style = {styles.drop} name={iconName} size={25} color="#000" />
-                <Text style = {styles.timeText}>{time}</Text>
-                <Text style = {styles.nameText}>{name}</Text>
-                <Text style = {styles.countText}>{num_items.toString()}</Text>
-                <Text style = {styles.costText}>${cost}</Text>
+                <Text style = {styles.text}>{time}</Text>
+                <Text style = {styles.text}>{name}</Text>
+                <Text style = {styles.text}>{num_items.toString()}</Text>
+                <Text style = {styles.text}>${cost}</Text>
             </View>
 
-            {items?.map((item) => (
+            {items?.map((item, j) => (
                 <AnalyticsItemCard
-                hide={!isExpanded}
-                name={item.name}
-                cost={(item.itemCost/100).toFixed(2)}
+                    key={j}
+                    hide={!isExpanded}
+                    name={item.name}
+                    cost={(item.itemCost/100).toFixed(2)}
                 />
             ))}
         </View>
@@ -86,17 +86,10 @@ const styles = StyleSheet.create({
     drop: {
         flex: 2,
     },
-    timeText: {
+
+    text: {
         flex: 2,
-    },
-    nameText: {
-        flex: 2,
-    },
-    countText: {
-        flex: 2,
-    },
-    costText: {
-        flex: 2,
+        fontFamily: 'HindSiliguri-Bold',
     },
 })
 

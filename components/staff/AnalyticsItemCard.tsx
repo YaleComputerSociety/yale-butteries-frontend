@@ -14,15 +14,15 @@ const AnalyticsItemCard: FC<Props> = ({ name, cost, hide }: Props) => {
     if (hide) {
         return null;
     }
-    
+
     return (
         <View>
             <View style = {styles.entry}>
-                <Text style = {styles.drop}></Text>
-                <Text style = {styles.idText}>-</Text>
-                <Text style = {styles.nameText}>{name}</Text>
-                <Text style = {styles.countText}>1</Text>
-                <Text style = {styles.costText}>${cost}</Text>
+                <Text style = {styles.text}></Text>
+                <Text style = {styles.text}>-</Text>
+                <Text style = {styles.text}>{name}</Text>
+                <Text style = {styles.text}>1</Text>
+                <Text style = {styles.text}>${cost}</Text>
             </View>
         </View>
         
@@ -60,21 +60,10 @@ const styles = StyleSheet.create({
         padding: 10,
     },
 
-    drop: {
+    text: {
         flex: 2,
-    },
-    idText: {
-        flex: 2,
-    },
-    nameText: {
-        flex: 2,
-    },
-    countText: {
-        flex: 2,
-    },
-    costText: {
-        flex: 2,
-    },
+        fontFamily: 'HindSiliguri-Bold',
+    }
 })
 
 export default AnalyticsItemCard

@@ -28,36 +28,65 @@ const AnalyticsScreen: FC = () => {
   const [date, updateDate] = useState(today)
 
   const { users } = useAppSelector((state) => state.users)
-
   const { transactionHistory, isLoading: isLoading } = useAppSelector((state) => state.transactionHistory)
+
   const [filtered, setFiltered] = useState(transactionHistory.filter(transactionsOnDay))
 
+  
   useEffect(() => {
-    console.log("TRYING TO GET THE USERS");
+
     dispatch(asyncFetchUsers()).then((success: boolean) => {
       if (!success) {
+        console.log("Users fail");
         setConnection(false)
       }
+      else {
+        console.log("Users success");
+      }
     })
-  }, [isFocused])
+    
+    console.log("Users: ", users);
 
-  useEffect(() => {
-    console.log("TRYING TO GET THE TRANSACTIONS - THIS IS NOT GOOD CODE, HARDCODED FOR TRUMBULL");
+    
     dispatch(asyncFetchAllTransactionHistories("Trumbull")).then((success: boolean) => {
       if (!success) {
         setConnection(false)
       }
     })
-  }, [isFocused])
+    console.log("Transactions: ", transactionHistory);
+
+    setFiltered(transactionHistory.filter(transactionsOnDay));
+    
+  }, [])
 
   useEffect(() => {
-    console.log("TRYING TO GET THE TRANSACTIONS - THIS IS NOT GOOD CODE, HARDCODED FOR TRUMBULL");
+
     dispatch(asyncFetchAllTransactionHistories("Trumbull")).then((success: boolean) => {
       if (!success) {
         setConnection(false)
       }
     })
+    
+    setFiltered(transactionHistory.filter(transactionsOnDay)) //update orders for that past day
   }, [date])
+
+  useEffect(() => {
+    if(!isLoading) {
+      console.log("Getting menu")
+      dispatch(asyncFetchAllTransactionHistories("Trumbull")).then((success: boolean) => {
+        if (!success) {
+          console.log("Transactions fail");
+          setConnection(false)
+        }
+        else {
+          console.log("Pass");
+        }
+      })
+      console.log("Transactions: ", transactionHistory);
+    }
+  }, [isFocused])
+
+
 
   const moveForward = () => {
     if(date.getFullYear() < today.getFullYear() || date.getMonth() < today.getMonth() || date.getDate() < today.getDate()) {
@@ -98,10 +127,10 @@ const AnalyticsScreen: FC = () => {
     let selectedDate = transactionHistory.creationTime.split('-')
     selectedDate[2] = selectedDate[2].slice(0, 2) //get day (first two numbers)
 
-    console.log("\nSelected date: ", {selectedDate});
+    // console.log("\nSelected date: ", {selectedDate});
 
     let i = transactionHistory.id;
-    console.log("Checking ", {i});
+    // console.log("Checking ", {i});
 
     let d = date.getDate().toString();
     let a = parseInt(selectedDate[2]);
@@ -109,7 +138,7 @@ const AnalyticsScreen: FC = () => {
 
     if (!(year == selectedDate[0] && (parseInt(date.getMonth().toString()) + 1).toString() == selectedDate[1] && date.getDate().toString() == selectedDate[2])) {
       
-      console.log("order day:", b, "page day: ", d);
+      // console.log("order day:", b, "page day: ", d);
     }
 
     return year == selectedDate[0] && (parseInt(date.getMonth().toString()) + 1).toString() == selectedDate[1] && date.getDate().toString() == b
@@ -138,17 +167,6 @@ const AnalyticsScreen: FC = () => {
     return `${hours}:${minutes}`;
   }
 
-  useEffect(() => {
-    if (!isLoading) {
-      setFiltered(transactionHistory.filter(transactionsOnDay))
-    }
-  }, [])
-
-  useEffect(() => {
-    setFiltered(transactionHistory.filter(transactionsOnDay)) //update orders for that past day
-    console.log("filtered: ", filtered)
-  }, [date])
-
   return (
     <ScrollView>
       <View style={styles.dateContainer}>
@@ -169,20 +187,21 @@ const AnalyticsScreen: FC = () => {
       </View>
 
       <View style={staffAnalytics.header}>
-          <Text>Total Revenue: ${getTotalCost(filtered).toFixed(2)}</Text>
-          <Text>Total Orders: {filtered.length}</Text>
+          <Text style = {staffAnalytics.subheader}>Total Revenue: ${getTotalCost(filtered).toFixed(2)}</Text>
+          <Text style = {staffAnalytics.subheader}>Total Orders: {filtered.length}</Text>
       </View>
 
       <View style={staffAnalytics.title}>
-          <Text style = {staffAnalytics.drop}></Text>
-          <Text style = {staffAnalytics.idText}>Time</Text>
-          <Text style = {staffAnalytics.nameText}>Name</Text>
-          <Text style = {staffAnalytics.countText}>Items</Text>
-          <Text style = {staffAnalytics.costText}>Cost</Text>
+          <Text style = {staffAnalytics.text}></Text>
+          <Text style = {staffAnalytics.text}>Time</Text>
+          <Text style = {staffAnalytics.text}>Name</Text>
+          <Text style = {staffAnalytics.text}>Items</Text>
+          <Text style = {staffAnalytics.text}>Cost</Text>
       </View>
 
-      {filtered?.map((transaction) => (
+      {filtered?.map((transaction, i) => (
         <AnalyticsCard
+          key={i}
           time={reformatTime(transaction.creationTime)}
           name={getUserFromId(transaction.userId)}
           num_items={transaction.transactionItems.length}
