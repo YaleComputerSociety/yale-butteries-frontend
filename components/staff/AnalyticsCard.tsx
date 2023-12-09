@@ -17,6 +17,30 @@ interface Props {
     items: TransactionItem[]
 }
 
+function filterItems(history: TransactionItem[]) {
+    // Create an object to store counts of each name
+    const item_counts = {};
+    const item_costs = {}
+    
+    // Count occurrences of each name
+    history.forEach(entry => {
+      if (item_counts[entry.name]) {
+        item_counts[entry.name]++;
+      } else {
+        item_counts[entry.name] = 1;
+        item_costs[entry.name] = entry.itemCost;
+      }
+    });
+    
+    // Create a new list with unique names and their counts
+    const uniqueList = Object.keys(item_counts).map(name => ({
+      name: name,
+      count: item_counts[name]
+    }));
+    
+    return uniqueList;
+  }
+
 const AnalyticsCard: FC<Props> = ({ time, name, num_items, cost, items }: Props) => {
 
     const [isExpanded, setIsExpanded] = useState(false);
@@ -48,6 +72,7 @@ const AnalyticsCard: FC<Props> = ({ time, name, num_items, cost, items }: Props)
                     key={j}
                     hide={!isExpanded}
                     name={item.name}
+                    time={item.creationTime}
                     cost={(item.itemCost/100).toFixed(2)}
                 />
             ))}
@@ -57,17 +82,6 @@ const AnalyticsCard: FC<Props> = ({ time, name, num_items, cost, items }: Props)
 }
 
 const styles = StyleSheet.create({
-
-    /**
-    backgroundCard: {
-        backgroundColor: '#1f1f1f',
-        padding: 5,
-        marginHorizontal: LAYOUTS.getWidth(10),
-        marginBottom: LAYOUTS.getWidth(10),
-        borderRadius: 8, 
-        flex: 1,
-    },
-    */
 
     backgroundCard: {
         flex: 1,

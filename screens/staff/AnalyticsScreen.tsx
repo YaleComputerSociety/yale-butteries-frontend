@@ -64,9 +64,13 @@ const AnalyticsScreen: FC = () => {
     dispatch(asyncFetchAllTransactionHistories("Trumbull")).then((success: boolean) => {
       if (!success) {
         setConnection(false)
+        console.log("Transactions fail");
+      }
+      else {
+        console.log("Transactions Success: ", transactionHistory)
       }
     })
-    
+
     setFiltered(transactionHistory.filter(transactionsOnDay)) //update orders for that past day
   }, [date])
 

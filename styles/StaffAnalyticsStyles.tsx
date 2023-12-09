@@ -4,8 +4,6 @@ export const staffAnalytics = StyleSheet.create({
   title: {
     flex: 1,
     backgroundColor: 'white',
-    // borderWidth: 2,
-    // borderColor: '#555',
     flexDirection: "row",
     justifyContent: "space-evenly",
     padding: 10,
@@ -17,8 +15,6 @@ export const staffAnalytics = StyleSheet.create({
   header: {
     flex: 1,
     backgroundColor: 'white',
-    // borderWidth: 2,
-    // borderColor: '#555',
     flexDirection: "row",
     justifyContent: "space-evenly",
     padding: 10,

@@ -7,9 +7,10 @@ interface Props {
     name: string
     cost: string
     hide: boolean
+    time: string
 }
 
-const AnalyticsItemCard: FC<Props> = ({ name, cost, hide }: Props) => {
+const AnalyticsItemCard: FC<Props> = ({ name, cost, hide, time }: Props) => {
 
     if (hide) {
         return null;
@@ -19,7 +20,7 @@ const AnalyticsItemCard: FC<Props> = ({ name, cost, hide }: Props) => {
         <View>
             <View style = {styles.entry}>
                 <Text style = {styles.text}></Text>
-                <Text style = {styles.text}>-</Text>
+                <Text style = {styles.text}>{time}</Text>
                 <Text style = {styles.text}>{name}</Text>
                 <Text style = {styles.text}>1</Text>
                 <Text style = {styles.text}>${cost}</Text>
