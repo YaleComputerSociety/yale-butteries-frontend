@@ -5,6 +5,10 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import { TransactionItem } from '../../store/slices/TransactionItems'
 import AnalyticsItemCard from './AnalyticsItemCard'
 
+import { COLORS } from '../../constants/Colors'
+import { TEXTS } from '../../constants/Texts'
+import { LAYOUTS } from '../../constants/Layouts'
+
 interface Props {
     time: string
     name: string
@@ -26,7 +30,7 @@ const AnalyticsCard: FC<Props> = ({ time, name, num_items, cost, items }: Props)
     }
 
     return (
-        <View>
+        <View style = {styles.backgroundCard}>
             <View 
                 style = {styles.entry}
                 onStartShouldSetResponder={() => true} // Set to capture touches
@@ -53,6 +57,27 @@ const AnalyticsCard: FC<Props> = ({ time, name, num_items, cost, items }: Props)
 }
 
 const styles = StyleSheet.create({
+
+    /**
+    backgroundCard: {
+        backgroundColor: '#1f1f1f',
+        padding: 5,
+        marginHorizontal: LAYOUTS.getWidth(10),
+        marginBottom: LAYOUTS.getWidth(10),
+        borderRadius: 8, 
+        flex: 1,
+    },
+    */
+
+    backgroundCard: {
+        flex: 1,
+        backgroundColor: '#fff',
+        marginTop: 10,
+        borderRadius: 8,
+        padding: 10,
+        marginHorizontal: 10,
+      },
+
     title: {
         flex: 1,
         backgroundColor: 'white',
@@ -76,8 +101,8 @@ const styles = StyleSheet.create({
     entry: {
         flex: 1,
         backgroundColor: 'white',
-        borderWidth: 2,
-        borderColor: '#555',
+        // borderWidth: 2,
+        // borderColor: '#555',
         flexDirection: "row",
         justifyContent: "space-evenly",
         padding: 10,

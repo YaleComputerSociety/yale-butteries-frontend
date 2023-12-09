@@ -53,11 +53,13 @@ const styles = StyleSheet.create({
     entry: {
         flex: 1,
         backgroundColor: '#F1F1F1',
-        borderWidth: 2,
-        borderColor: '#555',
+        // borderWidth: 2,
+        // borderColor: '#555',
         flexDirection: "row",
         justifyContent: "space-evenly",
         padding: 10,
+        borderRadius: 5,
+        marginBottom: 5,
     },
 
     text: {
