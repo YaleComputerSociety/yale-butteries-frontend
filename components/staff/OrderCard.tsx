@@ -9,7 +9,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 import OrderCardBackground from './OrderCardBackground'
 
 import { useAppDispatch } from '../../store/ReduxStore'
-import { asyncUpdateTransactionItem, TransactionItem, updateTransactionItem } from '../../store/slices/TransactionItems'
+import { asyncUpdateOrderItem, TransactionItem, updateOrderItem } from '../../store/slices/OrderItem'
 import { cleanTime } from '../../Functions'
  
 interface Props {
@@ -72,7 +72,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
           onPress: () => {
             setOrderStatus(tempStatus)
             dispatch(
-              asyncUpdateTransactionItem({
+              asyncUpdateOrderItem({
                 ...item,
                 orderStatus: tempStatus,
               })
@@ -88,7 +88,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
             setTagActive(1)
             setStartingIndex(1)
             dispatch(
-              updateTransactionItem({
+              updateOrderItem({
                 ...item,
                 orderStatus: 'QUEUED',
               })
@@ -103,7 +103,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
           onPress: () => {
             setOrderStatus(tempStatus)
             dispatch(
-              asyncUpdateTransactionItem({
+              asyncUpdateOrderItem({
                 ...item,
                 orderStatus: tempStatus,
               })
@@ -119,7 +119,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
             setTagActive(2)
             setStartingIndex(2)
             dispatch(
-              updateTransactionItem({
+              updateOrderItem({
                 ...item,
                 orderStatus: 'ONGOING',
               })
@@ -129,7 +129,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
       ])
     } else {
       dispatch(
-        asyncUpdateTransactionItem({
+        asyncUpdateOrderItem({
           ...item,
           orderStatus: tempStatus,
         })

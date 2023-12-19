@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import { COLORS } from '../../constants/Colors'
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
-import { TransactionItem } from '../../store/slices/TransactionItems'
+import { TransactionItem } from '../../store/slices/OrderItem'
 
 interface Props {
   status: number

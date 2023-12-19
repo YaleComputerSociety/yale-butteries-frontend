@@ -16,7 +16,6 @@ export interface User {
   
   export interface NewUser {
     netId: string
-    name: string
     collegeId: number
     role: UserRole
 }
@@ -33,7 +32,7 @@ export interface OrderItem {
 export interface Order {
     id: number
     collegeId: number
-    orderStatus: OrderStatus
+    status: OrderStatus
     price: number
     userId: string
     paymentIntentId: string

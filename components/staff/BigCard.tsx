@@ -9,7 +9,7 @@ import OrderCard from './OrderCard'
 import { card } from '../../styles/ButteriesStyles'
 
 import { useAppDispatch } from '../../store/ReduxStore'
-import { asyncUpdateTransactionItem, TransactionItem, updateTransactionItem } from '../../store/slices/TransactionItems'
+import { asyncUpdateOrderItem, TransactionItem, updateOrderItem } from '../../store/slices/OrderItem'
 import { cleanTime } from '../../Functions'
 
 interface Props {
@@ -33,7 +33,7 @@ const BigCard: React.FC<Props> = ({transactionItems, interactable, setConnection
         })
         newItems.forEach((item) => {
             dispatch(
-                asyncUpdateTransactionItem({
+                asyncUpdateOrderItem({
                   ...item,
                   orderStatus: 'ONGOING',
                 })
@@ -47,7 +47,7 @@ const BigCard: React.FC<Props> = ({transactionItems, interactable, setConnection
     const declineClick = () => {
         newItems.forEach((item) => {
             dispatch(
-                asyncUpdateTransactionItem({
+                asyncUpdateOrderItem({
                   ...item,
                   orderStatus: 'CANCELLED',
                 })

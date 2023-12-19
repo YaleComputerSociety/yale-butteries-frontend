@@ -2,11 +2,11 @@ import React, { FC, useEffect, useState } from 'react'
 import { View, ScrollView, Text, StyleSheet, Pressable, Alert } from 'react-native'
 import StatusItem from '../../components/customer/StatusCard'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
-import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
+import { setOrderState } from '../../store/slices/Order'
 import ProgressBar from 'react-native-progress/Bar'
 import { baseUrl } from '../../utils/utils'
 import * as Haptics from 'expo-haptics'
-import { TransactionItem } from '../../store/slices/TransactionItems'
+import { TransactionItem } from '../../store/slices/OrderItem'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { useIsFocused } from '@react-navigation/native'
 
@@ -16,7 +16,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   const [percentage, setPercentage] = useState(0)
   const [connection, setConnection] = useState(true)
-  const { currentTransactionHistory } = useAppSelector((state) => state.transactionHistory)
+  const { currentOrder: currentTransactionHistory } = useAppSelector((state) => state.transactionHistory)
   const { menuItems } = useAppSelector((state) => state.menuItems)
 
   const { currentUser } = useAppSelector((state) => state.currentUser)
@@ -65,7 +65,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
       })
       const response = await currentTransaction.json()
       if (response.status == 400) throw response
-      dispatch(setTransactionHistoryState(response))
+      dispatch(setOrderState(response))
       setConnection(true)
       return getPercentageCompleted(response)
     } catch (e) {

@@ -6,8 +6,8 @@ import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
 
 import BigCard from '../../components/staff/BigCard'
-import { asyncFetchRecentTransactionHistories } from '../../store/slices/TransactionHistory'
-import { TransactionItem } from '../../store/slices/TransactionItems'
+import { asyncFetchRecentOrdersFromCollege } from '../../store/slices/Order'
+import { TransactionItem } from '../../store/slices/OrderItem'
 // import { useIsFocused } from '@react-navigation/native'
 import EvilModal from '../../components/EvilModal'
 
@@ -15,7 +15,7 @@ const OrdersScreen2: React.FC = () => {
   const dispatch = useAppDispatch()
   // const isFocused = useIsFocused()
 
-  const { transactionItems, isLoading: isLoadingTransactionItems } = useAppSelector((state) => state.transactionItems)
+  const { orderItems: transactionItems, isLoading: isLoadingTransactionItems } = useAppSelector((state) => state.transactionItems)
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
   const [waitingOrders, setWaitingOrders] = useState<TransactionItem[][]>([])
@@ -29,7 +29,7 @@ const OrdersScreen2: React.FC = () => {
     const fetchItems = async () => {
       if (currentUser.collegeId) {
         // should fetch only recent to save time, but for a while this will be fine
-        await dispatch(asyncFetchRecentTransactionHistories(currentUser.collegeId)).then((success: boolean) => {
+        await dispatch(asyncFetchRecentOrdersFromCollege(currentUser.collegeId)).then((success: boolean) => {
           setConnection(success)
         })
 
@@ -41,7 +41,7 @@ const OrdersScreen2: React.FC = () => {
         // all items finished or cancelled
         const past: TransactionItem[][] = []
         // for each transaction history entry
-        store.getState().transactionHistory.transactionHistory.forEach((entry) => {
+        store.getState().transactionHistory.orders.forEach((entry) => {
             let pendingCount = 0
             let doneCount = 0
             let readyCount = 0

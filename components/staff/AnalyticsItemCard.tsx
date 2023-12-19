@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import { TransactionItem } from '../../store/slices/TransactionItems'
+import { TransactionItem } from '../../store/slices/OrderItem'
 
 interface Props {
     name: string

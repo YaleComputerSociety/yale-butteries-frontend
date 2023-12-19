@@ -54,9 +54,9 @@ export const asyncCreateUser = (user: NewUser, token: string) => {
 
       dispatch(setCurrentUserState(data))
 
-      if (user.role == 'dev') {
-        return true
-      }
+      // if (user.role == 'dev') {
+      //   return true
+      // }
 
       const localStorageInfo: [string, string][] = [
         ['id', data.id.toString()],

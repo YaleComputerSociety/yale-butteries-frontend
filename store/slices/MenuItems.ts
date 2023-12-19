@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppDispatch } from '../../store/ReduxStore'
 import { baseUrl } from '../../utils/utils'
-import type { MenuItem } from '../../utils/types'
+import type { MenuItem, NewMenuItem } from '../../utils/types'
 
 
 export interface MenuItemsState {
@@ -50,22 +50,9 @@ export const asyncFetchMenuItems = () => {
           'Content-Type': 'application/json',
         },
       })
-      const data = await menuItems.json()
+      const data: MenuItem[] = await menuItems.json()
       const newData: MenuItem[] = []
-      data.forEach((item) => {
-        const newItem: MenuItem = {
-          id: item.id,
-          name: item.item,
-          collegeId: item.college,
-          price: parseInt(item.price),
-          isActive: item.isActive,
-          description: item.description,
-          limitedTime: false,
-          foodType: item.foodType,
-        }
-        newData.push(newItem)
-      })
-      dispatch(setMenuItemsState(newData))
+      dispatch(setMenuItemsState(data))
       return true
     } catch (e) {
       console.log(e)
@@ -100,7 +87,7 @@ export const asyncUpdateMenuItem = (menuItem: MenuItem) => {
   }
 }
 
-export const asyncAddMenuItem = (menuItem: MenuItem) => {
+export const asyncAddMenuItem = (menuItem: NewMenuItem) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(setIsLoading(true))
     try {
@@ -111,8 +98,8 @@ export const asyncAddMenuItem = (menuItem: MenuItem) => {
         },
         body: JSON.stringify(menuItem),
       })
-      const data = await menuItems.json()
-      dispatch(addMenuItem(menuItem))
+      const data: MenuItem = await menuItems.json()
+      dispatch(addMenuItem(data))
       return true
     } catch (e) {
       console.log(e)

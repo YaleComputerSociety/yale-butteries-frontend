@@ -7,7 +7,7 @@ import CheckoutItem from '../../components/customer/CheckoutItem'
 import * as Device from 'expo-device'
 import { priceToText, returnCollegeName } from '../../Functions'
 import { StripeProvider, useStripe, isPlatformPaySupported, PlatformPay } from '@stripe/stripe-react-native'
-import { setTransactionHistoryState } from '../../store/slices/TransactionHistory'
+import { setOrderState } from '../../store/slices/Order'
 import { removeOrderItem, OrderItem } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { baseUrl } from '../../utils/utils'
@@ -163,7 +163,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       const uploadTransactionResponse = await uploadTransaction.json()
       if (uploadTransaction.status == 400) throw uploadTransactionResponse
       // console.log('transaction created: ', uploadTransactionResponse.id)
-      dispatch(setTransactionHistoryState(uploadTransactionResponse))
+      dispatch(setOrderState(uploadTransactionResponse))
 
       Alert.alert('Order sent, thank you!')
       updateDisabled(false)

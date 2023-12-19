@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useState } from 'react'
 import { Text, View, ScrollView, StyleSheet, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
-import { TransactionHistoryEntry, asyncFetchAllTransactionHistories } from '../../store/slices/TransactionHistory'
+import { TransactionHistoryEntry, asyncFetchAllOrdersFromCollege } from '../../store/slices/Order'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { totalMemory } from 'expo-device'
 import { staffAnalytics } from '../../styles/StaffAnalyticsStyles'
@@ -29,7 +29,7 @@ const AnalyticsScreen: FC = () => {
   const [date, updateDate] = useState(today)
 
   const { users } = useAppSelector((state) => state.users)
-  const { transactionHistory, isLoading: isLoading } = useAppSelector((state) => state.transactionHistory)
+  const { orders: transactionHistory, isLoading: isLoading } = useAppSelector((state) => state.transactionHistory)
 
   const [filtered, setFiltered] = useState(transactionHistory.filter(transactionsOnDay))
 
@@ -49,7 +49,7 @@ const AnalyticsScreen: FC = () => {
     console.log("Users: ", users);
 
     
-    dispatch(asyncFetchAllTransactionHistories("Trumbull")).then((success: boolean) => {
+    dispatch(asyncFetchAllOrdersFromCollege("Trumbull")).then((success: boolean) => {
       if (!success) {
         setConnection(false)
       }
@@ -62,7 +62,7 @@ const AnalyticsScreen: FC = () => {
 
   useEffect(() => {
 
-    dispatch(asyncFetchAllTransactionHistories("Trumbull")).then((success: boolean) => {
+    dispatch(asyncFetchAllOrdersFromCollege("Trumbull")).then((success: boolean) => {
       if (!success) {
         setConnection(false)
         console.log("Transactions fail");
@@ -78,7 +78,7 @@ const AnalyticsScreen: FC = () => {
   useEffect(() => {
     if(!isLoading) {
       console.log("Getting menu")
-      dispatch(asyncFetchAllTransactionHistories("Trumbull")).then((success: boolean) => {
+      dispatch(asyncFetchAllOrdersFromCollege("Trumbull")).then((success: boolean) => {
         if (!success) {
           console.log("Transactions fail");
           setConnection(false)

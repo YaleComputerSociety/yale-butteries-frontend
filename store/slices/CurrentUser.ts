@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseUrl } from '../../utils/utils'
 import { AppDispatch } from '../../store/ReduxStore'
 import type { User } from '../../utils/types'
-import { setTransactionHistoryState } from './TransactionHistory'
+import { setOrderState } from './Order'
 import { asyncFetchMenuItems } from './MenuItems'
 
 export interface CurrentUserState {
@@ -54,7 +54,7 @@ export const asyncFetchUser = (id: string) => {
       }
 
       dispatch(setCurrentUserState(data))
-      dispatch(setTransactionHistoryState(data.currentOrder))
+      dispatch(setOrderState(data.currentOrder))
       dispatch(asyncFetchMenuItems())
       return 'good'
     } catch (e) {
