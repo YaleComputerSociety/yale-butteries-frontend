@@ -1,6 +1,6 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
-import { StyleSheet, View, ActivityIndicator, Text, Pressable, RefreshControl, SectionList } from 'react-native'
+import { StyleSheet, View, Alert, ActivityIndicator, Text, Pressable, RefreshControl, SectionList } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems, MenuItem } from '../../store/slices/MenuItems'
 import { addOrderItem, OrderItem, removeOrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
@@ -8,7 +8,7 @@ import { MenuItemCard } from '../../components/customer/MenuItemCard'
 import { home } from '../../styles/ButteriesStyles'
 import { menu } from '../../styles/MenuStyles'
 import { loading } from '../../styles/GlobalStyles'
-import { getPriceFromOrderItems, returnCollegeName } from '../../Functions'
+import { getCollegeAcceptingOrders, getPriceFromOrderItems, returnCollegeName } from '../../Functions'
 
 import * as Haptics from 'expo-haptics'
 
@@ -26,6 +26,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const isFocused = useIsFocused()
   const { menuItems } = useAppSelector((state) => state.menuItems)
   const { orderItems, college: collegeOrderCart } = useAppSelector((state) => state.orderCart)
+  const { colleges, isLoading: isLoading } = useAppSelector((state) => state.colleges)
 
   const [data, setData] = useState([])
 
@@ -36,6 +37,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const [connection, setConnection] = useState(true)
 
   useEffect(() => {
+    console.log("Getting menu")
     dispatch(asyncFetchMenuItems()).then((success: boolean) => {
       if (!success) {
         setConnection(false)
@@ -173,8 +175,18 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
                 styles.cartButton,
               ]}
               onPress={() => {
-                navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+                if (!getCollegeAcceptingOrders(colleges, collegeOrderCart)) {
+                  Alert.alert(
+                    "Try again later",
+                    "This buttery is currently busy, try again later.",
+                    [
+                      { text: "OK"}
+                    ]
+                  );
+                } else {
+                  navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+                }
               }}
             >
               <Text style={[styles.cartText, { marginRight: 25 }]}>Go to Cart</Text>

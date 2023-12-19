@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlignVertical: 'center',
     textAlign: 'center',
+    color: 'rgba(255,255,255, 0.87)'
   },
   timeText: {
     fontFamily: 'HindSiliguri',
@@ -87,11 +88,13 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     width: '25%',
     textAlign: 'center',
+    color: 'rgba(255,255,255, 0.87)',
+    backgroundColor: '#121212'
   },
   AM_PM: {
     borderRadius: 8,
     marginLeft: 10,
-    backgroundColor: '#ccc',
+    backgroundColor: '#121212',
     width: '25%',
     elevation: 3,
   },
