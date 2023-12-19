@@ -27,9 +27,9 @@ const OrdersScreen2: React.FC = () => {
   // Every x seconds, fetch TIs by college and time created, then sort by time
   useEffect(() => {
     const fetchItems = async () => {
-      if (currentUser.college) {
+      if (currentUser.collegeId) {
         // should fetch only recent to save time, but for a while this will be fine
-        await dispatch(asyncFetchRecentTransactionHistories(currentUser.college)).then((success: boolean) => {
+        await dispatch(asyncFetchRecentTransactionHistories(currentUser.collegeId)).then((success: boolean) => {
           setConnection(success)
         })
 
@@ -47,7 +47,7 @@ const OrdersScreen2: React.FC = () => {
             let readyCount = 0
             const itemList: TransactionItem[] = []
             // for each transactionItem
-            entry.transactionItems.forEach((item) => {
+            entry.orderItems.forEach((item) => {
                 if (item.orderStatus == 'QUEUED') {
                     pendingCount++
                 }
@@ -57,7 +57,7 @@ const OrdersScreen2: React.FC = () => {
                       readyCount++
                     }
                 }
-                itemList.push({ ...item, creationTime: entry.creationTime })
+                itemList.push({ ...item, creationTime: entry.createdAt })
             })
             //console.log(ti.length)
             // console.log(done)

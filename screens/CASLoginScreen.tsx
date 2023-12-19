@@ -67,7 +67,7 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   useEffect(() => {
     if (isFocused && currentUser) {
-      if (currentUser.permissions === 'STAFF') {
+      if (currentUser.role === 'STAFF') {
         navigation.navigate('NavigationScreen')
       } else {
         navigation.navigate('ButteriesScreen')

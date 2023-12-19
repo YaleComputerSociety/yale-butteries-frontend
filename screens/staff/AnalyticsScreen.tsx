@@ -207,11 +207,11 @@ const AnalyticsScreen: FC = () => {
       {filtered?.map((transaction, i) => (
         <AnalyticsCard
           key={i}
-          time={reformatTime(transaction.creationTime)}
+          time={reformatTime(transaction.createdAt)}
           name={getUserFromId(transaction.userId)}
-          num_items={transaction.transactionItems.length}
+          num_items={transaction.orderItems.length}
           cost={orderTotalCost(transaction).toFixed(2)}
-          items={transaction.transactionItems}
+          items={transaction.orderItems}
         />
       ))}
     </ScrollView>

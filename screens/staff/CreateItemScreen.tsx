@@ -75,7 +75,7 @@ const CreateItemScreen: React.FC = () => {
     
     const buffer: MenuItem = {
       item: item,
-      college: currentUser.college,
+      college: currentUser.collegeId,
       price: price,
       isActive: true,
       foodType: selected,

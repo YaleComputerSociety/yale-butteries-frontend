@@ -38,8 +38,8 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
     if (menuItems != null) {
       setLocalMenu(
         menuItems
-          .filter((element) => element.college == currentUser.college)
-          .sort((a, b) => a.item.localeCompare(b.item))
+          .filter((element) => element.collegeId == currentUser.collegeId)
+          .sort((a, b) => a.name.localeCompare(b.name))
       )
     }
   }, [menuItems])

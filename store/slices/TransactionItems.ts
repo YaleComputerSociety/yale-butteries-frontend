@@ -1,21 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseUrl } from '../../utils/utils'
 import { AppDispatch } from '../../store/ReduxStore'
+import type {OrderItem} from '../../utils/types'
 
 // import { getJSON } from 'utils/fetch'
 
-export interface TransactionItem {
-  id: number
-  itemCost: number
-  orderStatus: 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED'
-  menuItemId: number
-  name: string
-  user: string
-  creationTime: string
-}
-
 export interface TransactionItemsState {
-  transactionItems: TransactionItem[]
+  transactionItems: OrderItem[]
   isLoading: boolean
 }
 
@@ -28,13 +19,13 @@ export const transactionItemsSlice = createSlice({
   name: 'TransactionItems',
   initialState: transactionItemsInitialState,
   reducers: {
-    setTransactionItemsState: (state, action: PayloadAction<TransactionItem[]>) => {
+    setTransactionItemsState: (state, action: PayloadAction<OrderItem[]>) => {
       state.transactionItems = action.payload
     },
-    addTransactionItem: (state, action: PayloadAction<TransactionItem>) => {
+    addTransactionItem: (state, action: PayloadAction<OrderItem>) => {
       state.transactionItems = [...state.transactionItems, action.payload]
     },
-    updateTransactionItem: (state, action: PayloadAction<TransactionItem>) => {
+    updateTransactionItem: (state, action: PayloadAction<OrderItem>) => {
       const updateIndex = state.transactionItems.findIndex((item) => item.id == action.payload.id)
       state.transactionItems[updateIndex] = action.payload
     },
@@ -47,7 +38,7 @@ export const transactionItemsSlice = createSlice({
 export const { setTransactionItemsState, addTransactionItem, updateTransactionItem, setIsLoading } =
   transactionItemsSlice.actions
 
-export const asyncUpdateTransactionItem = (transactionItem: TransactionItem) => {
+export const asyncUpdateTransactionItem = (transactionItem: OrderItem) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(updateTransactionItem(transactionItem))
     try {

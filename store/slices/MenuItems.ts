@@ -1,17 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppDispatch } from '../../store/ReduxStore'
 import { baseUrl } from '../../utils/utils'
+import type { MenuItem } from '../../utils/types'
 
-export interface MenuItem {
-  id?: number
-  item: string
-  college: string
-  price: number
-  description?: string
-  limitedTime?: boolean
-  isActive: boolean
-  foodType: 'FOOD' | 'DRINK' | 'DESSERT'
-}
 
 export interface MenuItemsState {
   menuItems: MenuItem[] | null
@@ -38,7 +29,7 @@ export const menuItemsSlice = createSlice({
       state.menuItems[updateIndex] = action.payload
     },
     deleteMenuItem: (state, action: PayloadAction<MenuItem>) => {
-      const updateIndex = state.menuItems.findIndex((item) => item.item == action.payload.item)
+      const updateIndex = state.menuItems.findIndex((item) => item.name == action.payload.name)
       state.menuItems.splice(updateIndex, 1)
     },
     addMenuItem: (state, action: PayloadAction<MenuItem>) => {
@@ -64,8 +55,8 @@ export const asyncFetchMenuItems = () => {
       data.forEach((item) => {
         const newItem: MenuItem = {
           id: item.id,
-          item: item.item,
-          college: item.college,
+          name: item.item,
+          collegeId: item.college,
           price: parseInt(item.price),
           isActive: item.isActive,
           description: item.description,

@@ -56,9 +56,9 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       return null
     }
 
-    console.log(currentUser.permissions)
+    console.log(currentUser.role)
 
-    if (currentUser.permissions === 'dev') {
+    if (currentUser.role === 'dev') {
       Alert.alert('You are currently in developer mode. You cannot place an order.')
       return
     }

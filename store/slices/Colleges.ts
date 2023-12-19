@@ -1,17 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseUrl } from '../../utils/utils'
 import { AppDispatch } from '../ReduxStore'
-
-export interface College {
-  id: number
-  name: string
-  isButteryIntegrated?: boolean
-  isAcceptingOrders?: boolean
-  daysOpen?: string[]
-  isOpen?: boolean
-  openTime?: string
-  closeTime?: string
-}
+import type { College } from '../../utils/types'
 
 export interface CollegesState {
   isLoading: boolean
@@ -60,13 +50,13 @@ export const asyncFetchColleges = () => {
       data.forEach((item) => {
         const college: College = {
           id: item.id,
-          name: item.college,
+          name: item.name,
           isButteryIntegrated: item.isButteryIntegrated,
-          isAcceptingOrders: item.isAcceptingOrders,
           daysOpen: item.daysOpen,
           openTime: item.openTime,
           closeTime: item.closeTime,
           isOpen: item.isOpen,
+          // isAcceptingOrders: item.isAcceptingOrders,
         }
         newData.push(college)
       })

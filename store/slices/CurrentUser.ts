@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseUrl } from '../../utils/utils'
 import { AppDispatch } from '../../store/ReduxStore'
-import { User } from './Users'
+import type { User } from '../../utils/types'
 import { setTransactionHistoryState } from './TransactionHistory'
 import { asyncFetchMenuItems } from './MenuItems'
-import { isObject } from 'util'
 
 export interface CurrentUserState {
   currentUser: User | null

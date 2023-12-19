@@ -168,7 +168,7 @@ const EditItemScreen: React.FC = (props: any) => {
 
     if (exitEarly) return
 
-    dispatch(asyncUpdateMenuItem({ ...props, item: item, price: price, description: description, foodType: selected })).then((success: boolean) => {
+    dispatch(asyncUpdateMenuItem({ ...props, name: item, price: price, description: description, foodType: selected })).then((success: boolean) => {
       setConnection(success)
       if (success) {
         navigation.goBack()

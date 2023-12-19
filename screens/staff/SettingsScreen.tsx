@@ -50,7 +50,7 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
 
   useEffect(() => {
     if (colleges && currentUser) {
-      setCurrentCollege(colleges.filter((college) => college.name == currentUser.college)[0])
+      setCurrentCollege(colleges.filter((college) => college.name == currentUser.collegeId)[0])
     }
 
     if (currentCollege) {

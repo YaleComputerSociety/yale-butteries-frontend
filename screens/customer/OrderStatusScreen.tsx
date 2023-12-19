@@ -87,7 +87,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   function getNameFromTransactionId(transactionItem: TransactionItem): string {
     if (menuItems) {
-      return menuItems.find((element) => element.id == transactionItem.menuItemId).item
+      return menuItems.find((element) => element.id == transactionItem.menuItemId).name
     } else {
       return 'Loading...'
     }
@@ -118,7 +118,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
       <Text style={styles.name}>{name}</Text>
       <View style={styles.outerView}>
         <ScrollView>
-          {currentTransactionHistory?.transactionItems.map((transactionItem, index) => (
+          {currentTransactionHistory?.orderItems.map((transactionItem, index) => (
             <StatusItem
               name={getNameFromTransactionId(transactionItem)}
               status={transactionItem.orderStatus}

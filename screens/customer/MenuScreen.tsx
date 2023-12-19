@@ -49,7 +49,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
     if (menuItems) {
       setData(
         menuItems.filter((menuItem) => {
-          return menuItem.college.toLowerCase() === collegeOrderCart.toLowerCase() && menuItem.isActive === true
+          return menuItem.collegeId.toLowerCase() === collegeOrderCart.toLowerCase() && menuItem.isActive === true
         })
       )
       setBegin(false)
@@ -81,7 +81,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   }
 
   const removeOrder = (newItem: MenuItem) => {
-    const item = orderItems.find((item) => item.orderItem.item == newItem.item)
+    const item = orderItems.find((item) => item.orderItem.name == newItem.item)
     //problem is they all have the same id
     if (item === undefined) {
       throw new TypeError("Couldn't find orderItem to delete")

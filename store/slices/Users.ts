@@ -3,28 +3,9 @@ import { baseUrl } from '../../utils/utils'
 import { AppDispatch } from '../../store/ReduxStore'
 import { setCurrentUserState } from '../../store/slices/CurrentUser'
 import * as LocalStorage from '../../LocalStorage'
-import { TransactionItem } from './TransactionItems'
+import type { User, NewUser } from '../../utils/types'
 
 // import { getJSON, putJSON, postJSON } from 'utils/fetch'
-
-export interface User {
-  email: string
-  netid: string
-  name: string
-  college: string
-  permissions: string
-  id: string
-  currentOrder?: TransactionItem
-}
-
-export interface NewUser {
-  email: string
-  netid: string
-  name: string
-  college: string
-  permissions: string
-  token: string
-}
 
 export interface UsersState {
   users: User[] | null
@@ -73,7 +54,7 @@ export const asyncCreateUser = (user: NewUser, token: string) => {
 
       dispatch(setCurrentUserState(data))
 
-      if (user.permissions == 'dev') {
+      if (user.role == 'dev') {
         return true
       }
 
@@ -108,10 +89,10 @@ export const asyncFetchUsers = () => {
       data.forEach((user) => {
         const newUser: User = {
           email: user.email,
-          netid: user.netid,
+          netId: user.netid,
           name: user.name,
-          permissions: user.permissions,
-          college: user.college,
+          role: user.permissions,
+          collegeId: user.college,
           id: user.id,
           currentOrder: user.currentOrder,
         }

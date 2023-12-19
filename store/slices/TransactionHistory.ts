@@ -1,23 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { TransactionItem } from './TransactionItems'
 import { AppDispatch } from '../../store/ReduxStore'
 import { baseUrl } from '../../utils/utils'
-
-export interface TransactionHistoryEntry {
-  id: number
-  college: string
-  inProgress: 'false' | 'true' | 'cancelled'
-  price: number
-  userId: string
-  paymentIntentId: string
-  transactionItems: TransactionItem[]
-  orderStatus: 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED' | 'PAID'
-  creationTime: string
-}
+import type { Order } from '../../utils/types'
 
 export interface TransactionHistoryState {
-  transactionHistory: TransactionHistoryEntry[]
-  currentTransactionHistory: TransactionHistoryEntry
+  transactionHistory: Order[]
+  currentTransactionHistory: Order
   isLoading: boolean
 }
 
@@ -31,20 +19,20 @@ export const transactionHistorySlice = createSlice({
   name: 'TransactionHistory',
   initialState: transactionHistoryInitialState,
   reducers: {
-    setTransactionHistoryState: (state, action: PayloadAction<TransactionHistoryEntry>) => {
+    setTransactionHistoryState: (state, action: PayloadAction<Order>) => {
       state.transactionHistory = [action.payload]
       state.currentTransactionHistory = action.payload
     },
-    addTransactionHistoryEntry: (state, action: PayloadAction<TransactionHistoryEntry>) => {
+    addTransactionHistoryEntry: (state, action: PayloadAction<Order>) => {
       state.transactionHistory = [...state.transactionHistory, action.payload]
       state.currentTransactionHistory = action.payload
     },
-    updateTransactionHistory: (state, action: PayloadAction<TransactionHistoryEntry>) => {
+    updateTransactionHistory: (state, action: PayloadAction<Order>) => {
       const transactionHistoryIndex = state.transactionHistory.findIndex((element) => element.id == action.payload.id)
       state.transactionHistory[transactionHistoryIndex] = action.payload
       state.currentTransactionHistory = state.transactionHistory[state.transactionHistory.length - 1]
     },
-    setTransactionHistories: (state, action: PayloadAction<TransactionHistoryEntry[]>) => {
+    setTransactionHistories: (state, action: PayloadAction<Order[]>) => {
       state.transactionHistory = action.payload
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {
@@ -72,9 +60,9 @@ export const asyncFetchRecentTransactionHistories = (college: string) => {
         },
       })
       const data = await transactions.json()
-      const newData: TransactionHistoryEntry[] = []
+      const newData: Order[] = []
       data.transactionHistories.forEach((item) => {
-        const newItem: TransactionHistoryEntry = { ...item }
+        const newItem: Order = { ...item }
         newData.push(newItem)
       })
       dispatch(setTransactionHistories(newData))
@@ -99,9 +87,9 @@ export const asyncFetchAllTransactionHistories = (college: string) => {
         },
       })
       const data = await transactions.json()
-      const newData: TransactionHistoryEntry[] = []
+      const newData: Order[] = []
       data.transactionHistories.forEach((item) => {
-        const newItem: TransactionHistoryEntry = { ...item }
+        const newItem: Order = { ...item }
         newData.push(newItem)
       })
       dispatch(setTransactionHistories(newData))
@@ -113,7 +101,7 @@ export const asyncFetchAllTransactionHistories = (college: string) => {
   }
 }
 
-export const asyncUpdateTransactionHistoryEntry = (transactionHistoryEntry: TransactionHistoryEntry) => {
+export const asyncUpdateTransactionHistoryEntry = (transactionHistoryEntry: Order) => {
   return async (dispatch: AppDispatch): Promise<void> => {
     try {
       // const updatedUser = await putJSON('/api/users', { ...user })
