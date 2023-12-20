@@ -7,14 +7,15 @@ import CheckoutItem from '../../components/customer/CheckoutItem'
 import * as Device from 'expo-device'
 import { priceToText, returnCollegeName } from '../../Functions'
 import { StripeProvider, useStripe, isPlatformPaySupported, PlatformPay } from '@stripe/stripe-react-native'
-import { setOrderState } from '../../store/slices/Order'
-import { removeOrderItem, OrderItem } from '../../store/slices/OrderCart'
+import { setOrder } from '../../store/slices/Order'
+import { removeOrderItem } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { baseUrl } from '../../utils/utils'
 import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
 import { stripePK } from '../../utils/utils'
 import { FlatList } from 'react-native-gesture-handler'
+import type { NewOrderItem, OrderItem } from '../../utils/types'
 
 const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const {
@@ -58,10 +59,10 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
     console.log(currentUser.role)
 
-    if (currentUser.role === 'dev') {
-      Alert.alert('You are currently in developer mode. You cannot place an order.')
-      return
-    }
+    // if (currentUser.role === 'dev') {
+    //   Alert.alert('You are currently in developer mode. You cannot place an order.')
+    //   return
+    // }
 
     const obj = { userId: currentUser.id, price: price, items: orderItems, college: collegeOrderCart }
     console.log('hello3')
@@ -127,43 +128,38 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       //   return
       // }
 
-      interface tempItem {
-        itemCost: number
-        orderStatus: 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED'
-        menuItemId: number
-      }
-      console.log('hello1')
-
-      const transaction_items: tempItem[] = []
+      const newOrderItems: NewOrderItem[] = []
       orderItems.forEach((item) => {
         if (!item.orderItem.id) {
           throw new TypeError("orderItem doesn't have id")
         }
-        const newItem: tempItem = {
-          itemCost: item.orderItem.price,
-          orderStatus: 'QUEUED',
+        const newItem: NewOrderItem = {
+          price: item.orderItem.price,
           menuItemId: item.orderItem.id,
         }
-        transaction_items.push(newItem)
+        newOrderItems.push(newItem)
       })
 
-      const uploadTransaction = await fetch(baseUrl + 'api/orders', {
+      // TODO put in reducers
+      // TODO change collegeId to be dynamic
+      const newOrder = await fetch(baseUrl + 'api/orders', {
         method: 'POST',
         body: JSON.stringify({
           price: price,
           userId: currentUser.id,
-          college: collegeOrderCart,
-          transactionItems: transaction_items,
+          // collegeId: collegeOrderCart,
+          collegeId: 14,
+          orderItems: newOrderItems,
         }),
         headers: {
           'Content-Type': 'application/json',
         },
       })
 
-      const uploadTransactionResponse = await uploadTransaction.json()
-      if (uploadTransaction.status == 400) throw uploadTransactionResponse
-      // console.log('transaction created: ', uploadTransactionResponse.id)
-      dispatch(setOrderState(uploadTransactionResponse))
+      const order = await newOrder.json()
+      if (newOrder.status == 400) throw order
+
+      dispatch(setOrder(order))
 
       Alert.alert('Order sent, thank you!')
       updateDisabled(false)
@@ -181,7 +177,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       const subscribeNotification = await fetch(baseUrl + 'api/notifications', {
         method: 'POST',
         body: JSON.stringify({
-          transactionId: uploadTransactionResponse.id,
+          orderId: order.id,
           pushToken: token,
         }),
         headers: {
@@ -203,7 +199,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   }
 
   const removeOrder = (newItem: OrderItem) => {
-    const item = orderItems.find((item) => item.index == newItem.index)
+    const item = orderItems.find((item) => item.index == newItem.id)
     //problem is they all have the same id
     if (item === undefined) {
       throw new TypeError("Couldn't find orderItem to delete")

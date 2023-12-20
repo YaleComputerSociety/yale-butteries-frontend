@@ -5,13 +5,13 @@ import { useAppSelector } from '../store/ReduxStore'
 // This is the screen after the splash screen, before we decide what screen to put the user on while we wait to see who the user is/connect to the backend
 const Dummy: FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser, isLoading: isLoadingCurrentUser } = useAppSelector((state) => state.currentUser)
-  const { currentOrder: currentTransactionHistory } = useAppSelector((state) => state.transactionHistory)
+  const { currentOrder } = useAppSelector((state) => state.orders)
 
   useEffect(() => {
     if (!isLoadingCurrentUser) {
       if (currentUser) {
         if (currentUser.role === 'CUSTOMER') {
-          if (currentTransactionHistory) {
+          if (currentOrder) {
             navigation.navigate('OrderStatusScreen')
           } else {
             navigation.navigate('ButteriesScreen')

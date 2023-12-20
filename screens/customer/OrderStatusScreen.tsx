@@ -2,11 +2,11 @@ import React, { FC, useEffect, useState } from 'react'
 import { View, ScrollView, Text, StyleSheet, Pressable, Alert } from 'react-native'
 import StatusItem from '../../components/customer/StatusCard'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
-import { setOrderState } from '../../store/slices/Order'
+import { setOrder } from '../../store/slices/Order'
 import ProgressBar from 'react-native-progress/Bar'
 import { baseUrl } from '../../utils/utils'
 import * as Haptics from 'expo-haptics'
-import { TransactionItem } from '../../store/slices/OrderItem'
+import { Order, OrderItem } from '../../utils/types'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { useIsFocused } from '@react-navigation/native'
 
@@ -16,18 +16,39 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   const [percentage, setPercentage] = useState(0)
   const [connection, setConnection] = useState(true)
-  const { currentOrder: currentTransactionHistory } = useAppSelector((state) => state.transactionHistory)
+  const { currentOrder } = useAppSelector((state) => state.orders)
   const { menuItems } = useAppSelector((state) => state.menuItems)
 
   const { currentUser } = useAppSelector((state) => state.currentUser)
   const [name] = useState(currentUser.name)
 
-  // every 5 seconds, fetchTransaction
+
+  // TODO: put this in a reducer
+  const fetchOrder = async () => {
+    try {
+      const order = await fetch(baseUrl + 'api/orders/' + currentOrder.id, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      const response = await order.json()
+      if (response.status == 400) throw response
+      dispatch(setOrder(response))
+      setConnection(true)
+      return getPercentageCompleted(response)
+    } catch (e) {
+      console.log(e)
+      setConnection(false)
+    }
+  }
+
+  // Every 5 seconds, check user's order
   useEffect(() => {
-    fetchTransaction().catch(console.log)
+    fetchOrder().catch(console.log)
 
     const intervalId = setInterval(async () => {
-      fetchTransaction().catch(console.log)
+      fetchOrder().catch(console.log)
       if (percentage == 1) {
         clearInterval(intervalId)
       }
@@ -39,55 +60,35 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
     setPercentage(0)
   }, [isFocused])
 
-  // turn ratio of orders completed/cancelled into a percentage
-  const getPercentageCompleted = (newTransactionHistory) => {
-    const items = newTransactionHistory.transactionItems
-    const denom = items.length
+
+  // Turn ratio of orders completed/cancelled into a percentage
+  const getPercentageCompleted = (order: Order) => {
+    const denominator = order.orderItems.length
     let numerator = 0
-    for (let i = 0; i < denom; i++) {
-      const item_status = items[i].orderStatus
-      if (item_status == 'READY' || item_status == 'CANCELLED') {
+    for (let i = 0; i < denominator; i++) {
+      if (order.orderItems[i].status == 'READY' || order.orderItems[i].status == 'CANCELLED') {
         numerator += 1
       }
     }
-    setPercentage(numerator / denom)
-    return numerator / denom
+    setPercentage(numerator / denominator)
+    return numerator / denominator
   }
 
-  // pull from database to update status
-  const fetchTransaction = async () => {
-    try {
-      const currentTransaction = await fetch(baseUrl + 'api/orders/' + currentTransactionHistory.id, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      const response = await currentTransaction.json()
-      if (response.status == 400) throw response
-      dispatch(setOrderState(response))
-      setConnection(true)
-      return getPercentageCompleted(response)
-    } catch (e) {
-      console.log(e)
-      setConnection(false)
-    }
-  }
 
   const status = () => {
-    const progress = currentTransactionHistory?.inProgress
-    if (progress == 'true') {
+    const progress = currentOrder?.status
+    if (progress === 'ONGOING') {
       return 'In Progress'
-    } else if (progress == 'false') {
+    } else if (progress === 'READY') {
       return 'Complete!'
     } else {
       return 'Loading...'
     }
   }
 
-  function getNameFromTransactionId(transactionItem: TransactionItem): string {
+  function getMenuItemNameFromId(orderItem: OrderItem): string {
     if (menuItems) {
-      return menuItems.find((element) => element.id == transactionItem.menuItemId).name
+      return menuItems.find((element) => element.id == orderItem.menuItemId).name
     } else {
       return 'Loading...'
     }
@@ -118,10 +119,10 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
       <Text style={styles.name}>{name}</Text>
       <View style={styles.outerView}>
         <ScrollView>
-          {currentTransactionHistory?.orderItems.map((transactionItem, index) => (
+          {currentOrder?.orderItems.map((orderItem, index) => (
             <StatusItem
-              name={getNameFromTransactionId(transactionItem)}
-              status={transactionItem.orderStatus}
+              name={getMenuItemNameFromId(orderItem)}
+              status={orderItem.status}
               key={index}
             />
           ))}

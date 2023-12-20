@@ -41,19 +41,13 @@ export const ordersSlice = createSlice({
   },
 })
 
-export const {
-  setOrder,
-  addOrder,
-  updateOrder,
-  setOrders,
-  setIsLoading,
-} = ordersSlice.actions
+export const {setOrder, addOrder, updateOrder, setOrders, setIsLoading} = ordersSlice.actions
 
-export const asyncFetchRecentOrdersFromCollege = (college: string) => {
+export const asyncFetchRecentOrdersFromCollege = (collegeId: number) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(setIsLoading(true))
     try {
-      const orders = await fetch(baseUrl + 'api/orders/college/recent/' + college, {
+      const orders = await fetch(baseUrl + 'api/orders/college/recent/' + collegeId, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -71,11 +65,11 @@ export const asyncFetchRecentOrdersFromCollege = (college: string) => {
   }
 }
 
-export const asyncFetchAllOrdersFromCollege = (college: string) => {
+export const asyncFetchAllOrdersFromCollege = (collegeId: number) => {
   return async (dispatch: AppDispatch): Promise<void> => {
     dispatch(setIsLoading(true))
     try {
-      const orders = await fetch(baseUrl + 'api/orders/college/' + college, {
+      const orders = await fetch(baseUrl + 'api/orders/college/' + collegeId, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -7,7 +7,7 @@ import { LAYOUTS } from '../../constants/Layouts'
 
 import BigCard from '../../components/staff/BigCard'
 import { asyncFetchRecentOrdersFromCollege } from '../../store/slices/Order'
-import { TransactionItem } from '../../store/slices/OrderItem'
+import { OrderItem } from '../../utils/types'
 // import { useIsFocused } from '@react-navigation/native'
 import EvilModal from '../../components/EvilModal'
 
@@ -15,16 +15,16 @@ const OrdersScreen2: React.FC = () => {
   const dispatch = useAppDispatch()
   // const isFocused = useIsFocused()
 
-  const { orderItems: transactionItems, isLoading: isLoadingTransactionItems } = useAppSelector((state) => state.transactionItems)
+  const { orderItems, isLoading: isLoadingOrderItems } = useAppSelector((state) => state.orderItems)
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
-  const [waitingOrders, setWaitingOrders] = useState<TransactionItem[][]>([])
-  const [currentOrders, setCurrentOrders] = useState<TransactionItem[][]>([])
-  const [pastOrders, setPastOrders] = useState<TransactionItem[][]>([])
+  const [waitingOrders, setWaitingOrders] = useState<OrderItem[][]>([])
+  const [currentOrders, setCurrentOrders] = useState<OrderItem[][]>([])
+  const [pastOrders, setPastOrders] = useState<OrderItem[][]>([])
   const [connection, setConnection] = useState(true) // remind the user but don't need to do anything
   const [necessaryConnection, setNecessaryConnection] = useState(true) // user needs to reload app
 
-  // Every x seconds, fetch TIs by college and time created, then sort by time
+  // Every x seconds, fetch orderItems by college and time created, then sort by time
   useEffect(() => {
     const fetchItems = async () => {
       if (currentUser.collegeId) {
@@ -33,34 +33,33 @@ const OrdersScreen2: React.FC = () => {
           setConnection(success)
         })
 
-        // turn the transactionHistories into transactionItems
+        // turn the orders into orderItems
         // all items are in queue
-        const waiting: TransactionItem[][] = []
+        const waiting: OrderItem[][] = []
         // at least one item pending
-        const current: TransactionItem[][] = []
+        const current: OrderItem[][] = []
         // all items finished or cancelled
-        const past: TransactionItem[][] = []
-        // for each transaction history entry
-        store.getState().transactionHistory.orders.forEach((entry) => {
+        const past: OrderItem[][] = []
+
+        store.getState().orders.orders.forEach((entry) => {
             let pendingCount = 0
             let doneCount = 0
             let readyCount = 0
-            const itemList: TransactionItem[] = []
-            // for each transactionItem
+            const itemList: OrderItem[] = []
+
             entry.orderItems.forEach((item) => {
-                if (item.orderStatus == 'QUEUED') {
+                if (item.status == 'QUEUED') {
                     pendingCount++
                 }
-                else if (item.orderStatus != 'ONGOING') {
+                else if (item.status != 'ONGOING') {
                     doneCount++
-                    if (item.orderStatus == 'READY') {
+                    if (item.status == 'READY') {
                       readyCount++
                     }
                 }
-                itemList.push({ ...item, creationTime: entry.createdAt })
+                itemList.push({ ...item})
             })
-            //console.log(ti.length)
-            // console.log(done)
+
             if (pendingCount == itemList.length) {
                 waiting.push({...itemList}) 
             }
@@ -100,7 +99,7 @@ const OrdersScreen2: React.FC = () => {
       {!connection && (
         <Text style={styles.connectionError}>You aren't connected to the internet. Orders may not be accurate</Text>
       )}
-      {isLoadingTransactionItems || transactionItems == null ? (
+      {isLoadingOrderItems || orderItems == null ? (
         <ScrollView showsVerticalScrollIndicator={false}
           style={styles.scrollView}
           //contentContainerStyle={{alignItems: 'flex-start', justifyContent: 'stretch'}}>
@@ -120,7 +119,7 @@ const OrdersScreen2: React.FC = () => {
             return (
               <View key={element["0"].id + 'vv'} style={styles.tag}>
                 <BigCard
-                  transactionItems={element}
+                  orderItems={element}
                   interactable={false}
                   isWaiting = {true}
                   setConnection={setNecessaryConnection}
@@ -133,7 +132,7 @@ const OrdersScreen2: React.FC = () => {
             return (
               <View key={element["0"].id + 'vv'} style={styles.tag}>
                 <BigCard
-                  transactionItems={element}
+                  orderItems={element}
                   interactable={true}
                   isWaiting = {false}
                   setConnection={setNecessaryConnection}
@@ -149,7 +148,7 @@ const OrdersScreen2: React.FC = () => {
             return (
               <View key={element["0"].id + 'v'}>
                 <BigCard
-                  transactionItems={element}
+                  orderItems={element}
                   interactable={false}
                   isWaiting = {false}
                   setConnection={setNecessaryConnection}

@@ -3,8 +3,8 @@ import { configureStore } from '@reduxjs/toolkit'
 import usersReducer from './slices/Users'
 import currentUserReducer from './slices/CurrentUser'
 import menuItemsReducer from './slices/MenuItems'
-import transactionHistoryReducer from './slices/Order'
-import transactionItemsReducer from './slices/OrderItem'
+import ordersReducer from './slices/Order'
+import orderItemsReducer from './slices/OrderItem'
 import orderCartReducer from './slices/OrderCart'
 import collegesReducer from './slices/Colleges'
 
@@ -21,8 +21,8 @@ const store = configureStore({
     users: usersReducer,
     currentUser: currentUserReducer,
     menuItems: menuItemsReducer,
-    transactionHistory: transactionHistoryReducer,
-    transactionItems: transactionItemsReducer,
+    orders: ordersReducer,
+    orderItems: orderItemsReducer,
     orderCart: orderCartReducer,
     colleges: collegesReducer,
   },

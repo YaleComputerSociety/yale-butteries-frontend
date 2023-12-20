@@ -1,14 +1,13 @@
-import React, { FC, useCallback, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Text, View, ScrollView, StyleSheet, Pressable } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
-import { TransactionHistoryEntry, asyncFetchAllOrdersFromCollege } from '../../store/slices/Order'
+import { asyncFetchAllOrdersFromCollege } from '../../store/slices/Order'
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import { totalMemory } from 'expo-device'
 import { staffAnalytics } from '../../styles/StaffAnalyticsStyles'
 import { useIsFocused } from '@react-navigation/native'
-import { User, asyncFetchUsers } from '../../store/slices/Users'
+import { asyncFetchUsers } from '../../store/slices/Users'
 import { LAYOUTS } from '../../constants/Layouts'
+import type { Order, User } from '../../utils/types'
 
 import AnalyticsCard from '../../components/staff/AnalyticsCard'
 
@@ -29,65 +28,48 @@ const AnalyticsScreen: FC = () => {
   const [date, updateDate] = useState(today)
 
   const { users } = useAppSelector((state) => state.users)
-  const { orders: transactionHistory, isLoading: isLoading } = useAppSelector((state) => state.transactionHistory)
+  const { orders, isLoading } = useAppSelector((state) => state.orders)
 
-  const [filtered, setFiltered] = useState(transactionHistory.filter(transactionsOnDay))
+  const [filtered, setFiltered] = useState(orders.filter(getAllOrdersFromDay))
 
   
   useEffect(() => {
 
     dispatch(asyncFetchUsers()).then((success: boolean) => {
       if (!success) {
-        console.log("Users fail");
         setConnection(false)
       }
-      else {
-        console.log("Users success");
-      }
     })
-    
-    console.log("Users: ", users);
 
     
-    dispatch(asyncFetchAllOrdersFromCollege("Trumbull")).then((success: boolean) => {
+    dispatch(asyncFetchAllOrdersFromCollege(14)).then((success: boolean) => {
       if (!success) {
         setConnection(false)
       }
     })
-    console.log("Transactions: ", transactionHistory);
 
-    setFiltered(transactionHistory.filter(transactionsOnDay));
+    setFiltered(orders.filter(getAllOrdersFromDay));
     
   }, [])
 
   useEffect(() => {
 
-    dispatch(asyncFetchAllOrdersFromCollege("Trumbull")).then((success: boolean) => {
+    dispatch(asyncFetchAllOrdersFromCollege(14)).then((success: boolean) => {
       if (!success) {
         setConnection(false)
-        console.log("Transactions fail");
-      }
-      else {
-        console.log("Transactions Success: ", transactionHistory)
       }
     })
 
-    setFiltered(transactionHistory.filter(transactionsOnDay)) //update orders for that past day
+    setFiltered(orders.filter(getAllOrdersFromDay)) //update orders for that past day
   }, [date])
 
   useEffect(() => {
     if(!isLoading) {
-      console.log("Getting menu")
-      dispatch(asyncFetchAllOrdersFromCollege("Trumbull")).then((success: boolean) => {
+      dispatch(asyncFetchAllOrdersFromCollege(14)).then((success: boolean) => {
         if (!success) {
-          console.log("Transactions fail");
           setConnection(false)
         }
-        else {
-          console.log("Pass");
-        }
       })
-      console.log("Transactions: ", transactionHistory);
     }
   }, [isFocused])
 
@@ -105,37 +87,31 @@ const AnalyticsScreen: FC = () => {
     updateDate(new Date(date))
   }
 
-  function getTotalCost(transactions: TransactionHistoryEntry[]) {
-    // Initialize a variable to store the sum
+  function getTotalCost(orders: Order[]) {
     let totalCost = 0;
 
-    // Iterate through each transaction_entry object in the array
-    for (let i = 0; i < transactions.length; i++) {
-      // Assuming 'cost' attribute exists in each transaction_entry object
-      totalCost += orderTotalCost(transactions[i]);
+    for (let i = 0; i < orders.length; i++) {
+      totalCost += orderTotalCost(orders[i]);
     }
 
     return totalCost;
   }
 
-  function orderTotalCost(transaction: TransactionHistoryEntry) {
+  function orderTotalCost(order: Order) {
     let cost = 0;
 
-    for (let j = 0; j < transaction.transactionItems.length; j++) {
-      cost += transaction.transactionItems[j].itemCost;
+    for (let j = 0; j < order.orderItems.length; j++) {
+      cost += order.orderItems[j].price;
     }
 
     return cost / 100.0;
   }
 
-  function transactionsOnDay(transactionHistory: TransactionHistoryEntry) {
-    let selectedDate = transactionHistory.creationTime.split('-')
+  function getAllOrdersFromDay(order: Order) {
+    let selectedDate = order.createdAt.split('-')
     selectedDate[2] = selectedDate[2].slice(0, 2) //get day (first two numbers)
 
-    // console.log("\nSelected date: ", {selectedDate});
-
-    let i = transactionHistory.id;
-    // console.log("Checking ", {i});
+    let i = order.id;
 
     let d = date.getDate().toString();
     let a = parseInt(selectedDate[2]);
@@ -143,7 +119,6 @@ const AnalyticsScreen: FC = () => {
 
     if (!(year == selectedDate[0] && (parseInt(date.getMonth().toString()) + 1).toString() == selectedDate[1] && date.getDate().toString() == selectedDate[2])) {
       
-      // console.log("order day:", b, "page day: ", d);
     }
 
     return year == selectedDate[0] && (parseInt(date.getMonth().toString()) + 1).toString() == selectedDate[1] && date.getDate().toString() == b
@@ -204,14 +179,14 @@ const AnalyticsScreen: FC = () => {
           <Text style = {staffAnalytics.text}>Cost</Text>
       </View>
 
-      {filtered?.map((transaction, i) => (
+      {filtered?.map((order, i) => (
         <AnalyticsCard
           key={i}
-          time={reformatTime(transaction.createdAt)}
-          name={getUserFromId(transaction.userId)}
-          num_items={transaction.orderItems.length}
-          cost={orderTotalCost(transaction).toFixed(2)}
-          items={transaction.orderItems}
+          time={reformatTime(order.createdAt)}
+          name={getUserFromId(order.userId)}
+          num_items={order.orderItems.length}
+          cost={orderTotalCost(order).toFixed(2)}
+          items={order.orderItems}
         />
       ))}
     </ScrollView>

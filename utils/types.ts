@@ -2,7 +2,14 @@
 export type UserRole = 'CUSTOMER' | 'STAFF'
 export type MenuItemType = 'FOOD' | 'DRINK' | 'DESSERT'
 export type OrderStatus = 'QUEUED' | 'ONGOING' | 'READY' | 'PAID' | 'CANCELLED' | 'TIMEOUT'
-export type OrderItemStatus = 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELELD'
+export type OrderItemStatus = 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED'
+
+
+export interface NewUser {
+    netId: string
+    collegeId: number
+    role: UserRole
+}
 
 export interface User {
     id: string
@@ -14,16 +21,15 @@ export interface User {
     currentOrder?: OrderItem
   }
   
-  export interface NewUser {
-    netId: string
-    collegeId: number
-    role: UserRole
+export interface NewOrderItem {
+    price: number
+    menuItemId: number
 }
 
 export interface OrderItem {
     id: number
     price: number
-    orderStatus: OrderItemStatus
+    status: OrderItemStatus
     menuItemId: number
     name: string
     userId: string

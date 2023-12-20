@@ -9,12 +9,13 @@ import { ScrollView } from 'react-native-gesture-handler'
 import OrderCardBackground from './OrderCardBackground'
 
 import { useAppDispatch } from '../../store/ReduxStore'
-import { asyncUpdateOrderItem, TransactionItem, updateOrderItem } from '../../store/slices/OrderItem'
+import { asyncUpdateOrderItem, updateOrderItem } from '../../store/slices/OrderItem'
 import { cleanTime } from '../../Functions'
+import type { OrderItem } from '../../utils/types'
  
 interface Props {
-  item: TransactionItem
-  transactionItems: TransactionItem[]
+  item: OrderItem
+  orderItems: OrderItem[]
   interactable: boolean
   setConnection: (necessaryConnection: boolean) => void
 }
@@ -26,9 +27,8 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
   const dispatch = useAppDispatch()
 
   const slideIndex = [0, 1, 2, 3, 4]
-  const orderTime = cleanTime(new Date(item.creationTime))
 
-  const [orderStatus, setOrderStatus] = useState(item.orderStatus)
+  const [orderStatus, setOrderStatus] = useState(item.status)
   const [tagActive, setTagActive] = useState(-1)
   const [isStarted, setIsStarted] = useState(false)
 
@@ -74,7 +74,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
             dispatch(
               asyncUpdateOrderItem({
                 ...item,
-                orderStatus: tempStatus,
+                status: tempStatus,
               })
             ).then((success: boolean) => {
               setConnection(success)
@@ -90,7 +90,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
             dispatch(
               updateOrderItem({
                 ...item,
-                orderStatus: 'QUEUED',
+                status: 'QUEUED',
               })
             )
           },
@@ -105,7 +105,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
             dispatch(
               asyncUpdateOrderItem({
                 ...item,
-                orderStatus: tempStatus,
+                status: tempStatus,
               })
             ).then((success: boolean) => {
               setConnection(success)
@@ -121,7 +121,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
             dispatch(
               updateOrderItem({
                 ...item,
-                orderStatus: 'ONGOING',
+                status: 'ONGOING',
               })
             )
           },
@@ -131,7 +131,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
       dispatch(
         asyncUpdateOrderItem({
           ...item,
-          orderStatus: tempStatus,
+          status: tempStatus,
         })
       ).then((success: boolean) => {
         setConnection(success)
@@ -165,12 +165,12 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
         >
           {slideIndex.map((index) => {
             return (
-              <OrderCardBackground status={index} orderItem={item} key={index} started={isStarted} time={orderTime} />
+              <OrderCardBackground status={index} orderItem={item} key={index} started={isStarted} />
             )
           })}
         </ScrollView>
       ) : (
-        <OrderCardBackground status={startingIndex} orderItem={item} started={isStarted} time={orderTime} />
+        <OrderCardBackground status={startingIndex} orderItem={item} started={isStarted} />
       )}
     </View>
   )
