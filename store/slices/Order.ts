@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppDispatch } from '../ReduxStore'
-import { baseUrl } from '../../utils/utils'
+import { baseUrl } from '../../utils/constants'
 import type { Order } from '../../utils/types'
 
 export interface OrdersState {

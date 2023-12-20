@@ -6,7 +6,7 @@ import { asyncCreateUser } from '../store/slices/Users'
 import { ActivityIndicator, View, StyleSheet, AppState } from 'react-native'
 import EvilModal from '../components/EvilModal'
 import { useIsFocused } from '@react-navigation/native'
-import { baseUrl } from '../utils/utils'
+import { baseUrl } from '../utils/constants'
 
 const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()

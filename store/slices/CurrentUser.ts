@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { baseUrl } from '../../utils/utils'
+import { baseUrl } from '../../utils/constants'
 import { AppDispatch } from '../../store/ReduxStore'
 import type { User } from '../../utils/types'
 import { setOrder } from './Order'

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { baseUrl } from '../../utils/utils'
+import { baseUrl } from '../../utils/constants'
 import { AppDispatch } from '../ReduxStore'
 import type { College } from '../../utils/types'
 

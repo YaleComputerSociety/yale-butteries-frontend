@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { baseUrl } from '../../utils/utils'
+import { baseUrl } from '../../utils/constants'
 import { AppDispatch } from '../../store/ReduxStore'
 import { setCurrentUserState } from '../../store/slices/CurrentUser'
 import * as LocalStorage from '../../LocalStorage'
