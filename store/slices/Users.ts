@@ -1,3 +1,5 @@
+import { getRandomBytes } from 'expo-crypto'
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseUrl } from '../../utils/constants'
 import { AppDispatch } from '../../store/ReduxStore'
@@ -36,7 +38,7 @@ export const usersSlice = createSlice({
 
 export const { setUsersState, insertUser, setIsLoading } = usersSlice.actions
 
-export const asyncCreateUser = (user: NewUser, token: string) => {
+export const asyncCreateUser = (user: NewUser) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     try {
       // setIsLoading(true)
@@ -48,6 +50,7 @@ export const asyncCreateUser = (user: NewUser, token: string) => {
         body: JSON.stringify(user),
       })
       const data = await newUser.json()
+      console.log(data)
       if (newUser.status != 200) {
         throw 'failed to create new user'
       }
@@ -58,11 +61,13 @@ export const asyncCreateUser = (user: NewUser, token: string) => {
       //   return true
       // }
 
+      const token = getRandomBytes(8).toString()
+
       const localStorageInfo: [string, string][] = [
-        ['id', data.id.toString()],
-        ['username', data.netid],
+        ['id', data.id],
+        ['username', data.netId],
         ['token', token],
-        ['permissions', data.permissions],
+        ['permissions', data.role],
       ]
 
       LocalStorage.storeUserInfo(localStorageInfo)
