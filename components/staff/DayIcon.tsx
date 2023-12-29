@@ -51,6 +51,7 @@ const styles  = StyleSheet.create({
         fontFamily: 'HindSiliguri-Bold',
         textAlign: 'center',
         textAlignVertical: 'center',
+        color: 'rgba(255,255,255, 0.87)'
     },
     active: {
       backgroundColor: '#5cb85c'
@@ -64,7 +65,7 @@ const styles  = StyleSheet.create({
       fontFamily: 'HindSiliguri-Bold',
     },
     normalText: {
-      color: 'black',
+      color: 'rgba(255,255,255, 0.87)',
       marginTop: 5,
       fontFamily: 'HindSiliguri-Bold',
     }

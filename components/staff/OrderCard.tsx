@@ -11,7 +11,7 @@ import OrderCardBackground from './OrderCardBackground'
 import { useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateTransactionItem, TransactionItem, updateTransactionItem } from '../../store/slices/TransactionItems'
 import { cleanTime } from '../../Functions'
-
+ 
 interface Props {
   item: TransactionItem
   transactionItems: TransactionItem[]
@@ -19,8 +19,8 @@ interface Props {
   setConnection: (necessaryConnection: boolean) => void
 }
 
-type Status = 'CANCELLED' | 'QUEUED' | 'ONGOING' | 'READY' 
-const statuses: Status[] = ['CANCELLED', 'QUEUED', 'ONGOING', 'READY',]
+type Status = 'CANCELLED' | 'QUEUED' | 'ONGOING' | 'READY'
+const statuses: Status[] = ['CANCELLED', 'QUEUED', 'ONGOING', 'READY']
 
 const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props) => {
   const dispatch = useAppDispatch()
@@ -152,7 +152,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
   }
 
   return (
-    <View style={{ ...styles.container }}>
+    <View style={styles.container}>
       {interactable ? (
         <ScrollView
           onScroll={({ nativeEvent }) => onchange(nativeEvent)}
@@ -179,10 +179,11 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
 const styles = StyleSheet.create({
   container: {
     height: LAYOUTS.getWidth(50),
-    width: LAYOUTS.getWidth(355),
+    width: LAYOUTS.getWidth(340),
     flex: 1,
     borderRadius: 5,
     marginBottom: LAYOUTS.getWidth(10),
+    marginLeft: LAYOUTS.getWidth(2),
     flexDirection: 'row',
     alignItems: 'stretch',
     backgroundColor: COLORS.white,

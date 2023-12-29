@@ -30,16 +30,16 @@ const InventoryItemCard: FC<Props> = (props: Props) => {
   return (
     <>
       <TouchableOpacity
-        style={{ ...styles.container, backgroundColor: 'white', opacity: item.isActive ? 1 : 0.4 }}
+        style={{ ...styles.container, backgroundColor: '#383838', opacity: item.isActive ? 1 : 0.4 }}
         onPress={() => {
           navigation.push('Edit', { data: props.item })
         }}
       >
         <View style={{ ...styles.nameContainer }}>
-          <Text style={{ color: 'black', fontSize: 15, fontWeight: '500' }}>{props.item.item}</Text>
+          <Text style={{ color: 'rgba(255,255,255, 0.87)', fontSize: 15, fontWeight: '500' }}>{props.item.item}</Text>
         </View>
         <View style={{ ...styles.priceContainer }}>
-          <Text style={{ color: 'black', fontSize: 15, fontWeight: '400', marginRight: LAYOUTS.getWidth(10) }}>
+          <Text style={{ color: 'rgba(255,255,255, 0.87)', fontSize: 15, fontWeight: '400', marginRight: LAYOUTS.getWidth(10) }}>
             {priceToText(props.item.price)}
           </Text>
           <Switch value={props.item.isActive} onValueChange={handleSwitch} />

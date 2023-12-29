@@ -11,6 +11,7 @@ export interface TransactionHistoryEntry {
   userId: string
   paymentIntentId: string
   transactionItems: TransactionItem[]
+  orderStatus: 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED' | 'PAID'
   creationTime: string
 }
 

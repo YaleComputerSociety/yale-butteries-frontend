@@ -5,7 +5,8 @@ import { AppDispatch } from '../ReduxStore'
 export interface College {
   id: number
   name: string
-  buttery_activated?: boolean
+  isButteryIntegrated?: boolean
+  isAcceptingOrders?: boolean
   daysOpen?: string[]
   isOpen?: boolean
   openTime?: string
@@ -60,7 +61,8 @@ export const asyncFetchColleges = () => {
         const college: College = {
           id: item.id,
           name: item.college,
-          buttery_activated: item.buttery_activated,
+          isButteryIntegrated: item.isButteryIntegrated,
+          isAcceptingOrders: item.isAcceptingOrders,
           daysOpen: item.daysOpen,
           openTime: item.openTime,
           closeTime: item.closeTime,

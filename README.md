@@ -37,10 +37,13 @@ With the frontend running, you'll be able to see the app and interact with it, b
 
 ## Building and Deploying the App
 
+- Likeliness of errors: *Expo Go development simulator* < *Expo Go development on phone* < *Expo Go production simulator* < *Expo Go production on phone* < *simulator build* < *simulator build on phone* < *testflight build on phone* < *App Store app*
+
 #### iOS
 We use [Expo](https://expo.dev/accounts/yale_butteries) to turn the frontend code into a compiled binary, which we can then submit to app stores. To start, you'll need to have `eas-cli` installed, and will need to login to the yale_butteries Expo organization. Follow [this guide](https://docs.expo.dev/build/setup/)
 
 - There are a few ways to build the app, but the most important distinction is between a simulator build and a Testflight build
+
     - A simulator build takes ~10 minutes and will run on either your iPhone simulator or on Expo within your phone. Any bug that appears here will probably appear in a testflight build, but things tend to work better for these
         - Make a simulator build using Expo with `eas build -p ios --profile preview`
         - With the new build finished, run `eas build:run -p ios --latest` to start it on your iPhone simulator

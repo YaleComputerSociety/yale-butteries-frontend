@@ -7,7 +7,7 @@ import React from 'react'
 import EditItemScreen from '../screens/staff/EditItemScreen'
 import CreateItemScreen from '../screens/staff/CreateItemScreen'
 import SettingsScreen from '../screens/staff/SettingsScreen'
-
+import AnalyticsScreen from '../screens/staff/AnalyticsScreen'
 
 import { createStackNavigator } from '@react-navigation/stack'
 
@@ -26,7 +26,20 @@ function AntDesignBarIcon(props: { name: React.ComponentProps<typeof AntDesign>[
 
 const StaffStack: React.FC = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{
+      tabBarStyle: {
+        backgroundColor: '#1f1f1f',
+      },
+      headerStyle: {
+        backgroundColor: '#1f1f1f',
+        borderWidth: 0,
+        shadowColor: '#222',
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+      },
+      headerTitleStyle: { fontFamily: 'HindSiliguri-Bold', fontSize: 20, paddingBottom: 10 },
+      headerTintColor: '#FFF'
+  }}>
       <Tab.Screen
         name="Orders"
         component={OrdersScreen}
@@ -39,6 +52,13 @@ const StaffStack: React.FC = () => {
         component={InventoryNavigator}
         options={{
           tabBarIcon: ({ color }) => <AntDesignBarIcon name="table" color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Analytics"
+        component={AnalyticsScreen}
+        options={{
+          tabBarIcon: ({ color }) => <AntDesignBarIcon name="areachart" color={color} />,
         }}
       />
       <Tab.Screen

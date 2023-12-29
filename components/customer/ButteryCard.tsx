@@ -1,10 +1,13 @@
 import React, { useState, useEffect, FC } from 'react'
 import { View, Text, Pressable } from 'react-native'
+import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { card, home } from '../../styles/ButteriesStyles'
 import SpriteSheet from 'rn-sprite-sheet'
+import { getCollegeAcceptingOrders } from '../../Functions'
 
 interface butteryProps {
   college: string
+  isAcceptingOrders: boolean
   openTime: string
   closeTime: string
   daysOpen: boolean[]
@@ -17,6 +20,9 @@ interface butteryProps {
 export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   const [isOpen, setIsOpen] = useState(props.isOpen)
 
+  const { colleges, isLoading: isLoading } = useAppSelector((state) => state.colleges)
+  const acceptingOrders = getCollegeAcceptingOrders(colleges, props.college)
+
   let open = props.openTime.split(' ')
   let close = props.closeTime.split(' ')
 
@@ -28,6 +34,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   let currentHour = d.getHours()
 
   const activeText = props.active ? 'CLOSED' : 'INACTIVE'
+  const busyText = !acceptingOrders ? 'BUSY' : activeText
   const days = ['S ', 'M ', 'T ', 'W ', 'T ', 'F ', 'S ']
 
   const getDayVisual = (value: boolean, index: number) => {
@@ -81,8 +88,8 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
             <View
               style={[
                 {
-                  opacity: props.active && isOpen ? 0 : 1,
-                  backgroundColor: props.active ? '#ee3930' : '#ff9600',
+                  opacity: props.active && isOpen && acceptingOrders ? 0 : 1,
+                  backgroundColor: props.active && isOpen && !acceptingOrders ? '#edcd2f' : (props.active ? '#ee3930' : '#ff9600'),
                 },
                 card.banner,
               ]}
@@ -93,7 +100,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
                   color: 'rgba(255,255,255,0.87)',
                 }}
               >
-                {activeText}
+                {!acceptingOrders && isOpen ? busyText : activeText}
               </Text>
             </View>
           </View>
