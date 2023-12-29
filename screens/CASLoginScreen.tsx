@@ -36,8 +36,7 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   // Only try to create the user once the user has successfully logged in AND they're inside the app. Otherwise, duo push will sometimes crash the app
   useEffect(() => {
     // console.log('here', loadingUser, appStateVisible)
-    if (loadingUser && appStateVisible==='active') {
-    
+    if (loadingUser && appStateVisible === 'active') {
       let token = ''
       token += Random.getRandomBytes(8).toString()
 
@@ -56,7 +55,6 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         }
         setLoadingUser(false)
       })
-    
     }
   }, [loadingUser, appStateVisible])
 
@@ -113,7 +111,7 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         <WebView
           source={{ uri: baseUrl + 'cas' }}
           injectedJavaScript={getHtmlContent}
-          style={{ flex: 1, marginTop: 60, marginBottom: 20 }}
+          style={{ flex: 1, marginTop: 0, marginBottom: 0 }}
           onMessage={handleLogin}
         />
       )}
