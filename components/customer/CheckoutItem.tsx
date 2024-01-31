@@ -1,12 +1,11 @@
-/* eslint-disable import/namespace */
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import React from 'react'
 import * as Haptics from 'expo-haptics'
 import { View, Text, Pressable } from 'react-native'
 import { priceToText } from '../../Functions'
 import { checkout } from '../../styles/CheckoutStyles'
-import { MenuItem } from '../../store/slices/MenuItems'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
+import type { MenuItem } from '../../utils/types'
 
 interface Props {
   decUpdate: (menuItem: MenuItem) => void
