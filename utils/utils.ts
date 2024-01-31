@@ -6,11 +6,7 @@ const production = 'https://yale-butteries.herokuapp.com/'
 // Mac: type { ipconfig getifaddr en0 || ipconfig getifaddr en1 } into the command line
 // Windows: type { ipconfig | findstr /i "IPv4 Address" } into the command line
 // please change this value back to localhost when you push your code, as everyone's IP addresses are different
-<<<<<<< HEAD
-const ipAddress = '192.168.0.239'
-=======
 const ipAddress = 'localhost'
->>>>>>> b75b553b4c0c35e76e71245f002e5f203447e0a8
 
 const development = `http://${ipAddress}:3000/`
 
