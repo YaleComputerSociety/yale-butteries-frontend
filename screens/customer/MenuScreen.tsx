@@ -153,7 +153,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
               <MenuHeader
                 name={navigation.getParam('collegeName')}
                 toFood={() => {
-                  sectionListRef.current.scrollToLocation({ sectionIndex: 0, itemIndex: 0, animated: true })
+                  sectionListRef.current.scrollToLocation({ sectionIndex: 0, itemIndex: 1, animated: true })
                 }}
                 toDrink={() => {
                   sectionListRef.current.scrollToLocation({ sectionIndex: 1, itemIndex: 0, animated: true })
