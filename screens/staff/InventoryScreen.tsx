@@ -10,6 +10,7 @@ import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
 import { useIsFocused } from '@react-navigation/native'
 import EvilModal from '../../components/EvilModal'
+import type { MenuItem } from '../../utils/types'
 
 const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
   navigation,
@@ -20,7 +21,7 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
   const { menuItems, isLoading: isLoadingMenuItems } = useAppSelector((state) => state.menuItems)
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
-  const [localMenu, setLocalMenu] = useState([])
+  const [localMenu, setLocalMenu] = useState<MenuItem[]>([])
   const [connection, setConnection] = useState(true)
 
   useEffect(() => {
