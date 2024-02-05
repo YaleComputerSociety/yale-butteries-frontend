@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import { StyleSheet, Text, Pressable, Button, View, TextInput } from 'react-native'
-import { militaryToAnalog } from '../../Functions'
+import { militaryToAnalog } from '../../utils/functions'
 
 interface Props {
   time: string

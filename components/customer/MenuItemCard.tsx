@@ -1,15 +1,14 @@
 import React, { FC, useState, useEffect } from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { item } from '../../styles/MenuStyles'
-import { priceToText } from '../../Functions'
-import { MenuItem } from '../../store/slices/MenuItems'
+import { priceToText } from '../../utils/functions'
 import * as Haptics from 'expo-haptics'
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import { OrderItem } from '../../store/slices/OrderCart'
+import type { MenuItem, OrderCartItem } from '../../utils/types'
 
 interface Props {
   menuItem: MenuItem
-  items: OrderItem[]
+  items: OrderCartItem[]
   incUpdate: (menuItem: MenuItem) => void
   decUpdate: (oldItem: MenuItem) => void
 }
@@ -51,7 +50,7 @@ export const MenuItemCard: FC<Props> = ({ menuItem, items, incUpdate, decUpdate 
     <View style={item.card}>
       <View style={item.leftSide}>
         <View style={item.spacer} />
-        <Text style={item.itemName}>{menuItem.item}</Text>
+        <Text style={item.itemName}>{menuItem.name}</Text>
         <Text style={item.itemDescription}>{menuItem.description}</Text>
         <Text style={item.itemPrice}>{priceToText(menuItem.price)}</Text>
       </View>

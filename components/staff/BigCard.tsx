@@ -9,33 +9,33 @@ import OrderCard from './OrderCard'
 import { card } from '../../styles/ButteriesStyles'
 
 import { useAppDispatch } from '../../store/ReduxStore'
-import { asyncUpdateTransactionItem, TransactionItem, updateTransactionItem } from '../../store/slices/TransactionItems'
-import { cleanTime } from '../../Functions'
+import { asyncUpdateOrderItem } from '../../store/slices/OrderItem'
+import type { OrderItem } from '../../utils/types'
+import { cleanTime } from '../../utils/functions'
 
 interface Props {
-  transactionItems: TransactionItem[]
+  orderItems: OrderItem[]
   interactable: boolean
   isWaiting: boolean
   setConnection: (necessaryConnection: boolean) => void
 }
 
-const BigCard: React.FC<Props> = ({transactionItems, interactable, setConnection, isWaiting}: Props) => {
+const BigCard: React.FC<Props> = ({orderItems, interactable, setConnection, isWaiting}: Props) => {
     const dispatch = useAppDispatch()
     
-    const newItems = Object.values(transactionItems);
-    const orderTime = cleanTime(new Date(newItems[0].creationTime))
+    const newItems = Object.values(orderItems);
     newItems.sort((a, b) => a.id - b.id)
     // const [declineClicked, setDeclineClicked] = useState(false)
     // console.log(newItems)
     const acceptClick = () => {
         newItems.forEach((item) => {
-            item.orderStatus = 'ONGOING' //update instants
+            item.status = 'ONGOING' //update instants
         })
         newItems.forEach((item) => {
             dispatch(
-                asyncUpdateTransactionItem({
+                asyncUpdateOrderItem({
                   ...item,
-                  orderStatus: 'ONGOING',
+                  status: 'ONGOING',
                 })
               ).then((success: boolean) => {
                 setConnection(success)
@@ -47,9 +47,9 @@ const BigCard: React.FC<Props> = ({transactionItems, interactable, setConnection
     const declineClick = () => {
         newItems.forEach((item) => {
             dispatch(
-                asyncUpdateTransactionItem({
+                asyncUpdateOrderItem({
                   ...item,
-                  orderStatus: 'CANCELLED',
+                  status: 'CANCELLED',
                 })
               ).then((success: boolean) => {
                 setConnection(success)
@@ -60,15 +60,14 @@ const BigCard: React.FC<Props> = ({transactionItems, interactable, setConnection
     return (
         <View style={styles.backgroundCard}>
             <View style = {styles.topContainer}>
-                <Text style={card.cardText1}>Name: {newItems[0].user}</Text>
-                <Text style={card.cardText2}>Time: {orderTime}</Text>
+                <Text style={card.cardText1}>Name: {'change'}</Text>
             </View>
             {newItems.map((element) => {
                 return (
                     <View key={element.id + 'vv'} style={styles.tag}>
                         <OrderCard
                             item={element}
-                            transactionItems={newItems}
+                            orderItems={newItems}
                             interactable={interactable}
                             setConnection={setConnection}
                             key={element.id + 'b'}

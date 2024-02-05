@@ -1,17 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppDispatch } from '../../store/ReduxStore'
-import { baseUrl } from '../../utils/utils'
+import { baseUrl } from '../../utils/constants'
+import type { MenuItem, NewMenuItem } from '../../utils/types'
 
-export interface MenuItem {
-  id?: number
-  item: string
-  college: string
-  price: number
-  description?: string
-  limitedTime?: boolean
-  isActive: boolean
-  foodType: 'FOOD' | 'DRINK' | 'DESSERT'
-}
 
 export interface MenuItemsState {
   menuItems: MenuItem[] | null
@@ -38,7 +29,7 @@ export const menuItemsSlice = createSlice({
       state.menuItems[updateIndex] = action.payload
     },
     deleteMenuItem: (state, action: PayloadAction<MenuItem>) => {
-      const updateIndex = state.menuItems.findIndex((item) => item.item == action.payload.item)
+      const updateIndex = state.menuItems.findIndex((item) => item.name == action.payload.name)
       state.menuItems.splice(updateIndex, 1)
     },
     addMenuItem: (state, action: PayloadAction<MenuItem>) => {
@@ -59,22 +50,9 @@ export const asyncFetchMenuItems = () => {
           'Content-Type': 'application/json',
         },
       })
-      const data = await menuItems.json()
+      const data: MenuItem[] = await menuItems.json()
       const newData: MenuItem[] = []
-      data.forEach((item) => {
-        const newItem: MenuItem = {
-          id: item.id,
-          item: item.item,
-          college: item.college,
-          price: parseInt(item.price),
-          isActive: item.isActive,
-          description: item.description,
-          limitedTime: false,
-          foodType: item.foodType,
-        }
-        newData.push(newItem)
-      })
-      dispatch(setMenuItemsState(newData))
+      dispatch(setMenuItemsState(data))
       return true
     } catch (e) {
       console.log(e)
@@ -109,7 +87,7 @@ export const asyncUpdateMenuItem = (menuItem: MenuItem) => {
   }
 }
 
-export const asyncAddMenuItem = (menuItem: MenuItem) => {
+export const asyncAddMenuItem = (menuItem: NewMenuItem) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     dispatch(setIsLoading(true))
     try {
@@ -120,8 +98,8 @@ export const asyncAddMenuItem = (menuItem: MenuItem) => {
         },
         body: JSON.stringify(menuItem),
       })
-      const data = await menuItems.json()
-      dispatch(addMenuItem(menuItem))
+      const data: MenuItem = await menuItems.json()
+      dispatch(addMenuItem(data))
       return true
     } catch (e) {
       console.log(e)

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native'
 import { useAppDispatch } from '../../store/ReduxStore'
-import { MenuItem, asyncUpdateMenuItem } from '../../store/slices/MenuItems'
+import { asyncUpdateMenuItem } from '../../store/slices/MenuItems'
 import EditButton from '../../components/staff/EditButton'
 
 import { FUNCTIONS } from '../../constants/Functions'
@@ -12,12 +12,14 @@ import { useNavigation } from '@react-navigation/native'
 
 import SelectDropdown from 'react-native-select-dropdown'
 
+import type { MenuItemType } from '../../utils/types'
+
 const EditItemScreen: React.FC = (props: any) => {
   props = props.route.params.data
   const dispatch = useAppDispatch()
   const navigation = useNavigation()
 
-  const [item, setItem] = useState(props.item)
+  const [name, setName] = useState(props.name)
   const [doEditItem, setDoEditItem] = useState(false)
 
   const [price, setPrice] = useState(props.price)
@@ -30,21 +32,21 @@ const EditItemScreen: React.FC = (props: any) => {
   const [description, setDescription] = useState(props.description)
   const [doEditDescription, setDoEditDescription] = useState(false)
 
-  const [selected, setSelected] = useState<MenuItem['foodType']>(props.foodType);
+  const [selected, setSelected] = useState<MenuItemType>(props.foodType);
   const data = ['FOOD', 'DRINK', 'DESSERT']
 
-  const handleEditItem = async (text) => {
-    setItem(text)
+  const handleEditItem = async (text: string) => {
+    setName(text)
     setDoEditItem(false)
   }
 
-  const handleEditPrice = async (text) => {
+  const handleEditPrice = async (text: string) => {
     const parsed_text = Number(text.replace(/[^0-9]/g, ''))
     setPrice(parsed_text)
     setDoEditPrice(false)
   }
 
-  const handleEditDescription = (text) => {
+  const handleEditDescription = (text: string) => {
     setDescription(text)
     setDoEditDescription(false)
   }
@@ -67,7 +69,7 @@ const EditItemScreen: React.FC = (props: any) => {
       return (
         <View style={styles.inputContainer}>
           <View style={styles.inputString}>
-            <Text style={styles.titleText}>{item}</Text>
+            <Text style={styles.titleText}>{name}</Text>
           </View>
           <EditButton
             size={LAYOUTS.getWidth(18)}
@@ -150,7 +152,7 @@ const EditItemScreen: React.FC = (props: any) => {
 
   const saveChanges = () => {
     let exitEarly = false
-    if (item.length <= 2 || item.length >= 26) {
+    if (name.length <= 2 || name.length >= 26) {
       setValidName(false)
       exitEarly = true
     } else {
@@ -168,7 +170,7 @@ const EditItemScreen: React.FC = (props: any) => {
 
     if (exitEarly) return
 
-    dispatch(asyncUpdateMenuItem({ ...props, item: item, price: price, description: description, foodType: selected })).then((success: boolean) => {
+    dispatch(asyncUpdateMenuItem({ ...props, name, price, description, foodType: selected })).then((success: boolean) => {
       setConnection(success)
       if (success) {
         navigation.goBack()
@@ -183,7 +185,7 @@ const EditItemScreen: React.FC = (props: any) => {
       {!connection && <EvilModal toggle={setConnection} display={!connection} />}
       <ScrollView style={styles.scrollView}>
         <View style={styles.tag}>
-          <Text style={styles.labelText}>Item:</Text>
+          <Text style={styles.labelText}>Name:</Text>
           {getEditItemVisual()}
         </View>
         {!validName && <Text style={styles.error}>Name must be between 3 and 25 characters</Text>}

@@ -4,12 +4,12 @@ import { View, Text, StyleSheet } from 'react-native'
 import { COLORS } from '../../constants/Colors'
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
-import { TransactionItem } from '../../store/slices/TransactionItems'
+import { OrderItem } from '../../utils/types'
 
 interface Props {
   status: number
   time?: string
-  orderItem: TransactionItem
+  orderItem: OrderItem
   started?: boolean
 }
 

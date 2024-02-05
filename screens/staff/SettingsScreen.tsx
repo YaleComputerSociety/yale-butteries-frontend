@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { StyleSheet, Text, View, ScrollView, Pressable, Switch, Alert, ActivityIndicator, Button } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, Text, View, ScrollView, Switch, Alert, ActivityIndicator, Button } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import EvilModal from '../../components/EvilModal'
 
@@ -7,11 +7,12 @@ import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
 
 import DayIcon from '../../components/staff/DayIcon'
-import { College, asyncFetchColleges, asyncUpdateCollege, setCollegesState } from '../../store/slices/Colleges'
+import { asyncFetchColleges, asyncUpdateCollege } from '../../store/slices/Colleges'
 import { useIsFocused } from '@react-navigation/native'
 
 import TimeCard from '../../components/staff/TimeCard'
-import { outputTime } from '../../Functions'
+import { outputTime } from '../../utils/functions'
+import type { College } from '../../utils/types'
 
 const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationParams> }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
@@ -44,13 +45,13 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
 
   useEffect(() => {
     dispatch(asyncFetchColleges()).then((success: boolean) => {
-      setConnection(success) //for evil modal, not great
+      setConnection(success) // for evil modal, not great
     })
   }, [isFocused])
 
   useEffect(() => {
     if (colleges && currentUser) {
-      setCurrentCollege(colleges.filter((college) => college.name == currentUser.college)[0])
+      setCurrentCollege(colleges.find((college) => college.id == currentUser.collegeId))
     }
 
     if (currentCollege) {

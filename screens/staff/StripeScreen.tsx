@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react'
 import { Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
-import { asyncFetchAllTransactionHistories } from '../../store/slices/TransactionHistory'
+import { asyncFetchAllOrdersFromCollege } from '../../store/slices/Order'
 import { ScrollView } from 'react-native-gesture-handler'
 
 const StripeScreen: FC = () => {
