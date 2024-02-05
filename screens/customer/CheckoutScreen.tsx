@@ -57,15 +57,12 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       return null
     }
 
-    console.log(currentUser.role)
-
     // if (currentUser.role === 'dev') {
     //   Alert.alert('You are currently in developer mode. You cannot place an order.')
     //   return
     // }
 
     const obj = { userId: currentUser.id, price: price, items: orderItems, college: collegeOrderCart }
-    console.log('hello3')
     const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
       method: 'POST',
       body: JSON.stringify(obj),

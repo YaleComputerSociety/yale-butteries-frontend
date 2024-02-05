@@ -51,8 +51,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
         })
       )
       setBegin(false)
-    }
-    console.log(currentMenuItems)
+      }
   }, [menuItems])
 
   // reset the order cart upon loading the page
@@ -174,18 +173,18 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
                 styles.cartButton,
               ]}
               onPress={() => {
-                // if (!getCollegeAcceptingOrders(colleges, collegeOrderCart)) {
-                //   Alert.alert(
-                //     "Try again later",
-                //     "This buttery is currently busy, try again later.",
-                //     [
-                //       { text: "OK"}
-                //     ]
-                //   );
-                // } else {
+                if (!getCollegeAcceptingOrders(colleges, collegeOrderCart)) {
+                  Alert.alert(
+                    "Try again later",
+                    "This buttery is currently busy, try again later.",
+                    [
+                      { text: "OK"}
+                    ]
+                  );
+                } else {
                   navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
-                // }
+                }
               }}
             >
               <Text style={[styles.cartText, { marginRight: 25 }]}>Go to Cart</Text>
