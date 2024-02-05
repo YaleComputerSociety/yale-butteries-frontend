@@ -29,6 +29,13 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   const [isDisabled, setDisabled] = useState(orderItems.length < 1)
 
+  useEffect(() => {
+    if (orderItems.length < 1) {
+      setDisabled(true)
+    }
+  }, [orderItems.length])
+  
+
   const updateDisabled = (b: boolean) => {
     navigation.setParams({
       disabled: b,
