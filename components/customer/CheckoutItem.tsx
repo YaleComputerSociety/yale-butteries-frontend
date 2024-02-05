@@ -5,19 +5,18 @@ import { View, Text, Pressable } from 'react-native'
 import { priceToText } from '../../Functions'
 import { checkout } from '../../styles/CheckoutStyles'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
-import type { MenuItem } from '../../utils/types'
+import type { OrderItem, OrderCartItem, MenuItem } from '../../utils/types'
 
 interface Props {
-  decUpdate: (menuItem: MenuItem) => void
-  menuItem: MenuItem
-  checkoutItem: any
+  decUpdate: (item: MenuItem) => void
+  item: OrderCartItem
   isDisabled: any
 }
 
-const CheckoutItem: any = ({ decUpdate, checkoutItem, isDisabled }: Props) => {
+const CheckoutItem: any = ({ decUpdate, item, isDisabled }: Props) => {
   const removeItem = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-    decUpdate(checkoutItem)
+    decUpdate(item.orderItem)
   }
 
   const rightSwipe = () => {
@@ -41,10 +40,10 @@ const CheckoutItem: any = ({ decUpdate, checkoutItem, isDisabled }: Props) => {
             <Ionicon name="trash" size={18} color="rgba(255,255,255,0.69)" />
           </Pressable>
           <View style={checkout.NAME}>
-            <Text style={checkout.itemNameText}>{checkoutItem.orderItem.item}</Text>
+            <Text style={checkout.itemNameText}>{item.orderItem.name}</Text>
           </View>
           <View style={checkout.PRICE}>
-            <Text style={checkout.text}>{priceToText(checkoutItem.orderItem.price)}</Text>
+            <Text style={checkout.text}>{priceToText(item.orderItem.price)}</Text>
           </View>
         </View>
       </Swipeable>

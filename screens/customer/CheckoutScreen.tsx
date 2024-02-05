@@ -223,7 +223,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               <FlatList
                 data={orderItems}
                 renderItem={(item) => {
-                  return <CheckoutItem decUpdate={removeOrder} checkoutItem={item.item} isDisabled={isDisabled} />
+                  return <CheckoutItem decUpdate={removeOrder} item={item.item} isDisabled={isDisabled} />
                 }}
                 keyExtractor={(item) => item.index.toString()}
               />
