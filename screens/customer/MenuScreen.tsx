@@ -124,7 +124,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
             ref={sectionListRef}
             showsVerticalScrollIndicator={false}
             sections={sections}
-            keyExtractor={(item, index) => item.item + index}
+            keyExtractor={(item, index) => index.toString()}
             renderItem={(item) => {
               return (
                 <MenuItemCard incUpdate={addOrder} decUpdate={removeOrder} menuItem={item.item} items={orderItems}/>
