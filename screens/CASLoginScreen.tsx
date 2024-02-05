@@ -50,7 +50,6 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         }
         setLoadingUser(false)
       })
-    
     }
   }, [loadingUser, appStateVisible])
 
@@ -107,7 +106,7 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         <WebView
           source={{ uri: baseUrl + 'cas' }}
           injectedJavaScript={getHtmlContent}
-          style={{ flex: 1, marginTop: 60, marginBottom: 20 }}
+          style={{ flex: 1, marginTop: 0, marginBottom: 0 }}
           onMessage={handleLogin}
         />
       )}

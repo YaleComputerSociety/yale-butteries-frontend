@@ -24,7 +24,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
           <View style={styles.style1}>
             <View>
               <Image source={require('../assets/images/logo_transparent.png')} style={styles.logo} />
-              <Text style={[styles.logoText, { fontSize: windowWidth * 0.098 }]}>
+              <Text numberOfLines={1} adjustsFontSizeToFit style={styles.logoText}>
                 Yale<Text style={{ color: '#00356b' }}>Butteries</Text>
               </Text>
             </View>
