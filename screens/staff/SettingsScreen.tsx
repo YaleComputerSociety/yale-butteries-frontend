@@ -45,7 +45,7 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
 
   useEffect(() => {
     dispatch(asyncFetchColleges()).then((success: boolean) => {
-      setConnection(success) //for evil modal, not great
+      setConnection(success) // for evil modal, not great
     })
   }, [isFocused])
 

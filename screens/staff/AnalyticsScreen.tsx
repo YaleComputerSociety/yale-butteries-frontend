@@ -17,10 +17,6 @@ const AnalyticsScreen: FC = () => {
 
   const today = new Date()
 
-  let day = today.getDate().toString()
-  let month = today.getMonth().toString()
-  let year = today.getFullYear().toString()
-
   const isFocused = useIsFocused()
   const [refreshing, setRefreshing] = useState(false)
   const [connection, setConnection] = useState(true)
@@ -30,7 +26,7 @@ const AnalyticsScreen: FC = () => {
   const { users } = useAppSelector((state) => state.users)
   const { orders, isLoading } = useAppSelector((state) => state.orders)
 
-  const [filtered, setFiltered] = useState(orders.filter(getAllOrdersFromDay))
+  const [filtered, setFiltered] = useState([])
 
   
   useEffect(() => {
@@ -60,7 +56,7 @@ const AnalyticsScreen: FC = () => {
       }
     })
 
-    setFiltered(orders.filter(getAllOrdersFromDay)) //update orders for that past day
+    setFiltered(orders.filter(getAllOrdersFromDay)) // update orders for that past day
   }, [date])
 
   useEffect(() => {
@@ -108,20 +104,8 @@ const AnalyticsScreen: FC = () => {
   }
 
   function getAllOrdersFromDay(order: Order) {
-    let selectedDate = order.createdAt.split('-')
-    selectedDate[2] = selectedDate[2].slice(0, 2) //get day (first two numbers)
-
-    let i = order.id;
-
-    let d = date.getDate().toString();
-    let a = parseInt(selectedDate[2]);
-    let b = a.toString();
-
-    if (!(year == selectedDate[0] && (parseInt(date.getMonth().toString()) + 1).toString() == selectedDate[1] && date.getDate().toString() == selectedDate[2])) {
-      
-    }
-
-    return year == selectedDate[0] && (parseInt(date.getMonth().toString()) + 1).toString() == selectedDate[1] && date.getDate().toString() == b
+    const orderDate = new Date(order.createdAt);
+    return orderDate.getFullYear() === date.getFullYear() && orderDate.getMonth() === date.getMonth() && orderDate.getDate() === date.getDate();
   }
 
   function getUserFromId(id: string) {
