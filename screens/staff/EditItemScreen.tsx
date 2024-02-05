@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import SelectDropdown from 'react-native-select-dropdown'
 
-import type { MenuItem, MenuItemType } from '../../utils/types'
+import type { MenuItemType } from '../../utils/types'
 
 const EditItemScreen: React.FC = (props: any) => {
   props = props.route.params.data
