@@ -144,7 +144,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   const getAllCards = () => {
     const collegeCards: JSX.Element[] = []
 
-    for (let i = 0; i < butteries.length; i++) {
+    for (let i = 0; i < butteries.length - 1; i++) {
       collegeCards.push(getCollegeVisual(butteries[i], i))
     }
 
