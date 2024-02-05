@@ -6,7 +6,8 @@ import { asyncCreateUser } from '../store/slices/Users'
 import { ActivityIndicator, View, StyleSheet, AppState } from 'react-native'
 import EvilModal from '../components/EvilModal'
 import { useIsFocused } from '@react-navigation/native'
-import { baseUrl } from '../utils/utils'
+import { baseUrl } from '../utils/constants'
+import { NewUser } from '../utils/types'
 
 const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
@@ -16,7 +17,7 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [connection, setConnection] = useState(true)
   const [loadingUser, setLoadingUser] = useState(false)
   const [initial, setInitial] = useState(true)
-  const [netid, setNetid] = useState('')
+  const [netId, setNetId] = useState('')
 
   const appState = useRef(AppState.currentState)
   const [appStateVisible, setAppStateVisible] = useState(appState.current)
@@ -35,21 +36,15 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   // Only try to create the user once the user has successfully logged in AND they're inside the app. Otherwise, duo push will sometimes crash the app
   useEffect(() => {
-    // console.log('here', loadingUser, appStateVisible)
-    if (loadingUser && appStateVisible === 'active') {
-      let token = ''
-      token += Random.getRandomBytes(8).toString()
+    if (loadingUser && appStateVisible==='active') {
 
-      const newUser = {
-        email: 'alphatester@gmail.com',
-        netid: netid,
-        name: netid,
-        college: 'morse',
-        token: token,
-        permissions: 'CUSTOMER',
+      const newUser: NewUser = {
+        netId: netId,
+        collegeId: 14,
+        role: 'CUSTOMER',
       }
 
-      dispatch(asyncCreateUser(newUser, token)).then((success) => {
+      dispatch(asyncCreateUser(newUser)).then((success) => {
         if (!success) {
           setConnection(false)
         }
@@ -58,14 +53,14 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
     }
   }, [loadingUser, appStateVisible])
 
-  // This prevents the injected javascript from running twice
+  // Prevent the injected javascript from running twice
   useEffect(() => {
     setInitial(true)
   }, [])
 
   useEffect(() => {
     if (isFocused && currentUser) {
-      if (currentUser.permissions === 'STAFF') {
+      if (currentUser.role === 'STAFF') {
         navigation.navigate('NavigationScreen')
       } else {
         navigation.navigate('ButteriesScreen')
@@ -76,8 +71,8 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   // Once the user logs in with CAS, use the netid to either create a new user, or reference the existing user
   const handleLogin = async (event) => {
     if (initial) {
-      const netID = event.nativeEvent.data
-      setNetid(netID)
+      const netId = event.nativeEvent.data
+      setNetId(netId)
       setLoadingUser(true)
     }
     setInitial(false)

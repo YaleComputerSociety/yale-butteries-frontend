@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { useState } from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import { TransactionItem } from '../../store/slices/TransactionItems'
+import type { OrderItem } from '../../utils/types'
 import AnalyticsItemCard from './AnalyticsItemCard'
 
 import { COLORS } from '../../constants/Colors'
@@ -14,10 +14,10 @@ interface Props {
     name: string
     num_items: Number
     cost: string
-    items: TransactionItem[]
+    items: OrderItem[]
 }
 
-function filterItems(history: TransactionItem[]) {
+function filterItems(history: OrderItem[]) {
     // Create an object to store counts of each name
     const item_counts = {};
     const item_costs = {}
@@ -28,7 +28,7 @@ function filterItems(history: TransactionItem[]) {
         item_counts[entry.name]++;
       } else {
         item_counts[entry.name] = 1;
-        item_costs[entry.name] = entry.itemCost;
+        item_costs[entry.name] = entry.price;
       }
     });
     
@@ -72,7 +72,7 @@ const AnalyticsCard: FC<Props> = ({ time, name, num_items, cost, items }: Props)
                     key={j}
                     hide={!isExpanded}
                     name={item.name}
-                    cost={(item.itemCost/100).toFixed(2)}
+                    cost={(item.price/100).toFixed(2)}
                 />
             ))}
         </View>

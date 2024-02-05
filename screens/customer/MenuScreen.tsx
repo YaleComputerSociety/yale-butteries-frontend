@@ -2,21 +2,21 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, Alert, ActivityIndicator, Text, Pressable, RefreshControl, SectionList } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
-import { asyncFetchMenuItems, MenuItem } from '../../store/slices/MenuItems'
-import { addOrderItem, OrderItem, removeOrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
+import { asyncFetchMenuItems } from '../../store/slices/MenuItems'
+import { addOrderItem, removeOrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
 import { MenuItemCard } from '../../components/customer/MenuItemCard'
 import { home } from '../../styles/ButteriesStyles'
 import { menu } from '../../styles/MenuStyles'
 import { loading } from '../../styles/GlobalStyles'
-import { getCollegeAcceptingOrders, getPriceFromOrderItems, returnCollegeName } from '../../Functions'
-
+import { getCollegeAcceptingOrders, getPriceFromOrderItems, returnCollegeName } from '../../utils/functions'
+import type { MenuItem, OrderCartItem, OrderItem } from '../../utils/types'
 import * as Haptics from 'expo-haptics'
-
 import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
 import { useIsFocused } from '@react-navigation/native'
 import EvilModal from '../../components/EvilModal'
 import { MenuHeader } from '../../components/customer/MenuHeader'
+import { getCollegeFromId } from '../../utils/functions'
 
 const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
   navigation,
@@ -28,8 +28,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const { orderItems, college: collegeOrderCart } = useAppSelector((state) => state.orderCart)
   const { colleges, isLoading: isLoading } = useAppSelector((state) => state.colleges)
 
-  const [data, setData] = useState([])
-
+  const [currentMenuItems, setCurrentMenuItems] = useState([])
   const [index, setIndex] = useState(0)
   const [priceTotal, setPriceTotal] = useState(getPriceFromOrderItems(orderItems))
   const [refreshing, setRefreshing] = useState(false)
@@ -37,7 +36,6 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const [connection, setConnection] = useState(true)
 
   useEffect(() => {
-    console.log("Getting menu")
     dispatch(asyncFetchMenuItems()).then((success: boolean) => {
       if (!success) {
         setConnection(false)
@@ -47,13 +45,13 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
 
   useEffect(() => {
     if (menuItems) {
-      setData(
+      setCurrentMenuItems(
         menuItems.filter((menuItem) => {
-          return menuItem.college.toLowerCase() === collegeOrderCart.toLowerCase() && menuItem.isActive === true
+          return getCollegeFromId(menuItem.collegeId, colleges).name.toLowerCase() === collegeOrderCart.toLowerCase() && menuItem.isActive
         })
       )
       setBegin(false)
-    }
+      }
   }, [menuItems])
 
   // reset the order cart upon loading the page
@@ -75,13 +73,13 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const addOrder = (newItem: MenuItem) => {
     const i = index
     setIndex(i + 1)
-    const temp: OrderItem = { orderItem: newItem, index: i }
+    const temp: OrderCartItem = { orderItem: newItem, index: i }
     dispatch(addOrderItem(temp))
     setPriceTotal(priceTotal + newItem.price)
   }
 
   const removeOrder = (newItem: MenuItem) => {
-    const item = orderItems.find((item) => item.orderItem.item == newItem.item)
+    const item = orderItems.find((item) => item.orderItem.name == newItem.name)
     //problem is they all have the same id
     if (item === undefined) {
       throw new TypeError("Couldn't find orderItem to delete")
@@ -94,19 +92,19 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const sections = [
     {
       title: 'Food',
-      data: data.filter((menuItem) => {
+      data: currentMenuItems.filter((menuItem) => {
         return menuItem.foodType === 'FOOD'
       }),
     },
     {
       title: 'Drink',
-      data: data.filter((menuItem) => {
+      data: currentMenuItems.filter((menuItem) => {
         return menuItem.foodType === 'DRINK'
       }),
     },
     {
       title: 'Dessert',
-      data: data.filter((menuItem) => {
+      data: currentMenuItems.filter((menuItem) => {
         return menuItem.foodType === 'DESSERT'
       }),
     },
@@ -125,10 +123,10 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
             ref={sectionListRef}
             showsVerticalScrollIndicator={false}
             sections={sections}
-            keyExtractor={(item, index) => item.item + index}
+            keyExtractor={(item, index) => index.toString()}
             renderItem={(item) => {
               return (
-                <MenuItemCard incUpdate={addOrder} decUpdate={removeOrder} menuItem={item.item} items={orderItems} />
+                <MenuItemCard incUpdate={addOrder} decUpdate={removeOrder} menuItem={item.item} items={orderItems}/>
               )
             }}
             refreshControl={

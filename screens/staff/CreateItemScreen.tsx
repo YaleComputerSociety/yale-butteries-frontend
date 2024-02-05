@@ -1,7 +1,9 @@
+// TODO: merge this with editItemScreen
+
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
-import { asyncAddMenuItem, MenuItem } from '../../store/slices/MenuItems'
+import { asyncAddMenuItem } from '../../store/slices/MenuItems'
 import EditButton from '../../components/staff/EditButton'
 import { useNavigation } from '@react-navigation/native'
 import { FUNCTIONS } from '../../constants/Functions'
@@ -9,6 +11,8 @@ import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
 
 import SelectDropdown from 'react-native-select-dropdown'
+
+import type { MenuItemType, NewMenuItem } from '../../utils/types'
 
 const CreateItemScreen: React.FC = () => {
   const navigation = useNavigation()
@@ -27,23 +31,23 @@ const CreateItemScreen: React.FC = () => {
   const [description, setDescription] = useState('')
   const [doEditDescription, setDoEditDescription] = useState(false)
 
-  const [selected, setSelected] = useState<MenuItem['foodType']>('FOOD');
+  const [selected, setSelected] = useState<MenuItemType>('FOOD');
 
   const data = ['FOOD', 'DRINK', 'DESSERT']
 
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
-  const handleEditItem = (text) => {
+  const handleEditItem = (text: string) => {
     setItem(text)
     setDoEditItem(false)
   }
 
-  const handleEditDescription = (text) => {
+  const handleEditDescription = (text: string) => {
     setDescription(text)
     setDoEditDescription(false)
   }
 
-  const handleEditPrice = (text) => {
+  const handleEditPrice = (text: string) => {
     const parsed_text = Number(text.replace(/[^0-9]/g, ''))
     setPrice(parsed_text)
     setDoEditPrice(false)
@@ -73,11 +77,10 @@ const CreateItemScreen: React.FC = () => {
       return
     }
     
-    const buffer: MenuItem = {
-      item: item,
-      college: currentUser.college,
+    const buffer: NewMenuItem = {
+      name: item,
+      collegeId: currentUser.collegeId,
       price: price,
-      isActive: true,
       foodType: selected,
       description: description,
     }
@@ -195,7 +198,7 @@ const CreateItemScreen: React.FC = () => {
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.tag}>
-          <Text style={styles.labelText}>Item:</Text>
+          <Text style={styles.labelText}>Name:</Text>
           {getEditItemVisual()}
         </View>
         {!validName && <Text style={styles.error}>Name must be between 3 and 25 characters</Text>}

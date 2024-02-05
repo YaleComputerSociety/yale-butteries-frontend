@@ -21,7 +21,7 @@ const Settings: FC<{ navigation: any }> = ({ navigation }) => {
   const [successView, setSuccessView] = useState(false)
 
   const changeName = async (name: string) => {
-    if (currentUser.permissions == 'dev') {
+    if (currentUser.role == 'dev') {
       Alert.alert('You are currently in developer mode. You cannot change your name.')
       return
     }
@@ -38,7 +38,7 @@ const Settings: FC<{ navigation: any }> = ({ navigation }) => {
         permissions: null,
         token: null,
         email: null,
-        netid: currentUser.netid,
+        netid: currentUser.netId,
       }
       const success = await dispatch(asyncUpdateCurrentUser(updatedCurrentUser))
       if (!success) {

@@ -3,8 +3,8 @@ import { configureStore } from '@reduxjs/toolkit'
 import usersReducer from './slices/Users'
 import currentUserReducer from './slices/CurrentUser'
 import menuItemsReducer from './slices/MenuItems'
-import transactionHistoryReducer from './slices/TransactionHistory'
-import transactionItemsReducer from './slices/TransactionItems'
+import ordersReducer from './slices/Order'
+import orderItemsReducer from './slices/OrderItem'
 import orderCartReducer from './slices/OrderCart'
 import collegesReducer from './slices/Colleges'
 
@@ -21,8 +21,8 @@ const store = configureStore({
     users: usersReducer,
     currentUser: currentUserReducer,
     menuItems: menuItemsReducer,
-    transactionHistory: transactionHistoryReducer,
-    transactionItems: transactionItemsReducer,
+    orders: ordersReducer,
+    orderItems: orderItemsReducer,
     orderCart: orderCartReducer,
     colleges: collegesReducer,
   },
@@ -30,6 +30,7 @@ const store = configureStore({
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
+
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch
 

@@ -1,15 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { APIError } from '../ReduxStore'
-import { MenuItem } from './MenuItems'
-
-export interface OrderItem {
-  orderItem: MenuItem
-  index: number
-}
+import type { OrderCartItem } from '../../utils/types'
 
 export interface OrderCartState {
-  orderItems: OrderItem[]
+  orderItems: OrderCartItem[]
   isLoading: boolean | APIError
   college: string
   price: number
@@ -30,11 +25,11 @@ export const orderCartSlice = createSlice({
       state.orderItems = []
       state.price = 0
     },
-    addOrderItem: (state, action: PayloadAction<OrderItem>) => {
+    addOrderItem: (state, action: PayloadAction<OrderCartItem>) => {
       state.orderItems = [...state.orderItems, action.payload]
       state.price += action.payload.orderItem.price
     },
-    removeOrderItem: (state, action: PayloadAction<OrderItem>) => {
+    removeOrderItem: (state, action: PayloadAction<OrderCartItem>) => {
       const deleteIndex = state.orderItems.findIndex((item) => item.index === action.payload.index)
       state.orderItems = [...state.orderItems.slice(0, deleteIndex), ...state.orderItems.slice(deleteIndex + 1)]
       state.price -= action.payload.orderItem.price

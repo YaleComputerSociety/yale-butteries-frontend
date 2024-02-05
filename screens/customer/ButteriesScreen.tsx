@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { setCollege } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { LinearGradient } from 'expo-linear-gradient'
-import { registerForPushNotificationsAsync, getDaysOpen, getHours, getCollegeOpen } from '../../Functions'
+import { registerForPushNotificationsAsync, getDaysOpen, getHours, getCollegeOpen } from '../../utils/functions'
 import { asyncFetchColleges } from '../../store/slices/Colleges'
 import { useIsFocused } from '@react-navigation/native'
 
@@ -144,7 +144,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   const getAllCards = () => {
     const collegeCards: JSX.Element[] = []
 
-    for (let i = 0; i < butteries.length; i++) {
+    for (let i = 0; i < butteries.length - 1; i++) {
       collegeCards.push(getCollegeVisual(butteries[i], i))
     }
 
