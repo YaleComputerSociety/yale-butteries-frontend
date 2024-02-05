@@ -11,7 +11,7 @@ import { card } from '../../styles/ButteriesStyles'
 import { useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateOrderItem } from '../../store/slices/OrderItem'
 import type { OrderItem } from '../../utils/types'
-import { cleanTime } from '../../Functions'
+import { cleanTime } from '../../utils/functions'
 
 interface Props {
   orderItems: OrderItem[]

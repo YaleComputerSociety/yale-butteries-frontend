@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react'
 import { View, Text, Pressable } from 'react-native'
 import { item } from '../../styles/MenuStyles'
-import { priceToText } from '../../Functions'
+import { priceToText } from '../../utils/functions'
 import * as Haptics from 'expo-haptics'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import type { MenuItem, OrderCartItem } from '../../utils/types'

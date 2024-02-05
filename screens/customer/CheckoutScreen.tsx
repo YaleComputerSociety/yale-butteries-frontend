@@ -5,7 +5,7 @@ import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { loading } from '../../styles/GlobalStyles'
 import CheckoutItem from '../../components/customer/CheckoutItem'
 import * as Device from 'expo-device'
-import { priceToText, returnCollegeName } from '../../Functions'
+import { priceToText, returnCollegeName } from '../../utils/functions'
 import { StripeProvider, useStripe, isPlatformPaySupported, PlatformPay } from '@stripe/stripe-react-native'
 import { setOrder } from '../../store/slices/Order'
 import { removeOrderItem } from '../../store/slices/OrderCart'
@@ -196,7 +196,8 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   }
 
   const removeOrder = (newItem: OrderItem) => {
-    const item = orderItems.find((item) => item.index == newItem.id)
+    const item = orderItems.find((item) => item.orderItem.id == newItem.id)
+    console.log(orderItems, newItem, item)
     //problem is they all have the same id
     if (item === undefined) {
       throw new TypeError("Couldn't find orderItem to delete")

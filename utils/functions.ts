@@ -1,8 +1,12 @@
-import { OrderItem } from './store/slices/OrderCart'
+import type { OrderItem, College, OrderCartItem } from './types'
+
 import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications'
 import { Platform } from 'react-native'
-import { College } from './store/slices/Colleges'
+
+export const getCollegeFromId = (id: number, colleges: College[]): College => {
+  return colleges.find(college => college.id === id)
+}
 
 export function priceToText(num: number): string {
   const cents = num % 100
@@ -10,7 +14,7 @@ export function priceToText(num: number): string {
   return '$' + dollars + '.' + (cents < 10 ? '0' + cents : cents)
 }
 
-export function getPriceFromOrderItems(orderItems: OrderItem[]): string {
+export function getPriceFromOrderItems(orderItems: OrderCartItem[]): string {
   let sum = 0
   for (let i = 0; i < orderItems.length; i++) {
     sum = sum + orderItems[i].orderItem.price

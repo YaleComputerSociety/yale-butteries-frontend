@@ -8,15 +8,15 @@ import { MenuItemCard } from '../../components/customer/MenuItemCard'
 import { home } from '../../styles/ButteriesStyles'
 import { menu } from '../../styles/MenuStyles'
 import { loading } from '../../styles/GlobalStyles'
-import { getCollegeAcceptingOrders, getPriceFromOrderItems, returnCollegeName } from '../../Functions'
-import type { MenuItem, OrderItem } from '../../utils/types'
+import { getCollegeAcceptingOrders, getPriceFromOrderItems, returnCollegeName } from '../../utils/functions'
+import type { MenuItem, OrderCartItem, OrderItem } from '../../utils/types'
 import * as Haptics from 'expo-haptics'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { NavigationParams } from 'react-navigation'
 import { useIsFocused } from '@react-navigation/native'
 import EvilModal from '../../components/EvilModal'
 import { MenuHeader } from '../../components/customer/MenuHeader'
-import { getCollegeFromId } from '../../utils/utils'
+import { getCollegeFromId } from '../../utils/functions'
 
 const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
   navigation,
@@ -73,7 +73,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const addOrder = (newItem: MenuItem) => {
     const i = index
     setIndex(i + 1)
-    const temp: OrderItem = { orderItem: newItem, index: i }
+    const temp: OrderCartItem = { orderItem: newItem, index: i }
     dispatch(addOrderItem(temp))
     setPriceTotal(priceTotal + newItem.price)
   }

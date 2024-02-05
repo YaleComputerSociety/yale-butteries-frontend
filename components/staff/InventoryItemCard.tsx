@@ -7,7 +7,7 @@ import { asyncUpdateMenuItem } from '../../store/slices/MenuItems'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
-import { priceToText } from '../../Functions'
+import { priceToText } from '../../utils/functions'
 
 import type { MenuItem } from '../../utils/types'
 

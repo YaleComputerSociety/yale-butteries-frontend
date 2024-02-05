@@ -3,7 +3,7 @@ import { View, Text, Pressable } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { card, home } from '../../styles/ButteriesStyles'
 import SpriteSheet from 'rn-sprite-sheet'
-import { getCollegeAcceptingOrders } from '../../Functions'
+import { getCollegeAcceptingOrders } from '../../utils/functions'
 
 interface butteryProps {
   college: string

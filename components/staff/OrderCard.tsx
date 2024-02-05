@@ -10,7 +10,7 @@ import OrderCardBackground from './OrderCardBackground'
 
 import { useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateOrderItem, updateOrderItem } from '../../store/slices/OrderItem'
-import { cleanTime } from '../../Functions'
+import { cleanTime } from '../../utils/functions'
 import type { OrderItem } from '../../utils/types'
  
 interface Props {

@@ -11,7 +11,7 @@ import { asyncFetchColleges, asyncUpdateCollege } from '../../store/slices/Colle
 import { useIsFocused } from '@react-navigation/native'
 
 import TimeCard from '../../components/staff/TimeCard'
-import { outputTime } from '../../Functions'
+import { outputTime } from '../../utils/functions'
 import type { College } from '../../utils/types'
 
 const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationParams> }> = ({ navigation }) => {
