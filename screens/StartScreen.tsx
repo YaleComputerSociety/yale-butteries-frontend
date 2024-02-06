@@ -6,7 +6,7 @@ import EvilModal from '../components/EvilModal'
 const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [connection, setConnection] = useState(true)
 
-  const windowWidth = Dimensions.get('window').width
+  const windowWidth = Dimensions.get('window').widt
 
   const onLogin = async () => {
     navigation.navigate('CASLoginScreen')
