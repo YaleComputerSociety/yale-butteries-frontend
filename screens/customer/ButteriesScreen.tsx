@@ -9,8 +9,12 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { registerForPushNotificationsAsync, getDaysOpen, getHours, getCollegeOpen } from '../../utils/functions'
 import { asyncFetchColleges } from '../../store/slices/Colleges'
 import { useIsFocused } from '@react-navigation/native'
+import type { NavigationStackProp } from 'react-navigation-stack'
+import type { MainStackParamList } from '../../routes/mainStackNavigator'
 
-const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+const ButterySelectionScreen: React.FC<{ navigation: NavigationStackProp<MainStackParamList, 'ButteriesScreen'> }> = ({
+  navigation,
+}) => {
   const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
 
@@ -18,7 +22,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   const [begin, setBegin] = useState(true)
   const [connection, setConnection] = useState(true)
 
-  const { colleges, isLoading: isLoading } = useAppSelector((state) => state.colleges)
+  const { colleges, isLoading } = useAppSelector((state) => state.colleges)
 
   // const[begin, setBegin] = useState(false)
 
@@ -39,7 +43,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
   }, [])
 
   useEffect(() => {
-    if (isLoading == false && colleges) {
+    if (!isLoading && colleges) {
       setBegin(false)
     }
   }, [isLoading])
@@ -103,7 +107,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     },
   ]
 
-  const toMenu = (college: string) => {
+  const toMenu = (college: string): void => {
     dispatch(setCollege(college))
     navigation.navigate('MenuScreen', { collegeName: college })
   }
@@ -128,7 +132,9 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
 
     return (
       <ButteryCard
-        onPress={() => toMenu(navigationNe)}
+        onPress={() => {
+          toMenu(navigationNe)
+        }}
         college={collegeInfo.ne}
         openTime={getHours(colleges, collegeInfo.ne.toLowerCase())[0]}
         closeTime={getHours(colleges, collegeInfo.ne.toLowerCase())[1]}
@@ -193,14 +199,14 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
               {getAllCards()}
             </View>
           </LinearGradient>
-          <View style={{ height: 25, opacity: 1 }}></View>
+          <View style={{ height: 25, opacity: 1 }} />
         </ScrollView>
       )}
     </View>
   )
 }
 
-ButterySelectionScreen['navigationOptions'] = (navData) => {
+ButterySelectionScreen.navigationOptions = (navData) => {
   return {
     gestureEnabled: false,
     headerLeft: () => <></>,

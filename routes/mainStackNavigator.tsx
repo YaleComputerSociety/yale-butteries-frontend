@@ -15,7 +15,7 @@ import AboutScreen from '../screens/AboutScreen'
 import GuestLoginScreen from '../screens/GuestLoginScreen'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-type MainStackParamList = {
+export type MainStackParamList = {
   DummyScreen: undefined
   StartScreen: undefined
   NavigationScreen: undefined
@@ -36,7 +36,11 @@ const AppNavigator: React.FC = () => {
   return (
     <MainStack.Navigator screenOptions={screenOptions}>
       <MainStack.Screen name="DummyScreen" component={DummyScreen} options={{ headerShown: false }} />
-      <MainStack.Screen name="StartScreen" component={StartScreen} options={{ headerShown: false }} />
+      <MainStack.Screen
+        name="StartScreen"
+        component={StartScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
       <MainStack.Screen name="NavigationScreen" component={NavigationScreen} options={{ headerShown: false }} />
       <MainStack.Screen name="ButteriesScreen" component={ButterySelectionScreen} options={{ title: 'Butteries' }} />
       <MainStack.Screen name="SettingsScreen" component={SettingsScreen} options={{ title: 'Settings' }} />

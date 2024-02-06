@@ -3,8 +3,9 @@ import React, { useState } from 'react'
 import { StyleSheet, View, Text, Pressable, TouchableWithoutFeedback, Keyboard, Image } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import EvilModal from '../components/EvilModal'
+import type { MainStackScreenProps } from '../utils/types'
 
-const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
+const StartScreen: FC<MainStackScreenProps<'StartScreen'>> = ({ navigation }) => {
   const [connection, setConnection] = useState(true)
 
   const onLogin = (): void => {
@@ -85,11 +86,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 })
-
-StartScreen.navigationOptions = () => {
-  return {
-    gestureEnabled: false,
-  }
-}
 
 export default StartScreen

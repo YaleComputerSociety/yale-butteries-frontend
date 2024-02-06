@@ -1,5 +1,6 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
+import type { FC } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, Alert, ActivityIndicator, Text, Pressable, RefreshControl, SectionList } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems } from '../../store/slices/MenuItems'
@@ -8,25 +9,25 @@ import { MenuItemCard } from '../../components/customer/MenuItemCard'
 import { home } from '../../styles/ButteriesStyles'
 import { menu } from '../../styles/MenuStyles'
 import { loading } from '../../styles/GlobalStyles'
-import { getCollegeAcceptingOrders, getPriceFromOrderItems, returnCollegeName } from '../../utils/functions'
-import type { MenuItem, OrderCartItem, OrderItem } from '../../utils/types'
+import {
+  getCollegeAcceptingOrders,
+  getPriceFromOrderItems,
+  returnCollegeName,
+  getCollegeFromId,
+} from '../../utils/functions'
+import type { MainStackScreenProps, MenuItem, OrderCartItem } from '../../utils/types'
 import * as Haptics from 'expo-haptics'
-import { NavigationStackProp } from 'react-navigation-stack'
-import { NavigationParams } from 'react-navigation'
 import { useIsFocused } from '@react-navigation/native'
 import EvilModal from '../../components/EvilModal'
 import { MenuHeader } from '../../components/customer/MenuHeader'
-import { getCollegeFromId } from '../../utils/functions'
 
-const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, NavigationParams> }> = ({
-  navigation,
-}) => {
-  //make a function that gets the price from the items in the cart
+const MenuScreen: FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route }) => {
+  // make a function that gets the price from the items in the cart
   const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
   const { menuItems } = useAppSelector((state) => state.menuItems)
   const { orderItems, college: collegeOrderCart } = useAppSelector((state) => state.orderCart)
-  const { colleges, isLoading: isLoading } = useAppSelector((state) => state.colleges)
+  const { colleges, isLoading } = useAppSelector((state) => state.colleges)
 
   const [currentMenuItems, setCurrentMenuItems] = useState([])
   const [index, setIndex] = useState(0)
@@ -34,6 +35,8 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
   const [refreshing, setRefreshing] = useState(false)
   const [begin, setBegin] = useState(true)
   const [connection, setConnection] = useState(true)
+
+  const { collegeName } = route.params
 
   useEffect(() => {
     dispatch(asyncFetchMenuItems()).then((success: boolean) => {
@@ -47,11 +50,14 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
     if (menuItems) {
       setCurrentMenuItems(
         menuItems.filter((menuItem) => {
-          return getCollegeFromId(menuItem.collegeId, colleges).name.toLowerCase() === collegeOrderCart.toLowerCase() && menuItem.isActive
+          return (
+            getCollegeFromId(menuItem.collegeId, colleges).name.toLowerCase() === collegeOrderCart.toLowerCase() &&
+            menuItem.isActive
+          )
         })
       )
       setBegin(false)
-      }
+    }
   }, [menuItems])
 
   // reset the order cart upon loading the page
@@ -80,7 +86,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
 
   const removeOrder = (newItem: MenuItem) => {
     const item = orderItems.find((item) => item.orderItem.name == newItem.name)
-    //problem is they all have the same id
+    // problem is they all have the same id
     if (item === undefined) {
       throw new TypeError("Couldn't find orderItem to delete")
     }
@@ -126,7 +132,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
             keyExtractor={(item, index) => index.toString()}
             renderItem={(item) => {
               return (
-                <MenuItemCard incUpdate={addOrder} decUpdate={removeOrder} menuItem={item.item} items={orderItems}/>
+                <MenuItemCard incUpdate={addOrder} decUpdate={removeOrder} menuItem={item.item} items={orderItems} />
               )
             }}
             refreshControl={
@@ -146,10 +152,10 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
                 </Text>
               </View>
             )}
-            ListFooterComponent={<View style={{ height: 100 }}></View>}
+            ListFooterComponent={<View style={{ height: 100 }} />}
             ListHeaderComponent={
               <MenuHeader
-                name={navigation.getParam('collegeName')}
+                name={collegeName}
                 toFood={() => {
                   sectionListRef.current.scrollToLocation({ sectionIndex: 0, itemIndex: 1, animated: true })
                 }}
@@ -164,7 +170,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
           />
           <View style={styles.footer}>
             <Pressable
-              disabled={orderItems.length < 1 ? true : false}
+              disabled={orderItems.length < 1}
               style={({ pressed }) => [
                 {
                   opacity: orderItems.length < 1 || pressed ? 0.7 : 1,
@@ -174,13 +180,7 @@ const MenuScreen: FC<{ navigation: NavigationStackProp<{ collegeName: string }, 
               ]}
               onPress={() => {
                 if (!getCollegeAcceptingOrders(colleges, collegeOrderCart)) {
-                  Alert.alert(
-                    "Try again later",
-                    "This buttery is currently busy, try again later.",
-                    [
-                      { text: "OK"}
-                    ]
-                  );
+                  Alert.alert('Try again later', 'This buttery is currently busy, try again later.', [{ text: 'OK' }])
                 } else {
                   navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   },
 })
 
-MenuScreen['navigationOptions'] = (navData) => {
+MenuScreen.navigationOptions = (navData) => {
   const collegeName = navData.navigation.getParam('collegeName')
   return {
     headerStyle: {
