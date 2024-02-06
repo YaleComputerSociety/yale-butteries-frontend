@@ -1,4 +1,5 @@
-import React, { FC, useEffect, useState } from 'react'
+import type { FC } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import store, { useAppDispatch } from './store/ReduxStore'
 import { asyncFetchUser } from './store/slices/CurrentUser'
@@ -12,7 +13,7 @@ import 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as ScreenOrientation from 'expo-screen-orientation'
 
-import AppContainer from './routes/mainStack'
+import AppNavigator from './routes/mainStackNavigator'
 import * as LocalStorage from './LocalStorage'
 import { setIsLoading } from './store/slices/Users'
 import EvilModal from './components/EvilModal'
@@ -95,7 +96,7 @@ const InnerApp: FC = () => {
       <View style={home.container}>
         <EvilModal toggle={setConnection} display={!connection} />
         <NavigationContainer>
-          <AppContainer />
+          <AppNavigator />
         </NavigationContainer>
         <StatusBar style="auto" />
       </View>
