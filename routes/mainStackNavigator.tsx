@@ -35,18 +35,26 @@ const MainStack = createStackNavigator<MainStackParamList>()
 const AppNavigator: React.FC = () => {
   return (
     <MainStack.Navigator screenOptions={screenOptions}>
-      <MainStack.Screen name="DummyScreen" component={DummyScreen} />
-      <MainStack.Screen name="StartScreen" component={StartScreen} />
-      <MainStack.Screen name="NavigationScreen" component={NavigationScreen} />
-      <MainStack.Screen name="ButteriesScreen" component={ButterySelectionScreen} />
-      <MainStack.Screen name="SettingsScreen" component={SettingsScreen} />
-      <MainStack.Screen name="MenuScreen" component={MenuScreen} />
-      <MainStack.Screen name="CheckoutScreen" component={CheckoutScreen} />
-      <MainStack.Screen name="OrderStatusScreen" component={OrderStatusScreen} />
-      <MainStack.Screen name="StaffRenderScreen" component={StaffRenderScreen} />
-      <MainStack.Screen name="CASLoginScreen" component={CASLoginScreen} />
-      <MainStack.Screen name="AboutScreen" component={AboutScreen} />
-      <MainStack.Screen name="GuestLoginScreen" component={GuestLoginScreen} />
+      <MainStack.Screen name="DummyScreen" component={DummyScreen} options={{ headerShown: false }} />
+      <MainStack.Screen name="StartScreen" component={StartScreen} options={{ headerShown: false }} />
+      <MainStack.Screen name="NavigationScreen" component={NavigationScreen} options={{ headerShown: false }} />
+      <MainStack.Screen name="ButteriesScreen" component={ButterySelectionScreen} options={{ title: 'Butteries' }} />
+      <MainStack.Screen name="SettingsScreen" component={SettingsScreen} options={{ title: 'Settings' }} />
+      <MainStack.Screen name="MenuScreen" component={MenuScreen} options={{ title: 'Menu' }} />
+      <MainStack.Screen name="CheckoutScreen" component={CheckoutScreen} options={{ title: 'Checkout' }} />
+      <MainStack.Screen
+        name="OrderStatusScreen"
+        component={OrderStatusScreen}
+        options={{ headerShown: false, gestureEnabled: false, headerLeft: () => null }}
+      />
+      <MainStack.Screen
+        name="StaffRenderScreen"
+        component={StaffRenderScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <MainStack.Screen name="CASLoginScreen" component={CASLoginScreen} options={{ headerShown: false }} />
+      <MainStack.Screen name="AboutScreen" component={AboutScreen} options={{ title: 'About Us' }} />
+      <MainStack.Screen name="GuestLoginScreen" component={GuestLoginScreen} options={{ headerShown: false }} />
     </MainStack.Navigator>
   )
 }
@@ -73,90 +81,3 @@ const screenOptions = {
 }
 
 export default AppNavigator
-
-// const screens = {
-//   DummyScreen: {
-//     screen: DummyScreen,
-//     navigationOptions: {
-//       title: 'Login',
-//       headerShown: false,
-//     },
-//   },
-//   StartScreen: {
-//     screen: StartScreen,
-//     navigationOptions: {
-//       title: 'StartScreen',
-//       headerShown: false,
-//     },
-//   },
-//   NavigationScreen: {
-//     screen: NavigationScreen,
-//     navigationOptions: {
-//       headerShown: false,
-//     },
-//   },
-//   ButteriesScreen: {
-//     screen: ButterySelectionScreen,
-//     navigationOptions: {
-//       title: 'Butteries',
-//     },
-//   },
-//   SettingsScreen: {
-//     screen: SettingsScreen,
-//     navigationOptions: {
-//       title: 'Settings',
-//     },
-//   },
-//   MenuScreen: {
-//     screen: MenuScreen,
-//     navigationOptions: {
-//       title: 'Menu',
-//     },
-//   },
-//   CheckoutScreen: {
-//     screen: CheckoutScreen,
-//     navigationOptions: {
-//       title: 'Checkout',
-//     },
-//   },
-//   OrderStatusScreen: {
-//     screen: OrderStatusScreen,
-//     navigationOptions: {
-//       headerShown: false,
-//       gestureEnabled: false,
-//       title: 'Status',
-//       headerLeft: () => <></>,
-//     },
-//   },
-//   StaffRenderScreen: {
-//     screen: StaffRenderScreen,
-//     navigationOptions: {
-//       headerShown: false,
-//       gestureEnabled: false,
-//       title: 'Staff',
-//       headerLeft: () => <></>,
-//     },
-//   },
-//   CASLoginScreen: {
-//     screen: CASLoginScreen,
-//     navigationOptions: {
-//       headerShown: false,
-//       gestureEnabled: false,
-//       title: 'Login',
-//       headerLeft: () => <></>,
-//     },
-//   },
-//   AboutScreen: {
-//     screen: AboutScreen,
-//     navigationOptions: {
-//       title: 'About Us',
-//     },
-//   },
-//   GuestLoginScreen: {
-//     screen: GuestLoginScreen,
-//     navigationOptions: {
-//       headerShown: false,
-//       title: 'Guest Login',
-//     },
-//   },
-// }
