@@ -3,18 +3,45 @@
   "compilerOptions": {
     "declaration": false,
     "allowSyntheticDefaultImports": true,
+    "module": "commonjs",
+    "target": "es6",
     "baseUrl": ".",
     "paths": {
-        "*": ["node_modules/*", "src/*"],
-        "@env": ["node_modules/react-native-dotenv"]
+      "*": ["node_modules/*", "src/*"],
+      "@env": ["node_modules/react-native-dotenv"]
     },
     "jsx": "react",
+    "strictNullChecks": true,
+    "outDir": "./dist"
   },
-  "exclude": [
-    "**/*.spec.ts",
-    "node_modules",
-    "dist",
-  ],
+  "exclude": ["**/*.spec.ts", "node_modules", "dist"],
   "compileOnSave": false,
-  "typeRoots": ["./types"],
+  "typeRoots": ["./types"]
 }
+
+// {
+//   "compilerOptions": {
+//     "declaration": false,
+//     "emitDecoratorMetadata": true,
+//     "experimentalDecorators": true,
+//     "allowSyntheticDefaultImports": true,
+//     "esModuleInterop": true,
+//     "module": "commonjs",
+//     "moduleResolution": "node",
+//     "sourceMap": true,
+//     "target": "es6",
+//     "baseUrl": ".",
+//     "paths": {
+//       "@src/*": ["src/*"],
+//       "@controllers/*": ["src/controllers/*"],
+//       "@routes/*": ["src/routes/*"],
+//       "@middlewares/*": ["src/middlewares/*"],
+//       "@utils/*": ["src/utils/*"]
+//     },
+//     "strictNullChecks": true,
+//     "outDir": "./dist",
+//   },
+//   "include": ["src/**/*", "prisma", "stripe.ts"],
+//   "exclude": ["**/*.spec.ts", "node_modules", "vendor", "public"],
+//   "compileOnSave": false
+// }

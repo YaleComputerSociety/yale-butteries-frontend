@@ -1,4 +1,5 @@
-import React, { useState, FC } from 'react'
+import type { FC } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View, Text, Pressable, TouchableWithoutFeedback, Keyboard, Image, Dimensions } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import EvilModal from '../components/EvilModal'
@@ -6,7 +7,7 @@ import EvilModal from '../components/EvilModal'
 const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [connection, setConnection] = useState(true)
 
-  const windowWidth = Dimensions.get('window').widt
+  const windowWidth = Dimensions.get('window').width
 
   const onLogin = async () => {
     navigation.navigate('CASLoginScreen')
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
   },
 })
 
-StartScreen['navigationOptions'] = () => {
+StartScreen.navigationOptions = () => {
   return {
     gestureEnabled: false,
   }
