@@ -1,9 +1,10 @@
-import React, { useState, FC, useEffect } from 'react'
-import { StyleSheet, View, Text, Pressable, Dimensions, TextInput } from 'react-native'
-import * as Random from 'expo-crypto'
-import { asyncVerifyStaffLogin, setCurrentUserState } from '../store/slices/CurrentUser'
+import type { FC } from 'react'
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, View, Text, Pressable, TextInput } from 'react-native'
+import { asyncVerifyStaffLogin } from '../store/slices/CurrentUser'
 import { useAppDispatch, useAppSelector } from '../store/ReduxStore'
 import { asyncCreateUser } from '../store/slices/Users'
+import type { NewUser } from '../utils/types'
 
 const GuestLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
@@ -14,22 +15,16 @@ const GuestLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [loadingUser, setLoadingUser] = useState(false)
   const [connection, setConnection] = useState(true)
 
-  const checkInfo = async () => {
+  const checkInfo = async (): Promise<void> => {
     const verified = await asyncVerifyStaffLogin(username, password)
     if (verified) {
-      let token = ''
-      token += Random.getRandomBytes(8).toString()
-
-      const newUser = {
-        email: 'appleDevTester@gmail.com',
-        netid: 'STAFF',
-        name: username,
-        college: 'morse',
-        token: password,
-        permissions: 'dev',
+      const newUser: NewUser = {
+        netId: 'guest',
+        collegeId: 14,
+        role: 'CUSTOMER',
       }
 
-      dispatch(asyncCreateUser(newUser, token)).then((success) => {
+      dispatch(asyncCreateUser(newUser)).then((success: boolean) => {
         if (!success) {
           setConnection(false)
         }
@@ -39,14 +34,14 @@ const GuestLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   }
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser != null) {
       navigation.navigate('ButteriesScreen')
     }
-  }, [currentUser])
+  }, [currentUser, navigation])
 
   return (
     <View style={styles.style1}>
-      <Text style={[styles.casText, { fontSize: 24 }]}>Guest Login</Text>
+      <Text style={[styles.casText, styles.guestLoginText]}>Guest Login</Text>
       <TextInput
         style={styles.input}
         autoCorrect={false}
@@ -71,6 +66,7 @@ const GuestLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  guestLoginText: { fontSize: 24 },
   logoText: {
     fontSize: 38,
     color: '#fff',

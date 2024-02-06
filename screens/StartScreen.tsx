@@ -1,19 +1,17 @@
 import type { FC } from 'react'
 import React, { useState } from 'react'
-import { StyleSheet, View, Text, Pressable, TouchableWithoutFeedback, Keyboard, Image, Dimensions } from 'react-native'
+import { StyleSheet, View, Text, Pressable, TouchableWithoutFeedback, Keyboard, Image } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import EvilModal from '../components/EvilModal'
 
 const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [connection, setConnection] = useState(true)
 
-  const windowWidth = Dimensions.get('window').width
-
-  const onLogin = async () => {
+  const onLogin = (): void => {
     navigation.navigate('CASLoginScreen')
   }
 
-  const onGuest = () => {
+  const onGuest = (): void => {
     navigation.navigate('GuestLoginScreen')
   }
 
@@ -21,12 +19,12 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
     <LinearGradient colors={['#4E65FF', '#0bcaca']} locations={[0, 1]}>
       <EvilModal toggle={setConnection} display={!connection} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={{ height: '100%', width: '100%', backgroundColor: 'transparent' }}>
+        <View style={styles.container}>
           <View style={styles.style1}>
             <View>
               <Image source={require('../assets/images/logo_transparent.png')} style={styles.logo} />
               <Text numberOfLines={1} adjustsFontSizeToFit style={styles.logoText}>
-                Yale<Text style={{ color: '#00356b' }}>Butteries</Text>
+                Yale<Text style={styles.yaleTitle}>Butteries</Text>
               </Text>
             </View>
             <Pressable onPress={onLogin} style={({ pressed }) => [styles.button, { opacity: pressed ? 0.85 : 1 }]}>
@@ -34,9 +32,7 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
             </Pressable>
           </View>
           <Pressable onPress={onGuest} style={({ pressed }) => [{ opacity: pressed ? 0.85 : 1 }]}>
-            <Text style={{ textDecorationLine: 'underline', alignSelf: 'center', color: '#444', marginBottom: 30 }}>
-              Login as Guest
-            </Text>
+            <Text style={styles.guestLoginText}>Login as Guest</Text>
           </Pressable>
         </View>
       </TouchableWithoutFeedback>
@@ -45,6 +41,9 @@ const StartScreen: FC<{ navigation: any }> = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  guestLoginText: { textDecorationLine: 'underline', alignSelf: 'center', color: '#444', marginBottom: 30 },
+  yaleTitle: { color: '#00356b' },
+  container: { height: '100%', width: '100%', backgroundColor: 'transparent' },
   logoText: {
     fontSize: 38,
     color: '#fff',
