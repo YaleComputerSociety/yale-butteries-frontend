@@ -1,15 +1,16 @@
-import React, { FC, useEffect, useRef, useState } from 'react'
+import type { FC } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
-import * as Random from 'expo-crypto'
 import { useAppDispatch, useAppSelector } from '../store/ReduxStore'
 import { asyncCreateUser } from '../store/slices/Users'
+import type { NativeSyntheticEvent } from 'react-native'
 import { ActivityIndicator, View, StyleSheet, AppState } from 'react-native'
 import EvilModal from '../components/EvilModal'
 import { useIsFocused } from '@react-navigation/native'
 import { baseUrl } from '../utils/constants'
-import { NewUser } from '../utils/types'
+import type { MainStackScreenProps, NewUser } from '../utils/types'
 
-const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
+const CASLoginScreen: FC<MainStackScreenProps<'CASLoginScreen'>> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
 
@@ -36,22 +37,21 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   // Only try to create the user once the user has successfully logged in AND they're inside the app. Otherwise, duo push will sometimes crash the app
   useEffect(() => {
-    if (loadingUser && appStateVisible==='active') {
-
+    if (loadingUser && appStateVisible === 'active') {
       const newUser: NewUser = {
-        netId: netId,
+        netId,
         collegeId: 14,
         role: 'CUSTOMER',
       }
 
-      dispatch(asyncCreateUser(newUser)).then((success) => {
+      dispatch(asyncCreateUser(newUser)).then((success: boolean) => {
         if (!success) {
           setConnection(false)
         }
         setLoadingUser(false)
       })
     }
-  }, [loadingUser, appStateVisible])
+  }, [loadingUser, appStateVisible, netId, dispatch])
 
   // Prevent the injected javascript from running twice
   useEffect(() => {
@@ -59,25 +59,25 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   }, [])
 
   useEffect(() => {
-    if (isFocused && currentUser) {
+    if (isFocused && currentUser != null) {
       if (currentUser.role === 'STAFF') {
         navigation.navigate('NavigationScreen')
       } else {
         navigation.navigate('ButteriesScreen')
       }
     }
-  }, [currentUser, isFocused])
+  }, [currentUser, isFocused, navigation])
 
   // Once the user logs in with CAS, use the netid to either create a new user, or reference the existing user
-  const handleLogin = async (event) => {
+  const handleLogin = (event: NativeSyntheticEvent<{ data: string }>): void => {
     if (initial) {
-      const netId = event.nativeEvent.data
-      setNetId(netId)
+      setNetId(event.nativeEvent.data)
       setLoadingUser(true)
     }
     setInitial(false)
   }
 
+  /* eslint-disable no-useless-escape */
   // Javascript to inject into the webview
   // takes the html content, checks whether it's the correct page, and sends the netid of the logged in user if it is
   const getHtmlContent = `
@@ -94,6 +94,7 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
       }
     })();
   `
+  /* eslint-enable no-useless-escape */
 
   return (
     <View style={styles.container}>
@@ -106,7 +107,7 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         <WebView
           source={{ uri: baseUrl + 'cas' }}
           injectedJavaScript={getHtmlContent}
-          style={{ flex: 1, marginTop: 0, marginBottom: 0 }}
+          style={styles.webView}
           onMessage={handleLogin}
         />
       )}
@@ -115,6 +116,7 @@ const CASLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  webView: { flex: 1, marginTop: 0, marginBottom: 0 },
   container: {
     flex: 1,
     justifyContent: 'center',
