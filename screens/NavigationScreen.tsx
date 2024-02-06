@@ -2,8 +2,9 @@ import * as React from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import { home } from '../styles/ButteriesStyles'
 import { LinearGradient } from 'expo-linear-gradient'
+import type { MainStackScreenProps } from '../utils/types'
 
-const NavigationScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+const NavigationScreen: React.FC<MainStackScreenProps<'NavigationScreen'>> = ({ navigation }) => {
   return (
     <LinearGradient colors={['#4E65FF', '#0CBABA']} locations={[0, 1]}>
       <View style={styles.view1}>
@@ -34,12 +35,6 @@ const NavigationScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       </View>
     </LinearGradient>
   )
-}
-
-NavigationScreen['navigationOptions'] = () => {
-  return {
-    gestureEnabled: false,
-  }
 }
 
 export default NavigationScreen

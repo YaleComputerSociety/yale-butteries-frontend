@@ -41,7 +41,11 @@ const AppNavigator: React.FC = () => {
         component={StartScreen}
         options={{ headerShown: false, gestureEnabled: false }}
       />
-      <MainStack.Screen name="NavigationScreen" component={NavigationScreen} options={{ headerShown: false }} />
+      <MainStack.Screen
+        name="NavigationScreen"
+        component={NavigationScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
       <MainStack.Screen name="ButteriesScreen" component={ButterySelectionScreen} options={{ title: 'Butteries' }} />
       <MainStack.Screen name="SettingsScreen" component={SettingsScreen} options={{ title: 'Settings' }} />
       <MainStack.Screen name="MenuScreen" component={MenuScreen} options={{ title: 'Menu' }} />
