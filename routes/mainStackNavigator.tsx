@@ -1,5 +1,8 @@
 import React from 'react'
+import type { StackNavigationProp } from '@react-navigation/stack'
 import { createStackNavigator } from '@react-navigation/stack'
+import { StyleSheet } from 'react-native'
+import Ionicon from 'react-native-vector-icons/Ionicons'
 
 import ButterySelectionScreen from '../screens/customer/ButteriesScreen'
 import MenuScreen from '../screens/customer/MenuScreen'
@@ -13,6 +16,7 @@ import DummyScreen from '../screens/DummyScreen'
 import CASLoginScreen from '../screens/CASLoginScreen'
 import AboutScreen from '../screens/AboutScreen'
 import GuestLoginScreen from '../screens/GuestLoginScreen'
+import { useNavigation } from '@react-navigation/native'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type MainStackParamList = {
@@ -29,6 +33,25 @@ export type MainStackParamList = {
   AboutScreen: undefined
   GuestLoginScreen: undefined
 }
+
+const SettingsHeader: React.FC = () => {
+  const navigation: StackNavigationProp<MainStackParamList> = useNavigation()
+  return (
+    <Ionicon
+      name="settings-sharp"
+      size={20}
+      color="#fff"
+      onPress={() => {
+        navigation.navigate('SettingsScreen')
+      }}
+      style={styles.settingsHeader}
+    />
+  )
+}
+
+const styles = StyleSheet.create({
+  settingsHeader: { paddingRight: 20 },
+})
 
 const MainStack = createStackNavigator<MainStackParamList>()
 
@@ -50,7 +73,16 @@ const AppNavigator: React.FC = () => {
         component={NavigationScreen}
         options={{ headerShown: false, gestureEnabled: false }}
       />
-      <MainStack.Screen name="ButteriesScreen" component={ButterySelectionScreen} options={{ title: 'Butteries' }} />
+      <MainStack.Screen
+        name="ButteriesScreen"
+        component={ButterySelectionScreen}
+        options={() => ({
+          title: 'Butteries',
+          gestureEnabled: false,
+          headerLeft: () => null,
+          headerRight: SettingsHeader,
+        })}
+      />
       <MainStack.Screen name="SettingsScreen" component={SettingsScreen} options={{ title: 'Settings' }} />
       <MainStack.Screen name="MenuScreen" component={MenuScreen} options={{ title: 'Menu' }} />
       <MainStack.Screen name="CheckoutScreen" component={CheckoutScreen} options={{ title: 'Checkout' }} />

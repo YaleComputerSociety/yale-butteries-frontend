@@ -1,108 +1,103 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Text, View, ScrollView, ActivityIndicator, RefreshControl, Alert } from 'react-native'
+import { Text, View, ScrollView, ActivityIndicator, RefreshControl, StyleSheet } from 'react-native'
+import Ionicon from 'react-native-vector-icons/Ionicons'
+import { useIsFocused } from '@react-navigation/native'
+import { LinearGradient } from 'expo-linear-gradient'
+
 import { home } from '../../styles/ButteriesStyles'
 import { ButteryCard } from '../../components/customer/ButteryCard'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { setCollege } from '../../store/slices/OrderCart'
-import Ionicon from 'react-native-vector-icons/Ionicons'
-import { LinearGradient } from 'expo-linear-gradient'
 import { registerForPushNotificationsAsync, getDaysOpen, getHours, getCollegeOpen } from '../../utils/functions'
 import { asyncFetchColleges } from '../../store/slices/Colleges'
-import { useIsFocused } from '@react-navigation/native'
-import type { NavigationStackProp } from 'react-navigation-stack'
-import type { MainStackParamList } from '../../routes/mainStackNavigator'
+import type { MainStackScreenProps } from '../../utils/types'
 
-const ButterySelectionScreen: React.FC<{ navigation: NavigationStackProp<MainStackParamList, 'ButteriesScreen'> }> = ({
-  navigation,
-}) => {
+const ButterySelectionScreen: React.FC<MainStackScreenProps<'DummyScreen'>> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
 
   const [refreshing, setRefreshing] = useState(false)
   const [begin, setBegin] = useState(true)
-  const [connection, setConnection] = useState(true)
 
   const { colleges, isLoading } = useAppSelector((state) => state.colleges)
 
   // const[begin, setBegin] = useState(false)
 
   useEffect(() => {
-    dispatch(asyncFetchColleges()).then((success: boolean) => {
-      if (!success) {
-        setConnection(false)
-      }
-    })
-  }, [isFocused])
+    dispatch(asyncFetchColleges())
+  }, [dispatch, isFocused])
 
   useEffect(() => {
-    const push = async () => {
-      const token = await registerForPushNotificationsAsync()
+    const push = async (): Promise<void> => {
+      await registerForPushNotificationsAsync()
       // Alert.alert(token ? token : 'no token')
     }
-    push()
+    push().catch((e) => {
+      console.error(e)
+    })
   }, [])
 
   useEffect(() => {
-    if (!isLoading && colleges) {
+    if (!isLoading && colleges != null) {
       setBegin(false)
     }
-  }, [isLoading])
+  }, [colleges, isLoading])
 
   const butteries: CollegeInfo[] = [
     {
-      ne: 'Morse',
+      name: 'Morse',
       active: false,
     },
     {
-      ne: 'Berkeley',
+      name: 'Berkeley',
       active: false,
     },
     {
-      ne: 'Branford',
+      name: 'Branford',
       active: false,
     },
     {
-      ne: 'Davenport',
+      name: 'Davenport',
       active: false,
     },
     {
-      ne: 'Franklin',
+      name: 'Franklin',
       active: false,
     },
     {
-      ne: 'Hopper',
+      name: 'Hopper',
       active: false,
     },
     {
-      ne: 'JE',
+      name: 'JE',
       active: false,
     },
     {
-      ne: 'Murray',
+      name: 'Murray',
       active: false,
     },
     {
-      ne: 'Pierson',
+      name: 'Pierson',
       active: false,
     },
     {
-      ne: 'Saybrook',
+      name: 'Saybrook',
       active: false,
     },
     {
-      ne: 'Silliman',
+      name: 'Silliman',
       active: false,
     },
     {
-      ne: 'Stiles',
+      name: 'Stiles',
       active: false,
     },
     {
-      ne: 'TD',
+      name: 'TD',
       active: false,
     },
     {
-      ne: 'Trumbull',
+      name: 'Trumbull',
       active: true,
     },
   ]
@@ -113,16 +108,16 @@ const ButterySelectionScreen: React.FC<{ navigation: NavigationStackProp<MainSta
   }
 
   interface CollegeInfo {
-    ne: string
+    name: string
     active: boolean
   }
 
-  const getCollegeVisual = (collegeInfo: CollegeInfo, index: number) => {
-    const navigationNe: string = collegeInfo.ne.length > 2 ? collegeInfo.ne.toLowerCase() : collegeInfo.ne
+  const getCollegeVisual = (collegeInfo: CollegeInfo, index: number): React.ReactElement => {
+    const navigationName: string = collegeInfo.name.length > 2 ? collegeInfo.name.toLowerCase() : collegeInfo.name
     let offset = (index - 1) * 80
-    if (collegeInfo.ne == 'Stiles') {
+    if (collegeInfo.name === 'Stiles') {
       offset = 240
-    } else if (collegeInfo.ne == 'Morse') {
+    } else if (collegeInfo.name === 'Morse') {
       offset = 560
     } else if ((index > 3 && index < 7) || index >= 12) {
       offset += 80
@@ -130,25 +125,30 @@ const ButterySelectionScreen: React.FC<{ navigation: NavigationStackProp<MainSta
       offset += 160
     }
 
+    if (colleges == null) {
+      throw new Error('colleges are not defined')
+    }
+
     return (
       <ButteryCard
         onPress={() => {
-          toMenu(navigationNe)
+          toMenu(navigationName)
         }}
-        college={collegeInfo.ne}
-        openTime={getHours(colleges, collegeInfo.ne.toLowerCase())[0]}
-        closeTime={getHours(colleges, collegeInfo.ne.toLowerCase())[1]}
+        college={collegeInfo.name}
+        openTime={getHours(colleges, collegeInfo.name.toLowerCase())[0]}
+        closeTime={getHours(colleges, collegeInfo.name.toLowerCase())[1]}
         offsetY={offset}
         active={collegeInfo.active}
         key={index}
-        isOpen={getCollegeOpen(colleges, collegeInfo.ne.toLowerCase())}
-        daysOpen={getDaysOpen(colleges, collegeInfo.ne.toLowerCase())}
+        isOpen={getCollegeOpen(colleges, collegeInfo.name.toLowerCase())}
+        daysOpen={getDaysOpen(colleges, collegeInfo.name.toLowerCase())}
+        isAcceptingOrders={true}
       />
     )
   }
 
-  const getAllCards = () => {
-    const collegeCards: JSX.Element[] = []
+  const getAllCards = (): React.ReactElement => {
+    const collegeCards: React.ReactElement[] = []
 
     for (let i = 0; i < butteries.length - 1; i++) {
       collegeCards.push(getCollegeVisual(butteries[i], i))
@@ -159,24 +159,17 @@ const ButterySelectionScreen: React.FC<{ navigation: NavigationStackProp<MainSta
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
-    await dispatch(asyncFetchColleges()).then((success: boolean) => {
-      if (!success) {
-        setConnection(false)
-      }
-    })
+    await dispatch(asyncFetchColleges())
     setRefreshing(false)
-  }, [])
+  }, [dispatch])
 
   return (
-    <View style={{ width: '100%', height: '100%' }}>
+    <View style={styles.outerContainer}>
       {begin ? (
         <LinearGradient colors={['#121212', '#121212']} locations={[0, 1]}>
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-            style={{ width: '100%', height: '100%' }}
-          >
-            <View style={{ height: '100%', alignItems: 'center' }}>
-              <ActivityIndicator color="rgba(255,255,255,0.72)" style={{ height: '100%' }} size="large" />
+          <ScrollView contentContainerStyle={styles.scrollViewContentContainer} style={styles.outerContainer}>
+            <View style={styles.activityIndicatorContainer}>
+              <ActivityIndicator color="rgba(255,255,255,0.72)" style={styles.activityIndicator} size="large" />
             </View>
           </ScrollView>
         </LinearGradient>
@@ -187,6 +180,7 @@ const ButterySelectionScreen: React.FC<{ navigation: NavigationStackProp<MainSta
           alwaysBounceVertical={false}
           bounces={true}
           refreshControl={
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             <RefreshControl tintColor="rgba(255,255,255,0.72)" refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
@@ -199,12 +193,20 @@ const ButterySelectionScreen: React.FC<{ navigation: NavigationStackProp<MainSta
               {getAllCards()}
             </View>
           </LinearGradient>
-          <View style={{ height: 25, opacity: 1 }} />
+          <View style={styles.bottomSpacer} />
         </ScrollView>
       )}
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  outerContainer: { width: '100%', height: '100%' },
+  scrollViewContentContainer: { flexGrow: 1, justifyContent: 'center' },
+  activityIndicatorContainer: { height: '100%', alignItems: 'center' },
+  activityIndicator: { height: '100%' },
+  bottomSpacer: { height: 25, opacity: 1 },
+})
 
 ButterySelectionScreen.navigationOptions = (navData) => {
   return {
@@ -225,6 +227,3 @@ ButterySelectionScreen.navigationOptions = (navData) => {
 }
 
 export default ButterySelectionScreen
-function useAppFocus() {
-  throw new Error('Function not implemented.')
-}
