@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { StyleSheet } from 'react-native'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
-import ButterySelectionScreen from '../screens/customer/ButteriesScreen'
+import ButteriesScreen from '../screens/customer/ButteriesScreen'
 import MenuScreen from '../screens/customer/MenuScreen'
 import CheckoutScreen from '../screens/customer/CheckoutScreen'
 import SettingsScreen from '../screens/customer/SettingsScreen'
@@ -75,7 +75,7 @@ const AppNavigator: React.FC = () => {
       />
       <MainStack.Screen
         name="ButteriesScreen"
-        component={ButterySelectionScreen}
+        component={ButteriesScreen}
         options={() => ({
           title: 'Butteries',
           gestureEnabled: false,

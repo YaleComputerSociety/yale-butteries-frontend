@@ -11,7 +11,7 @@ import { registerForPushNotificationsAsync, getDaysOpen, getHours, getCollegeOpe
 import { asyncFetchColleges } from '../../store/slices/Colleges'
 import type { MainStackScreenProps } from '../../utils/types'
 
-const ButterySelectionScreen: React.FC<MainStackScreenProps<'DummyScreen'>> = ({ navigation }) => {
+const ButteriesScreen: React.FC<MainStackScreenProps<'DummyScreen'>> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
 
@@ -207,4 +207,4 @@ const styles = StyleSheet.create({
   bottomSpacer: { height: 25, opacity: 1 },
 })
 
-export default ButterySelectionScreen
+export default ButteriesScreen
