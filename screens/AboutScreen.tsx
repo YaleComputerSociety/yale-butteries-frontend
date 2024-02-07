@@ -1,7 +1,9 @@
-import React, { FC } from 'react'
-import { StyleSheet, View, Text, ScrollView, Image } from 'react-native'
+import type { FC } from 'react'
+import React from 'react'
+import { StyleSheet, View, Text, ScrollView } from 'react-native'
+import type { MainStackScreenProps } from '../utils/types'
 
-const AboutScreen: FC<{ navigation: any }> = ({ navigation }) => {
+const AboutScreen: FC<MainStackScreenProps<'AboutScreen'>> = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.about}>
@@ -9,7 +11,7 @@ const AboutScreen: FC<{ navigation: any }> = ({ navigation }) => {
           Late-night study grind? Returning from a rowdy weekend gathering? Simply ravenous?{'\n'}
         </Text>
         <Text style={[styles.text2, { fontFamily: 'Roboto', color: '#0e7df0' }]}>
-          Don't fret. We've got you covered. &#x1F924; {'\n'}
+          Don&apos;t fret. We&apos;ve got you covered. &#x1F924; {'\n'}
         </Text>
         <Text style={[styles.text2, { marginTop: 5 }]}>
           <Text style={[styles.text2, { marginTop: 5 }]}>YaleButteries offers a quick and easy way for Yale</Text>{' '}
@@ -64,7 +66,7 @@ const AboutScreen: FC<{ navigation: any }> = ({ navigation }) => {
         </Text>
       </View>
 
-      <View style={{ height: 40, width: '100%' }}></View>
+      <View style={{ height: 40, width: '100%' }} />
     </ScrollView>
   )
 }
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
   },
 })
 
-AboutScreen['navigationOptions'] = (navData) => {
+AboutScreen.navigationOptions = (navData) => {
   return {
     headerTitleStyle: {
       color: 'rgba(255,255,255,0.82)',
