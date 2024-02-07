@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Text, View, ScrollView, ActivityIndicator, RefreshControl, StyleSheet } from 'react-native'
-import Ionicon from 'react-native-vector-icons/Ionicons'
 import { useIsFocused } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 
@@ -207,23 +206,5 @@ const styles = StyleSheet.create({
   activityIndicator: { height: '100%' },
   bottomSpacer: { height: 25, opacity: 1 },
 })
-
-ButterySelectionScreen.navigationOptions = (navData) => {
-  return {
-    gestureEnabled: false,
-    headerLeft: () => <></>,
-    headerRight: () => (
-      <Ionicon
-        name="settings-sharp"
-        size={20}
-        color="#fff"
-        onPress={() => {
-          navData.navigation.navigate('SettingsScreen')
-        }}
-        style={{ paddingRight: 20 }}
-      />
-    ),
-  }
-}
 
 export default ButterySelectionScreen
