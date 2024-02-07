@@ -35,7 +35,11 @@ const MainStack = createStackNavigator<MainStackParamList>()
 const AppNavigator: React.FC = () => {
   return (
     <MainStack.Navigator screenOptions={screenOptions}>
-      <MainStack.Screen name="DummyScreen" component={DummyScreen} options={{ headerShown: false }} />
+      <MainStack.Screen
+        name="DummyScreen"
+        component={DummyScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
       <MainStack.Screen
         name="StartScreen"
         component={StartScreen}
