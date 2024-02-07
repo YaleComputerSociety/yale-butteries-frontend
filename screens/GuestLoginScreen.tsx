@@ -4,16 +4,14 @@ import { StyleSheet, View, Text, Pressable, TextInput } from 'react-native'
 import { asyncVerifyStaffLogin } from '../store/slices/CurrentUser'
 import { useAppDispatch, useAppSelector } from '../store/ReduxStore'
 import { asyncCreateUser } from '../store/slices/Users'
-import type { NewUser } from '../utils/types'
+import type { MainStackScreenProps, NewUser } from '../utils/types'
 
-const GuestLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
+const GuestLoginScreen: FC<MainStackScreenProps<'GuestLoginScreen'>> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const [username, setUser] = useState('')
   const [password, setPassword] = useState('')
 
   const { currentUser } = useAppSelector((state) => state.currentUser)
-  const [loadingUser, setLoadingUser] = useState(false)
-  const [connection, setConnection] = useState(true)
 
   const checkInfo = async (): Promise<void> => {
     const verified = await asyncVerifyStaffLogin(username, password)
@@ -24,12 +22,7 @@ const GuestLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         role: 'CUSTOMER',
       }
 
-      dispatch(asyncCreateUser(newUser)).then((success: boolean) => {
-        if (!success) {
-          setConnection(false)
-        }
-        setLoadingUser(false)
-      })
+      dispatch(asyncCreateUser(newUser))
     }
   }
 
@@ -58,6 +51,7 @@ const GuestLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
         value={password}
         placeholder="Password"
       />
+      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <Pressable style={({ pressed }) => [styles.button, { opacity: pressed ? 0.85 : 1 }]} onPress={checkInfo}>
         <Text style={styles.casText}>Login</Text>
       </Pressable>
