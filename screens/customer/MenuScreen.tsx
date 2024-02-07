@@ -249,17 +249,6 @@ MenuScreen.navigationOptions = (navData) => {
       borderWidth: 0,
     },
     headerTitle: returnCollegeName(collegeName)[0],
-    headerRight: () => (
-      <Ionicon
-        name="settings-sharp"
-        size={20}
-        color="#fff"
-        onPress={() => {
-          navData.navigation.navigate('SettingsScreen')
-        }}
-        style={{ paddingRight: 20 }}
-      />
-    ),
   }
 }
 

@@ -17,6 +17,7 @@ import CASLoginScreen from '../screens/CASLoginScreen'
 import AboutScreen from '../screens/AboutScreen'
 import GuestLoginScreen from '../screens/GuestLoginScreen'
 import { useNavigation } from '@react-navigation/native'
+import { returnCollegeName } from '../utils/functions'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type MainStackParamList = {
@@ -84,7 +85,24 @@ const AppNavigator: React.FC = () => {
         })}
       />
       <MainStack.Screen name="SettingsScreen" component={SettingsScreen} options={{ title: 'Settings' }} />
-      <MainStack.Screen name="MenuScreen" component={MenuScreen} options={{ title: 'Menu' }} />
+      <MainStack.Screen
+        name="MenuScreen"
+        component={MenuScreen}
+        options={({ route }) => {
+          const collegeName = route.params.collegeName.length > 0 ? route.params.collegeName : 'Menu'
+
+          return {
+            title: returnCollegeName(collegeName)[0],
+            gestureEnabled: false,
+            headerLeft: () => null,
+            headerRight: SettingsHeader,
+            headerStyle: {
+              backgroundColor: returnCollegeName(collegeName)[1],
+              borderWidth: 0,
+            },
+          }
+        }}
+      />
       <MainStack.Screen name="CheckoutScreen" component={CheckoutScreen} options={{ title: 'Checkout' }} />
       <MainStack.Screen
         name="OrderStatusScreen"
