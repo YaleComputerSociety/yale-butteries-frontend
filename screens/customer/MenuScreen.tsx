@@ -161,12 +161,12 @@ const MenuScreen: FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route 
                 }}
                 toDrink={() => {
                   if (sectionListRef.current != null) {
-                    sectionListRef.current.scrollToLocation({ sectionIndex: 1, itemIndex: 0, animated: true })
+                    sectionListRef.current.scrollToLocation({ sectionIndex: 1, itemIndex: 1, animated: true })
                   }
                 }}
                 toDessert={() => {
                   if (sectionListRef.current != null) {
-                    sectionListRef.current.scrollToLocation({ sectionIndex: 2, itemIndex: 0, animated: true })
+                    sectionListRef.current.scrollToLocation({ sectionIndex: 2, itemIndex: 1, animated: true })
                   }
                 }}
               />
