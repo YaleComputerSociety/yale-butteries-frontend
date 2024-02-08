@@ -5,11 +5,10 @@ import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { loading } from '../../styles/GlobalStyles'
 import CheckoutItem from '../../components/customer/CheckoutItem'
 import * as Device from 'expo-device'
-import { priceToText, returnCollegeName } from '../../utils/functions'
+import { priceToText } from '../../utils/functions'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 import { setOrder } from '../../store/slices/Order'
 import { removeOrderItem } from '../../store/slices/OrderCart'
-import Ionicon from 'react-native-vector-icons/Ionicons'
 import { baseUrl, stripePK } from '../../utils/constants'
 import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
@@ -41,13 +40,6 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
       setGoBackDisabled(true)
     }
   }, [orderItems.length])
-
-  const updateDisabled = (b: boolean) => {
-    navigation.setParams({
-      disabled: b,
-    })
-    setGoBackDisabled(b)
-  }
 
   const customAppearance = {
     colors: {
@@ -117,7 +109,7 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
     return data.paymentIntent
   }
 
-  const safetyCheck = () => {
+  const safetyCheck = (): void => {
     Alert.alert(
       'Are you sure you would like to place this order?',
       'This action cannot be undone',
@@ -126,7 +118,7 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
         {
           text: 'Cancel',
           onPress: () => {
-            updateDisabled(false)
+            setGoBackDisabled(false)
           },
         },
       ],
@@ -142,7 +134,7 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
 
       // user cancelled or there was an error
       // if (!paymentIntent) {
-      //   updateDisabled(false)
+      //   setGoBackDisabled(false)
       //   return
       // }
 
@@ -180,7 +172,7 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
       dispatch(setOrder(order))
 
       Alert.alert('Order sent, thank you!')
-      updateDisabled(false)
+      setGoBackDisabled(false)
 
       let token = ''
       if (Device.isDevice) {
@@ -212,14 +204,12 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
       console.error(err)
       Alert.alert(err)
       // Alert.alert('Something went wrong, check your internet connection')
-      updateDisabled(false)
+      setGoBackDisabled(false)
     }
   }
 
-  const removeOrder = (newItem: OrderItem) => {
-    const item = orderItems.find((item) => item.orderItem.id == newItem.id)
-    console.log(orderItems, newItem, item)
-    // problem is they all have the same id
+  const removeOrder = (newItem: OrderItem): void => {
+    const item = orderItems.find((orderCartItem) => orderCartItem.orderItem.id === newItem.id)
     if (item === undefined) {
       throw new TypeError("Couldn't find orderItem to delete")
     }
@@ -261,7 +251,7 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
                   checkout.checkoutButton,
                 ]}
                 onPress={() => {
-                  updateDisabled(true)
+                  setGoBackDisabled(true)
                   safetyCheck()
                 }}
               >
@@ -276,42 +266,6 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
       )}
     </View>
   )
-}
-
-CheckoutScreen.navigationOptions = (navData) => {
-  const collegeName = navData.navigation.getParam('collegeName')
-  const disabled = navData.navigation.getParam('disabled') || false
-
-  return {
-    gestureEnabled: !disabled,
-    headerStyle: {
-      backgroundColor: returnCollegeName(collegeName)[1],
-    },
-    headerLeft: () => (
-      <Ionicon
-        disabled={disabled}
-        name="chevron-back"
-        size={30}
-        color="#fff"
-        onPress={() => {
-          navData.navigation.navigate('MenuScreen')
-        }}
-        style={{ paddingLeft: 15 }}
-      />
-    ),
-    headerRight: () => (
-      <Ionicon
-        disabled={disabled}
-        name="settings-sharp"
-        size={20}
-        color="#fff"
-        onPress={() => {
-          navData.navigation.navigate('SettingsScreen')
-        }}
-        style={{ paddingRight: 20 }}
-      />
-    ),
-  }
 }
 
 export default CheckoutScreen
