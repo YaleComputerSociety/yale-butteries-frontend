@@ -27,7 +27,7 @@ export type MainStackParamList = {
   ButteriesScreen: undefined
   SettingsScreen: undefined
   MenuScreen: { collegeName: string }
-  CheckoutScreen: undefined
+  CheckoutScreen: { collegeName: string }
   OrderStatusScreen: undefined
   StaffRenderScreen: undefined
   CASLoginScreen: undefined

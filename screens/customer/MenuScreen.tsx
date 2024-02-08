@@ -27,10 +27,10 @@ const MenuScreen: FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route 
   const isFocused = useIsFocused()
   const { menuItems } = useAppSelector((state) => state.menuItems)
   const { orderItems, college: collegeOrderCart } = useAppSelector((state) => state.orderCart)
-  const { colleges, isLoading } = useAppSelector((state) => state.colleges)
+  const { colleges } = useAppSelector((state) => state.colleges)
 
-  const [currentMenuItems, setCurrentMenuItems] = useState([])
-  const [index, setIndex] = useState(0)
+  const [currentMenuItems, setCurrentMenuItems] = useState<MenuItem[]>([])
+  const [menuItemIndex, setMenuItemIndex] = useState(0)
   const [priceTotal, setPriceTotal] = useState(getPriceFromOrderItems(orderItems))
   const [refreshing, setRefreshing] = useState(false)
   const [begin, setBegin] = useState(true)
@@ -44,26 +44,28 @@ const MenuScreen: FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route 
         setConnection(false)
       }
     })
-  }, [isFocused])
+  }, [dispatch, isFocused])
 
   useEffect(() => {
-    if (menuItems) {
+    if (menuItems != null) {
+      if (colleges == null) throw new Error('Colleges are not defined')
       setCurrentMenuItems(
         menuItems.filter((menuItem) => {
           return (
             getCollegeFromId(menuItem.collegeId, colleges).name.toLowerCase() === collegeOrderCart.toLowerCase() &&
             menuItem.isActive
           )
+          // eslint-disable-next-line comma-dangle
         })
       )
       setBegin(false)
     }
-  }, [menuItems])
+  }, [collegeOrderCart, colleges, menuItems])
 
   // reset the order cart upon loading the page
   useEffect(() => {
     dispatch(resetOrderCartState())
-  }, [])
+  }, [dispatch])
 
   // when the user pulls down from the top, trigger loading
   const onRefresh = useCallback(async () => {
@@ -74,18 +76,18 @@ const MenuScreen: FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route 
       }
     })
     setRefreshing(false)
-  }, [])
+  }, [dispatch])
 
-  const addOrder = (newItem: MenuItem) => {
-    const i = index
-    setIndex(i + 1)
+  const addOrder = (newItem: MenuItem): void => {
+    const i = menuItemIndex
+    setMenuItemIndex(i + 1)
     const temp: OrderCartItem = { orderItem: newItem, index: i }
     dispatch(addOrderItem(temp))
     setPriceTotal(priceTotal + newItem.price)
   }
 
-  const removeOrder = (newItem: MenuItem) => {
-    const item = orderItems.find((item) => item.orderItem.name == newItem.name)
+  const removeOrder = (newItem: MenuItem): void => {
+    const item = orderItems.find((orderCartItem) => orderCartItem.orderItem.name === newItem.name)
     // problem is they all have the same id
     if (item === undefined) {
       throw new TypeError("Couldn't find orderItem to delete")
@@ -93,26 +95,25 @@ const MenuScreen: FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route 
     dispatch(removeOrderItem(item))
   }
 
-  const sectionListRef = useRef(null)
+  interface SectionType {
+    title: string
+    data: MenuItem[]
+  }
 
-  const sections = [
+  const sectionListRef = useRef<SectionList<MenuItem>>(null)
+
+  const sections: SectionType[] = [
     {
       title: 'Food',
-      data: currentMenuItems.filter((menuItem) => {
-        return menuItem.foodType === 'FOOD'
-      }),
+      data: currentMenuItems.filter((menuItem) => menuItem.foodType === 'FOOD'),
     },
     {
       title: 'Drink',
-      data: currentMenuItems.filter((menuItem) => {
-        return menuItem.foodType === 'DRINK'
-      }),
+      data: currentMenuItems.filter((menuItem) => menuItem.foodType === 'DRINK'),
     },
     {
       title: 'Dessert',
-      data: currentMenuItems.filter((menuItem) => {
-        return menuItem.foodType === 'DESSERT'
-      }),
+      data: currentMenuItems.filter((menuItem) => menuItem.foodType === 'DRINK'),
     },
   ]
 
@@ -130,40 +131,43 @@ const MenuScreen: FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route 
             showsVerticalScrollIndicator={false}
             sections={sections}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={(item) => {
-              return (
-                <MenuItemCard incUpdate={addOrder} decUpdate={removeOrder} menuItem={item.item} items={orderItems} />
-              )
+            renderItem={({ item }) => {
+              return <MenuItemCard incUpdate={addOrder} decUpdate={removeOrder} menuItem={item} items={orderItems} />
             }}
             refreshControl={
-              <RefreshControl tintColor="rgba(255,255,255,0.72)" refreshing={refreshing} onRefresh={onRefresh} />
+              <RefreshControl
+                tintColor="rgba(255,255,255,0.72)"
+                refreshing={refreshing}
+                onRefresh={() => {
+                  void (async () => {
+                    await onRefresh()
+                  })()
+                }}
+              />
             }
             renderSectionHeader={({ section: { title } }) => (
-              <View style={[styles.headerStyle, { backgroundColor: '#2c2c2c' }]}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    textAlignVertical: 'center',
-                    fontFamily: 'HindSiliguri-Bold',
-                    color: 'rgba(255,255,255,0.87)',
-                  }}
-                >
-                  {title}
-                </Text>
+              <View style={styles.headerStyle}>
+                <Text style={styles.categoryText}>{title}</Text>
               </View>
             )}
-            ListFooterComponent={<View style={{ height: 100 }} />}
+            ListFooterComponent={<View style={styles.listFooterSpacer} />}
             ListHeaderComponent={
               <MenuHeader
                 name={collegeName}
                 toFood={() => {
-                  sectionListRef.current.scrollToLocation({ sectionIndex: 0, itemIndex: 1, animated: true })
+                  if (sectionListRef.current != null) {
+                    sectionListRef.current.scrollToLocation({ sectionIndex: 0, itemIndex: 1, animated: true })
+                  }
                 }}
                 toDrink={() => {
-                  sectionListRef.current.scrollToLocation({ sectionIndex: 1, itemIndex: 0, animated: true })
+                  if (sectionListRef.current != null) {
+                    sectionListRef.current.scrollToLocation({ sectionIndex: 1, itemIndex: 0, animated: true })
+                  }
                 }}
                 toDessert={() => {
-                  sectionListRef.current.scrollToLocation({ sectionIndex: 2, itemIndex: 0, animated: true })
+                  if (sectionListRef.current != null) {
+                    sectionListRef.current.scrollToLocation({ sectionIndex: 2, itemIndex: 0, animated: true })
+                  }
                 }}
               />
             }
@@ -179,17 +183,20 @@ const MenuScreen: FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route 
                 styles.cartButton,
               ]}
               onPress={() => {
+                if (colleges == null) throw new Error('Colleges are not defined')
                 if (!getCollegeAcceptingOrders(colleges, collegeOrderCart)) {
                   Alert.alert('Try again later', 'This buttery is currently busy, try again later.', [{ text: 'OK' }])
                 } else {
                   navigation.navigate('CheckoutScreen', { collegeName: collegeOrderCart })
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch((e) => {
+                    console.error(e)
+                  })
                 }
               }}
             >
-              <Text style={[styles.cartText, { marginRight: 25 }]}>Go to Cart</Text>
+              <Text style={[styles.cartText, styles.goToCartMargin]}>Go to Cart</Text>
               <Ionicon name="cart" size={25} color="#fff" />
-              <View style={{ width: 20 }}>
+              <View style={styles.cartButtonContainer}>
                 <Text style={styles.cartText}>{orderItems.length}</Text>
               </View>
             </Pressable>
@@ -201,6 +208,15 @@ const MenuScreen: FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route 
 }
 
 const styles = StyleSheet.create({
+  goToCartMargin: { marginRight: 25 },
+  cartButtonContainer: { width: 20 },
+  listFooterSpacer: { height: 100 },
+  categoryText: {
+    fontSize: 18,
+    textAlignVertical: 'center',
+    fontFamily: 'HindSiliguri-Bold',
+    color: 'rgba(255,255,255,0.87)',
+  },
   headerStyle: {
     marginTop: 10,
     alignSelf: 'center',
@@ -210,7 +226,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 8,
-    backgroundColor: '#383838',
+    backgroundColor: '#2c2c2c',
   },
   cartButton: {
     width: '60%',
@@ -240,16 +256,5 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
 })
-
-MenuScreen.navigationOptions = (navData) => {
-  const collegeName = navData.navigation.getParam('collegeName')
-  return {
-    headerStyle: {
-      backgroundColor: returnCollegeName(collegeName)[1],
-      borderWidth: 0,
-    },
-    headerTitle: returnCollegeName(collegeName)[0],
-  }
-}
 
 export default MenuScreen
