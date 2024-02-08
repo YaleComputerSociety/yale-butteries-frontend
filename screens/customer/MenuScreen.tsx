@@ -117,6 +117,14 @@ const MenuScreen: FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route 
     },
   ]
 
+  const scrollToSection = (sectionIndex: number): void => {
+    sectionListRef.current?.scrollToLocation({
+      sectionIndex,
+      itemIndex: 1,
+      animated: true,
+    })
+  }
+
   return (
     <View style={home.container}>
       <EvilModal toggle={setConnection} display={!connection} />
@@ -155,19 +163,13 @@ const MenuScreen: FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route 
               <MenuHeader
                 name={collegeName}
                 toFood={() => {
-                  if (sectionListRef.current != null) {
-                    sectionListRef.current.scrollToLocation({ sectionIndex: 0, itemIndex: 1, animated: true })
-                  }
+                  scrollToSection(0)
                 }}
                 toDrink={() => {
-                  if (sectionListRef.current != null) {
-                    sectionListRef.current.scrollToLocation({ sectionIndex: 1, itemIndex: 1, animated: true })
-                  }
+                  scrollToSection(1)
                 }}
                 toDessert={() => {
-                  if (sectionListRef.current != null) {
-                    sectionListRef.current.scrollToLocation({ sectionIndex: 2, itemIndex: 1, animated: true })
-                  }
+                  scrollToSection(2)
                 }}
               />
             }
