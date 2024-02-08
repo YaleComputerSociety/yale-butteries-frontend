@@ -1,5 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { FC } from 'react'
+import type { FC } from 'react'
+import React from 'react'
 import { View, StyleSheet, Pressable, Text, Image } from 'react-native'
 
 interface Props {
@@ -10,13 +11,16 @@ interface Props {
 }
 
 export const MenuHeader: FC<Props> = ({ toDessert, toDrink, toFood, name }: Props) => {
-  function getImage(collegeName: string) {
-    if (collegeName == 'morse') {
+  const getImage = (collegeName: string): React.ReactElement => {
+    if (collegeName === 'morse') {
       return <Image source={require('../../assets/images/TheMorsel.png')} style={styles.imageHeader} />
-    } else if (collegeName == 'trumbull') {
+    } else if (collegeName === 'trumbull') {
       return <Image source={require('../../assets/images/TheTrumbutt.png')} style={styles.imageHeader} />
+    } else {
+      return <></>
     }
   }
+
   return (
     <View>
       <LinearGradient
