@@ -50,8 +50,24 @@ const SettingsHeader: React.FC = () => {
   )
 }
 
+export const GoBackHeader: React.FC = () => {
+  const navigation: StackNavigationProp<MainStackParamList> = useNavigation()
+  return (
+    <Ionicon
+      name="chevron-back"
+      size={30}
+      color="#fff"
+      onPress={() => {
+        navigation.goBack()
+      }}
+      style={styles.goBackHeader}
+    />
+  )
+}
+
 const styles = StyleSheet.create({
   settingsHeader: { paddingRight: 20 },
+  goBackHeader: { paddingLeft: 10 },
 })
 
 const MainStack = createStackNavigator<MainStackParamList>()
@@ -94,7 +110,7 @@ const AppNavigator: React.FC = () => {
           return {
             title: returnCollegeName(collegeName)[0],
             gestureEnabled: false,
-            headerLeft: () => null,
+            headerLeft: GoBackHeader,
             headerRight: SettingsHeader,
             headerStyle: {
               backgroundColor: returnCollegeName(collegeName)[1],
@@ -103,7 +119,24 @@ const AppNavigator: React.FC = () => {
           }
         }}
       />
-      <MainStack.Screen name="CheckoutScreen" component={CheckoutScreen} options={{ title: 'Checkout' }} />
+      <MainStack.Screen
+        name="CheckoutScreen"
+        component={CheckoutScreen}
+        options={({ route }) => {
+          const collegeName = route.params.collegeName.length > 0 ? route.params.collegeName : 'Menu'
+
+          return {
+            title: 'Checkout',
+            gestureEnabled: false,
+            headerLeft: GoBackHeader,
+            headerRight: SettingsHeader,
+            headerStyle: {
+              backgroundColor: returnCollegeName(collegeName)[1],
+              borderWidth: 0,
+            },
+          }
+        }}
+      />
       <MainStack.Screen
         name="OrderStatusScreen"
         component={OrderStatusScreen}

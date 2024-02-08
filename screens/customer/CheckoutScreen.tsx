@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { Text, View, ScrollView, Pressable, ActivityIndicator, Alert, Platform } from 'react-native'
+import { Text, View, Pressable, ActivityIndicator, Alert } from 'react-native'
 import { checkout } from '../../styles/CheckoutStyles'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { loading } from '../../styles/GlobalStyles'
 import CheckoutItem from '../../components/customer/CheckoutItem'
 import * as Device from 'expo-device'
 import { priceToText, returnCollegeName } from '../../utils/functions'
-import { StripeProvider, useStripe, isPlatformPaySupported, PlatformPay } from '@stripe/stripe-react-native'
+import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 import { setOrder } from '../../store/slices/Order'
 import { removeOrderItem } from '../../store/slices/OrderCart'
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import { baseUrl } from '../../utils/constants'
+import { baseUrl, stripePK } from '../../utils/constants'
 import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
-import { stripePK } from '../../utils/constants'
 import { FlatList } from 'react-native-gesture-handler'
-import type { NewOrderItem, OrderItem } from '../../utils/types'
+import type { MainStackScreenProps, NewOrderItem, OrderItem } from '../../utils/types'
+import { GoBackHeader } from '../../routes/mainStackNavigator'
 
-const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navigation }) => {
   const {
     orderItems,
     isLoading: isLoadingOrderCart,
@@ -27,20 +27,26 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const { currentUser } = useAppSelector((state) => state.currentUser)
   const dispatch = useAppDispatch()
 
-  const [isDisabled, setDisabled] = useState(orderItems.length < 1)
+  const [goBackDisabled, setGoBackDisabled] = useState(orderItems.length < 1)
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: goBackDisabled ? () => null : () => <GoBackHeader />,
+      gestureEnabled: !goBackDisabled,
+    })
+  }, [goBackDisabled, navigation])
 
   useEffect(() => {
     if (orderItems.length < 1) {
-      setDisabled(true)
+      setGoBackDisabled(true)
     }
   }, [orderItems.length])
-  
 
   const updateDisabled = (b: boolean) => {
     navigation.setParams({
       disabled: b,
     })
-    setDisabled(b)
+    setGoBackDisabled(b)
   }
 
   const customAppearance = {
@@ -69,7 +75,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
     //   return
     // }
 
-    const obj = { userId: currentUser.id, price: price, items: orderItems, college: collegeOrderCart }
+    const obj = { userId: currentUser.id, price, items: orderItems, college: collegeOrderCart }
     const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
       method: 'POST',
       body: JSON.stringify(obj),
@@ -86,7 +92,10 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       return null
     }
     const data = await response.json()
-    if (!response.ok) return Alert.alert(data.message)
+    if (!response.ok) {
+      Alert.alert(data.message)
+      return
+    }
     const clientSecret = data.paymentIntent.client_secret
     const initSheet = await stripe.initPaymentSheet({
       paymentIntentClientSecret: clientSecret,
@@ -96,9 +105,15 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         merchantCountryCode: 'US',
       },
     })
-    if (initSheet.error) return Alert.alert(initSheet.error.message)
+    if (initSheet.error) {
+      Alert.alert(initSheet.error.message)
+      return
+    }
     const presentSheet = await stripe.presentPaymentSheet()
-    if (presentSheet.error) return Alert.alert(presentSheet.error.message)
+    if (presentSheet.error) {
+      Alert.alert(presentSheet.error.message)
+      return
+    }
     return data.paymentIntent
   }
 
@@ -112,7 +127,6 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           text: 'Cancel',
           onPress: () => {
             updateDisabled(false)
-            return
           },
         },
       ],
@@ -149,7 +163,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       const newOrder = await fetch(baseUrl + 'api/orders', {
         method: 'POST',
         body: JSON.stringify({
-          price: price,
+          price,
           userId: currentUser.id,
           // collegeId: collegeOrderCart,
           collegeId: 14,
@@ -205,7 +219,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const removeOrder = (newItem: OrderItem) => {
     const item = orderItems.find((item) => item.orderItem.id == newItem.id)
     console.log(orderItems, newItem, item)
-    //problem is they all have the same id
+    // problem is they all have the same id
     if (item === undefined) {
       throw new TypeError("Couldn't find orderItem to delete")
     }
@@ -228,7 +242,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               <FlatList
                 data={orderItems}
                 renderItem={(item) => {
-                  return <CheckoutItem decUpdate={removeOrder} item={item.item} isDisabled={isDisabled} />
+                  return <CheckoutItem decUpdate={removeOrder} item={item.item} isDisabled={goBackDisabled} />
                 }}
                 keyExtractor={(item) => item.index.toString()}
               />
@@ -238,7 +252,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             </View>
             <View style={checkout.foot}>
               <Pressable
-                disabled={isDisabled}
+                disabled={goBackDisabled}
                 style={({ pressed }) => [
                   {
                     backgroundColor: pressed ? '#383838' : '#1f1f1f',
@@ -264,7 +278,7 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   )
 }
 
-CheckoutScreen['navigationOptions'] = (navData) => {
+CheckoutScreen.navigationOptions = (navData) => {
   const collegeName = navData.navigation.getParam('collegeName')
   const disabled = navData.navigation.getParam('disabled') || false
 

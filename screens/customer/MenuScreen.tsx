@@ -1,5 +1,4 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import type { FC } from 'react'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, Alert, ActivityIndicator, Text, Pressable, RefreshControl, SectionList } from 'react-native'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
@@ -21,7 +20,7 @@ import { useIsFocused } from '@react-navigation/native'
 import EvilModal from '../../components/EvilModal'
 import { MenuHeader } from '../../components/customer/MenuHeader'
 
-const MenuScreen: FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route }) => {
+const MenuScreen: React.FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route }) => {
   // make a function that gets the price from the items in the cart
   const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
