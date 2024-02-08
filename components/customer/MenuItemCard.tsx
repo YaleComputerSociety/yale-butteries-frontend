@@ -1,9 +1,10 @@
-import React, { FC, useState, useEffect } from 'react'
-import { View, Text, Pressable } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, Pressable, StyleSheet } from 'react-native'
+import Ionicon from 'react-native-vector-icons/Ionicons'
+
 import { item } from '../../styles/MenuStyles'
 import { priceToText } from '../../utils/functions'
 import * as Haptics from 'expo-haptics'
-import Ionicon from 'react-native-vector-icons/Ionicons'
 import type { MenuItem, OrderCartItem } from '../../utils/types'
 
 interface Props {
@@ -13,38 +14,39 @@ interface Props {
   decUpdate: (oldItem: MenuItem) => void
 }
 
-export const MenuItemCard: FC<Props> = ({ menuItem, items, incUpdate, decUpdate }: Props) => {
-  function getNumberOfMenuItemInCart(items) {
-    let count = 0
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].orderItem.id === menuItem.id) {
-        count++
-      }
-    }
-    return count
-  }
-
+export const MenuItemCard: React.FC<Props> = ({ menuItem, items, incUpdate, decUpdate }: Props) => {
   const [count, setCount] = useState(0)
 
-  const addItem = () => {
+  const addItem = (): void => {
     if (count < 5) {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning).catch((e) => {
+        console.error(e)
+      })
       setCount(count + 1)
       incUpdate(menuItem)
     }
   }
 
-  const removeItem = () => {
+  const removeItem = (): void => {
     if (count > 0) {
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning)
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning).catch((e) => {
+        console.error(e)
+      })
       setCount(count - 1)
       decUpdate(menuItem)
     }
   }
 
   useEffect(() => {
-    setCount(getNumberOfMenuItemInCart(items))
-  })
+    let newCount = 0
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].orderItem.id === menuItem.id) {
+        newCount++
+      }
+    }
+
+    setCount(newCount)
+  }, [items, menuItem.id])
 
   return (
     <View style={item.card}>
@@ -55,10 +57,10 @@ export const MenuItemCard: FC<Props> = ({ menuItem, items, incUpdate, decUpdate 
         <Text style={item.itemPrice}>{priceToText(menuItem.price)}</Text>
       </View>
       <View style={item.spacer} />
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={styles.numbersContainer}>
         <Pressable
           onPress={removeItem}
-          disabled={count < 1 ? true : false}
+          disabled={count < 1}
           style={({ pressed }) => [
             { zIndex: 2, opacity: count < 1 ? 0.5 : 1, backgroundColor: pressed ? '#383838' : '#2c2c2c' },
             item.button,
@@ -66,12 +68,12 @@ export const MenuItemCard: FC<Props> = ({ menuItem, items, incUpdate, decUpdate 
         >
           <Ionicon name="remove-outline" size={18} color="#fff" style={item.addrem} />
         </Pressable>
-        <View style={{ width: 30, justifyContent: 'center', flexDirection: 'row' }}>
+        <View style={styles.itemCountContainer}>
           <Text style={item.itemCountText}>{count}</Text>
         </View>
         <Pressable
           onPress={addItem}
-          disabled={count >= 5 ? true : false}
+          disabled={count >= 5}
           style={({ pressed }) => [
             { zIndex: 2, opacity: count >= 5 ? 0.5 : 1, backgroundColor: pressed ? '#383838' : '#2c2c2c' },
             item.button,
@@ -83,3 +85,8 @@ export const MenuItemCard: FC<Props> = ({ menuItem, items, incUpdate, decUpdate 
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  numbersContainer: { flexDirection: 'row', alignItems: 'center' },
+  itemCountContainer: { width: 30, justifyContent: 'center', flexDirection: 'row' },
+})
