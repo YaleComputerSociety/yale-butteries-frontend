@@ -67,6 +67,7 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
     //   return
     // }
 
+    if (currentUser == null) throw new Error('No current user')
     const obj = { userId: currentUser.id, price, items: orderItems, college: collegeOrderCart }
     const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
       method: 'POST',
@@ -76,7 +77,7 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
       },
     })
     if (response.status === 400) {
-      if (orderItems.length == 0) {
+      if (orderItems.length === 0) {
         Alert.alert('There are no items in your cart! Add items to complete your order')
       } else {
         Alert.alert('Sorry, an item that you ordered ran out of stock! please refresh the menu page')

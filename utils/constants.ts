@@ -17,3 +17,4 @@ const STRIPE_PK_PROD =
 
 export const baseUrl = __DEV__ ? development : production
 export const stripePK = __DEV__ ? STRIPE_PK_DEV : STRIPE_PK_PROD
+export const isPaymentsEnabled = false
