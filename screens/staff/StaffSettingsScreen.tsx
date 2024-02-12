@@ -1,15 +1,13 @@
+import type { NavigationStackProp } from 'react-navigation-stack'
+import type { NavigationParams } from 'react-navigation'
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, ScrollView, Switch, Alert, ActivityIndicator, Button } from 'react-native'
-import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
-import EvilModal from '../../components/EvilModal'
-
-import { NavigationStackProp } from 'react-navigation-stack'
-import { NavigationParams } from 'react-navigation'
-
-import DayIcon from '../../components/staff/DayIcon'
-import { asyncFetchColleges, asyncUpdateCollege } from '../../store/slices/Colleges'
 import { useIsFocused } from '@react-navigation/native'
 
+import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
+import EvilModal from '../../components/EvilModal'
+import DayIcon from '../../components/staff/DayIcon'
+import { asyncFetchColleges, asyncUpdateCollege } from '../../store/slices/Colleges'
 import TimeCard from '../../components/staff/TimeCard'
 import { outputTime } from '../../utils/functions'
 import type { College } from '../../utils/types'
@@ -20,59 +18,61 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
 
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
-  const [openDays, updateOpenDays] = useState([]) //retrieve state once stored
+  const [openDays, updateOpenDays] = useState<string[]>([]) // retrieve state once stored
   const [openCount, setOpenCount] = useState(0)
 
   const [connection, setConnection] = useState(true)
 
   const { currentUser } = useAppSelector((state) => state.currentUser)
-  const { colleges, isLoading: isLoading } = useAppSelector((state) => state.colleges)
+  const { colleges, isLoading } = useAppSelector((state) => state.colleges)
 
-  //openTime info
+  // openTime info
   const [openTimeHour, setOpenTimeHour] = useState(null)
   const [openTimeMinutes, setOpenTimeMinutes] = useState(null)
-  const [openTimeAM_PM, setOpenTimeAM_PM] = useState(null)
+  const [openTimeMeridiem, setOpenTimeMeridiem] = useState('')
 
-  //closeTimeinfo
+  // closeTimeinfo
   const [closeTimeHour, setCloseTimeHour] = useState(null)
   const [closeTimeMinutes, setCloseTimeMinutes] = useState(null)
-  const [closeTimeAM_PM, setCloseTimeAM_PM] = useState(null)
+  const [closeTimeMeridiem, setCloseTimeMeridiem] = useState('')
 
   const [acceptingOrders, setAcceptingOrders] = useState(null)
 
-  const [currentCollege, setCurrentCollege] = useState(null)
+  const [currentCollege, setCurrentCollege] = useState<College | null>(null)
   const [begin, setBegin] = useState(true)
 
   useEffect(() => {
     dispatch(asyncFetchColleges()).then((success: boolean) => {
-      setConnection(success) // for evil modal, not great
+      setConnection(success)
     })
-  }, [isFocused])
+  }, [dispatch, isFocused])
 
   useEffect(() => {
-    if (colleges && currentUser) {
-      setCurrentCollege(colleges.find((college) => college.id == currentUser.collegeId))
+    if (colleges != null && currentUser != null) {
+      const foundCollege = colleges.find((college) => college.id === currentUser.collegeId)
+      if (foundCollege == null) throw new Error('No college found')
+      setCurrentCollege(foundCollege)
     }
 
-    if (currentCollege) {
+    if (currentCollege != null) {
       const openTime = currentCollege.openTime.split(':')
       const closeTime = currentCollege.closeTime.split(':')
 
-      setAcceptingOrders(currentCollege.isAcceptingOrders)
+      // setAcceptingOrders(currentCollege.isAcceptingOrders)
 
       updateOpenDays(currentCollege.daysOpen)
       setOpenCount(currentCollege.daysOpen.length)
 
       if (openTime[0] >= 12) {
-        setOpenTimeAM_PM('PM')
+        setOpenTimeMeridiem('PM')
       } else {
-        setOpenTimeAM_PM('AM')
+        setOpenTimeMeridiem('AM')
       }
 
       if (closeTime[0] >= 12) {
-        setCloseTimeAM_PM('PM')
+        setCloseTimeMeridiem('PM')
       } else {
-        setCloseTimeAM_PM('AM')
+        setCloseTimeMeridiem('AM')
       }
 
       setOpenTimeHour(openTime[0])
@@ -86,12 +86,12 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
     }
   }, [currentCollege, isLoading])
 
-  const closeButtery = (day: String) => {
+  const closeButtery = (day: string) => {
     updateOpenDays(openDays.filter((a) => a !== day))
     setOpenCount(openCount - 1)
   }
 
-  const handleTimeCard = (day: String) => {
+  const handleTimeCard = (day: string) => {
     if (!openDays.includes(day)) {
       updateOpenDays([...openDays, day])
       setOpenCount(openCount + 1)
@@ -107,7 +107,9 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
         text={day}
         active={active}
         openDays={openDays}
-        action={(day) => handleTimeCard(day)}
+        action={(day) => {
+          handleTimeCard(day)
+        }}
         day={day}
       />
     )
@@ -139,7 +141,7 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
       daysOpen: openDays,
       openTime: open,
       closeTime: close,
-      isOpen: currentCollege.isOpen
+      isOpen: currentCollege.isOpen,
     }
 
     dispatch(asyncUpdateCollege(butteryTime))
@@ -151,17 +153,20 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
       'Do you want to save these changes?',
       'Any changes made will take place immediately',
       [
-        { text: "Yes, I'm Sure", onPress: () => updateCollege(openTimeAM_PM, closeTimeAM_PM) },
+        {
+          text: "Yes, I'm Sure",
+          onPress: () => {
+            updateCollege(openTimeMeridiem, closeTimeMeridiem)
+          },
+        },
         {
           text: 'Cancel',
-          onPress: () => {
-            return
-          },
+          onPress: () => {},
         },
       ],
       {
         cancelable: true,
-      }
+      },
     )
   }
 
@@ -181,25 +186,34 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
           <View style={[styles.sectionContainer]}>
             <Text style={styles.headerText}>Open Time</Text>
             <TimeCard
-              AM_PM={(am_pm) => setOpenTimeAM_PM(am_pm)}
-              hour={(hour) => setOpenTimeHour(hour)}
-              minutes={(minutes) => setOpenTimeMinutes(minutes)}
+              AM_PM={(am_pm) => {
+                setOpenTimeMeridiem(am_pm)
+              }}
+              hour={(hour) => {
+                setOpenTimeHour(hour)
+              }}
+              minutes={(minutes) => {
+                setOpenTimeMinutes(minutes)
+              }}
               time={outputTime(openTimeHour, openTimeMinutes)}
             />
             <Text style={styles.headerText}>Close Time</Text>
             <TimeCard
-              AM_PM={(am_pm) => setCloseTimeAM_PM(am_pm)}
-              hour={(hour) => setCloseTimeHour(hour)}
-              minutes={(minutes) => setCloseTimeMinutes(minutes)}
+              AM_PM={(am_pm) => {
+                setCloseTimeMeridiem(am_pm)
+              }}
+              hour={(hour) => {
+                setCloseTimeHour(hour)
+              }}
+              minutes={(minutes) => {
+                setCloseTimeMinutes(minutes)
+              }}
               time={outputTime(closeTimeHour, closeTimeMinutes)}
             />
           </View>
           <View style={styles.sectionContainer}>
             <Text style={styles.headerText}>Accepting orders?</Text>
-            <Switch
-              value={acceptingOrders}
-              onValueChange={setAcceptingOrders}
-            />
+            <Switch value={acceptingOrders} onValueChange={setAcceptingOrders} />
           </View>
           <View style={styles.button}>
             <Button title="Save Changes" color="rgba(255,255,255, 0.87)" onPress={safetyCheck} />
@@ -224,7 +238,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: '100%',
-    backgroundColor: '#121212'
+    backgroundColor: '#121212',
   },
   sectionContainer: {
     flex: 1,
