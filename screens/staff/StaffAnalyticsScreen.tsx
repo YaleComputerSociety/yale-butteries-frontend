@@ -168,7 +168,7 @@ const AnalyticsScreen: FC = () => {
           key={i}
           time={reformatTime(order.createdAt)}
           name={getUserFromId(order.userId)}
-          num_items={order.orderItems.length}
+          numItems={order.orderItems.length}
           cost={orderTotalCost(order).toFixed(2)}
           items={order.orderItems}
         />
