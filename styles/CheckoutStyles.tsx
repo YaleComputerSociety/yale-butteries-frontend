@@ -128,10 +128,8 @@ export const checkout = StyleSheet.create({
     flex: 2,
     alignContent: 'flex-start',
     flexDirection: 'row',
-    // justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 10,
-    // backgroundColor: 'yellow',
   },
 
   COUNT: {
@@ -142,7 +140,6 @@ export const checkout = StyleSheet.create({
   },
 
   PRICE: {
-    // backgroundColor: 'white',
     flex: 0.5,
     flexDirection: 'row',
     justifyContent: 'flex-end',

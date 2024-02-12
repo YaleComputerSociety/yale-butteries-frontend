@@ -35,7 +35,6 @@ export const menu = StyleSheet.create({
     marginHorizontal: 25,
     width: 80,
     height: 80,
-    ///backgroundColor: '#eee',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
@@ -68,7 +67,6 @@ export const item = StyleSheet.create({
   },
 
   leftSide: {
-    //backgroundColor: 'red',
     flex: 6,
     marginRight: 8,
   },
@@ -77,7 +75,6 @@ export const item = StyleSheet.create({
     fontFamily: 'HindSiliguri-Bold',
     fontSize: 17,
     color: 'rgba(255,255,255, 0.87)',
-    //backgroundColor: 'green',
   },
 
   itemDescription: {
@@ -95,7 +92,6 @@ export const item = StyleSheet.create({
     fontSize: 13,
     fontFamily: 'Roboto-Italic',
     color: 'rgba(255,255,255, 0.87)',
-    //backgroundColor: 'blue'
   },
 
   button: {
@@ -137,8 +133,6 @@ export const item = StyleSheet.create({
 
   buttonSpacer: {
     flex: 1,
-    //justifyContent: 'center',
-    //alignItems: 'center',
   },
 
   outerContainer: {
