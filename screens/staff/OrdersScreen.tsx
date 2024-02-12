@@ -7,7 +7,7 @@ import { LAYOUTS } from '../../constants/Layouts'
 
 import BigCard from '../../components/staff/BigCard'
 import { asyncFetchRecentOrdersFromCollege } from '../../store/slices/Order'
-import { OrderItem } from '../../utils/types'
+import type { OrderItem } from '../../utils/types'
 // import { useIsFocused } from '@react-navigation/native'
 import EvilModal from '../../components/EvilModal'
 
@@ -26,8 +26,8 @@ const OrdersScreen2: React.FC = () => {
 
   // Every x seconds, fetch orderItems by college and time created, then sort by time
   useEffect(() => {
-    const fetchItems = async () => {
-      if (currentUser.collegeId) {
+    const fetchItems = async (): Promise<void> => {
+      if (currentUser?.collegeId != null) {
         // should fetch only recent to save time, but for a while this will be fine
         await dispatch(asyncFetchRecentOrdersFromCollege(currentUser.collegeId)).then((success: boolean) => {
           setConnection(success)
@@ -42,117 +42,112 @@ const OrdersScreen2: React.FC = () => {
         const past: OrderItem[][] = []
 
         store.getState().orders.orders.forEach((entry) => {
-            let pendingCount = 0
-            let doneCount = 0
-            let readyCount = 0
-            const itemList: OrderItem[] = []
+          let pendingCount = 0
+          let doneCount = 0
+          let readyCount = 0
+          const itemList: OrderItem[] = []
 
-            entry.orderItems.forEach((item) => {
-                if (item.status == 'QUEUED') {
-                    pendingCount++
-                }
-                else if (item.status != 'ONGOING') {
-                    doneCount++
-                    if (item.status == 'READY') {
-                      readyCount++
-                    }
-                }
-                itemList.push({ ...item})
-            })
+          entry.orderItems.forEach((item) => {
+            if (item.status === 'QUEUED') {
+              pendingCount++
+            } else if (item.status !== 'ONGOING') {
+              doneCount++
+              if (item.status === 'READY') {
+                readyCount++
+              }
+            }
+            itemList.push({ ...item })
+          })
 
-            if (pendingCount == itemList.length) {
-                waiting.push({...itemList}) 
+          if (pendingCount === itemList.length) {
+            waiting.push({ ...itemList })
+          } else if (doneCount === itemList.length) {
+            if (readyCount > 0) {
+              past.push({ ...itemList })
             }
-            else if (doneCount == itemList.length) {
-                if (readyCount > 0) {
-                  past.push({...itemList})
-                }
-            }
-            else {
-                current.push({...itemList})
-            }
+          } else {
+            current.push({ ...itemList })
+          }
         })
 
-        //set appropriate order lists
+        // set appropriate order lists
         if (waiting != null) {
-            setWaitingOrders(waiting)
+          setWaitingOrders(waiting)
         }
         if (current != null) {
-            setCurrentOrders(current)
+          setCurrentOrders(current)
         }
         if (past != null) {
-            setPastOrders(past)
+          setPastOrders(past)
         }
       }
     }
 
-    fetchItems()
+    void fetchItems()
     const interval = setInterval(() => {
-      fetchItems()
+      void fetchItems()
     }, 1000)
-    return () => clearInterval(interval)
-  }, [])
+    return () => {
+      clearInterval(interval)
+    }
+  }, [currentUser?.collegeId, dispatch])
 
   return (
     <SafeAreaView style={styles.container}>
       {!necessaryConnection && <EvilModal toggle={setNecessaryConnection} display={!necessaryConnection} />}
       {!connection && (
-        <Text style={styles.connectionError}>You aren't connected to the internet. Orders may not be accurate</Text>
+        <Text style={styles.connectionError}>
+          You aren&apos;t connected to the internet. Orders may not be accurate
+        </Text>
       )}
       {isLoadingOrderItems || orderItems == null ? (
-        <ScrollView showsVerticalScrollIndicator={false}
-          style={styles.scrollView}
-          //contentContainerStyle={{alignItems: 'flex-start', justifyContent: 'stretch'}}>
-        >
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
           <Text style={{ ...styles.title }}>Orders</Text>
           <ActivityIndicator style={styles.loader} size="large" />
         </ScrollView>
       ) : (
-        <ScrollView
-          style={{ ...styles.scrollView }}
-          //contentContainerStyle={{alignItems: 'stretch', justifyContent: 'stretch'}}>
-        >
+        <ScrollView style={{ ...styles.scrollView }}>
           <View style={styles.background}>
             <Text style={{ ...styles.title2 }}>Live Orders</Text>
           </View>
           {waitingOrders.map((element) => {
             return (
-              <View key={element["0"].id + 'vv'} style={styles.tag}>
+              <View key={element['0'].id + 'vv'} style={styles.tag}>
                 <BigCard
                   orderItems={element}
                   interactable={false}
-                  isWaiting = {true}
+                  isWaiting={true}
                   setConnection={setNecessaryConnection}
-                  key={element["0"].id + 'b'}
+                  key={element['0'].id + 'b'}
                 />
               </View>
             )
           })}
           {currentOrders.map((element) => {
             return (
-              <View key={element["0"].id + 'vv'} style={styles.tag}>
+              <View key={element['0'].id + 'vv'} style={styles.tag}>
                 <BigCard
                   orderItems={element}
                   interactable={true}
-                  isWaiting = {false}
+                  isWaiting={false}
                   setConnection={setNecessaryConnection}
-                  key={element["0"].id + 'b'}
+                  key={element['0'].id + 'b'}
                 />
               </View>
             )
           })}
           <View style={styles.background}>
-              <Text style={{ ...styles.title2 }}>Completed Today</Text>
+            <Text style={{ ...styles.title2 }}>Completed Today</Text>
           </View>
           {pastOrders.map((element) => {
             return (
-              <View key={element["0"].id + 'v'}>
+              <View key={element['0'].id + 'v'}>
                 <BigCard
                   orderItems={element}
                   interactable={false}
-                  isWaiting = {false}
+                  isWaiting={false}
                   setConnection={setNecessaryConnection}
-                  key={element["0"].id}
+                  key={element['0'].id}
                 />
               </View>
             )
@@ -168,7 +163,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'stretch',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   background: {
     backgroundColor: '#2c2c2c',
@@ -176,15 +171,13 @@ const styles = StyleSheet.create({
     marginBottom: LAYOUTS.getWidth(10),
     height: LAYOUTS.getWidth(50),
     justifyContent: 'center',
-    borderRadius: 8
+    borderRadius: 8,
   },
   title: {
     fontSize: TEXTS.adjust(20),
-    // marginBottom: LAYOUTS.getWidth(5),
     color: 'rgba(255,255,255, 0.87)',
     fontWeight: '500',
-    textAlign: 'center'
-    //fontFamily: 'HindSiliguri',
+    textAlign: 'center',
   },
   title2: {
     fontSize: TEXTS.adjust(20),
@@ -193,20 +186,20 @@ const styles = StyleSheet.create({
     // marginTop: LAYOUTS.getWidth(5),
     color: 'rgba(255,255,255, 0.87)',
     fontWeight: 'bold',
-    //fontFamily: 'HindSiliguri',
+    // fontFamily: 'HindSiliguri',
   },
   scrollView: {
     paddingTop: LAYOUTS.getWidth(10),
     paddingHorizontal: LAYOUTS.getWidth(10),
     backgroundColor: '#121212',
     flex: 1,
-    //borderWidth: 1
+    // borderWidth: 1
   },
   loader: {
     marginTop: LAYOUTS.getWidth(100),
   },
   tag: {
-    //borderWidth: 3,
+    // borderWidth: 3,
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
