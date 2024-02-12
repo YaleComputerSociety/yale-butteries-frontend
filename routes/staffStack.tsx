@@ -1,13 +1,13 @@
 import { AntDesign } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import OrdersScreen from '../screens/staff/OrdersScreen'
+import OrdersScreen from '../screens/staff/StaffOrdersScreen'
 import InventoryScreen from '../screens/staff/InventoryScreen'
 import React from 'react'
 
 import EditItemScreen from '../screens/staff/EditItemScreen'
 import CreateItemScreen from '../screens/staff/CreateItemScreen'
-import SettingsScreen from '../screens/staff/SettingsScreen'
-import AnalyticsScreen from '../screens/staff/AnalyticsScreen'
+import SettingsScreen from '../screens/staff/StaffSettingsScreen'
+import AnalyticsScreen from '../screens/staff/StaffAnalyticsScreen'
 
 import { createStackNavigator } from '@react-navigation/stack'
 
