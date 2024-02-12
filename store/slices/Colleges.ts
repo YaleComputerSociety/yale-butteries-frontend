@@ -5,12 +5,12 @@ import type { College } from '../../utils/types'
 
 export interface CollegesState {
   isLoading: boolean
-  colleges: College[] | null
+  colleges: College[]
 }
 
 const collegesInitialState: CollegesState = {
   isLoading: false,
-  colleges: null,
+  colleges: [],
 }
 
 export const collegesSlice = createSlice({

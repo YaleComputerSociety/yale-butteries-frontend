@@ -63,6 +63,11 @@ export const home = StyleSheet.create({
 })
 
 export const card = StyleSheet.create({
+  innerContainer: { flexDirection: 'row', justifyContent: 'center' },
+  acceptingOrders: {
+    fontFamily: 'HindSiliguri-Bold',
+    color: 'rgba(255,255,255,0.87)',
+  },
   cardText1: {
     fontFamily: 'HindSiliguri-Bold',
     color: 'rgba(255,255,255, 0.87)',
