@@ -3,19 +3,19 @@ import { Modal, StyleSheet, Text, View } from 'react-native'
 import { LAYOUTS } from '../constants/Layouts'
 import { TEXTS } from '../constants/Texts'
 
-//How to use: By burton
-//1 import evil modal
-//2 create a state, eg backendError defaulted to false
-//3 Put EvilModal inside your highest level component
-//4 Set the display prop to backenderror
-//5 When error is thrown set backenderror to true
+// How to use: By burton
+// 1 import evil modal
+// 2 create a state, eg backendError defaulted to false
+// 3 Put EvilModal inside your highest level component
+// 4 Set the display prop to backenderror
+// 5 When error is thrown set backenderror to true
 
 interface Props {
   display: boolean
   toggle: (params: boolean) => void
 }
 
-const EvilModal: React.FC<Props> = ({ display, toggle }: Props) => {
+const EvilModal: React.FC<Props> = ({ display }: Props) => {
   const [modalVisible, setModalVisible] = useState(false)
 
   useEffect(() => {
