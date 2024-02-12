@@ -1,30 +1,27 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, ScrollView, Text, StyleSheet, Pressable, Alert } from 'react-native'
-import StatusItem from '../../components/customer/StatusCard'
-import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
-import { setOrder } from '../../store/slices/Order'
 import ProgressBar from 'react-native-progress/Bar'
-import { baseUrl } from '../../utils/constants'
 import * as Haptics from 'expo-haptics'
-import { Order, OrderItem } from '../../utils/types'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { useIsFocused } from '@react-navigation/native'
 
-const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
+import StatusItem from '../../components/customer/StatusCard'
+import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
+import { setOrder } from '../../store/slices/Order'
+import { baseUrl } from '../../utils/constants'
+import type { MainStackScreenProps, Order, OrderItem } from '../../utils/types'
+
+const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
-
   const [percentage, setPercentage] = useState(0)
   const [connection, setConnection] = useState(true)
   const { currentOrder } = useAppSelector((state) => state.orders)
   const { menuItems } = useAppSelector((state) => state.menuItems)
-
   const { currentUser } = useAppSelector((state) => state.currentUser)
-  const [name] = useState(currentUser.name)
-
 
   // TODO: put this in a reducer
-  const fetchOrder = async () => {
+  const fetchOrder = async (): Promise<number | undefined> => {
     try {
       const order = await fetch(baseUrl + 'api/orders/' + currentOrder.id, {
         method: 'GET',
@@ -33,10 +30,10 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
         },
       })
       const response = await order.json()
-      if (response.status == 400) throw response
-      dispatch(setOrder(response))
+      if (response.status === 400) throw response
+      dispatch(setOrder(response as Order))
       setConnection(true)
-      return getPercentageCompleted(response)
+      return getPercentageCompleted(response as Order)
     } catch (e) {
       console.log(e)
       setConnection(false)
@@ -53,20 +50,21 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
         clearInterval(intervalId)
       }
     }, 5000)
-    return () => clearInterval(intervalId)
+    return () => {
+      clearInterval(intervalId)
+    }
   }, [percentage])
 
   useEffect(() => {
     setPercentage(0)
   }, [isFocused])
 
-
   // Turn ratio of orders completed/cancelled into a percentage
-  const getPercentageCompleted = (order: Order) => {
+  const getPercentageCompleted = (order: Order): number => {
     const denominator = order.orderItems.length
     let numerator = 0
     for (let i = 0; i < denominator; i++) {
-      if (order.orderItems[i].status == 'READY' || order.orderItems[i].status == 'CANCELLED') {
+      if (order.orderItems[i].status === 'READY' || order.orderItems[i].status === 'CANCELLED') {
         numerator += 1
       }
     }
@@ -74,8 +72,7 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
     return numerator / denominator
   }
 
-
-  const status = () => {
+  const status = (): string => {
     const progress = currentOrder?.status
     if (progress === 'ONGOING') {
       return 'In Progress'
@@ -87,14 +84,14 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
   }
 
   function getMenuItemNameFromId(orderItem: OrderItem): string {
-    if (menuItems) {
+    if (menuItems != null) {
       return menuItems.find((element) => element.id == orderItem.menuItemId).name
     } else {
       return 'Loading...'
     }
   }
 
-  const back = () => {
+  const back = (): void => {
     const resetAction = StackActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({ routeName: 'ButteriesScreen' })],
@@ -104,31 +101,27 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
 
   return (
     <View style={styles.view3}>
-      <View style={{ height: 30 }}></View>
+      <View style={styles.topSpacer} />
       <View style={styles.view2}>
         <Text style={styles.text1}>
           Order Status:
-          <Text style={{ fontFamily: 'HindSiliguri-Bold' }}> {status()} </Text>
+          <Text style={styles.orderStatusAnswer}> {status()} </Text>
         </Text>
         {!connection && (
           <Text style={styles.connectionError}>
-            You aren't connected to the internet. Your status may not be accurate
+            You aren&apos;t connected to the internet. Your status may not be accurate
           </Text>
         )}
       </View>
-      <Text style={styles.name}>{name}</Text>
+      <Text style={styles.name}>{currentUser?.name}</Text>
       <View style={styles.outerView}>
         <ScrollView>
           {currentOrder?.orderItems.map((orderItem, index) => (
-            <StatusItem
-              name={getMenuItemNameFromId(orderItem)}
-              status={orderItem.status}
-              key={index}
-            />
+            <StatusItem name={getMenuItemNameFromId(orderItem)} status={orderItem.status} key={index} />
           ))}
         </ScrollView>
       </View>
-      <View style={{ width: '90%' }}>
+      <View style={styles.progressBarContainer}>
         <ProgressBar
           animated={true}
           progress={percentage}
@@ -144,9 +137,9 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
             styles.button,
           ]}
           onPress={() => {
-            if (percentage == 1) {
+            if (percentage === 1) {
               back()
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+              void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
             } else {
               Alert.alert('Please wait while we complete your order before returning home!')
             }
@@ -162,6 +155,9 @@ const OrderStatusScreen: FC<{ navigation: any }> = ({ navigation }) => {
 export default OrderStatusScreen
 
 const styles = StyleSheet.create({
+  topSpacer: { height: 30 },
+  orderStatusAnswer: { fontFamily: 'HindSiliguri-Bold' },
+  progressBarContainer: { width: '90%' },
   outerView: {
     backgroundColor: '#1f1f1f',
     width: '90%',
