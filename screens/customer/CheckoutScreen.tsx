@@ -9,12 +9,28 @@ import { priceToText } from '../../utils/functions'
 import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
 import { setOrder } from '../../store/slices/Order'
 import { removeOrderItem } from '../../store/slices/OrderCart'
-import { baseUrl, stripePK } from '../../utils/constants'
+import { baseUrl, isPaymentsEnabled, stripePK } from '../../utils/constants'
 import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
 import { FlatList } from 'react-native-gesture-handler'
 import type { MainStackScreenProps, NewOrderItem, OrderItem } from '../../utils/types'
 import { GoBackHeader } from '../../routes/mainStackNavigator'
+
+class StripePaymentError extends Error {
+  public readonly statusCode: number | undefined
+  public readonly stripeErrorCode: string | undefined
+
+  constructor(
+    message: string,
+    statusCode: number | undefined = undefined,
+    stripeErrorCode: string | undefined = undefined,
+  ) {
+    super(message)
+    this.name = 'StripePaymentError'
+    this.statusCode = statusCode
+    this.stripeErrorCode = stripeErrorCode
+  }
+}
 
 const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navigation }) => {
   const {
@@ -55,7 +71,7 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
 
   const stripe = useStripe()
 
-  const showPaymentSheet = async (): Promise<any> => {
+  const showPaymentSheet = async (): Promise<null | string> => {
     // return { id: 'temp' } // uncomment this line out to skip the credit card entry screen
     if (price > 2000) {
       Alert.alert('Your current total is over $20, please remove some items from your cart.')
@@ -84,10 +100,10 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
       }
       return null
     }
-    const data = await response.json()
+    const data: { message: string; paymentIntent: { client_secret: string } } = await response.json()
     if (!response.ok) {
       Alert.alert(data.message)
-      return
+      throw new StripePaymentError(data.message, response.status)
     }
     const clientSecret = data.paymentIntent.client_secret
     const initSheet = await stripe.initPaymentSheet({
@@ -98,8 +114,9 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
         merchantCountryCode: 'US',
       },
     })
-    if (initSheet.error) {
+    if (initSheet.error != null) {
       Alert.alert(initSheet.error.message)
+      throw new StripePaymentError(initSheet.error.message, initSheet.error.stripeErrorCode)
       return
     }
     const presentSheet = await stripe.presentPaymentSheet()
@@ -129,19 +146,21 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
     )
   }
 
-  const makePayment = async () => {
+  const makePayment = async (): Promise<void> => {
     try {
-      // const paymentIntent = await showPaymentSheet()
+      if (isPaymentsEnabled) {
+        const paymentIntent = await showPaymentSheet()
 
-      // user cancelled or there was an error
-      // if (!paymentIntent) {
-      //   setGoBackDisabled(false)
-      //   return
-      // }
+        // user cancelled or there was an error
+        // if (!paymentIntent) {
+        //   setGoBackDisabled(false)
+        //   return
+        // }
+      }
 
       const newOrderItems: NewOrderItem[] = []
       orderItems.forEach((item) => {
-        if (!item.orderItem.id) {
+        if (item.orderItem.id == null) {
           throw new TypeError("orderItem doesn't have id")
         }
         const newItem: NewOrderItem = {

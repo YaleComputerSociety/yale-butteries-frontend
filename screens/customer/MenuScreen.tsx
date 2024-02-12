@@ -54,8 +54,7 @@ const MenuScreen: React.FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, 
             getCollegeFromId(menuItem.collegeId, colleges).name.toLowerCase() === collegeOrderCart.toLowerCase() &&
             menuItem.isActive
           )
-          // eslint-disable-next-line comma-dangle
-        })
+        }),
       )
       setBegin(false)
     }
