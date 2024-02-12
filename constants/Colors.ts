@@ -1,5 +1,5 @@
-//File to hold all colors
-//Will make it easier to switch color schemes
+// File to hold all colors
+// Will make it easier to switch color schemes
 
 const white = '#FFFFFF'
 const offWhite = '#EEEEEE'

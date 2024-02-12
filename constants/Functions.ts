@@ -1,7 +1,7 @@
 import * as FileSystem from 'expo-file-system'
 
 export const FUNCTIONS = {
-  //turn price int data into formatted data
+  // turn price int data into formatted data
   priceFormat: (price: number): string => {
     return '$' + String((price / 100).toFixed(2))
   },
@@ -31,7 +31,7 @@ export const FUNCTIONS = {
         }
       }
     } else {
-      if (time == 2400) {
+      if (time === 2400) {
         return '12:00 AM'
       }
       if (time < 1300) {
