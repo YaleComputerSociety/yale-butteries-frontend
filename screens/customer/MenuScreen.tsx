@@ -50,10 +50,9 @@ const MenuScreen: React.FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, 
       if (colleges == null) throw new Error('Colleges are not defined')
       setCurrentMenuItems(
         menuItems.filter((menuItem) => {
-          return (
-            getCollegeFromId(menuItem.collegeId, colleges).name.toLowerCase() === collegeOrderCart.toLowerCase() &&
-            menuItem.isActive
-          )
+          const foundCollege = getCollegeFromId(menuItem.collegeId, colleges)
+          if (foundCollege == null) throw new Error('Current college does not exist')
+          return foundCollege.name.toLowerCase() === collegeOrderCart.toLowerCase() && menuItem.isActive
         }),
       )
       setBegin(false)

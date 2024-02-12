@@ -1,11 +1,11 @@
-import type { OrderItem, College, OrderCartItem } from './types'
+import type { College, OrderCartItem } from './types'
 
 import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications'
 import { Platform } from 'react-native'
 
-export const getCollegeFromId = (id: number, colleges: College[]): College => {
-  return colleges.find(college => college.id === id)
+export const getCollegeFromId = (id: number, colleges: College[]): College | null => {
+  return colleges.find((college) => college.id === id) ?? null
 }
 
 export function priceToText(num: number): string {
@@ -22,8 +22,8 @@ export function getPriceFromOrderItems(orderItems: OrderCartItem[]): string {
   return priceToText(sum)
 }
 
-export function outputTime(hrs: string, mins: string, am_pm?: string): string {
-  let time12h = hrs + ':' + mins + ' ' + am_pm
+export function outputTime(hrs: string, mins: string, meridiem?: string): string {
+  const time12h = hrs + ':' + mins + ' ' + meridiem
 
   const [time, modifier] = time12h.split(' ')
   let [hours, minutes] = time.split(':')
@@ -34,28 +34,26 @@ export function outputTime(hrs: string, mins: string, am_pm?: string): string {
 
   if (modifier === 'PM') {
     if (parseInt(hrs) + 12 < 24) {
-      hours = (parseInt(hours, 10) + 12).toString()
+      hours = (parseInt(hours) + 12).toString()
     }
   }
 
   return `${hours}:${minutes}`
 }
 
-export function militaryToAnalog(blah: string): string {
-  var time = blah.split(':') // convert to array
+export function militaryToAnalog(militaryTime: string): string {
+  const timeArray = militaryTime.split(':') // convert to array
 
-  // fetch
-  var hours = Number(time[0])
-  var minutes = Number(time[1])
+  const hours = Number(timeArray[0])
+  const minutes = Number(timeArray[1])
 
-  // calculate
-  var timeValue
+  let timeValue = ''
 
   if (hours > 0 && hours <= 12) {
     timeValue = '' + hours
   } else if (hours > 12) {
     timeValue = '' + (hours - 12)
-  } else if (hours == 0) {
+  } else if (hours === 0) {
     timeValue = '12'
   }
 
@@ -66,7 +64,7 @@ export function militaryToAnalog(blah: string): string {
 }
 
 export function cleanTime(inputDate: Date): string {
-  const hours = inputDate.getHours() % 12 == 0 ? 12 : inputDate.getHours() % 12
+  const hours = inputDate.getHours() % 12 === 0 ? 12 : inputDate.getHours() % 12
   const minutes = inputDate.getMinutes() < 10 ? '0' + inputDate.getMinutes() : inputDate.getMinutes()
   const meridiem = inputDate.getHours() < 12 ? 'AM' : 'PM'
   const orderTime = hours + ':' + minutes + ' ' + meridiem
@@ -74,12 +72,12 @@ export function cleanTime(inputDate: Date): string {
 }
 
 export function getDaysOpen(colleges: College[], name: string): boolean[] {
-  let initArray = [false, false, false, false, false, false, false]
+  const initArray = [false, false, false, false, false, false, false]
 
-  const daysOpen = colleges.filter((college) => college.name.toLowerCase() == name.toLowerCase())[0].daysOpen
+  const daysOpen = colleges.filter((college) => college.name.toLowerCase() === name.toLowerCase())[0].daysOpen
 
   for (let i = 0; i <= daysOpen.length - 1; i++) {
-    //days of week index (7-1)
+    // days of week index (7-1)
     switch (daysOpen[i]) {
       case 'Sunday':
         initArray[0] = true
@@ -111,8 +109,8 @@ export function getDaysOpen(colleges: College[], name: string): boolean[] {
 }
 
 export function getHours(colleges: College[], name: string): string[] {
-  const college = colleges.filter((college) => college.name.toLowerCase() == name.toLowerCase())[0]
-  if (college.openTime && college.closeTime) {
+  const college = colleges.filter((col) => col.name.toLowerCase() === name.toLowerCase())[0]
+  if (college.openTime !== '' && college.closeTime !== '') {
     return [militaryToAnalog(college.openTime), militaryToAnalog(college.closeTime)]
   }
 
@@ -120,11 +118,11 @@ export function getHours(colleges: College[], name: string): string[] {
 }
 
 export function getCollegeOpen(colleges: College[], name: string): boolean {
-  var today = new Date()
-  var hour = today.getHours()
-  var minute = today.getMinutes()
+  const today = new Date()
+  const hour = today.getHours()
+  const minute = today.getMinutes()
 
-  const college = colleges.filter((college) => college.name.toLowerCase() == name.toLowerCase())[0]
+  const college = colleges.filter((col) => col.name.toLowerCase() === name.toLowerCase())[0]
   const openTimeHour = parseInt(college.openTime)
   const openTimeMinute = parseInt(college.openTime.split(':')[1])
 
@@ -147,7 +145,7 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
     }
   }
 
-  if (getDaysOpen(colleges, name)[today.getDay()] == false) {
+  if (!getDaysOpen(colleges, name)[today.getDay()]) {
     // else if Buttery is closed on that day
     return false
   }
@@ -158,9 +156,9 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
     return false
   }
 
-  if (hour == openTimeHour && minute < openTimeMinute) {
+  if (hour === openTimeHour && minute < openTimeMinute) {
     return false
-  } else if (hour == closeTimeHour && minute > closeTimeMinute) {
+  } else if (hour === closeTimeHour && minute > closeTimeMinute) {
     return false
   }
 
@@ -168,8 +166,10 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
 }
 
 export function getCollegeAcceptingOrders(colleges: College[], name: string): boolean {
-  const college = colleges.filter((college) => college.name.toLowerCase() == name.toLowerCase())[0]
-  return college.isAcceptingOrders == null || college.isAcceptingOrders
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const college = colleges.filter((col) => col.name.toLowerCase() === name.toLowerCase())[0]
+  // return college.isAcceptingOrders == null || college.isAcceptingOrders
+  return true
 }
 
 export function returnCollegeName(collegeName: string): string[] {
@@ -243,7 +243,7 @@ export function returnCollegeName(collegeName: string): string[] {
 // PUSH NOTIFS
 
 export async function registerForPushNotificationsAsync(): Promise<string | null> {
-  let token: string | null
+  let token: string | null = null
   if (Device.isDevice) {
     const { status: existingStatus } = await Notifications.getPermissionsAsync()
     let finalStatus = existingStatus
@@ -251,7 +251,7 @@ export async function registerForPushNotificationsAsync(): Promise<string | null
       const { status } = await Notifications.requestPermissionsAsync()
       finalStatus = status
     }
-    
+
     if (finalStatus !== 'granted') {
       return null
     }
@@ -261,17 +261,17 @@ export async function registerForPushNotificationsAsync(): Promise<string | null
     if (token === '') {
       return null
     }
-
   } else {
-    alert('Must use physical device for Push Notifications')
+    console.log('Must use physical device for push notifications')
   }
+
   if (Platform.OS === 'android') {
     Notifications.setNotificationChannelAsync('default', {
       name: 'default',
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: '#FF231F7C',
-    })
+    }).catch(console.error)
   }
 
   return token

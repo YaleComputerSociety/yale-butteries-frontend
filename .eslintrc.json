@@ -22,6 +22,7 @@
       }
     ],
     "comma-dangle": ["error", "always-multiline"],
-    "prettier/prettier": ["error", { "trailingComma": "all" }]
+    "prettier/prettier": ["error", { "trailingComma": "all" }],
+    "radix": "off"
   }
 }
