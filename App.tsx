@@ -1,10 +1,6 @@
-import type { FC } from 'react'
 import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import store, { useAppDispatch } from './store/ReduxStore'
-import { asyncFetchUser } from './store/slices/CurrentUser'
 import { Provider } from 'react-redux'
-import { home } from './styles/ButteriesStyles'
 import { View } from 'react-native'
 import * as SplashScreen from 'expo-splash-screen'
 import * as Font from 'expo-font'
@@ -13,6 +9,9 @@ import 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as ScreenOrientation from 'expo-screen-orientation'
 
+import store, { useAppDispatch } from './store/ReduxStore'
+import { asyncFetchUser } from './store/slices/CurrentUser'
+import { home } from './styles/ButteriesStyles'
 import AppNavigator from './routes/mainStackNavigator'
 import * as LocalStorage from './utils/localStorage'
 import { setIsLoading } from './store/slices/Users'
@@ -20,14 +19,14 @@ import EvilModal from './components/EvilModal'
 
 // LogBox.ignoreLogs(['new NativeEventEmitter']) // Ignore log notifications by message
 
-const InnerApp: FC = () => {
+const InnerApp: React.FC = () => {
   const [appIsReady, setAppIsReady] = useState(false)
   const [connection, setConnection] = useState(true)
   const dispatch = useAppDispatch()
 
-  SplashScreen.preventAutoHideAsync()
+  void SplashScreen.preventAutoHideAsync()
 
-  const loadFonts = async () => {
+  const loadFonts = async (): Promise<void> => {
     await Font.loadAsync({
       Roboto: require('./assets/fonts/Roboto-Black.ttf'),
       'Roboto-Light': require('./assets/fonts/HindSiliguri-Light.ttf'),
@@ -38,32 +37,32 @@ const InnerApp: FC = () => {
     })
   }
 
-  const establishUser = async () => {
-    try {
-      // AsyncStorage.clear()
-
-      // Check if user already exists in local storage
-      const userInfo = await LocalStorage.getUserInfo('token')
-      const id = await LocalStorage.getUserInfo('id')
-      if (userInfo && id) {
-        // sets the current user state to a user, if it can't connect to the database then show evil modal
-        await dispatch(asyncFetchUser(id)).then((result: 'good' | 'error' | 'missing') => {
-          if (result === 'error') {
-            setConnection(false)
-          } else if (result === 'missing') {
-            AsyncStorage.clear()
-          }
-        })
-      } else {
-        dispatch(setIsLoading(false))
-      }
-    } catch (e) {
-      console.warn(e)
-    }
-  }
-
   useEffect(() => {
-    async function prepare() {
+    const establishUser = async (): Promise<void> => {
+      try {
+        // AsyncStorage.clear()
+
+        // Check if user already exists in local storage
+        const userInfo = await LocalStorage.getUserInfo('token')
+        const id = await LocalStorage.getUserInfo('id')
+        if (userInfo != null && id != null) {
+          // sets the current user state to a user, if it can't connect to the database then show evil modal
+          await dispatch(asyncFetchUser(id)).then((result: 'good' | 'error' | 'missing') => {
+            if (result === 'error') {
+              setConnection(false)
+            } else if (result === 'missing') {
+              void AsyncStorage.clear()
+            }
+          })
+        } else {
+          dispatch(setIsLoading(false))
+        }
+      } catch (e) {
+        console.warn(e)
+      }
+    }
+
+    const prepare = async (): Promise<void> => {
       try {
         // Keep the splash screen visible while we fetch resources
         await SplashScreen.preventAutoHideAsync()
@@ -79,16 +78,16 @@ const InnerApp: FC = () => {
       }
     }
 
-    prepare()
-  }, [])
+    void prepare()
+  }, [dispatch])
 
   useEffect(() => {
-    async function finishedLoading() {
+    const finishedLoading = async (): Promise<void> => {
       if (appIsReady) {
         await SplashScreen.hideAsync()
       }
     }
-    finishedLoading()
+    void finishedLoading()
   }, [appIsReady])
 
   if (appIsReady) {
@@ -107,7 +106,7 @@ const InnerApp: FC = () => {
 }
 
 // seperate outer component for redux store to work on the inner component
-const App: FC = () => {
+const App: React.FC = () => {
   return (
     <Provider store={store}>
       <InnerApp />
