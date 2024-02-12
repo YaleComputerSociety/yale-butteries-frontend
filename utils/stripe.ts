@@ -6,7 +6,7 @@ import { useStripe } from '@stripe/stripe-react-native'
 import { useAppSelector } from '../store/ReduxStore'
 
 // This error type needs some work but it is the errors thrown by showPaymentSheet
-class StripePaymentError extends Error {
+export class StripePaymentError extends Error {
   public readonly statusCode: number | undefined
   public readonly stripeErrorCode: string | undefined
 

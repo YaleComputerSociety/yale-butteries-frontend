@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { Text, View, Pressable, ActivityIndicator, Alert } from 'react-native'
+import * as Device from 'expo-device'
+import { StripeProvider } from '@stripe/stripe-react-native'
+import * as Haptics from 'expo-haptics'
+import * as Notifications from 'expo-notifications'
+import { FlatList } from 'react-native-gesture-handler'
+
+import type { MainStackScreenProps, NewOrderItem, Order, OrderItem } from '../../utils/types'
 import { checkout } from '../../styles/CheckoutStyles'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { loading } from '../../styles/GlobalStyles'
 import CheckoutItem from '../../components/customer/CheckoutItem'
-import * as Device from 'expo-device'
 import { priceToText } from '../../utils/functions'
-import { StripeProvider } from '@stripe/stripe-react-native'
 import { setOrder } from '../../store/slices/Order'
 import { removeOrderItem } from '../../store/slices/OrderCart'
 import { baseUrl, isPaymentsEnabled, stripePK } from '../../utils/constants'
-import * as Haptics from 'expo-haptics'
-import * as Notifications from 'expo-notifications'
-import { FlatList } from 'react-native-gesture-handler'
-import type { MainStackScreenProps, NewOrderItem, OrderItem } from '../../utils/types'
 import { GoBackHeader } from '../../routes/mainStackNavigator'
-import { useStripeCheckout } from '../../utils/stripe'
+import { StripePaymentError, useStripeCheckout } from '../../utils/stripe'
 
 const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navigation }) => {
   const { orderItems, isLoading: isOrderCartLoading, price } = useAppSelector((state) => state.orderCart)
@@ -43,7 +44,12 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
       'Are you sure you would like to place this order?',
       'This action cannot be undone',
       [
-        { text: "Yes, I'm Sure", onPress: makePayment },
+        {
+          text: "Yes, I'm Sure",
+          onPress: () => {
+            void submitOrder()
+          },
+        },
         {
           text: 'Cancel',
           onPress: () => {
@@ -57,18 +63,23 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
     )
   }
 
-  const makePayment = async (): Promise<void> => {
-    try {
-      if (isPaymentsEnabled) {
-        const paymentIntent = await showPaymentSheet()
-
-        // user cancelled or there was an error
-        // if (!paymentIntent) {
-        //   setGoBackDisabled(false)
-        //   return
-        // }
+  const handlePayment = async (): Promise<void> => {
+    if (isPaymentsEnabled) {
+      try {
+        await showPaymentSheet()
+      } catch (error) {
+        if (error instanceof StripePaymentError) {
+          Alert.alert(error.message)
+          console.error(error.message)
+          setGoBackDisabled(false)
+        }
       }
+    }
+  }
 
+  const submitOrder = async (): Promise<void> => {
+    await handlePayment()
+    try {
       const newOrderItems: NewOrderItem[] = []
       orderItems.forEach((item) => {
         if (item.orderItem.id == null) {
@@ -83,6 +94,7 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
 
       // TODO put in reducers
       // TODO change collegeId to be dynamic
+      if (currentUser == null) throw new TypeError('Current user does not exist')
       const newOrder = await fetch(baseUrl + 'api/orders', {
         method: 'POST',
         body: JSON.stringify({
@@ -97,14 +109,15 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
         },
       })
 
-      const order = await newOrder.json()
-      if (newOrder.status == 400) throw order
+      const order: Order = await newOrder.json()
+      if (newOrder.status === 400) throw new Error('Error creating new order')
 
       dispatch(setOrder(order))
 
       Alert.alert('Order sent, thank you!')
       setGoBackDisabled(false)
 
+      // TODO move push notifications to separate utils or services file
       let token = ''
       if (Device.isDevice) {
         token = __DEV__
@@ -130,11 +143,10 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
       console.log(subscribeNotificationResponse)
 
       navigation.navigate('OrderStatusScreen')
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+      void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch (err) {
       console.error(err)
-      Alert.alert(err)
-      // Alert.alert('Something went wrong, check your internet connection')
+      Alert.alert(err as string)
       setGoBackDisabled(false)
     }
   }
@@ -149,13 +161,13 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
 
   return (
     <View style={checkout.wrapper}>
-      {isOrderCartLoading ? (
+      {isOrderCartLoading === true ? (
         <View style={loading.container}>
           <ActivityIndicator size="large" />
         </View>
       ) : (
         <StripeProvider publishableKey={stripePK} merchantIdentifier="merchant.com.yalebutteries">
-          <View style={{ flex: 1 }}>
+          <View style={checkout.outerContainer}>
             <View style={checkout.upperContainer}>
               <View style={checkout.header}>
                 <Text style={checkout.totalText}>Order Summary:</Text>
@@ -187,9 +199,9 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
                 }}
               >
                 <Text style={checkout.checkoutText}>Complete Order</Text>
-                {/* <Text style={checkout.paymentInformation}>
-                  Because we are in beta, we will not save your card information
-                </Text> */}
+                {isPaymentsEnabled && (
+                  <Text style={checkout.paymentInformation}>We currently do not save card information</Text>
+                )}
               </Pressable>
             </View>
           </View>
