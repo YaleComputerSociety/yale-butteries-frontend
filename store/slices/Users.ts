@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseUrl } from '../../utils/constants'
 import { AppDispatch } from '../../store/ReduxStore'
 import { setCurrentUserState } from '../../store/slices/CurrentUser'
-import * as LocalStorage from '../../LocalStorage'
+import * as LocalStorage from '../../utils/localStorage'
 import type { User, NewUser } from '../../utils/types'
 
 // import { getJSON, putJSON, postJSON } from 'utils/fetch'

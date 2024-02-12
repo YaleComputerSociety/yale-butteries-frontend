@@ -7,7 +7,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import type { MainStackScreenProps, UpdatedUser } from '../../utils/types'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
-import * as LocalStorage from './../../LocalStorage'
+import * as LocalStorage from '../../utils/localStorage'
 import EvilModal from '../../components/EvilModal'
 
 const Settings: React.FC<MainStackScreenProps<'SettingsScreen'>> = ({ navigation }) => {

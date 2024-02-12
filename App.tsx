@@ -14,7 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as ScreenOrientation from 'expo-screen-orientation'
 
 import AppNavigator from './routes/mainStackNavigator'
-import * as LocalStorage from './LocalStorage'
+import * as LocalStorage from './utils/localStorage'
 import { setIsLoading } from './store/slices/Users'
 import EvilModal from './components/EvilModal'
 
