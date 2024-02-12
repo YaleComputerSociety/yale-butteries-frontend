@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseUrl } from '../../utils/constants'
 import { AppDispatch } from '../../store/ReduxStore'
-import type { User } from '../../utils/types'
+import type { UpdatedUser, User } from '../../utils/types'
 import { setOrder } from './Order'
 import { asyncFetchMenuItems } from './MenuItems'
 
@@ -66,11 +66,11 @@ export const asyncFetchUser = (id: string) => {
   }
 }
 
-export const asyncUpdateCurrentUser = (currentUser: User) => {
+export const asyncUpdateCurrentUser = (currentUser: UpdatedUser, id: string) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     console.log(currentUser)
     try {
-      const updatedUser = await fetch(`${baseUrl}api/users/${currentUser.id}`, {
+      const updatedUser = await fetch(`${baseUrl}api/users/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

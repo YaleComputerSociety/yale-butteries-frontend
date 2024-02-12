@@ -28,6 +28,11 @@ export interface User {
   currentOrder?: OrderItem
 }
 
+export interface UpdatedUser {
+  name?: string
+  email?: string
+}
+
 export interface NewOrderItem {
   price: number
   menuItemId: number

@@ -1,61 +1,56 @@
-//import * as React from 'react'
-import React, { FC, useState } from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet, TouchableOpacity, Text, Alert, Pressable } from 'react-native'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
+import * as Haptics from 'expo-haptics'
+import Ionicon from 'react-native-vector-icons/Ionicons'
+
+import type { MainStackScreenProps, UpdatedUser } from '../../utils/types'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
-import Ionicon from 'react-native-vector-icons/Ionicons'
 import * as LocalStorage from './../../LocalStorage'
-// import * as Animatable from 'react-native-animatable'
-import * as Haptics from 'expo-haptics'
 import EvilModal from '../../components/EvilModal'
 
-const Settings: FC<{ navigation: any }> = ({ navigation }) => {
+const Settings: React.FC<MainStackScreenProps<'SettingsScreen'>> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
-  const [newName, setNewName] = useState(currentUser.name)
+  const [newName, setNewName] = useState(currentUser?.name)
   const [connection, setConnection] = useState(true)
   const [invalidName, setInvalidName] = useState(false)
 
-  const [successView, setSuccessView] = useState(false)
+  // const [successView, setSuccessView] = useState(false)
 
-  const changeName = async (name: string) => {
-    if (currentUser.role == 'dev') {
-      Alert.alert('You are currently in developer mode. You cannot change your name.')
-      return
-    }
+  const changeName = async (name: string | undefined): Promise<void> => {
+    if (name == null) return
+    // if (currentUser.role == 'dev') {
+    //   Alert.alert('You are currently in developer mode. You cannot change your name.')
+    //   return
+    // }
 
     const id = await LocalStorage.getUserInfo('id')
     if (name.length <= 2 || name.length >= 16) {
       setInvalidName(true)
     } else {
       setInvalidName(false)
-      const updatedCurrentUser = {
-        id,
+      const updatedCurrentUser: UpdatedUser = {
         name,
-        college: null,
-        permissions: null,
-        token: null,
-        email: null,
-        netid: currentUser.netId,
       }
-      const success = await dispatch(asyncUpdateCurrentUser(updatedCurrentUser))
-      if (!success) {
+      const success = await dispatch(asyncUpdateCurrentUser(updatedCurrentUser, id))
+      if (success == null) {
         setConnection(false)
       } else {
-        setSuccessView(true)
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+        // setSuccessView(true)
+        void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
         Alert.alert('Successfully Saved!')
-        setTimeout(() => {
-          setSuccessView(false)
-        }, 3000)
+        // setTimeout(() => {
+        //   setSuccessView(false)
+        // }, 3000)
       }
     }
   }
 
   return (
-    <View style={{ width: '100%', height: '100%', backgroundColor: '#121212', display: 'flex' }}>
+    <View style={styles.container}>
       <EvilModal toggle={setConnection} display={!connection} />
       <ScrollView>
         <Text style={styles.text}>Account Information</Text>
@@ -73,27 +68,25 @@ const Settings: FC<{ navigation: any }> = ({ navigation }) => {
             />
           </View>
           {invalidName && <Text style={styles.error}>Please enter a name between 3 and 15 characters</Text>}
-          <TouchableOpacity style={styles.save_button} onPress={() => changeName(newName)}>
+          <TouchableOpacity
+            style={styles.save_button}
+            onPress={() => {
+              void changeName(newName)
+            }}
+          >
             <Text style={styles.button_text}> Save </Text>
           </TouchableOpacity>
         </View>
         {/* <Text style={styles.text}>Payment Information</Text> */}
       </ScrollView>
-      <View style={{ marginBottom: 30, alignItems: 'center' }}>
+      <View style={styles.aboutContainer}>
         <Pressable
-          onPress={() => navigation.navigate('AboutScreen')}
+          onPress={() => {
+            navigation.navigate('AboutScreen')
+          }}
           style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
         >
-          <Text
-            style={{
-              fontFamily: 'HindSiliguri',
-              textDecorationLine: 'underline',
-              color: 'rgba(255,255,255,0.7)',
-              fontSize: 16,
-            }}
-          >
-            About
-          </Text>
+          <Text style={styles.about}>About</Text>
         </Pressable>
       </View>
       {/* {successView == true && (
@@ -107,6 +100,14 @@ const Settings: FC<{ navigation: any }> = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  aboutContainer: { marginBottom: 30, alignItems: 'center' },
+  about: {
+    fontFamily: 'HindSiliguri',
+    textDecorationLine: 'underline',
+    color: 'rgba(255,255,255,0.7)',
+    fontSize: 16,
+  },
+  container: { width: '100%', height: '100%', backgroundColor: '#121212', display: 'flex' },
   save_button: {
     alignSelf: 'flex-end',
     marginHorizontal: 10,
