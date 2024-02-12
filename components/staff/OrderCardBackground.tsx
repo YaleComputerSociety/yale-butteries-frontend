@@ -1,10 +1,10 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
+import type { OrderItem } from '../../utils/types'
 import { COLORS } from '../../constants/Colors'
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
-import { OrderItem } from '../../utils/types'
 
 interface Props {
   status: number
@@ -13,8 +13,8 @@ interface Props {
   started?: boolean
 }
 
-const OrderCardBackground: React.FC<Props> = ({ status, orderItem, time }: Props) => {
-  const getColor = (status: number): string => {
+const OrderCardBackground: React.FC<Props> = ({ status, orderItem }: Props) => {
+  const getColor = (): string => {
     switch (status) {
       case 0:
         return '#ff6464'
@@ -31,7 +31,7 @@ const OrderCardBackground: React.FC<Props> = ({ status, orderItem, time }: Props
     }
   }
 
-  const getStatus = (status: number): string => {
+  const getStatus = (): string => {
     switch (status) {
       case 0:
         return 'Cancelled'
@@ -48,13 +48,17 @@ const OrderCardBackground: React.FC<Props> = ({ status, orderItem, time }: Props
     }
   }
 
+  const cardBackgroundColor = {
+    backgroundColor: getColor(),
+  }
+
   return (
-    <View style={{ ...styles.container, backgroundColor: getColor(status) }}>
-      <View style={{ ...styles.timeContainer }}>
-        <Text style={{ ...styles.nameText, lineHeight: 14 }}>{getStatus(status)}</Text>
+    <View style={[styles.container, cardBackgroundColor]}>
+      <View style={styles.timeContainer}>
+        <Text style={styles.status}>{getStatus()}</Text>
       </View>
       <View style={styles.itemContainer}>
-        <Text style={{ ...styles.regularText }}>{orderItem.name}</Text>
+        <Text style={styles.regularText}>{orderItem.name}</Text>
       </View>
     </View>
   )
@@ -85,22 +89,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexWrap: 'wrap',
   },
-  nameContainer: {
-    width: LAYOUTS.getWidth(75),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  boldText: {
-    fontSize: TEXTS.adjust(15),
-    color: COLORS.black,
-  },
   regularText: {
     fontSize: TEXTS.adjust(17),
     color: COLORS.black,
   },
-  nameText: {
+  status: {
     fontSize: TEXTS.adjust(10),
     color: COLORS.black,
+    lineHeight: 14,
   },
 })
 

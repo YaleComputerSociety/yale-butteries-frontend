@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import type { NativeScrollEvent } from 'react-native'
 import { Alert, View, StyleSheet } from 'react-native'
 
 import { COLORS } from '../../constants/Colors'
@@ -10,9 +11,8 @@ import OrderCardBackground from './OrderCardBackground'
 
 import { useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateOrderItem, updateOrderItem } from '../../store/slices/OrderItem'
-import { cleanTime } from '../../utils/functions'
-import type { OrderItem } from '../../utils/types'
- 
+import type { OrderItem, OrderItemStatus } from '../../utils/types'
+
 interface Props {
   item: OrderItem
   orderItems: OrderItem[]
@@ -20,19 +20,18 @@ interface Props {
   setConnection: (necessaryConnection: boolean) => void
 }
 
-type Status = 'CANCELLED' | 'QUEUED' | 'ONGOING' | 'READY'
-const statuses: Status[] = ['CANCELLED', 'QUEUED', 'ONGOING', 'READY']
+const statuses: OrderItemStatus[] = ['CANCELLED', 'QUEUED', 'ONGOING', 'READY']
 
-const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props) => {
+const OrderItemCard: React.FC<Props> = ({ item, interactable, setConnection }: Props) => {
   const dispatch = useAppDispatch()
 
   const slideIndex = [0, 1, 2, 3, 4]
 
-  const [orderStatus, setOrderStatus] = useState(item.status)
+  const [orderStatus, setOrderStatus] = useState<OrderItemStatus>(item.status)
   const [tagActive, setTagActive] = useState(-1)
   const [isStarted, setIsStarted] = useState(false)
 
-  //Here we need to find based on the orderstatus where to start the slide index
+  // Here we need to find based on the orderstatus where to start the slide index
   const [startingIndex, setStartingIndex] = useState(-1)
 
   useEffect(() => {
@@ -57,15 +56,15 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
   }, [orderStatus])
 
   useEffect(() => {
-    if (orderStatus != 'QUEUED') {
+    if (orderStatus !== 'QUEUED') {
       setIsStarted(true)
     }
   }, [orderStatus])
 
-  const handleStatus = async (code: number) => {
-    const tempStatus: Status = statuses[code]
+  const handleStatus = async (code: number): Promise<void> => {
+    const tempStatus: OrderItemStatus = statuses[code]
 
-    if (tempStatus == 'CANCELLED') {
+    if (tempStatus === 'CANCELLED') {
       Alert.alert('Notice', 'Are you sure you want to cancel this order? This can not be undone', [
         {
           text: 'Yes',
@@ -75,7 +74,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
               asyncUpdateOrderItem({
                 ...item,
                 status: tempStatus,
-              })
+              }),
             ).then((success: boolean) => {
               setConnection(success)
             })
@@ -91,12 +90,12 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
               updateOrderItem({
                 ...item,
                 status: 'QUEUED',
-              })
+              }),
             )
           },
         },
       ])
-    } else if (tempStatus == 'READY') {
+    } else if (tempStatus === 'READY') {
       Alert.alert('Notice', 'Are you sure you want to mark this order as finished? This cannot be undone', [
         {
           text: 'Yes',
@@ -106,7 +105,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
               asyncUpdateOrderItem({
                 ...item,
                 status: tempStatus,
-              })
+              }),
             ).then((success: boolean) => {
               setConnection(success)
             })
@@ -122,7 +121,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
               updateOrderItem({
                 ...item,
                 status: 'ONGOING',
-              })
+              }),
             )
           },
         },
@@ -132,22 +131,20 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
         asyncUpdateOrderItem({
           ...item,
           status: tempStatus,
-        })
+        }),
       ).then((success: boolean) => {
         setConnection(success)
       })
     }
   }
 
-  const onchange = (nativeEvent) => {
-    if (nativeEvent) {
-      const slide = Math.round(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width)
-      if (slide != tagActive) {
-        setTagActive(slide)
-        handleStatus(slide)
-        setIsStarted(true)
-        setStartingIndex(slide)
-      }
+  const onchange = (nativeEvent: NativeScrollEvent): void => {
+    const slide = Math.round(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width)
+    if (slide !== tagActive) {
+      setTagActive(slide)
+      handleStatus(slide).catch(console.error)
+      setIsStarted(true)
+      setStartingIndex(slide)
     }
   }
 
@@ -155,7 +152,9 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
     <View style={styles.container}>
       {interactable ? (
         <ScrollView
-          onScroll={({ nativeEvent }) => onchange(nativeEvent)}
+          onScroll={({ nativeEvent }) => {
+            onchange(nativeEvent)
+          }}
           scrollEventThrottle={0}
           showsHorizontalScrollIndicator={false}
           pagingEnabled
@@ -164,9 +163,7 @@ const OrderCard: React.FC<Props> = ({ item, interactable, setConnection }: Props
           contentOffset={{ x: startingIndex * LAYOUTS.getWidth(355), y: 0 }}
         >
           {slideIndex.map((index) => {
-            return (
-              <OrderCardBackground status={index} orderItem={item} key={index} started={isStarted} />
-            )
+            return <OrderCardBackground status={index} orderItem={item} key={index} started={isStarted} />
           })}
         </ScrollView>
       ) : (
@@ -231,4 +228,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default OrderCard
+export default OrderItemCard

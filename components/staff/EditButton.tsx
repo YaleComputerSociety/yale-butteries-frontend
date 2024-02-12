@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 
@@ -8,10 +8,10 @@ interface Props {
   right: number
   left?: number
   bottom?: number
-  action: (...args: any[]) => void
+  action: () => void
 }
 
-const EditButton: FC<Props> = (props: Props) => {
+const EditButton: React.FC<Props> = (props: Props) => {
   return (
     <TouchableOpacity
       style={{

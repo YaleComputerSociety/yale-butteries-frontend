@@ -5,7 +5,7 @@ import { COLORS } from '../../constants/Colors'
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
 
-import OrderCard from './OrderCard'
+import OrderItemCard from './OrderItemCard'
 import { card } from '../../styles/ButteriesStyles'
 
 import { useAppDispatch } from '../../store/ReduxStore'
@@ -63,7 +63,7 @@ const BigCard: React.FC<Props> = ({ orderItems, interactable, setConnection, isW
       {newItems.map((element) => {
         return (
           <View key={element.id + 'vv'} style={styles.tag}>
-            <OrderCard
+            <OrderItemCard
               item={element}
               orderItems={newItems}
               interactable={interactable}

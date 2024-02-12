@@ -1,38 +1,37 @@
-import React, { FC, useState } from 'react'
-import { StyleSheet, Text, Pressable, Button, View, TextInput } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Text, Pressable, View, TextInput } from 'react-native'
 import { militaryToAnalog } from '../../utils/functions'
 
 interface Props {
   time: string
   hour: (hour) => void
   minutes: (minutes) => void
-  AM_PM: (am_pm) => void
+  meridiem: (meridiem) => void
 }
 
-const TimeCard: FC<Props> = (props: Props) => {
+const TimeCard: React.FC<Props> = (props: Props) => {
   const time = militaryToAnalog(props.time).split(' ')
 
   const [hour, setHour] = useState(time[0])
   const [minute, setMinute] = useState(time[1])
+  const [meridiem, setMeridiem] = useState(time[2].toUpperCase())
 
-  const [AM_PM, setAM_PM] = useState(time[2].toUpperCase())
-
-  const handleAM_PM = (text: string) => {
-    if (text == 'PM') {
-      setAM_PM('AM')
-      props.AM_PM('AM')
+  const handleMeridiem = (text: string): void => {
+    if (text === 'PM') {
+      setMeridiem('AM')
+      props.meridiem('AM')
     } else {
-      setAM_PM('PM')
-      props.AM_PM('PM')
+      setMeridiem('PM')
+      props.meridiem('PM')
     }
   }
 
-  const handleHour = (text: string) => {
+  const handleHour = (text: string): void => {
     setHour(text)
     props.hour(text)
   }
 
-  const handleMinutes = (text: string) => {
+  const handleMinutes = (text: string): void => {
     setMinute(text)
     props.minutes(text)
   }
@@ -58,8 +57,13 @@ const TimeCard: FC<Props> = (props: Props) => {
         keyboardType="numeric"
         maxLength={2}
       />
-      <Pressable style={[styles.AM_PM, { borderWidth: 1 }]} onPress={() => handleAM_PM(AM_PM)}>
-        <Text style={styles.text}>{AM_PM}</Text>
+      <Pressable
+        style={styles.meridiem}
+        onPress={() => {
+          handleMeridiem(meridiem)
+        }}
+      >
+        <Text style={styles.text}>{meridiem}</Text>
       </Pressable>
     </View>
   )
@@ -77,7 +81,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlignVertical: 'center',
     textAlign: 'center',
-    color: 'rgba(255,255,255, 0.87)'
+    color: 'rgba(255,255,255, 0.87)',
   },
   timeText: {
     fontFamily: 'HindSiliguri',
@@ -89,14 +93,15 @@ const styles = StyleSheet.create({
     width: '25%',
     textAlign: 'center',
     color: 'rgba(255,255,255, 0.87)',
-    backgroundColor: '#121212'
+    backgroundColor: '#121212',
   },
-  AM_PM: {
+  meridiem: {
     borderRadius: 8,
     marginLeft: 10,
     backgroundColor: '#121212',
     width: '25%',
     elevation: 3,
+    borderWidth: 1,
   },
 })
 

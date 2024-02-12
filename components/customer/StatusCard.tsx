@@ -7,7 +7,6 @@ interface Props {
   status: 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED'
 }
 
-
 const StatusCard: React.FC<Props> = ({ name, status }: Props) => {
   const getIconVisual = (): React.ReactElement => {
     switch (status) {
