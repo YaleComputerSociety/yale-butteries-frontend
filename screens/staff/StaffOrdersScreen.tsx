@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native'
-import store, { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
-
+import store, { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import BigCard from '../../components/staff/BigCard'
 import { asyncFetchRecentOrdersFromCollege } from '../../store/slices/Order'
 import type { OrderItem } from '../../utils/types'
-// import { useIsFocused } from '@react-navigation/native'
 import EvilModal from '../../components/EvilModal'
 
 const OrdersScreen2: React.FC = () => {
   const dispatch = useAppDispatch()
-  // const isFocused = useIsFocused()
 
   const { orderItems, isLoading: isLoadingOrderItems } = useAppSelector((state) => state.orderItems)
   const { currentUser } = useAppSelector((state) => state.currentUser)
@@ -182,24 +179,19 @@ const styles = StyleSheet.create({
   title2: {
     fontSize: TEXTS.adjust(20),
     textAlign: 'center',
-    // marginBottom: LAYOUTS.getWidth(5),
-    // marginTop: LAYOUTS.getWidth(5),
     color: 'rgba(255,255,255, 0.87)',
     fontWeight: 'bold',
-    // fontFamily: 'HindSiliguri',
   },
   scrollView: {
     paddingTop: LAYOUTS.getWidth(10),
     paddingHorizontal: LAYOUTS.getWidth(10),
     backgroundColor: '#121212',
     flex: 1,
-    // borderWidth: 1
   },
   loader: {
     marginTop: LAYOUTS.getWidth(100),
   },
   tag: {
-    // borderWidth: 3,
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
