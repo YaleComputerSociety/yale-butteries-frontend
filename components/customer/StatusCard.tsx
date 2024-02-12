@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
@@ -7,8 +7,8 @@ interface Props {
   status: 'QUEUED' | 'ONGOING' | 'READY' | 'CANCELLED'
 }
 
-const StatusItem: FC<Props> = ({ name, status }: Props) => {
-  const getIconVisual = () => {
+const StatusCard: React.FC<Props> = ({ name, status }: Props) => {
+  const getIconVisual = (): React.ReactElement => {
     switch (status) {
       case 'QUEUED':
         return (
@@ -121,4 +121,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default StatusItem
+export default StatusCard

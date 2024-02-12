@@ -5,7 +5,7 @@ import * as Haptics from 'expo-haptics'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { useIsFocused } from '@react-navigation/native'
 
-import StatusItem from '../../components/customer/StatusCard'
+import StatusCard from '../../components/customer/StatusCard'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { setOrder } from '../../store/slices/Order'
 import { baseUrl } from '../../utils/constants'
@@ -121,7 +121,7 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
       <View style={styles.outerView}>
         <ScrollView>
           {currentOrder?.orderItems.map((orderItem, index) => (
-            <StatusItem name={getMenuItemNameFromId(orderItem)} status={orderItem.status} key={index} />
+            <StatusCard name={getMenuItemNameFromId(orderItem)} status={orderItem.status} key={index} />
           ))}
         </ScrollView>
       </View>
@@ -199,7 +199,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#121212',
     flex: 1,
     alignItems: 'center',
-
     justifyContent: 'center',
   },
   button: {

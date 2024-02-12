@@ -1,5 +1,6 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { View, Text, Pressable } from 'react-native'
+
 import { item, menu } from '../../styles/MenuStyles'
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
 }
 
 // the bottom component on the menu screen with a checkout button and the current price and number of items
-export const MenuCheckoutButton: FC<Props> = (props: Props) => {
+export const MenuCheckoutButton: React.FC<Props> = (props: Props) => {
   return (
     <View style={menu.lowerContainer}>
       <View style={item.outerContainer}>
