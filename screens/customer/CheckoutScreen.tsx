@@ -6,7 +6,7 @@ import { loading } from '../../styles/GlobalStyles'
 import CheckoutItem from '../../components/customer/CheckoutItem'
 import * as Device from 'expo-device'
 import { priceToText } from '../../utils/functions'
-import { StripeProvider, useStripe } from '@stripe/stripe-react-native'
+import { StripeProvider } from '@stripe/stripe-react-native'
 import { setOrder } from '../../store/slices/Order'
 import { removeOrderItem } from '../../store/slices/OrderCart'
 import { baseUrl, isPaymentsEnabled, stripePK } from '../../utils/constants'
@@ -15,32 +15,13 @@ import * as Notifications from 'expo-notifications'
 import { FlatList } from 'react-native-gesture-handler'
 import type { MainStackScreenProps, NewOrderItem, OrderItem } from '../../utils/types'
 import { GoBackHeader } from '../../routes/mainStackNavigator'
-
-class StripePaymentError extends Error {
-  public readonly statusCode: number | undefined
-  public readonly stripeErrorCode: string | undefined
-
-  constructor(
-    message: string,
-    statusCode: number | undefined = undefined,
-    stripeErrorCode: string | undefined = undefined,
-  ) {
-    super(message)
-    this.name = 'StripePaymentError'
-    this.statusCode = statusCode
-    this.stripeErrorCode = stripeErrorCode
-  }
-}
+import { useStripeCheckout } from '../../utils/stripe'
 
 const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navigation }) => {
-  const {
-    orderItems,
-    isLoading: isLoadingOrderCart,
-    college: collegeOrderCart,
-    price,
-  } = useAppSelector((state) => state.orderCart)
+  const { orderItems, isLoading: isOrderCartLoading, price } = useAppSelector((state) => state.orderCart)
   const { currentUser } = useAppSelector((state) => state.currentUser)
   const dispatch = useAppDispatch()
+  const { showPaymentSheet } = useStripeCheckout()
 
   const [goBackDisabled, setGoBackDisabled] = useState(orderItems.length < 1)
 
@@ -57,76 +38,6 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
     }
   }, [orderItems.length])
 
-  const customAppearance = {
-    colors: {
-      background: '#1f1f1f',
-      componentBackground: '#383838',
-      componentBorder: '#383838',
-      primaryText: '#ffffff',
-      secondaryText: '#ffffff',
-      componentText: '#ffffff',
-      placeholderText: '#73757b',
-    },
-  }
-
-  const stripe = useStripe()
-
-  const showPaymentSheet = async (): Promise<null | string> => {
-    // return { id: 'temp' } // uncomment this line out to skip the credit card entry screen
-    if (price > 2000) {
-      Alert.alert('Your current total is over $20, please remove some items from your cart.')
-      return null
-    }
-
-    // if (currentUser.role === 'dev') {
-    //   Alert.alert('You are currently in developer mode. You cannot place an order.')
-    //   return
-    // }
-
-    if (currentUser == null) throw new Error('No current user')
-    const obj = { userId: currentUser.id, price, items: orderItems, college: collegeOrderCart }
-    const response = await fetch(baseUrl + 'api/payments/paymentIntent', {
-      method: 'POST',
-      body: JSON.stringify(obj),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    if (response.status === 400) {
-      if (orderItems.length === 0) {
-        Alert.alert('There are no items in your cart! Add items to complete your order')
-      } else {
-        Alert.alert('Sorry, an item that you ordered ran out of stock! please refresh the menu page')
-      }
-      return null
-    }
-    const data: { message: string; paymentIntent: { client_secret: string } } = await response.json()
-    if (!response.ok) {
-      Alert.alert(data.message)
-      throw new StripePaymentError(data.message, response.status)
-    }
-    const clientSecret = data.paymentIntent.client_secret
-    const initSheet = await stripe.initPaymentSheet({
-      paymentIntentClientSecret: clientSecret,
-      merchantDisplayName: 'Yale Butteries',
-      appearance: customAppearance,
-      applePay: {
-        merchantCountryCode: 'US',
-      },
-    })
-    if (initSheet.error != null) {
-      Alert.alert(initSheet.error.message)
-      throw new StripePaymentError(initSheet.error.message, initSheet.error.stripeErrorCode)
-      return
-    }
-    const presentSheet = await stripe.presentPaymentSheet()
-    if (presentSheet.error) {
-      Alert.alert(presentSheet.error.message)
-      return
-    }
-    return data.paymentIntent
-  }
-
   const safetyCheck = (): void => {
     Alert.alert(
       'Are you sure you would like to place this order?',
@@ -142,7 +53,7 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
       ],
       {
         cancelable: true,
-      }
+      },
     )
   }
 
@@ -238,7 +149,7 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
 
   return (
     <View style={checkout.wrapper}>
-      {isLoadingOrderCart ? (
+      {isOrderCartLoading ? (
         <View style={loading.container}>
           <ActivityIndicator size="large" />
         </View>
