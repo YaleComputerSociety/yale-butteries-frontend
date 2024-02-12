@@ -20,40 +20,44 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
   const { menuItems } = useAppSelector((state) => state.menuItems)
   const { currentUser } = useAppSelector((state) => state.currentUser)
 
-  // TODO: put this in a reducer
-  const fetchOrder = async (): Promise<number | undefined> => {
-    try {
-      const order = await fetch(baseUrl + 'api/orders/' + currentOrder.id, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      const response = await order.json()
-      if (response.status === 400) throw response
-      dispatch(setOrder(response as Order))
-      setConnection(true)
-      return getPercentageCompleted(response as Order)
-    } catch (e) {
-      console.log(e)
-      setConnection(false)
-    }
-  }
-
   // Every 5 seconds, check user's order
   useEffect(() => {
-    fetchOrder().catch(console.log)
-
-    const intervalId = setInterval(async () => {
-      fetchOrder().catch(console.log)
-      if (percentage == 1) {
-        clearInterval(intervalId)
+    // TODO: put this in a reducer
+    const fetchOrder = async (): Promise<number | undefined> => {
+      try {
+        const order = await fetch(baseUrl + 'api/orders/' + currentOrder.id, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        const response = await order.json()
+        if (response.status === 400) throw response
+        dispatch(setOrder(response as Order))
+        setConnection(true)
+        return getPercentageCompleted(response as Order)
+      } catch (e) {
+        console.log(e)
+        setConnection(false)
       }
+    }
+
+    fetchOrder().catch(console.error)
+
+    const intervalId = setInterval(() => {
+      fetchOrder()
+        .then(() => {
+          if (percentage === 1) {
+            clearInterval(intervalId)
+          }
+        })
+        .catch(console.error)
     }, 5000)
+
     return () => {
       clearInterval(intervalId)
     }
-  }, [percentage])
+  }, [currentOrder.id, dispatch, percentage])
 
   useEffect(() => {
     setPercentage(0)
@@ -85,7 +89,7 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
 
   function getMenuItemNameFromId(orderItem: OrderItem): string {
     if (menuItems != null) {
-      return menuItems.find((element) => element.id == orderItem.menuItemId).name
+      return menuItems.find((element) => element.id === orderItem.menuItemId)?.name ?? 'item'
     } else {
       return 'Loading...'
     }
@@ -133,7 +137,7 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
         />
         <Pressable
           style={({ pressed }) => [
-            { backgroundColor: pressed ? '#32ba32' : '#32CD32', opacity: percentage == 1 ? 1 : 0.6 },
+            { backgroundColor: pressed ? '#32ba32' : '#32CD32', opacity: percentage === 1 ? 1 : 0.6 },
             styles.button,
           ]}
           onPress={() => {
