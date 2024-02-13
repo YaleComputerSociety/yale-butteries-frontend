@@ -1,8 +1,5 @@
 import React from 'react'
-import type { StackNavigationProp } from '@react-navigation/stack'
 import { createStackNavigator } from '@react-navigation/stack'
-import { StyleSheet } from 'react-native'
-import Ionicon from 'react-native-vector-icons/Ionicons'
 
 import ButteriesScreen from '../screens/customer/ButteriesScreen'
 import MenuScreen from '../screens/customer/MenuScreen'
@@ -16,8 +13,9 @@ import DummyScreen from '../screens/DummyScreen'
 import CASLoginScreen from '../screens/CASLoginScreen'
 import AboutScreen from '../screens/AboutScreen'
 import GuestLoginScreen from '../screens/GuestLoginScreen'
-import { useNavigation } from '@react-navigation/native'
 import { returnCollegeName } from '../utils/functions'
+import { SettingsHeader } from '../components/NavigationSettingsHeader'
+import { GoBackHeader } from '../components/NavigationGoBackHeader'
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type MainStackParamList = {
@@ -34,41 +32,6 @@ export type MainStackParamList = {
   AboutScreen: undefined
   GuestLoginScreen: undefined
 }
-
-const SettingsHeader: React.FC = () => {
-  const navigation: StackNavigationProp<MainStackParamList> = useNavigation()
-  return (
-    <Ionicon
-      name="settings-sharp"
-      size={20}
-      color="#fff"
-      onPress={() => {
-        navigation.navigate('SettingsScreen')
-      }}
-      style={styles.settingsHeader}
-    />
-  )
-}
-
-export const GoBackHeader: React.FC = () => {
-  const navigation: StackNavigationProp<MainStackParamList> = useNavigation()
-  return (
-    <Ionicon
-      name="chevron-back"
-      size={30}
-      color="#fff"
-      onPress={() => {
-        navigation.goBack()
-      }}
-      style={styles.goBackHeader}
-    />
-  )
-}
-
-const styles = StyleSheet.create({
-  settingsHeader: { paddingRight: 20 },
-  goBackHeader: { paddingLeft: 10 },
-})
 
 const MainStack = createStackNavigator<MainStackParamList>()
 

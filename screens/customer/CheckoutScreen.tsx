@@ -15,7 +15,7 @@ import { priceToText } from '../../utils/functions'
 import { setOrder } from '../../store/slices/Order'
 import { removeOrderItem } from '../../store/slices/OrderCart'
 import { baseUrl, isPaymentsEnabled, stripePK } from '../../utils/constants'
-import { GoBackHeader } from '../../routes/mainStackNavigator'
+import { GoBackHeader } from '../../components/NavigationGoBackHeader'
 import { StripePaymentError, useStripeCheckout } from '../../utils/stripe'
 
 const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navigation }) => {

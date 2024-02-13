@@ -11,7 +11,7 @@ import { registerForPushNotificationsAsync, getDaysOpen, getHours, getCollegeOpe
 import { asyncFetchColleges } from '../../store/slices/Colleges'
 import type { MainStackScreenProps } from '../../utils/types'
 
-const ButteriesScreen: React.FC<MainStackScreenProps<'DummyScreen'>> = ({ navigation }) => {
+const ButteriesScreen: React.FC<MainStackScreenProps<'ButteriesScreen'>> = ({ navigation }) => {
   const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
 
