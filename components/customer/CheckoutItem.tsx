@@ -14,7 +14,7 @@ interface Props {
   isDisabled: boolean
 }
 
-const CheckoutItem: React.FC = ({ decUpdate, item, isDisabled }: Props) => {
+const CheckoutItem: React.FC<Props> = ({ decUpdate, item, isDisabled }) => {
   const removeItem = (): void => {
     void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     decUpdate(item.orderItem)

@@ -28,6 +28,7 @@ const Settings: React.FC<MainStackScreenProps<'SettingsScreen'>> = ({ navigation
     // }
 
     const id = await LocalStorage.getUserInfo('id')
+    if (id == null) throw new Error('No user found')
     if (name.length <= 2 || name.length >= 16) {
       setInvalidName(true)
     } else {

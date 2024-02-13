@@ -6,7 +6,7 @@ import * as Haptics from 'expo-haptics'
 import * as Notifications from 'expo-notifications'
 import { FlatList } from 'react-native-gesture-handler'
 
-import type { MainStackScreenProps, NewOrderItem, Order, OrderItem } from '../../utils/types'
+import type { MainStackScreenProps, MenuItem, NewOrderItem, Order } from '../../utils/types'
 import { checkout } from '../../styles/CheckoutStyles'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { loading } from '../../styles/GlobalStyles'
@@ -151,7 +151,7 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
     }
   }
 
-  const removeOrder = (newItem: OrderItem): void => {
+  const removeOrder = (newItem: MenuItem): void => {
     const item = orderItems.find((orderCartItem) => orderCartItem.orderItem.id === newItem.id)
     if (item === undefined) {
       throw new TypeError("Couldn't find orderItem to delete")
