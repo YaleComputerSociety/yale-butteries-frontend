@@ -114,6 +114,8 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
 
       dispatch(setOrder(order))
 
+      // const order = { id: 4 }
+
       Alert.alert('Order sent, thank you!')
       setGoBackDisabled(false)
 

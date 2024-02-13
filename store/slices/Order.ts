@@ -1,11 +1,12 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AppDispatch } from '../ReduxStore'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+import type { AppDispatch } from '../ReduxStore'
 import { baseUrl } from '../../utils/constants'
 import type { Order } from '../../utils/types'
 
 export interface OrdersState {
   orders: Order[]
-  currentOrder: Order
+  currentOrder: Order | null
   isLoading: boolean
 }
 
@@ -20,6 +21,7 @@ export const ordersSlice = createSlice({
   initialState: ordersInitialState,
   reducers: {
     setOrder: (state, action: PayloadAction<Order>) => {
+      console.log('hey', action.payload)
       state.orders = [action.payload]
       state.currentOrder = action.payload
     },
@@ -28,7 +30,7 @@ export const ordersSlice = createSlice({
       state.currentOrder = action.payload
     },
     updateOrder: (state, action: PayloadAction<Order>) => {
-      const index = state.orders.findIndex((element) => element.id == action.payload.id)
+      const index = state.orders.findIndex((element) => element.id === action.payload.id)
       state.orders[index] = action.payload
       state.currentOrder = state.orders[state.orders.length - 1]
     },
@@ -41,7 +43,7 @@ export const ordersSlice = createSlice({
   },
 })
 
-export const {setOrder, addOrder, updateOrder, setOrders, setIsLoading} = ordersSlice.actions
+export const { setOrder, addOrder, updateOrder, setOrders, setIsLoading } = ordersSlice.actions
 
 export const asyncFetchRecentOrdersFromCollege = (collegeId: number) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {

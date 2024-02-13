@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { View, ScrollView, Text, StyleSheet, Pressable, Alert } from 'react-native'
 import ProgressBar from 'react-native-progress/Bar'
 import * as Haptics from 'expo-haptics'
-import { NavigationActions, StackActions } from 'react-navigation'
-import { useIsFocused } from '@react-navigation/native'
+import { CommonActions, useIsFocused } from '@react-navigation/native'
+import isEqual from 'lodash/isEqual'
 
 import StatusCard from '../../components/customer/StatusCard'
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
@@ -23,6 +23,7 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
   // Every 5 seconds, check user's order
   useEffect(() => {
     // TODO: put this in a reducer
+    if (currentOrder == null) throw new Error('No current order')
     const fetchOrder = async (): Promise<number | undefined> => {
       try {
         const order = await fetch(baseUrl + 'api/orders/' + currentOrder.id, {
@@ -33,8 +34,11 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
         })
         const response = await order.json()
         if (response.status === 400) throw response
-        dispatch(setOrder(response as Order))
+        if (isEqual(response, currentOrder) === false) {
+          dispatch(setOrder(response as Order))
+        }
         setConnection(true)
+        console.log('hey')
         return getPercentageCompleted(response as Order)
       } catch (e) {
         console.log(e)
@@ -43,8 +47,9 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
     }
 
     fetchOrder().catch(console.error)
-
+    console.log('b')
     const intervalId = setInterval(() => {
+      console.log('c')
       fetchOrder()
         .then(() => {
           if (percentage === 1) {
@@ -57,7 +62,7 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
     return () => {
       clearInterval(intervalId)
     }
-  }, [currentOrder.id, dispatch, percentage])
+  }, [currentOrder, currentOrder?.id, dispatch, percentage])
 
   useEffect(() => {
     setPercentage(0)
@@ -65,6 +70,7 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
 
   // Turn ratio of orders completed/cancelled into a percentage
   const getPercentageCompleted = (order: Order): number => {
+    console.log(order)
     const denominator = order.orderItems.length
     let numerator = 0
     for (let i = 0; i < denominator; i++) {
@@ -72,11 +78,13 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
         numerator += 1
       }
     }
-    setPercentage(numerator / denominator)
-    return numerator / denominator
+    const newPercentage = numerator / denominator
+    setPercentage(newPercentage)
+    return newPercentage
   }
 
   const status = (): string => {
+    console.log('d')
     const progress = currentOrder?.status
     if (progress === 'ONGOING') {
       return 'In Progress'
@@ -96,11 +104,16 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
   }
 
   const back = (): void => {
-    const resetAction = StackActions.reset({
+    const customerResetStack = CommonActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'ButteriesScreen' })],
+      routes: [{ name: 'ButteriesScreen' }],
     })
-    navigation.dispatch(resetAction)
+
+    const staffResetStack = CommonActions.reset({
+      index: 1,
+      routes: [{ name: 'NavigationScreen' }, { name: 'ButteriesScreen' }],
+    })
+    navigation.dispatch(currentUser?.role === 'STAFF' ? staffResetStack : customerResetStack)
   }
 
   return (

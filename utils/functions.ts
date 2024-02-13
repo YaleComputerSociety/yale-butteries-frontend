@@ -74,7 +74,8 @@ export function cleanTime(inputDate: Date): string {
 export function getDaysOpen(colleges: College[], name: string): boolean[] {
   const initArray = [false, false, false, false, false, false, false]
 
-  const daysOpen = colleges.filter((college) => college.name.toLowerCase() === name.toLowerCase())[0].daysOpen
+  const daysOpen = colleges.find((college) => college.name.toLowerCase() === name.toLowerCase())?.daysOpen
+  if (daysOpen == null) return initArray
 
   for (let i = 0; i <= daysOpen.length - 1; i++) {
     // days of week index (7-1)
@@ -109,8 +110,8 @@ export function getDaysOpen(colleges: College[], name: string): boolean[] {
 }
 
 export function getHours(colleges: College[], name: string): string[] {
-  const college = colleges.filter((col) => col.name.toLowerCase() === name.toLowerCase())[0]
-  if (college.openTime !== '' && college.closeTime !== '') {
+  const college = colleges.find((col) => col.name.toLowerCase() === name.toLowerCase())
+  if (college != null && college.openTime !== '' && college.closeTime !== '') {
     return [militaryToAnalog(college.openTime), militaryToAnalog(college.closeTime)]
   }
 
@@ -122,7 +123,8 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
   const hour = today.getHours()
   const minute = today.getMinutes()
 
-  const college = colleges.filter((col) => col.name.toLowerCase() === name.toLowerCase())[0]
+  const college = colleges.find((col) => col.name.toLowerCase() === name.toLowerCase())
+  if (college == null) return false
   const openTimeHour = parseInt(college.openTime)
   const openTimeMinute = parseInt(college.openTime.split(':')[1])
 
@@ -167,7 +169,7 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
 
 export function getCollegeAcceptingOrders(colleges: College[], name: string): boolean {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const college = colleges.filter((col) => col.name.toLowerCase() === name.toLowerCase())[0]
+  const college = colleges.find((col) => col.name.toLowerCase() === name.toLowerCase())
   // return college.isAcceptingOrders == null || college.isAcceptingOrders
   return true
 }
