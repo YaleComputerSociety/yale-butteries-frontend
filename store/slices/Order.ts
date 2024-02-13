@@ -21,7 +21,6 @@ export const ordersSlice = createSlice({
   initialState: ordersInitialState,
   reducers: {
     setOrder: (state, action: PayloadAction<Order>) => {
-      console.log('hey', action.payload)
       state.orders = [action.payload]
       state.currentOrder = action.payload
     },

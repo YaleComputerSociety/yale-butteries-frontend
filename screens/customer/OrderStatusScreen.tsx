@@ -38,18 +38,15 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
           dispatch(setOrder(response as Order))
         }
         setConnection(true)
-        console.log('hey')
         return getPercentageCompleted(response as Order)
       } catch (e) {
-        console.log(e)
+        console.error(e)
         setConnection(false)
       }
     }
 
     fetchOrder().catch(console.error)
-    console.log('b')
     const intervalId = setInterval(() => {
-      console.log('c')
       fetchOrder()
         .then(() => {
           if (percentage === 1) {
@@ -70,7 +67,6 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
 
   // Turn ratio of orders completed/cancelled into a percentage
   const getPercentageCompleted = (order: Order): number => {
-    console.log(order)
     const denominator = order.orderItems.length
     let numerator = 0
     for (let i = 0; i < denominator; i++) {
@@ -84,7 +80,6 @@ const OrderStatusScreen: React.FC<MainStackScreenProps<'OrderStatusScreen'>> = (
   }
 
   const status = (): string => {
-    console.log('d')
     const progress = currentOrder?.status
     if (progress === 'ONGOING') {
       return 'In Progress'
