@@ -9,6 +9,8 @@ import CreateItemScreen from '../screens/staff/CreateItemScreen'
 import SettingsScreen from '../screens/staff/SettingsScreen'
 import AnalyticsScreen from '../screens/staff/AnalyticsScreen'
 
+import { useAppSelector } from '../store/ReduxStore'
+
 import { createStackNavigator } from '@react-navigation/stack'
 
 type InventoryParamList = {
@@ -25,6 +27,7 @@ function AntDesignBarIcon(props: { name: React.ComponentProps<typeof AntDesign>[
 }
 
 const StaffStack: React.FC = () => {
+  const { currentUser } = useAppSelector((state) => state.currentUser)
   return (
     <Tab.Navigator screenOptions={{
       tabBarStyle: {
@@ -41,7 +44,7 @@ const StaffStack: React.FC = () => {
       headerTintColor: '#FFF'
   }}>
       <Tab.Screen
-        name="Orders"
+        name={`${currentUser.college} Orders`}
         component={OrdersScreen}
         options={{
           tabBarIcon: ({ color }) => <AntDesignBarIcon name="shoppingcart" color={color} />,
