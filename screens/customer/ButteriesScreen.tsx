@@ -141,13 +141,22 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     )
   }
 
-  const getAllCards = () => {
+  const getAllCards = (filterType?: 'all' | 'active' | 'inactive') => {
     const collegeCards: JSX.Element[] = []
-
-    for (let i = 0; i < butteries.length - 1; i++) {
-      collegeCards.push(getCollegeVisual(butteries[i], i))
+  
+    let filteredColleges = butteries; // Default: Get all colleges
+  
+    // Filter based on filterType if provided
+    if (filterType === 'active') {
+      filteredColleges = butteries.filter(college => college.active)
+    } else if (filterType === 'inactive') {
+      filteredColleges = butteries.filter(college => !college.active)
     }
-
+  
+    for (let i = 0; i < filteredColleges.length; i++) {
+      collegeCards.push(getCollegeVisual(filteredColleges[i], i))
+    }
+  
     return <View>{collegeCards}</View>
   }
 
@@ -186,11 +195,11 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
         >
           <LinearGradient colors={['#121212', '#121212']} locations={[0, 1]}>
             <View style={home.outerContainer}>
-              {getCollegeVisual(butteries[13], 13)}
+              {getAllCards('active')}
               <View style={home.partition}>
                 <Text style={home.announcement}>More Butteries Coming Soon!</Text>
               </View>
-              {getAllCards()}
+              {getAllCards('inactive')}
             </View>
           </LinearGradient>
           <View style={{ height: 25, opacity: 1 }}></View>
