@@ -56,7 +56,7 @@ We use [Expo](https://expo.dev/accounts/yale_butteries) to turn the frontend cod
     - _A Testflight build requires access to the Apple developer account, which is currently owned by_ **_Addison Goolsbee_**
     - First, increment **version** in **app.json**. If you forget, then after 15 minutes you'll be thrown an error and have to rebuild
     - Make a real build with `eas build -p ios`
-    - Submit the build to the app store. Run `eas submit -p ios`
+    - Submit the build to the app store. Run `eas submit -p ios` (takes about 24 hours to approve updates)
 
 ## Version Control
 

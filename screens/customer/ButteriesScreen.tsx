@@ -71,7 +71,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     },
     {
       ne: 'JE',
-      active: false,
+      active: true,
     },
     {
       ne: 'Murray',
@@ -113,18 +113,26 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     active: boolean
   }
 
+  const visualsDict = {
+    'Berkeley': 0,
+    'Branford': 80,
+    'Davenport': 160,
+    'Stiles': 240,
+    'Franklin': 320,
+    'Hopper': 400,
+    'JE': 480,
+    'Morse': 560,
+    'Murray': 640,
+    'Pierson':720,
+    'Saybrook': 800,
+    'Silliman':880,
+    'TD':960,
+    'Trumbull':1040,
+  }
+
   const getCollegeVisual = (collegeInfo: CollegeInfo, index: number) => {
     const navigationNe: string = collegeInfo.ne.length > 2 ? collegeInfo.ne.toLowerCase() : collegeInfo.ne
-    let offset = (index - 1) * 80
-    if (collegeInfo.ne == 'Stiles') {
-      offset = 240
-    } else if (collegeInfo.ne == 'Morse') {
-      offset = 560
-    } else if ((index > 3 && index < 7) || index >= 12) {
-      offset += 80
-    } else if (index >= 7 && index < 12) {
-      offset += 160
-    }
+    let offset = visualsDict[collegeInfo.ne]
 
     return (
       <ButteryCard
@@ -141,13 +149,22 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     )
   }
 
-  const getAllCards = () => {
+  const getAllCards = (filterType?: 'all' | 'active' | 'inactive') => {
     const collegeCards: JSX.Element[] = []
-
-    for (let i = 0; i < butteries.length - 1; i++) {
-      collegeCards.push(getCollegeVisual(butteries[i], i))
+  
+    let filteredColleges = butteries; // Default: Get all colleges
+  
+    // Filter based on filterType if provided
+    if (filterType === 'active') {
+      filteredColleges = butteries.filter(college => college.active)
+    } else if (filterType === 'inactive') {
+      filteredColleges = butteries.filter(college => !college.active)
     }
-
+  
+    for (let i = 0; i < filteredColleges.length; i++) {
+      collegeCards.push(getCollegeVisual(filteredColleges[i], i))
+    }
+  
     return <View>{collegeCards}</View>
   }
 
@@ -186,11 +203,11 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
         >
           <LinearGradient colors={['#121212', '#121212']} locations={[0, 1]}>
             <View style={home.outerContainer}>
-              {getCollegeVisual(butteries[13], 13)}
+              {getAllCards('active')}
               <View style={home.partition}>
                 <Text style={home.announcement}>More Butteries Coming Soon!</Text>
               </View>
-              {getAllCards()}
+              {getAllCards('inactive')}
             </View>
           </LinearGradient>
           <View style={{ height: 25, opacity: 1 }}></View>
