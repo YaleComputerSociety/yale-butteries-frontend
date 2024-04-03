@@ -113,18 +113,26 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     active: boolean
   }
 
+  const visualsDict = {
+    'Berkeley': 0,
+    'Branford': 80,
+    'Davenport': 160,
+    'Stiles': 240,
+    'Franklin': 320,
+    'Hopper': 400,
+    'JE': 480,
+    'Morse': 560,
+    'Murray': 640,
+    'Pierson':720,
+    'Saybrook': 800,
+    'Silliman':880,
+    'TD':960,
+    'Trumbull':1040,
+  }
+
   const getCollegeVisual = (collegeInfo: CollegeInfo, index: number) => {
     const navigationNe: string = collegeInfo.ne.length > 2 ? collegeInfo.ne.toLowerCase() : collegeInfo.ne
-    let offset = (index - 1) * 80
-    if (collegeInfo.ne == 'Stiles') {
-      offset = 240
-    } else if (collegeInfo.ne == 'Morse') {
-      offset = 560
-    } else if ((index > 3 && index < 7) || index >= 12) {
-      offset += 80
-    } else if (index >= 7 && index < 12) {
-      offset += 160
-    }
+    let offset = visualsDict[collegeInfo.ne]
 
     return (
       <ButteryCard
