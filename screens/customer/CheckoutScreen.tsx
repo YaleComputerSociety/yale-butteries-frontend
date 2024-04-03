@@ -145,14 +145,13 @@ const CheckoutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
       })
 
       // TODO put in reducers
-      // TODO change collegeId to be dynamic
       const newOrder = await fetch(baseUrl + 'api/orders', {
         method: 'POST',
         body: JSON.stringify({
           price: price,
           userId: currentUser.id,
           // collegeId: collegeOrderCart,
-          collegeId: 14,
+          collegeId: currentUser.collegeId,
           orderItems: newOrderItems,
         }),
         headers: {
