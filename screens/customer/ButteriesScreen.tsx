@@ -71,7 +71,7 @@ const ButterySelectionScreen: React.FC<{ navigation: any }> = ({ navigation }) =
     },
     {
       ne: 'JE',
-      active: false,
+      active: true,
     },
     {
       ne: 'Murray',
