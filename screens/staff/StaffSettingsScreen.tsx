@@ -27,16 +27,16 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
   const { colleges, isLoading } = useAppSelector((state) => state.colleges)
 
   // openTime info
-  const [openTimeHour, setOpenTimeHour] = useState(null)
-  const [openTimeMinutes, setOpenTimeMinutes] = useState(null)
+  const [openTimeHour, setOpenTimeHour] = useState(0)
+  const [openTimeMinutes, setOpenTimeMinutes] = useState(0)
   const [openTimeMeridiem, setOpenTimeMeridiem] = useState('')
 
   // closeTimeinfo
-  const [closeTimeHour, setCloseTimeHour] = useState(null)
-  const [closeTimeMinutes, setCloseTimeMinutes] = useState(null)
+  const [closeTimeHour, setCloseTimeHour] = useState(0)
+  const [closeTimeMinutes, setCloseTimeMinutes] = useState(0)
   const [closeTimeMeridiem, setCloseTimeMeridiem] = useState('')
 
-  const [acceptingOrders, setAcceptingOrders] = useState(null)
+  const [acceptingOrders, setAcceptingOrders] = useState(true)
 
   const [currentCollege, setCurrentCollege] = useState<College | null>(null)
   const [begin, setBegin] = useState(true)
@@ -50,15 +50,13 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
   useEffect(() => {
     if (colleges != null && currentUser != null) {
       const foundCollege = colleges.find((college) => college.id === currentUser.collegeId)
-      if (foundCollege == null) throw new Error('No college found')
+      if (foundCollege == null) return
       setCurrentCollege(foundCollege)
     }
 
     if (currentCollege != null) {
-      const openTime = currentCollege.openTime.split(':')
-      const closeTime = currentCollege.closeTime.split(':')
-
-      // setAcceptingOrders(currentCollege.isAcceptingOrders)
+      const openTime: number[] = currentCollege.openTime.split(':').map(str => parseInt(str, 10))
+      const closeTime: number[] = currentCollege.closeTime.split(':').map(str => parseInt(str, 10))
 
       updateOpenDays(currentCollege.daysOpen)
       setOpenCount(currentCollege.daysOpen.length)
@@ -81,7 +79,7 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
       setCloseTimeHour(closeTime[0])
       setCloseTimeMinutes(closeTime[1])
 
-      setAcceptingOrders(currentCollege.isAcceptingOrders)
+      // setAcceptingOrders(currentCollege.isAcceptingOrders)
       setBegin(false)
     }
   }, [currentCollege, isLoading])
@@ -129,19 +127,19 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
     )
   }
 
-  const updateCollege = (openTimeAM_PM: string, closeTimeAM_PM: string) => {
-    const open = outputTime(openTimeHour, openTimeMinutes, openTimeAM_PM)
-    const close = outputTime(closeTimeHour, closeTimeMinutes, closeTimeAM_PM)
+  const updateCollege = () => {
+    const open = outputTime(openTimeHour, openTimeMinutes)
+    const close = outputTime(closeTimeHour, closeTimeMinutes)
 
     const butteryTime: College = {
-      id: currentCollege.id,
-      name: currentCollege.name,
-      isButteryIntegrated: currentCollege.isButteryIntegrated,
-      isAcceptingOrders: acceptingOrders,
+      id: currentCollege!.id,
+      name: currentCollege!.name,
+      isButteryIntegrated: currentCollege!.isButteryIntegrated,
+      // isAcceptingOrders: acceptingOrders,
       daysOpen: openDays,
       openTime: open,
       closeTime: close,
-      isOpen: currentCollege.isOpen,
+      isOpen: currentCollege!.isOpen,
     }
 
     dispatch(asyncUpdateCollege(butteryTime))
@@ -156,7 +154,7 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
         {
           text: "Yes, I'm Sure",
           onPress: () => {
-            updateCollege(openTimeMeridiem, closeTimeMeridiem)
+            updateCollege()
           },
         },
         {
@@ -185,9 +183,11 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
           </View>
           <View style={[styles.sectionContainer]}>
             <Text style={styles.headerText}>Open Time</Text>
+            
+
             <TimeCard
-              AM_PM={(am_pm) => {
-                setOpenTimeMeridiem(am_pm)
+              meridiem={(mer) => {
+                setOpenTimeMeridiem(mer)
               }}
               hour={(hour) => {
                 setOpenTimeHour(hour)
@@ -199,8 +199,8 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
             />
             <Text style={styles.headerText}>Close Time</Text>
             <TimeCard
-              AM_PM={(am_pm) => {
-                setCloseTimeMeridiem(am_pm)
+              meridiem={(mer) => {
+                setCloseTimeMeridiem(mer)
               }}
               hour={(hour) => {
                 setCloseTimeHour(hour)

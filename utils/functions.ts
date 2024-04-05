@@ -22,23 +22,13 @@ export function getPriceFromOrderItems(orderItems: OrderCartItem[]): string {
   return priceToText(sum)
 }
 
-export function outputTime(hrs: string, mins: string, meridiem?: string): string {
-  const time12h = hrs + ':' + mins + ' ' + meridiem
-
-  const [time, modifier] = time12h.split(' ')
-  let [hours, minutes] = time.split(':')
-
-  if (hours === '12') {
-    hours = '00'
+export function outputTime(hour: number, minute: number): string {
+  const meridiem = hour >= 12 ? 'PM' : 'AM'
+  if (hour === 0) {
+    hour = 12
   }
-
-  if (modifier === 'PM') {
-    if (parseInt(hrs) + 12 < 24) {
-      hours = (parseInt(hours) + 12).toString()
-    }
-  }
-
-  return `${hours}:${minutes}`
+  const time12h = hour + ':' + minute + ' ' + meridiem
+  return time12h
 }
 
 export function militaryToAnalog(militaryTime: string): string {
