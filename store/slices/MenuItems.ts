@@ -1,8 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AppDispatch } from '../../store/ReduxStore'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+
+import type { AppDispatch } from '../../store/ReduxStore'
 import { baseUrl } from '../../utils/constants'
 import type { MenuItem, NewMenuItem } from '../../utils/types'
-
 
 export interface MenuItemsState {
   menuItems: MenuItem[] | null

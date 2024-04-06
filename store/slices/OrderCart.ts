@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
-import { APIError } from '../ReduxStore'
+import type { APIError } from '../ReduxStore'
 import type { OrderCartItem } from '../../utils/types'
 
 export interface OrderCartState {
@@ -13,7 +14,7 @@ export interface OrderCartState {
 const orderCartInitialState: OrderCartState = {
   orderItems: [],
   isLoading: false,
-  college: null,
+  college: '',
   price: 0,
 }
 

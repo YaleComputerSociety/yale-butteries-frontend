@@ -1,8 +1,9 @@
 import { getRandomBytes } from 'expo-crypto'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseUrl } from '../../utils/constants'
-import { AppDispatch } from '../../store/ReduxStore'
+import type { AppDispatch } from '../../store/ReduxStore'
 import { setCurrentUserState } from '../../store/slices/CurrentUser'
 import * as LocalStorage from '../../utils/localStorage'
 import type { User, NewUser } from '../../utils/types'
@@ -49,10 +50,10 @@ export const asyncCreateUser = (user: NewUser) => {
         },
         body: JSON.stringify(user),
       })
-      const data = await newUser.json()
+      const data: User = await newUser.json()
       console.log(data)
-      if (newUser.status != 200) {
-        throw 'failed to create new user'
+      if (newUser.status !== 200) {
+        throw new Error('failed to create new user')
       }
 
       dispatch(setCurrentUserState(data))
@@ -63,14 +64,16 @@ export const asyncCreateUser = (user: NewUser) => {
 
       const token = getRandomBytes(8).toString()
 
-      const localStorageInfo: [string, string][] = [
+      const localStorageInfo: Array<[string, string]> = [
         ['id', data.id],
         ['username', data.netId],
         ['token', token],
         ['permissions', data.role],
       ]
 
-      LocalStorage.storeUserInfo(localStorageInfo)
+      LocalStorage.storeUserInfo(localStorageInfo).catch((e) => {
+        throw e
+      })
       return true
     } catch (e) {
       console.log(e)
@@ -101,17 +104,16 @@ export const asyncFetchUsers = () => {
           id: user.id,
           currentOrder: user.currentOrder,
         }
-        newData.push(newUser);
+        newData.push(newUser)
       })
       // CHECK ON THIS
-      dispatch(setUsersState(newData));
-      return true;
-    }
-    catch (e) {
-      console.log(e);
-    }
-    finally {
-      dispatch(setIsLoading(false));
+      dispatch(setUsersState(newData))
+      return true
+    } catch (e) {
+      console.log(e)
+      return false
+    } finally {
+      dispatch(setIsLoading(false))
     }
   }
 }

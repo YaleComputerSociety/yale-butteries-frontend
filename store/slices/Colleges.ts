@@ -1,6 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+
 import { baseUrl } from '../../utils/constants'
-import { AppDispatch } from '../ReduxStore'
+import type { AppDispatch } from '../ReduxStore'
 import type { College, CollegeUpdate } from '../../utils/types'
 
 export interface CollegesState {
@@ -24,13 +26,10 @@ export const collegesSlice = createSlice({
       state.isLoading = action.payload
     },
     updateCollege: (state, action: PayloadAction<College>) => {
-      const updateIndex = state.colleges.findIndex((item) => item.id == action.payload.id)
+      const updateIndex = state.colleges.findIndex((item) => item.id === action.payload.id)
       state.colleges[updateIndex] = action.payload
     },
   },
-  //getOneColleges time given a specific college id (for the manager side)
-  //getAllColleges time with another function (for the customer butteryScreen)
-  //updateOneCollege time as well give a specific college id (for saving changes on the manager side)
 })
 
 export const { setCollegesState, setIsLoading, updateCollege } = collegesSlice.actions
@@ -103,6 +102,7 @@ export const asyncGetCollegeTimes = (college: College) => {
       })
       const data = await user.json()
       dispatch(updateCollege(data))
+      return true
     } catch (e) {
       console.log(e)
       return false

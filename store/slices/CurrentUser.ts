@@ -1,7 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+
 import { baseUrl } from '../../utils/constants'
-import { AppDispatch } from '../../store/ReduxStore'
+import type { AppDispatch } from '../../store/ReduxStore'
 import type { UserUpdate, User } from '../../utils/types'
+
 import { setOrder } from './Order'
 import { asyncFetchMenuItems } from './MenuItems'
 
@@ -45,7 +48,7 @@ export const asyncFetchUser = (id: string) => {
           'Content-Type': 'application/json',
         },
       })
-      const data = await user.json()
+      const data: User = await user.json()
 
       if (user.status === 404) {
         return 'missing'
@@ -55,7 +58,9 @@ export const asyncFetchUser = (id: string) => {
 
       dispatch(setCurrentUserState(data))
       dispatch(setOrder(data.currentOrder))
-      dispatch(asyncFetchMenuItems())
+      dispatch(asyncFetchMenuItems()).catch((e) => {
+        throw e
+      })
       return 'good'
     } catch (e) {
       console.log(e)
@@ -77,7 +82,7 @@ export const asyncUpdateCurrentUser = (currentUser: UserUpdate, id: string) => {
         },
         body: JSON.stringify(currentUser),
       })
-      const data = await updatedUser.json()
+      const data: User = await updatedUser.json()
       dispatch(setCurrentUserState(data))
       return true
     } catch (e) {
@@ -94,12 +99,13 @@ export const asyncVerifyStaffLogin = async (username: string, password: string):
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username: username, password: password }),
+      body: JSON.stringify({ username, password }),
     })
     const data = await verified.json()
-    return data
+    return data != null
   } catch (e) {
     console.log(e)
+    return false
   }
 }
 

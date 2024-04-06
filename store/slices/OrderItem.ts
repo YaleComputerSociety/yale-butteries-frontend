@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { baseUrl } from '../../utils/constants'
-import { AppDispatch } from '../ReduxStore'
-import type {OrderItem} from '../../utils/types'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
-// import { getJSON } from 'utils/fetch'
+import { baseUrl } from '../../utils/constants'
+import type { AppDispatch } from '../ReduxStore'
+import type { OrderItem } from '../../utils/types'
 
 export interface OrderItemsState {
   orderItems: OrderItem[]
@@ -26,7 +26,7 @@ export const ordersSlice = createSlice({
       state.orderItems = [...state.orderItems, action.payload]
     },
     updateOrderItem: (state, action: PayloadAction<OrderItem>) => {
-      const updateIndex = state.orderItems.findIndex((item) => item.id == action.payload.id)
+      const updateIndex = state.orderItems.findIndex((item) => item.id === action.payload.id)
       state.orderItems[updateIndex] = action.payload
     },
     setIsLoading: (state, action: PayloadAction<boolean>) => {

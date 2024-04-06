@@ -1,5 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
+
 import type { AppDispatch } from '../ReduxStore'
 import { baseUrl } from '../../utils/constants'
 import type { Order } from '../../utils/types'
