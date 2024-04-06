@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
-import { home } from '../styles/ButteriesStyles'
 import { LinearGradient } from 'expo-linear-gradient'
+
+import { home } from '../styles/ButteriesStyles'
 import type { MainStackScreenProps } from '../utils/types'
 
 const NavigationScreen: React.FC<MainStackScreenProps<'NavigationScreen'>> = ({ navigation }) => {

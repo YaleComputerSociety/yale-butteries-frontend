@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, Pressable, TextInput } from 'react-native'
+
 import { asyncVerifyStaffLogin } from '../store/slices/CurrentUser'
 import { useAppDispatch, useAppSelector } from '../store/ReduxStore'
 import { asyncCreateUser } from '../store/slices/Users'
@@ -22,7 +23,10 @@ const GuestLoginScreen: FC<MainStackScreenProps<'GuestLoginScreen'>> = ({ naviga
         role: 'CUSTOMER',
       }
 
-      dispatch(asyncCreateUser(newUser))
+      dispatch(asyncCreateUser(newUser)).catch((e) => {
+        console.error(e)
+        throw e
+      })
     }
   }
 

@@ -1,14 +1,17 @@
-import React, { FC, useState } from 'react'
+// This screen is unused and will be deleted eventually
+
+import type { FC } from 'react'
+import React, { useState } from 'react'
 import { View, Text, TextInput, Pressable } from 'react-native'
-import { staffLogin } from '../../styles/StaffLoginStyles'
 import { LinearGradient } from 'expo-linear-gradient'
+import Ionicon from 'react-native-vector-icons/Ionicons'
+
+import { staffLogin } from '../../styles/StaffLoginStyles'
 import * as LocalStorage from '../../utils/localStorage'
 import { asyncVerifyStaffLogin, setCurrentUserState } from '../../store/slices/CurrentUser'
 import { useAppDispatch } from '../../store/ReduxStore'
 import { baseUrl } from '../../utils/constants'
 import { asyncFetchMenuItems } from '../../store/slices/MenuItems'
-import Ionicon from 'react-native-vector-icons/Ionicons'
-import EvilModal from '../../components/EvilModal'
 
 const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
   const [username, setUser] = useState('')
@@ -24,7 +27,7 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
     }
 
     if (verified) {
-      const info: [string, string][] = [
+      const info: Array<[string, string]> = [
         ['username', username],
         ['permissions', 'STAFF'],
         ['id', JSON.stringify(3)],
@@ -82,7 +85,12 @@ const StaffLoginScreen: FC<{ navigation: any }> = ({ navigation }) => {
             autoCorrect={false}
             autoCapitalize="none"
           />
-          <Pressable onPress={() => checkInfo()} style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}>
+          <Pressable
+            onPress={async () => {
+              await checkInfo()
+            }}
+            style={({ pressed }) => [{ opacity: pressed ? 0.8 : 1 }]}
+          >
             <View style={staffLogin.button}>
               <Text style={{ fontSize: 15, color: '#fff', fontFamily: 'HindSiliguri-Bolder' }}>Sign in</Text>
             </View>

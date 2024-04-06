@@ -1,12 +1,13 @@
 import type { FC } from 'react'
 import React, { useEffect, useRef, useState } from 'react'
 import { WebView } from 'react-native-webview'
-import { useAppDispatch, useAppSelector } from '../store/ReduxStore'
-import { asyncCreateUser } from '../store/slices/Users'
 import type { NativeSyntheticEvent } from 'react-native'
 import { ActivityIndicator, View, StyleSheet, AppState } from 'react-native'
-import EvilModal from '../components/EvilModal'
 import { useIsFocused } from '@react-navigation/native'
+
+import { useAppDispatch, useAppSelector } from '../store/ReduxStore'
+import { asyncCreateUser } from '../store/slices/Users'
+import EvilModal from '../components/EvilModal'
 import { baseUrl } from '../utils/constants'
 import type { MainStackScreenProps, NewUser } from '../utils/types'
 
@@ -44,12 +45,17 @@ const CASLoginScreen: FC<MainStackScreenProps<'CASLoginScreen'>> = ({ navigation
         role: 'CUSTOMER',
       }
 
-      dispatch(asyncCreateUser(newUser)).then((success: boolean) => {
-        if (!success) {
-          setConnection(false)
-        }
-        setLoadingUser(false)
-      })
+      dispatch(asyncCreateUser(newUser))
+        .then((success: boolean) => {
+          if (!success) {
+            setConnection(false)
+          }
+          setLoadingUser(false)
+        })
+        .catch((e) => {
+          console.error(e)
+          throw e
+        })
     }
   }, [loadingUser, appStateVisible, netId, dispatch])
 

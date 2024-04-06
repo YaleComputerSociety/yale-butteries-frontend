@@ -2,16 +2,15 @@
 
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import SelectDropdown from 'react-native-select-dropdown'
+
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { asyncAddMenuItem } from '../../store/slices/MenuItems'
 import EditButton from '../../components/staff/EditButton'
-import { useNavigation } from '@react-navigation/native'
 import { FUNCTIONS } from '../../constants/Functions'
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
-
-import SelectDropdown from 'react-native-select-dropdown'
-
 import type { MenuItemType, NewMenuItem } from '../../utils/types'
 
 const CreateItemScreen: React.FC = () => {
@@ -31,7 +30,7 @@ const CreateItemScreen: React.FC = () => {
   const [description, setDescription] = useState('')
   const [doEditDescription, setDoEditDescription] = useState(false)
 
-  const [selected, setSelected] = useState<MenuItemType>('FOOD');
+  const [selected, setSelected] = useState<MenuItemType>('FOOD')
 
   const data = ['FOOD', 'DRINK', 'DESSERT']
 
@@ -76,13 +75,13 @@ const CreateItemScreen: React.FC = () => {
       setDisabled(false)
       return
     }
-    
+
     const buffer: NewMenuItem = {
       name: item,
       collegeId: currentUser.collegeId,
-      price: price,
+      price,
       foodType: selected,
-      description: description,
+      description,
     }
 
     dispatch(asyncAddMenuItem(buffer)).then((success: boolean) => {
@@ -103,7 +102,9 @@ const CreateItemScreen: React.FC = () => {
           style={styles.inputTitleSingle}
           autoCorrect={false}
           autoFocus={true}
-          onBlur={() => setDoEditItem(false)}
+          onBlur={() => {
+            setDoEditItem(false)
+          }}
           onSubmitEditing={(event) => {
             handleEditItem(event.nativeEvent.text)
           }}
@@ -136,7 +137,9 @@ const CreateItemScreen: React.FC = () => {
           style={styles.inputTitleSingle}
           autoCorrect={false}
           autoFocus={true}
-          onBlur={() => setDoEditPrice(false)}
+          onBlur={() => {
+            setDoEditPrice(false)
+          }}
           onSubmitEditing={(event) => {
             handleEditPrice(event.nativeEvent.text)
           }}
@@ -169,7 +172,9 @@ const CreateItemScreen: React.FC = () => {
           style={styles.inputTitleSingle}
           autoCorrect={false}
           autoFocus={true}
-          onBlur={() => setDoEditDescription(false)}
+          onBlur={() => {
+            setDoEditDescription(false)
+          }}
           onSubmitEditing={(event) => {
             handleEditDescription(event.nativeEvent.text)
           }}
@@ -213,7 +218,7 @@ const CreateItemScreen: React.FC = () => {
         </View>
         <View style={[styles.tag]}>
           <Text style={styles.labelText}>Item Type:</Text>
-          <View style={{ marginLeft: 'auto' , borderRadius: 8 }}>
+          <View style={{ marginLeft: 'auto', borderRadius: 8 }}>
             <SelectDropdown
               data={data}
               defaultValue={'FOOD'}
@@ -247,9 +252,9 @@ export default CreateItemScreen
 
 const styles = StyleSheet.create({
   text: {
-    color: 'white', 
-    fontFamily: 'HindSiliguri-Bold', 
-    fontSize: 18, 
+    color: 'white',
+    fontFamily: 'HindSiliguri-Bold',
+    fontSize: 18,
   },
   error: {
     color: '#bb3333',
@@ -275,7 +280,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: TEXTS.adjust(16),
     fontWeight: '300',
-    fontFamily:  'HindSiliguri-Bolder',
+    fontFamily: 'HindSiliguri-Bolder',
     textAlign: 'center',
     color: 'white',
   },
@@ -429,5 +434,5 @@ const styles = StyleSheet.create({
   },
   notPressed: {
     backgroundColor: 'white',
-  }
+  },
 })

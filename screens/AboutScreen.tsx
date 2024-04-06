@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import React from 'react'
 import { StyleSheet, View, Text, ScrollView } from 'react-native'
+
 import type { MainStackScreenProps } from '../utils/types'
 
 const AboutScreen: FC<MainStackScreenProps<'AboutScreen'>> = () => {
@@ -83,8 +84,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 15,
-    // borderBottomWidth: 1,
-    // borderColor: '#999',
   },
   text: {
     color: 'rgba(255,255,255,0.82)',

@@ -1,6 +1,9 @@
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, Alert, ActivityIndicator, Text, Pressable, RefreshControl, SectionList } from 'react-native'
+import * as Haptics from 'expo-haptics'
+import { useIsFocused } from '@react-navigation/native'
+
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems } from '../../store/slices/MenuItems'
 import { addOrderItem, removeOrderItem, resetOrderCartState } from '../../store/slices/OrderCart'
@@ -15,13 +18,11 @@ import {
   getCollegeFromId,
 } from '../../utils/functions'
 import type { MainStackScreenProps, MenuItem, OrderCartItem } from '../../utils/types'
-import * as Haptics from 'expo-haptics'
-import { useIsFocused } from '@react-navigation/native'
 import EvilModal from '../../components/EvilModal'
 import { MenuHeader } from '../../components/customer/MenuHeader'
 
 const MenuScreen: React.FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, route }) => {
-  // make a function that gets the price from the items in the cart
+  // todo: make a function that gets the price from the items in the cart
   const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
   const { menuItems } = useAppSelector((state) => state.menuItems)
@@ -38,7 +39,7 @@ const MenuScreen: React.FC<MainStackScreenProps<'MenuScreen'>> = ({ navigation, 
   const { collegeName } = route.params
 
   useEffect(() => {
-    dispatch(asyncFetchMenuItems()).then((success: boolean) => {
+    void dispatch(asyncFetchMenuItems()).then((success: boolean) => {
       if (!success) {
         setConnection(false)
       }

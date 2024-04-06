@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import React, { useState } from 'react'
 import { StyleSheet, View, Text, Pressable, TouchableWithoutFeedback, Keyboard, Image } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
+
 import EvilModal from '../components/EvilModal'
 import type { MainStackScreenProps } from '../utils/types'
 

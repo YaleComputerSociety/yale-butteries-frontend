@@ -1,9 +1,10 @@
 import type { FC } from 'react'
 import React, { useEffect } from 'react'
 import { Image, View, StyleSheet } from 'react-native'
+import { useIsFocused } from '@react-navigation/native'
+
 import { useAppSelector } from '../store/ReduxStore'
 import type { MainStackScreenProps } from '../utils/types'
-import { useIsFocused } from '@react-navigation/native'
 
 // This is the screen after the splash screen, before we decide what screen to put the user on while we wait to see who the user is/connect to the backend
 const Dummy: FC<MainStackScreenProps<'DummyScreen'>> = ({ navigation }) => {

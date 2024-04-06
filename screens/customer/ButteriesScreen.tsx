@@ -23,13 +23,13 @@ const ButteriesScreen: React.FC<MainStackScreenProps<'ButteriesScreen'>> = ({ na
   // const[begin, setBegin] = useState(false)
 
   useEffect(() => {
-    dispatch(asyncFetchColleges())
+    // todo: handle failure case with loading screen
+    void dispatch(asyncFetchColleges())
   }, [dispatch, isFocused])
 
   useEffect(() => {
     const push = async (): Promise<void> => {
       await registerForPushNotificationsAsync()
-      // Alert.alert(token ? token : 'no token')
     }
     push().catch((e) => {
       console.error(e)
