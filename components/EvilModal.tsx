@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, StyleSheet, Text, View } from 'react-native'
+
 import { LAYOUTS } from '../constants/Layouts'
 import { TEXTS } from '../constants/Texts'
 

@@ -1,9 +1,10 @@
 import type { StackNavigationProp } from '@react-navigation/stack'
-import type { MainStackParamList } from '../routes/mainStackNavigator'
 import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+
+import type { MainStackParamList } from '../routes/mainStackNavigator'
 
 export const GoBackHeader: React.FC = () => {
   const navigation: StackNavigationProp<MainStackParamList> = useNavigation()

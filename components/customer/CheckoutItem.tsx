@@ -2,10 +2,10 @@ import Ionicon from 'react-native-vector-icons/Ionicons'
 import React from 'react'
 import * as Haptics from 'expo-haptics'
 import { View, Text, Pressable } from 'react-native'
+import Swipeable from 'react-native-gesture-handler/Swipeable'
 
 import { priceToText } from '../../utils/functions'
 import { checkout } from '../../styles/CheckoutStyles'
-import Swipeable from 'react-native-gesture-handler/Swipeable'
 import type { OrderCartItem, MenuItem } from '../../utils/types'
 
 interface Props {

@@ -2,7 +2,9 @@ import type { FC } from 'react'
 import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import Ionicon from 'react-native-vector-icons/Ionicons'
+
 import type { OrderItem } from '../../utils/types'
+
 import AnalyticsItemCard from './AnalyticsItemCard'
 
 interface Props {

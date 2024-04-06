@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import type { NativeScrollEvent } from 'react-native'
 import { Alert, View, StyleSheet } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 
 import { COLORS } from '../../constants/Colors'
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
-import { ScrollView } from 'react-native-gesture-handler'
-
-import OrderCardBackground from './OrderCardBackground'
-
 import { useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateOrderItem, updateOrderItem } from '../../store/slices/OrderItem'
 import type { OrderItem, OrderItemStatus } from '../../utils/types'
+
+import OrderCardBackground from './OrderCardBackground'
 
 interface Props {
   item: OrderItem
@@ -75,9 +74,14 @@ const OrderItemCard: React.FC<Props> = ({ item, interactable, setConnection }: P
                 ...item,
                 status: tempStatus,
               }),
-            ).then((success: boolean) => {
-              setConnection(success)
-            })
+            )
+              .then((success: boolean) => {
+                setConnection(success)
+              })
+              .catch((e) => {
+                console.error(e)
+                throw e
+              })
           },
         },
         {
@@ -106,9 +110,14 @@ const OrderItemCard: React.FC<Props> = ({ item, interactable, setConnection }: P
                 ...item,
                 status: tempStatus,
               }),
-            ).then((success: boolean) => {
-              setConnection(success)
-            })
+            )
+              .then((success: boolean) => {
+                setConnection(success)
+              })
+              .catch((e) => {
+                console.error(e)
+                throw e
+              })
           },
         },
         {
@@ -132,9 +141,14 @@ const OrderItemCard: React.FC<Props> = ({ item, interactable, setConnection }: P
           ...item,
           status: tempStatus,
         }),
-      ).then((success: boolean) => {
-        setConnection(success)
-      })
+      )
+        .then((success: boolean) => {
+          setConnection(success)
+        })
+        .catch((e) => {
+          console.error(e)
+          throw e
+        })
     }
   }
 

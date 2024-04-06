@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
-import { analogToMilitary, outputTime } from '../../utils/functions'
 import { useIsFocused } from '@react-navigation/native'
+
+import { analogToMilitary, outputTime } from '../../utils/functions'
 
 interface Props {
   text: string

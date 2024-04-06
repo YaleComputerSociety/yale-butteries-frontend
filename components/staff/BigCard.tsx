@@ -4,13 +4,12 @@ import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 import { COLORS } from '../../constants/Colors'
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
-
-import OrderItemCard from './OrderItemCard'
 import { card } from '../../styles/ButteriesStyles'
-
 import { useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateOrderItem } from '../../store/slices/OrderItem'
 import type { OrderItem } from '../../utils/types'
+
+import OrderItemCard from './OrderItemCard'
 
 interface Props {
   orderItems: OrderItem[]
@@ -45,7 +44,7 @@ const BigCard: React.FC<Props> = ({ orderItems, interactable, setConnection, isW
   }
   const declineClick = (): void => {
     newItems.forEach((item) => {
-      dispatch(
+      void dispatch(
         asyncUpdateOrderItem({
           ...item,
           status: 'CANCELLED',

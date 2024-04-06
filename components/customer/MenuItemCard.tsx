@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Pressable, StyleSheet } from 'react-native'
 import Ionicon from 'react-native-vector-icons/Ionicons'
+import * as Haptics from 'expo-haptics'
 
 import { item } from '../../styles/MenuStyles'
 import { priceToText } from '../../utils/functions'
-import * as Haptics from 'expo-haptics'
 import type { MenuItem, OrderCartItem } from '../../utils/types'
 
 interface Props {
