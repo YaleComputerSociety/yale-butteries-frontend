@@ -55,6 +55,8 @@ const SettingsScreen: React.FC<StaffStackScreenProps<'Settings'>> = () => {
       setOpenTimeMinute(openTime[1])
       setCloseTimeHour(closeTime[0])
       setCloseTimeMinute(closeTime[1])
+      console.log(currentCollege.isAcceptingOrders)
+      console.log(currentCollege)
       setAcceptingOrders(currentCollege.isAcceptingOrders)
       setBegin(false)
     }

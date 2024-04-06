@@ -56,7 +56,7 @@ export const asyncFetchColleges = () => {
           openTime: item.openTime,
           closeTime: item.closeTime,
           isOpen: item.isOpen,
-          // isAcceptingOrders: item.isAcceptingOrders,
+          isAcceptingOrders: item.isAcceptingOrders,
         }
         newData.push(college)
       })

@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
 import { Switch, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { useAppDispatch } from '../../store/ReduxStore'
-
-import { LAYOUTS } from '../../constants/Layouts'
-import { asyncUpdateMenuItem } from '../../store/slices/MenuItems'
 import { useNavigation } from '@react-navigation/native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
+import { useAppDispatch } from '../../store/ReduxStore'
+import { LAYOUTS } from '../../constants/Layouts'
+import { asyncUpdateMenuItem } from '../../store/slices/MenuItems'
 import { priceToText } from '../../utils/functions'
-
 import type { MenuItem } from '../../utils/types'
 
 interface Props {

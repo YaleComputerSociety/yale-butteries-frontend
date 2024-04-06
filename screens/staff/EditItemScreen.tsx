@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import SelectDropdown from 'react-native-select-dropdown'
+
 import { useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateMenuItem } from '../../store/slices/MenuItems'
 import EditButton from '../../components/staff/EditButton'
-
 import { FUNCTIONS } from '../../constants/Functions'
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
 import EvilModal from '../../components/EvilModal'
-import { useNavigation } from '@react-navigation/native'
-
-import SelectDropdown from 'react-native-select-dropdown'
-
 import type { MenuItemType } from '../../utils/types'
 
 const EditItemScreen: React.FC = (props: any) => {
@@ -32,7 +30,7 @@ const EditItemScreen: React.FC = (props: any) => {
   const [description, setDescription] = useState(props.description)
   const [doEditDescription, setDoEditDescription] = useState(false)
 
-  const [selected, setSelected] = useState<MenuItemType>(props.foodType);
+  const [selected, setSelected] = useState<MenuItemType>(props.foodType)
   const data = ['FOOD', 'DRINK', 'DESSERT']
 
   const handleEditItem = async (text: string) => {
@@ -59,7 +57,9 @@ const EditItemScreen: React.FC = (props: any) => {
           style={styles.inputTitleSingle}
           autoCorrect={false}
           autoFocus={true}
-          onBlur={() => setDoEditItem(false)}
+          onBlur={() => {
+            setDoEditItem(false)
+          }}
           onSubmitEditing={(event) => {
             handleEditItem(event.nativeEvent.text)
           }}
@@ -92,7 +92,9 @@ const EditItemScreen: React.FC = (props: any) => {
           style={styles.inputTitleSingle}
           autoCorrect={false}
           autoFocus={true}
-          onBlur={() => setDoEditPrice(false)}
+          onBlur={() => {
+            setDoEditPrice(false)
+          }}
           onSubmitEditing={(event) => {
             handleEditPrice(event.nativeEvent.text)
           }}
@@ -125,7 +127,9 @@ const EditItemScreen: React.FC = (props: any) => {
           style={styles.inputTitleSingle}
           autoCorrect={false}
           autoFocus={true}
-          onBlur={() => setDoEditDescription(false)}
+          onBlur={() => {
+            setDoEditDescription(false)
+          }}
           onSubmitEditing={(event) => {
             handleEditDescription(event.nativeEvent.text)
           }}
@@ -170,14 +174,16 @@ const EditItemScreen: React.FC = (props: any) => {
 
     if (exitEarly) return
 
-    dispatch(asyncUpdateMenuItem({ ...props, name, price, description, foodType: selected })).then((success: boolean) => {
-      setConnection(success)
-      if (success) {
-        navigation.goBack()
-      } else {
-        Alert.alert('Please connect to the internet and try again')
-      }
-    })
+    dispatch(asyncUpdateMenuItem({ ...props, name, price, description, foodType: selected })).then(
+      (success: boolean) => {
+        setConnection(success)
+        if (success) {
+          navigation.goBack()
+        } else {
+          Alert.alert('Please connect to the internet and try again')
+        }
+      },
+    )
   }
 
   return (
@@ -200,7 +206,7 @@ const EditItemScreen: React.FC = (props: any) => {
         </View>
         <View style={[styles.tag]}>
           <Text style={styles.labelText}>Item Type:</Text>
-          <View style={{ marginLeft: 'auto' , borderRadius: 8 }}>
+          <View style={{ marginLeft: 'auto', borderRadius: 8 }}>
             <SelectDropdown
               data={data}
               defaultValue={selected}
@@ -212,7 +218,7 @@ const EditItemScreen: React.FC = (props: any) => {
               }}
               selectedRowStyle={{ backgroundColor: '#bbb' }}
               buttonTextStyle={styles.text}
-              buttonStyle={{ borderRadius: 8, backgroundColor: 'orange'}}
+              buttonStyle={{ borderRadius: 8, backgroundColor: 'orange' }}
             />
           </View>
         </View>
@@ -230,9 +236,9 @@ export default EditItemScreen
 
 const styles = StyleSheet.create({
   text: {
-    color: 'white', 
-    fontFamily: 'HindSiliguri-Bold', 
-    fontSize: 18, 
+    color: 'white',
+    fontFamily: 'HindSiliguri-Bold',
+    fontSize: 18,
   },
   error: {
     color: '#bb3333',
@@ -250,7 +256,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: TEXTS.adjust(16),
     fontWeight: '300',
-    fontFamily:  'HindSiliguri-Bolder',
+    fontFamily: 'HindSiliguri-Bolder',
     textAlign: 'center',
     color: 'white',
   },
@@ -377,7 +383,7 @@ const styles = StyleSheet.create({
     marginTop: LAYOUTS.getWidth(10),
   },
   addCategory: {
-    //borderWidth: 2,
+    // borderWidth: 2,
     marginLeft: LAYOUTS.getWidth(40),
     marginRight: LAYOUTS.getWidth(30),
     alignItems: 'center',
