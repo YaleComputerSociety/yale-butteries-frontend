@@ -31,7 +31,7 @@ const SettingsScreen: React.FC<StaffStackScreenProps<'Settings'>> = () => {
   const [begin, setBegin] = useState(true)
 
   useEffect(() => {
-    dispatch(asyncFetchColleges()).then((success: boolean) => {
+    void dispatch(asyncFetchColleges()).then((success: boolean) => {
       setConnection(success)
     })
   }, [dispatch])
@@ -55,8 +55,6 @@ const SettingsScreen: React.FC<StaffStackScreenProps<'Settings'>> = () => {
       setOpenTimeMinute(openTime[1])
       setCloseTimeHour(closeTime[0])
       setCloseTimeMinute(closeTime[1])
-      console.log(currentCollege.isAcceptingOrders)
-      console.log(currentCollege)
       setAcceptingOrders(currentCollege.isAcceptingOrders)
       setBegin(false)
     }
@@ -127,7 +125,7 @@ const SettingsScreen: React.FC<StaffStackScreenProps<'Settings'>> = () => {
       isOpen: currentCollege.isOpen,
     }
 
-    dispatch(asyncUpdateCollege(butteryTime))
+    void dispatch(asyncUpdateCollege(butteryTime))
     Alert.alert('Your changes have been saved!')
   }
 
