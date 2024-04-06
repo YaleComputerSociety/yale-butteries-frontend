@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
+import type { NavigationStackProp } from 'react-navigation-stack'
+import type { NavigationParams } from 'react-navigation'
+import { useIsFocused } from '@react-navigation/native'
+
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncFetchMenuItems } from '../../store/slices/MenuItems'
 import InventoryItemCard from '../../components/staff/InventoryItemCard'
 import { COLORS } from '../../constants/Colors'
 import { TEXTS } from '../../constants/Texts'
 import { LAYOUTS } from '../../constants/Layouts'
-import { NavigationStackProp } from 'react-navigation-stack'
-import { NavigationParams } from 'react-navigation'
-import { useIsFocused } from '@react-navigation/native'
 import EvilModal from '../../components/EvilModal'
 import type { MenuItem } from '../../utils/types'
 
@@ -25,25 +26,27 @@ const InventoryScreen: React.FC<{ navigation: NavigationStackProp<{ collegeName:
   const [connection, setConnection] = useState(true)
 
   useEffect(() => {
-    const temp = async () => {
+    const temp = async (): Promise<void> => {
       if (isLoadingMenuItems || menuItems == null) {
         await dispatch(asyncFetchMenuItems()).then((success: boolean) => {
           setConnection(success)
         })
       }
     }
-    temp()
-  }, [isLoadingMenuItems, isFocused])
+    temp().catch((err) => {
+      console.error(err)
+    })
+  }, [isLoadingMenuItems, isFocused, menuItems, dispatch])
 
   useEffect(() => {
-    if (menuItems != null) {
+    if (menuItems != null && currentUser != null) {
       setLocalMenu(
         menuItems
-          .filter((element) => element.collegeId == currentUser.collegeId)
-          .sort((a, b) => a.name.localeCompare(b.name))
+          .filter((element) => element.collegeId === currentUser.collegeId)
+          .sort((a, b) => a.name.localeCompare(b.name)),
       )
     }
-  }, [menuItems])
+  }, [currentUser, menuItems])
 
   return (
     <View style={{ ...styles.container }}>
