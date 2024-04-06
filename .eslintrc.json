@@ -13,7 +13,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint", "import"],
   "rules": {
     "@typescript-eslint/consistent-type-imports": [
       "error",
@@ -23,6 +23,13 @@
     ],
     "comma-dangle": ["error", "always-multiline"],
     "prettier/prettier": ["error", { "trailingComma": "all" }],
-    "radix": "off"
+    "radix": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "parent", "sibling", "index"],
+        "newlines-between": "always"
+      }
+    ]
   }
 }

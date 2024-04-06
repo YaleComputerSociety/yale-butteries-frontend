@@ -3,43 +3,52 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import OrdersScreen from '../screens/staff/StaffOrdersScreen'
 import InventoryScreen from '../screens/staff/InventoryScreen'
 import React from 'react'
+import { createStackNavigator } from '@react-navigation/stack'
 
 import EditItemScreen from '../screens/staff/EditItemScreen'
 import CreateItemScreen from '../screens/staff/CreateItemScreen'
 import SettingsScreen from '../screens/staff/StaffSettingsScreen'
 import AnalyticsScreen from '../screens/staff/StaffAnalyticsScreen'
+import type { ParamListBase } from '@react-navigation/native'
 
-import { createStackNavigator } from '@react-navigation/stack'
+export interface StaffStackParamList extends ParamListBase {
+  Orders: undefined
+  Inventory: InventoryParamList
+  Analytics: undefined
+  Settings: undefined
+}
 
-type InventoryParamList = {
+interface InventoryParamList extends ParamListBase {
   InventoryScreen: undefined
   Edit: undefined
   Create: undefined
 }
 
-const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator<StaffStackParamList>()
 const InventoryStack = createStackNavigator<InventoryParamList>()
 
 function AntDesignBarIcon(props: { name: React.ComponentProps<typeof AntDesign>['name']; color: string }) {
   return <AntDesign size={28} style={{ marginBottom: -3 }} {...props} />
 }
 
-const StaffStack: React.FC = () => {
+const StaffStackNavigator: React.FC = () => {
   return (
-    <Tab.Navigator screenOptions={{
-      tabBarStyle: {
-        backgroundColor: '#1f1f1f',
-      },
-      headerStyle: {
-        backgroundColor: '#1f1f1f',
-        borderWidth: 0,
-        shadowColor: '#222',
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
-      },
-      headerTitleStyle: { fontFamily: 'HindSiliguri-Bold', fontSize: 20, paddingBottom: 10 },
-      headerTintColor: '#FFF'
-  }}>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: '#1f1f1f',
+        },
+        headerStyle: {
+          backgroundColor: '#1f1f1f',
+          borderWidth: 0,
+          shadowColor: '#222',
+          shadowOpacity: 0.3,
+          shadowRadius: 10,
+        },
+        headerTitleStyle: { fontFamily: 'HindSiliguri-Bold', fontSize: 20, paddingBottom: 10 },
+        headerTintColor: '#FFF',
+      }}
+    >
       <Tab.Screen
         name="Orders"
         component={OrdersScreen}
@@ -82,4 +91,4 @@ const InventoryNavigator = () => {
   )
 }
 
-export default StaffStack
+export default StaffStackNavigator

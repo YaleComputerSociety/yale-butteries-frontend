@@ -1,10 +1,19 @@
 // This file contains a bunch of type definitions
 
 import type { StackScreenProps } from '@react-navigation/stack'
-import type { MainStackParamList } from '../routes/mainStackNavigator'
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
+import type { RouteProp } from '@react-navigation/native'
 
-// Props that carry navigation and route data, for the main stack (e.g. everything but the staff side)
+import type { MainStackParamList } from '../routes/mainStackNavigator'
+import type { StaffStackParamList } from '../routes/staffStackNavigator'
+
+// Props that carry navigation and route data, for the main stack (everything but the staff side)
 export type MainStackScreenProps<Screen extends keyof MainStackParamList> = StackScreenProps<MainStackParamList, Screen>
+// And for the staff (this one might need some work)
+export interface StaffStackScreenProps<Screen extends keyof StaffStackParamList> {
+  navigation: BottomTabNavigationProp<StaffStackParamList, Screen>
+  route: RouteProp<StaffStackParamList, Screen>
+}
 
 // Make sure to keep these in sync with the backend!
 export type UserRole = 'CUSTOMER' | 'STAFF'

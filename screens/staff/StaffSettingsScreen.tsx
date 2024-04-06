@@ -1,5 +1,3 @@
-import type { NavigationStackProp } from 'react-navigation-stack'
-import type { NavigationParams } from 'react-navigation'
 import React, { useState, useEffect, useRef } from 'react'
 import { StyleSheet, Text, View, ScrollView, Switch, Alert, ActivityIndicator, Button } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
@@ -9,9 +7,9 @@ import EvilModal from '../../components/EvilModal'
 import DayIcon from '../../components/staff/DayIcon'
 import { asyncFetchColleges, asyncUpdateCollege } from '../../store/slices/Colleges'
 import TimePicker from '../../components/staff/TimePicker'
-import type { College, CollegeUpdate } from '../../utils/types'
+import type { College, CollegeUpdate, StaffStackScreenProps } from '../../utils/types'
 
-const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationParams> }> = ({ navigation }) => {
+const SettingsScreen: React.FC<StaffStackScreenProps<'Settings'>> = () => {
   const dispatch = useAppDispatch()
   const isFocused = useIsFocused()
 

@@ -1,8 +1,8 @@
 import * as React from 'react'
-import StaffStack from '../../routes/staffStack'
+import StaffStackNavigator from '../../routes/staffStackNavigator'
 
 const StaffRenderScreen: React.FC<{ navigation: any }> = () => {
-  return <StaffStack />
+  return <StaffStackNavigator />
 }
 
 export default StaffRenderScreen
