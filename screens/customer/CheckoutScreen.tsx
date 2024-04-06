@@ -101,7 +101,7 @@ const CheckoutScreen: React.FC<MainStackScreenProps<'CheckoutScreen'>> = ({ navi
           price,
           userId: currentUser.id,
           // collegeId: collegeOrderCart,
-          collegeId: 14,
+          collegeId: currentUser.collegeId,
           orderItems: newOrderItems,
         }),
         headers: {

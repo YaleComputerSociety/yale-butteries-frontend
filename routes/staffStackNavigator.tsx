@@ -11,6 +11,7 @@ import EditItemScreen from '../screens/staff/EditItemScreen'
 import CreateItemScreen from '../screens/staff/CreateItemScreen'
 import SettingsScreen from '../screens/staff/StaffSettingsScreen'
 import AnalyticsScreen from '../screens/staff/StaffAnalyticsScreen'
+import { useAppSelector } from '../store/ReduxStore'
 
 export interface StaffStackParamList extends ParamListBase {
   Orders: undefined
@@ -36,6 +37,25 @@ const AntDesignBarIcon = (props: {
 }
 
 const StaffStackNavigator: React.FC = () => {
+  const { currentUser } = useAppSelector((state) => state.currentUser)
+  if (currentUser == null) return <></>
+
+  const colleges = [
+    'Berkeley',
+    'Branford',
+    'Davenport',
+    'Franklin',
+    'Hopper',
+    'JE',
+    'Morse',
+    'Murray',
+    'Pierson',
+    'Saybrook',
+    'Silliman',
+    'Stiles',
+    'TD',
+    'Trumbull',
+  ]
   return (
     <Tab.Navigator
       screenOptions={{
@@ -54,7 +74,7 @@ const StaffStackNavigator: React.FC = () => {
       }}
     >
       <Tab.Screen
-        name="Orders"
+        name={`${colleges[currentUser.collegeId - 1]} Orders`}
         component={OrdersScreen}
         options={() => ({
           // these warnings need to be fixed
