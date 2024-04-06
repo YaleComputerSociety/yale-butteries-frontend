@@ -1,24 +1,26 @@
-import React, { FC, useEffect, useState } from 'react'
+// This file needs to be rewritten
+// Also, moving between dates is very slow
+
+import type { FC } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View, ScrollView, StyleSheet, Pressable } from 'react-native'
+import Ionicon from 'react-native-vector-icons/Ionicons'
+import { useIsFocused } from '@react-navigation/native'
+
 import { useAppDispatch, useAppSelector } from '../../store/ReduxStore'
 import { asyncFetchAllOrdersFromCollege } from '../../store/slices/Order'
-import Ionicon from 'react-native-vector-icons/Ionicons'
 import { staffAnalytics } from '../../styles/StaffAnalyticsStyles'
-import { useIsFocused } from '@react-navigation/native'
 import { asyncFetchUsers } from '../../store/slices/Users'
 import { LAYOUTS } from '../../constants/Layouts'
-import type { Order, User } from '../../utils/types'
-
+import type { Order } from '../../utils/types'
 import AnalyticsCard from '../../components/staff/AnalyticsCard'
 
 const AnalyticsScreen: FC = () => {
   const dispatch = useAppDispatch()
-  const { currentUser } = useAppSelector((state) => state.currentUser)
 
   const today = new Date()
 
   const isFocused = useIsFocused()
-  const [refreshing, setRefreshing] = useState(false)
   const [connection, setConnection] = useState(true)
 
   const [date, updateDate] = useState(today)
@@ -26,109 +28,105 @@ const AnalyticsScreen: FC = () => {
   const { users } = useAppSelector((state) => state.users)
   const { orders, isLoading } = useAppSelector((state) => state.orders)
 
-  const [filtered, setFiltered] = useState([])
+  const filteredOrders: Order[] = orders.filter(getAllOrdersFromDay)
 
-  
   useEffect(() => {
-
     dispatch(asyncFetchUsers()).then((success: boolean) => {
       if (!success) {
         setConnection(false)
       }
     })
 
-    
     dispatch(asyncFetchAllOrdersFromCollege(14)).then((success: boolean) => {
       if (!success) {
         setConnection(false)
       }
     })
-
-    setFiltered(orders.filter(getAllOrdersFromDay));
-    
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
-
     dispatch(asyncFetchAllOrdersFromCollege(14)).then((success: boolean) => {
       if (!success) {
         setConnection(false)
       }
     })
-
-    setFiltered(orders.filter(getAllOrdersFromDay)) // update orders for that past day
-  }, [date])
+  }, [date, dispatch])
 
   useEffect(() => {
-    if(!isLoading) {
+    if (!isLoading) {
       dispatch(asyncFetchAllOrdersFromCollege(14)).then((success: boolean) => {
         if (!success) {
           setConnection(false)
         }
       })
     }
-  }, [isFocused])
+  }, [dispatch, isFocused, isLoading])
 
-
-
-  const moveForward = () => {
-    if(date.getFullYear() < today.getFullYear() || date.getMonth() < today.getMonth() || date.getDate() < today.getDate()) {
+  const moveForward = (): void => {
+    if (
+      date.getFullYear() < today.getFullYear() ||
+      date.getMonth() < today.getMonth() ||
+      date.getDate() < today.getDate()
+    ) {
       date.setDate(date.getDate() + 1)
       updateDate(new Date(date))
     }
   }
 
-  const moveBackward = () => {
+  const moveBackward = (): void => {
     date.setDate(date.getDate() - 1)
     updateDate(new Date(date))
   }
 
-  function getTotalCost(orders: Order[]) {
-    let totalCost = 0;
+  function getTotalCost(ordersList: Order[]): number {
+    let totalCost = 0
 
-    for (let i = 0; i < orders.length; i++) {
-      totalCost += orderTotalCost(orders[i]);
+    for (let i = 0; i < ordersList.length; i++) {
+      totalCost += orderTotalCost(ordersList[i])
     }
 
-    return totalCost;
+    return totalCost
   }
 
-  function orderTotalCost(order: Order) {
-    let cost = 0;
+  function orderTotalCost(order: Order): number {
+    let cost = 0
 
     for (let j = 0; j < order.orderItems.length; j++) {
-      cost += order.orderItems[j].price;
+      cost += order.orderItems[j].price
     }
 
-    return cost / 100.0;
+    return cost / 100.0
   }
 
-  function getAllOrdersFromDay(order: Order) {
-    const orderDate = new Date(order.createdAt);
-    return orderDate.getFullYear() === date.getFullYear() && orderDate.getMonth() === date.getMonth() && orderDate.getDate() === date.getDate();
+  function getAllOrdersFromDay(order: Order): boolean {
+    const orderDate = new Date(order.createdAt)
+    return (
+      orderDate.getFullYear() === date.getFullYear() &&
+      orderDate.getMonth() === date.getMonth() &&
+      orderDate.getDate() === date.getDate()
+    )
   }
 
-  function getUserFromId(id: string) {
-
+  function getUserFromId(id: string): string {
     if (users == null) {
-      return "error";
+      return 'error'
     }
 
     for (let i = 0; i < users.length; i++) {
       if (users[i].id === id) {
-        return users[i].name;
+        return users[i].name
       }
     }
-    return "error";
+    return 'error'
   }
 
-  function reformatTime(time: string) {
-    const date = new Date(time);
+  function reformatTime(time: string): string {
+    const now = new Date(time)
 
-    const estTime = date.toLocaleString("en-US", {timeZone: "America/New_York"});
-    const [_, hours, minutes] = estTime.match(/(\d+):(\d+):(\d+)/);
+    const estTime = now.toLocaleString('en-US', { timeZone: 'America/New_York' })
+    const [_, hours, minutes] = estTime.match(/(\d+):(\d+):(\d+)/)
 
-    return `${hours}:${minutes}`;
+    return `${hours}:${minutes}`
   }
 
   return (
@@ -138,12 +136,17 @@ const AnalyticsScreen: FC = () => {
           <Ionicon name="arrow-back" size={25} color="#rgba(255,255,255, 0.87)" />
         </Pressable>
         <Text style={styles.dateHeader}>{date.toDateString()}</Text>
-        <Pressable 
+        <Pressable
           onPress={moveForward}
-          style={({ pressed }) => [
+          style={() => [
             {
-              opacity: date.getFullYear() < today.getFullYear() || date.getMonth() < today.getMonth() || date.getDate() < today.getDate() ? 1 : 0,
-            }
+              opacity:
+                date.getFullYear() < today.getFullYear() ||
+                date.getMonth() < today.getMonth() ||
+                date.getDate() < today.getDate()
+                  ? 1
+                  : 0,
+            },
           ]}
         >
           <Ionicon name="arrow-forward" size={25} color="#rgba(255,255,255, 0.87)" />
@@ -151,19 +154,19 @@ const AnalyticsScreen: FC = () => {
       </View>
 
       <View style={staffAnalytics.header}>
-          <Text style = {staffAnalytics.subheader}>Total Revenue: ${getTotalCost(filtered).toFixed(2)}</Text>
-          <Text style = {staffAnalytics.subheader}>Total Orders: {filtered.length}</Text>
+        <Text style={staffAnalytics.subheader}>Total Revenue: ${getTotalCost(filteredOrders).toFixed(2)}</Text>
+        <Text style={staffAnalytics.subheader}>Total Orders: {filteredOrders.length}</Text>
       </View>
 
       <View style={staffAnalytics.title}>
-          <Text style = {staffAnalytics.text}></Text>
-          <Text style = {staffAnalytics.text}>Time</Text>
-          <Text style = {staffAnalytics.text}>Name</Text>
-          <Text style = {staffAnalytics.text}>Items</Text>
-          <Text style = {staffAnalytics.text}>Cost</Text>
+        <Text style={staffAnalytics.text} />
+        <Text style={staffAnalytics.text}>Time</Text>
+        <Text style={staffAnalytics.text}>Name</Text>
+        <Text style={staffAnalytics.text}>Items</Text>
+        <Text style={staffAnalytics.text}>Cost</Text>
       </View>
 
-      {filtered?.map((order, i) => (
+      {filteredOrders?.map((order, i) => (
         <AnalyticsCard
           key={i}
           time={reformatTime(order.createdAt)}
@@ -201,7 +204,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: LAYOUTS.getWidth(10),
     backgroundColor: '#121212',
     flex: 1,
-  }
+  },
 })
 
 export default AnalyticsScreen
