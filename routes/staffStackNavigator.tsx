@@ -1,15 +1,16 @@
 import { AntDesign } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import OrdersScreen from '../screens/staff/StaffOrdersScreen'
-import InventoryScreen from '../screens/staff/InventoryScreen'
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
+import { StyleSheet } from 'react-native'
+import type { ParamListBase } from '@react-navigation/native'
 
+import OrdersScreen from '../screens/staff/StaffOrdersScreen'
+import InventoryScreen from '../screens/staff/InventoryScreen'
 import EditItemScreen from '../screens/staff/EditItemScreen'
 import CreateItemScreen from '../screens/staff/CreateItemScreen'
 import SettingsScreen from '../screens/staff/StaffSettingsScreen'
 import AnalyticsScreen from '../screens/staff/StaffAnalyticsScreen'
-import type { ParamListBase } from '@react-navigation/native'
 
 export interface StaffStackParamList extends ParamListBase {
   Orders: undefined
@@ -27,8 +28,11 @@ interface InventoryParamList extends ParamListBase {
 const Tab = createBottomTabNavigator<StaffStackParamList>()
 const InventoryStack = createStackNavigator<InventoryParamList>()
 
-function AntDesignBarIcon(props: { name: React.ComponentProps<typeof AntDesign>['name']; color: string }) {
-  return <AntDesign size={28} style={{ marginBottom: -3 }} {...props} />
+const AntDesignBarIcon = (props: {
+  name: React.ComponentProps<typeof AntDesign>['name']
+  color: string
+}): JSX.Element => {
+  return <AntDesign size={28} style={styles.tabIcon} {...props} />
 }
 
 const StaffStackNavigator: React.FC = () => {
@@ -52,9 +56,10 @@ const StaffStackNavigator: React.FC = () => {
       <Tab.Screen
         name="Orders"
         component={OrdersScreen}
-        options={{
+        options={() => ({
+          // these warnings need to be fixed
           tabBarIcon: ({ color }) => <AntDesignBarIcon name="shoppingcart" color={color} />,
-        }}
+        })}
       />
       <Tab.Screen
         name="Inventory"
@@ -81,7 +86,7 @@ const StaffStackNavigator: React.FC = () => {
   )
 }
 
-const InventoryNavigator = () => {
+const InventoryNavigator = (): JSX.Element => {
   return (
     <InventoryStack.Navigator>
       <InventoryStack.Screen name="InventoryScreen" component={InventoryScreen} options={{ headerShown: false }} />
@@ -90,5 +95,9 @@ const InventoryNavigator = () => {
     </InventoryStack.Navigator>
   )
 }
+
+const styles = StyleSheet.create({
+  tabIcon: { marginBottom: -5 },
+})
 
 export default StaffStackNavigator
