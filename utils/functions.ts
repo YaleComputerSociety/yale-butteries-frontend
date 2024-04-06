@@ -1,8 +1,8 @@
-import type { College, OrderCartItem } from './types'
-
 import * as Device from 'expo-device'
 import * as Notifications from 'expo-notifications'
 import { Platform } from 'react-native'
+
+import type { College, OrderCartItem } from './types'
 
 export const getCollegeFromId = (id: number, colleges: College[]): College | null => {
   return colleges.find((college) => college.id === id) ?? null

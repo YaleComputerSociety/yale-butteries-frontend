@@ -1,9 +1,11 @@
 // stripe functions, to be used mostly for the checkout screen
 
 import type { Stripe } from 'stripe'
-import { baseUrl } from './constants'
 import { useStripe } from '@stripe/stripe-react-native'
+
 import { useAppSelector } from '../store/ReduxStore'
+
+import { baseUrl } from './constants'
 
 // This error type needs some work but it is the errors thrown by showPaymentSheet
 export class StripePaymentError extends Error {
