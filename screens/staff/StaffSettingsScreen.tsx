@@ -1,6 +1,6 @@
 import type { NavigationStackProp } from 'react-navigation-stack'
 import type { NavigationParams } from 'react-navigation'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { StyleSheet, Text, View, ScrollView, Switch, Alert, ActivityIndicator, Button } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 
@@ -8,9 +8,8 @@ import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import EvilModal from '../../components/EvilModal'
 import DayIcon from '../../components/staff/DayIcon'
 import { asyncFetchColleges, asyncUpdateCollege } from '../../store/slices/Colleges'
-import TimeCard from '../../components/staff/TimeCard'
-import { outputTime } from '../../utils/functions'
-import type { College } from '../../utils/types'
+import TimePicker from '../../components/staff/TimePicker'
+import type { College, CollegeUpdate } from '../../utils/types'
 
 const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationParams> }> = ({ navigation }) => {
   const dispatch = useAppDispatch()
@@ -18,24 +17,16 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
 
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
-  const [openDays, updateOpenDays] = useState<string[]>([]) // retrieve state once stored
-  const [openCount, setOpenCount] = useState(0)
-
-  const [connection, setConnection] = useState(true)
-
   const { currentUser } = useAppSelector((state) => state.currentUser)
   const { colleges, isLoading } = useAppSelector((state) => state.colleges)
 
-  // openTime info
+  const [connection, setConnection] = useState(true)
+  const [openDays, updateOpenDays] = useState<string[]>([]) // retrieve state once stored
+  const [openCount, setOpenCount] = useState(0)
   const [openTimeHour, setOpenTimeHour] = useState(0)
-  const [openTimeMinutes, setOpenTimeMinutes] = useState(0)
-  const [openTimeMeridiem, setOpenTimeMeridiem] = useState('')
-
-  // closeTimeinfo
+  const [openTimeMinute, setOpenTimeMinute] = useState(0)
   const [closeTimeHour, setCloseTimeHour] = useState(0)
-  const [closeTimeMinutes, setCloseTimeMinutes] = useState(0)
-  const [closeTimeMeridiem, setCloseTimeMeridiem] = useState('')
-
+  const [closeTimeMinute, setCloseTimeMinute] = useState(0)
   const [acceptingOrders, setAcceptingOrders] = useState(true)
 
   const [currentCollege, setCurrentCollege] = useState<College | null>(null)
@@ -45,7 +36,7 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
     dispatch(asyncFetchColleges()).then((success: boolean) => {
       setConnection(success)
     })
-  }, [dispatch, isFocused])
+  }, [dispatch])
 
   useEffect(() => {
     if (colleges != null && currentUser != null) {
@@ -54,42 +45,36 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
       setCurrentCollege(foundCollege)
     }
 
-    if (currentCollege != null) {
-      const openTime: number[] = currentCollege.openTime.split(':').map(str => parseInt(str, 10))
-      const closeTime: number[] = currentCollege.closeTime.split(':').map(str => parseInt(str, 10))
+    if (isFocused && currentCollege != null) {
+      scrollToTop()
+
+      const openTime: number[] = currentCollege.openTime.split(':').map((str) => parseInt(str, 10))
+      const closeTime: number[] = currentCollege.closeTime.split(':').map((str) => parseInt(str, 10))
 
       updateOpenDays(currentCollege.daysOpen)
       setOpenCount(currentCollege.daysOpen.length)
-
-      if (openTime[0] >= 12) {
-        setOpenTimeMeridiem('PM')
-      } else {
-        setOpenTimeMeridiem('AM')
-      }
-
-      if (closeTime[0] >= 12) {
-        setCloseTimeMeridiem('PM')
-      } else {
-        setCloseTimeMeridiem('AM')
-      }
-
       setOpenTimeHour(openTime[0])
-      setOpenTimeMinutes(openTime[1])
-
+      setOpenTimeMinute(openTime[1])
       setCloseTimeHour(closeTime[0])
-      setCloseTimeMinutes(closeTime[1])
-
-      // setAcceptingOrders(currentCollege.isAcceptingOrders)
+      setCloseTimeMinute(closeTime[1])
+      setAcceptingOrders(currentCollege.isAcceptingOrders)
       setBegin(false)
     }
-  }, [currentCollege, isLoading])
+  }, [colleges, currentCollege, currentUser, isFocused, isLoading])
 
-  const closeButtery = (day: string) => {
+  // scroll to top of screen when back in screen
+  const scrollViewRef = useRef<ScrollView>(null)
+  const scrollToTop = (): void => {
+    if (scrollViewRef.current == null) return
+    scrollViewRef.current.scrollTo({ y: 0, animated: true })
+  }
+
+  const closeButtery = (day: string): void => {
     updateOpenDays(openDays.filter((a) => a !== day))
     setOpenCount(openCount - 1)
   }
 
-  const handleTimeCard = (day: string) => {
+  const handleTimeCard = (day: string): void => {
     if (!openDays.includes(day)) {
       updateOpenDays([...openDays, day])
       setOpenCount(openCount + 1)
@@ -98,22 +83,22 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
     }
   }
 
-  const getDayIconVisual = (day: string, index: number, active: boolean) => {
+  const getDayIconVisual = (day: string, index: number, active: boolean): JSX.Element => {
     return (
       <DayIcon
         key={index}
         text={day}
         active={active}
         openDays={openDays}
-        action={(day) => {
-          handleTimeCard(day)
+        action={(dayOfWeek) => {
+          handleTimeCard(dayOfWeek)
         }}
         day={day}
       />
     )
   }
 
-  const getAllDays = () => {
+  const getAllDays = (): JSX.Element => {
     const collegeCards: JSX.Element[] = []
 
     for (let i = 0; i <= daysOfWeek.length - 1; i++) {
@@ -122,101 +107,65 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
 
     return (
       <View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>{collegeCards}</View>
+        <View style={styles.daysContainer}>{collegeCards}</View>
       </View>
     )
   }
 
-  const updateCollege = () => {
-    const open = outputTime(openTimeHour, openTimeMinutes)
-    const close = outputTime(closeTimeHour, closeTimeMinutes)
+  const updateCollege = (): void => {
+    if (currentCollege == null) return
 
-    const butteryTime: College = {
-      id: currentCollege!.id,
-      name: currentCollege!.name,
-      isButteryIntegrated: currentCollege!.isButteryIntegrated,
-      // isAcceptingOrders: acceptingOrders,
+    const openTime = `${openTimeHour}:${openTimeMinute < 10 ? `0${openTimeMinute}` : openTimeMinute}`
+    const closeTime = `${closeTimeHour}:${closeTimeMinute < 10 ? `0${closeTimeMinute}` : closeTimeMinute}`
+
+    const butteryTime: CollegeUpdate = {
+      id: currentCollege.id,
+      isAcceptingOrders: acceptingOrders,
       daysOpen: openDays,
-      openTime: open,
-      closeTime: close,
-      isOpen: currentCollege!.isOpen,
+      openTime,
+      closeTime,
+      isOpen: currentCollege.isOpen,
     }
 
     dispatch(asyncUpdateCollege(butteryTime))
     Alert.alert('Your changes have been saved!')
   }
 
-  const safetyCheck = () => {
-    Alert.alert(
-      'Do you want to save these changes?',
-      'Any changes made will take place immediately',
-      [
-        {
-          text: "Yes, I'm Sure",
-          onPress: () => {
-            updateCollege()
-          },
-        },
-        {
-          text: 'Cancel',
-          onPress: () => {},
-        },
-      ],
-      {
-        cancelable: true,
-      },
-    )
-  }
-
   return (
-    <View style={{ width: '100%', height: '100%' }}>
+    <View style={styles.genericContainer}>
       {<EvilModal toggle={setConnection} display={!connection} />}
       {begin ? (
-        <View style={{ height: '100%', alignItems: 'center' }}>
-          <ActivityIndicator color="#555" style={{ height: '100%', alignSelf: 'center' }} size="large" />
+        <View style={styles.genericContainerAligned}>
+          <ActivityIndicator color="#555" size="large" />
         </View>
       ) : (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} ref={scrollViewRef}>
           <View style={styles.sectionContainer}>
             <Text style={styles.headerText}>Days</Text>
             {getAllDays()}
           </View>
           <View style={[styles.sectionContainer]}>
-            <Text style={styles.headerText}>Open Time</Text>
-            
-
-            <TimeCard
-              meridiem={(mer) => {
-                setOpenTimeMeridiem(mer)
-              }}
-              hour={(hour) => {
-                setOpenTimeHour(hour)
-              }}
-              minutes={(minutes) => {
-                setOpenTimeMinutes(minutes)
-              }}
-              time={outputTime(openTimeHour, openTimeMinutes)}
+            <TimePicker
+              text="Open Time"
+              hour={openTimeHour}
+              minute={openTimeMinute}
+              setHour={setOpenTimeHour}
+              setMinute={setOpenTimeMinute}
             />
-            <Text style={styles.headerText}>Close Time</Text>
-            <TimeCard
-              meridiem={(mer) => {
-                setCloseTimeMeridiem(mer)
-              }}
-              hour={(hour) => {
-                setCloseTimeHour(hour)
-              }}
-              minutes={(minutes) => {
-                setCloseTimeMinutes(minutes)
-              }}
-              time={outputTime(closeTimeHour, closeTimeMinutes)}
+            <TimePicker
+              text="Close Time"
+              hour={closeTimeHour}
+              minute={closeTimeMinute}
+              setHour={setCloseTimeHour}
+              setMinute={setCloseTimeMinute}
             />
           </View>
           <View style={styles.sectionContainer}>
-            <Text style={styles.headerText}>Accepting orders?</Text>
+            <Text style={styles.headerText}>Accepting Orders</Text>
             <Switch value={acceptingOrders} onValueChange={setAcceptingOrders} />
           </View>
           <View style={styles.button}>
-            <Button title="Save Changes" color="rgba(255,255,255, 0.87)" onPress={safetyCheck} />
+            <Button title="Save Changes" color="rgba(255,255,255, 0.87)" onPress={updateCollege} />
           </View>
         </ScrollView>
       )}
@@ -235,6 +184,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 10,
   },
+  genericContainer: { width: '100%', height: '100%' },
+  genericContainerAligned: { height: '100%', alignItems: 'center' },
+  daysContainer: { flexDirection: 'row', justifyContent: 'space-evenly' },
   container: {
     flex: 1,
     height: '100%',
@@ -247,6 +199,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     marginHorizontal: 10,
+    alignItems: 'center',
   },
   emergencyContainer: {
     flexDirection: 'row',

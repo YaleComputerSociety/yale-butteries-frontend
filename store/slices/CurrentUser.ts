@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseUrl } from '../../utils/constants'
 import { AppDispatch } from '../../store/ReduxStore'
-import type { UpdatedUser, User } from '../../utils/types'
+import type { UserUpdate, User } from '../../utils/types'
 import { setOrder } from './Order'
 import { asyncFetchMenuItems } from './MenuItems'
 
@@ -66,7 +66,7 @@ export const asyncFetchUser = (id: string) => {
   }
 }
 
-export const asyncUpdateCurrentUser = (currentUser: UpdatedUser, id: string) => {
+export const asyncUpdateCurrentUser = (currentUser: UserUpdate, id: string) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     console.log(currentUser)
     try {

@@ -28,7 +28,7 @@ export interface User {
   currentOrder?: OrderItem
 }
 
-export interface UpdatedUser {
+export interface UserUpdate {
   name?: string
   email?: string
 }
@@ -89,5 +89,14 @@ export interface College {
   isOpen: boolean
   openTime: string
   closeTime: string
-  // isAcceptingOrders?: boolean
+  isAcceptingOrders: boolean
+}
+
+export interface CollegeUpdate {
+  id: number
+  daysOpen?: string[]
+  isOpen?: boolean
+  openTime?: string
+  closeTime?: string
+  isAcceptingOrders?: boolean
 }

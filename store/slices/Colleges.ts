@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { baseUrl } from '../../utils/constants'
 import { AppDispatch } from '../ReduxStore'
-import type { College } from '../../utils/types'
+import type { College, CollegeUpdate } from '../../utils/types'
 
 export interface CollegesState {
   isLoading: boolean
@@ -71,7 +71,7 @@ export const asyncFetchColleges = () => {
   }
 }
 
-export const asyncUpdateCollege = (college: College) => {
+export const asyncUpdateCollege = (college: CollegeUpdate) => {
   return async (dispatch: AppDispatch): Promise<boolean> => {
     try {
       const buttery = await fetch(baseUrl + 'api/colleges/' + college.id, {
@@ -83,6 +83,7 @@ export const asyncUpdateCollege = (college: College) => {
       })
       const data = await buttery.json()
       dispatch(updateCollege(data))
+      return true
     } catch (e) {
       console.log(e)
       return false

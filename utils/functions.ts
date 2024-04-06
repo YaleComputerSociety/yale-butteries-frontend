@@ -26,13 +26,15 @@ export function outputTime(hour: number, minute: number): string {
   const meridiem = hour >= 12 ? 'PM' : 'AM'
   if (hour === 0) {
     hour = 12
+  } else if (hour > 12) {
+    hour = hour - 12
   }
-  const time12h = hour + ':' + minute + ' ' + meridiem
+  const time12h = hour + ':' + (minute < 10 ? '0' + minute : minute) + ' ' + meridiem
   return time12h
 }
 
 export function militaryToAnalog(militaryTime: string): string {
-  const timeArray = militaryTime.split(':') // convert to array
+  const timeArray = militaryTime.split(':')
 
   const hours = Number(timeArray[0])
   const minutes = Number(timeArray[1])
@@ -47,8 +49,30 @@ export function militaryToAnalog(militaryTime: string): string {
     timeValue = '12'
   }
 
-  timeValue += minutes < 10 ? ' 0' + minutes : ' ' + minutes // get minutes
-  timeValue += hours >= 12 ? ' pm' : ' am' // get AM/PM
+  timeValue += minutes < 10 ? ' 0' + minutes : ' ' + minutes
+  timeValue += hours >= 12 ? ' pm' : ' am'
+
+  return timeValue
+}
+
+export function analogToMilitary(analogTime: string): string {
+  const timeArray = analogTime.split(/[:\s]/)
+
+  const hours = Number(timeArray[0])
+  const minutes = Number(timeArray[1])
+  const meridiem = timeArray[2].toLowerCase()
+
+  let timeValue = ''
+
+  if (hours === 12 && meridiem === 'am') {
+    timeValue = '00'
+  } else if (hours === 12 && meridiem === 'pm') {
+    timeValue = '12'
+  } else {
+    timeValue = meridiem === 'pm' ? '' + (hours + 12) : '' + hours
+  }
+
+  timeValue += ':' + (minutes < 10 ? '0' + minutes : minutes)
 
   return timeValue
 }

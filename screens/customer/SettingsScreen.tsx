@@ -4,7 +4,7 @@ import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import * as Haptics from 'expo-haptics'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 
-import type { MainStackScreenProps, UpdatedUser } from '../../utils/types'
+import type { MainStackScreenProps, UserUpdate } from '../../utils/types'
 import { useAppSelector, useAppDispatch } from '../../store/ReduxStore'
 import { asyncUpdateCurrentUser } from '../../store/slices/CurrentUser'
 import * as LocalStorage from '../../utils/localStorage'
@@ -33,7 +33,7 @@ const Settings: React.FC<MainStackScreenProps<'SettingsScreen'>> = ({ navigation
       setInvalidName(true)
     } else {
       setInvalidName(false)
-      const updatedCurrentUser: UpdatedUser = {
+      const updatedCurrentUser: UserUpdate = {
         name,
       }
       const success = await dispatch(asyncUpdateCurrentUser(updatedCurrentUser, id))
