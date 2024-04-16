@@ -60,7 +60,7 @@ const BigCard: React.FC<Props> = ({orderItems, interactable, setConnection, isWa
     return (
         <View style={styles.backgroundCard}>
             <View style = {styles.topContainer}>
-                <Text style={card.cardText1}>Name: {'change'}</Text>
+                <Text style={card.cardText1}>Name: {newItems[0].userId}</Text>
             </View>
             {newItems.map((element) => {
                 return (
