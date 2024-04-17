@@ -100,7 +100,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
                   color: 'rgba(255,255,255,0.87)',
                 }}
               >
-                {!acceptingOrders && isOpen ? 'busy' : activeText}
+                {!acceptingOrders && isOpen ? 'BUSY' : activeText}
               </Text>
             </View>
           </View>
