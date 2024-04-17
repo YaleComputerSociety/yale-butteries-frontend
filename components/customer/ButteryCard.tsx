@@ -7,7 +7,7 @@ import { getCollegeAcceptingOrders } from '../../utils/functions'
 
 interface butteryProps {
   college: string
-  isAcceptingOrders: boolean
+  // isAcceptingOrders: boolean
   openTime: string
   closeTime: string
   daysOpen: boolean[]
@@ -33,8 +33,8 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   let currentDay = d.getDay()
   let currentHour = d.getHours()
 
-  const activeText = props.active ? 'CLOSED' : 'INACTIVE'
-  const busyText = !acceptingOrders ? 'BUSY' : activeText
+  let activeText = props.active ? 'CLOSED' : 'INACTIVE'
+  // activeText = isAcceptingOrders ? activeText : 'BUSY'
   const days = ['S ', 'M ', 'T ', 'W ', 'T ', 'F ', 'S ']
 
   const getDayVisual = (value: boolean, index: number) => {
@@ -69,10 +69,10 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
   return (
     <Pressable
       onPress={props.onPress}
-      disabled={!isOpen || !props.active}
+      disabled={!isOpen || !props.active || !acceptingOrders}
       style={({ pressed }) => [
         {
-          opacity: props.active && isOpen ? 1 : 0.5,
+          opacity: (props.active && isOpen && acceptingOrders) ? 1 : 0.5,
           backgroundColor: pressed ? 'rgba(255, 255, 255, 0.075)' : 'rgba(255, 255, 255, 0.05)',
           marginTop: 10,
           marginHorizontal: 10,
@@ -100,7 +100,7 @@ export const ButteryCard: FC<butteryProps> = (props: butteryProps) => {
                   color: 'rgba(255,255,255,0.87)',
                 }}
               >
-                {!acceptingOrders && isOpen ? busyText : activeText}
+                {!acceptingOrders && isOpen ? 'busy' : activeText}
               </Text>
             </View>
           </View>

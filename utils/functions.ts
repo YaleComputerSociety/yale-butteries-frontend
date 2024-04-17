@@ -169,7 +169,9 @@ export function getCollegeOpen(colleges: College[], name: string): boolean {
 
 export function getCollegeAcceptingOrders(colleges: College[], name: string): boolean {
   const college = colleges.filter((college) => college.name.toLowerCase() == name.toLowerCase())[0]
-  return college.isAcceptingOrders == null || college.isAcceptingOrders
+  console.log(college)
+  // console.log(college.isAcceptingOrders)
+  return college.isAcceptingOrders
 }
 
 export function returnCollegeName(collegeName: string): string[] {

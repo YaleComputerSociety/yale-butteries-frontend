@@ -57,7 +57,6 @@ const SettingsScreen: React.FC<{ navigation: NavigationStackProp<{}, NavigationP
     if (currentCollege) {
       const openTime = currentCollege.openTime.split(':')
       const closeTime = currentCollege.closeTime.split(':')
-
       setAcceptingOrders(currentCollege.isAcceptingOrders)
 
       updateOpenDays(currentCollege.daysOpen)

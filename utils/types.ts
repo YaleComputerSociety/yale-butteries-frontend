@@ -77,5 +77,5 @@ export interface College {
     isOpen: boolean
     openTime: string
     closeTime: string
-    // isAcceptingOrders?: boolean
+    isAcceptingOrders: boolean
 }
